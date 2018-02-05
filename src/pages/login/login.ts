@@ -23,6 +23,14 @@ export class LoginPage {
     this.navCtrl.push(HomePage);
   }
 
+  forgotPassword(){
+
+  }
+
+  signUp(){
+
+  }
+  
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }

@@ -9,4 +9,42 @@ page-login {
         /* IE10+ */
         color: black !important; 
       }
+      .lp-logo{
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+      .list-form{
+          margin-top:80px;
+      }
+      .username-item {
+        padding:0px !important; 
+        font-size: 20px;
+        margin-top:10px;
+        background:none;
+        border-bottom:1px solid #717171;
+        box-shadow:none;
+      }
+      .username-input {
+        color: #717171;
+        border-bottom-color: #717171;
+        box-shadow:none;
+      }
+      .login-button{
+        margin-top: 25px;
+        height: 45px;
+        font-size: 20px;
+        background: #717171;
+        text-transform: none;
+      }
+      .text-link-forgotPassword{
+        margin-top:30px;
+        color:#717171;
+        font-size: 16px;
+      }
+      .text-link-CreatNewAcc{
+        margin-top:30px;
+        color:#717171;
+        font-size: 25px;
+      }
 }
