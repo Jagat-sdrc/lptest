@@ -1,0 +1,8 @@
+{
+  "name": "lptest",
+  "app_id": "e904b554",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

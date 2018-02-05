@@ -1,0 +1,12 @@
+page-login {
+    ::-webkit-input-placeholder {
+        color: black !important; 
+      }
+      :-moz-placeholder {
+        color: black !important; 
+      }
+      :-ms-input-placeholder {
+        /* IE10+ */
+        color: black !important; 
+      }
+}
