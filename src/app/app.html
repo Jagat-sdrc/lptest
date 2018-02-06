@@ -1,16 +1,21 @@
 <ion-menu [content]="content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
+  <ion-header color="primary">
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
+      <ion-list>
+
+          <ion-item no-lines class="smenu-custom">
+              Name<br>
+              mailid@sdrc.co.in<br>
+          </ion-item>
+
+          <ion-item no-lines>
+              <p menuToggle (click)="goTo('sync')" class="ess-pointer">Sync</p><br>
+              <p menuToggle (click)="goTo('export')" class="ess-pointer">Export</p><br>
+              <p menuToggle (click)="goTo('logout')" class="ess-pointer">Logout</p><br>
+          </ion-item>
+      </ion-list>
   </ion-content>
 
 </ion-menu>

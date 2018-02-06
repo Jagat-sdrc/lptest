@@ -9,13 +9,21 @@ import { ListPage } from '../pages/list/list';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
+import { AddNewPatientPage } from '../pages/add-new-patient/add-new-patient';
+import { RegisteredPatientPage } from '../pages/registered-patient/registered-patient';
+import { SinglePatientSummaryPage } from '../pages/single-patient-summary/single-patient-summary';
+import { VurnerableBabiesPage } from '../pages/vurnerable-babies/vurnerable-babies';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     HomePage,
-    ListPage
+    ListPage,
+    AddNewPatientPage,
+    RegisteredPatientPage,
+    SinglePatientSummaryPage,
+    VurnerableBabiesPage
   ],
   imports: [
     BrowserModule,
@@ -26,7 +34,11 @@ import { LoginPage } from '../pages/login/login';
     MyApp,
     LoginPage,
     HomePage,
-    ListPage
+    ListPage,
+    AddNewPatientPage,
+    RegisteredPatientPage,
+    SinglePatientSummaryPage,
+    VurnerableBabiesPage
   ],
   providers: [
     StatusBar,

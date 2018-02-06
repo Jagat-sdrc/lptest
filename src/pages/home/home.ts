@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, MenuController } from 'ionic-angular';
+import { AddNewPatientPage } from '../add-new-patient/add-new-patient';
+import { RegisteredPatientPage } from '../registered-patient/registered-patient';
+import { SinglePatientSummaryPage } from '../single-patient-summary/single-patient-summary';
+import { VurnerableBabiesPage } from '../vurnerable-babies/vurnerable-babies';
 
 @Component({
   selector: 'page-home',
@@ -7,11 +11,19 @@ import { NavController, MenuController } from 'ionic-angular';
 })
 export class HomePage {
 
+  addNewPatientPage: any;
+  registeredPatientPage : any;
+  singlePatientSummary : any;
+  vurnerableBabies : any;
   constructor(public navCtrl: NavController, public menuCtrl: MenuController) {
-    this.navCtrl.setRoot(HomePage)
-    this.menuCtrl.enable(true);
-    this.menuCtrl.swipeEnable(true);
-    this.menuCtrl.get().enable(true);
+
+  }
+
+  ngOnInit(){
+    this.addNewPatientPage = AddNewPatientPage;
+    this.registeredPatientPage = RegisteredPatientPage;
+    this.singlePatientSummary = SinglePatientSummaryPage;
+    this.vurnerableBabies = VurnerableBabiesPage;
   }
 
 }

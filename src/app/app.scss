@@ -14,3 +14,40 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.smenu-custom {
+    background: #717171;
+    height: 150px;
+    padding-left: 30px; 
+    font-size: 18px;
+    color: white;
+}
+.ess-pointer {
+    cursor: pointer;
+    padding-left: 10px;
+    padding-top: 20px;
+    font-size: 20px;
+}
+.modalDialog{
+    .alert-head{
+        background: #717171 !important;
+    }
+    .alert-message{
+        margin: 2em 0 1em 0;
+        padding-bottom: 0px !important;
+        font-size: 16px;
+    }
+    h5{
+        font-size: 1.5rem;
+        margin-top: -0.4rem;
+        color: black;
+    }
+    h2{
+        font-size: 20px !important;
+        text-align: center;
+    }
+    .alert-button-group{
+       color: black;
+    }
+    
+}

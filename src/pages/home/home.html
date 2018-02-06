@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -7,12 +7,24 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content padding class="main-content">
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <ion-row>
+    <ion-col [navPush]="addNewPatientPage" class="gap">
+      <div class="bg-grey">Add New Patient</div>
+    </ion-col>
+    <ion-col [navPush]="registeredPatientPage" class="gap">
+      <div class="bg-grey">Registered Patient</div>
+    </ion-col>
+  </ion-row>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <ion-row>
+    <ion-col [navPush]="singlePatientSummary" class="gap">
+      <div class="bg-grey">Single Patient Summary</div>
+    </ion-col>
+    <ion-col [navPush]="vurnerableBabies" class="gap">
+      <div class="bg-grey">Vurnerable Babies</div>
+    </ion-col>
+  </ion-row>
+
 </ion-content>
