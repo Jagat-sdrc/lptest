@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the AddNewPatientPage page.
+ * Generated class for the CreateNewAccountPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,16 +10,28 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-add-new-patient',
-  templateUrl: 'add-new-patient.html',
+  selector: 'page-create-new-account',
+  templateUrl: 'create-new-account.html',
 })
-export class AddNewPatientPage {
+export class CreateNewAccountPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AddNewPatientPage');
+  getCountry(){
+    alert("hiiii");
+  }
+
+  getState(){
+
+  }
+
+  getDistrict(){
+
+  }
+
+  getInstitutionName(){
+    
   }
 
 }

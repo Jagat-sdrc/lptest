@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Baby Id {{babyid}}</ion-title>
+    <ion-buttons end>
+      <button class="customHome" ion-button icon-only (click)="goToHome()"><ion-icon name="home"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="main-content">
+
+  <ion-row>
+    <ion-col (click)="goToForm('Patient Profile')" class="gap">
+      <div class="bg-grey">Profile</div>
+    </ion-col>
+    <ion-col (click)="goToForm('Exp/BF')" class="gap">
+      <div class="bg-grey">Exp / BF</div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col (click)="goToForm('BFSP')" class="gap">
+      <div class="bg-grey">BFSP</div>
+    </ion-col>
+    <ion-col (click)="goToForm('Feed')" class="gap">
+      <div class="bg-grey">Feed</div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col (click)="goToExpressionForm('BF-Post Discharge')" class="gap">
+      <div class="bg-grey">BF-Post Discharge</div>
+    </ion-col>
+    <ion-col [navPush]="vurnerableBabies" class="gap">
+      <div class="bg-grey">Single Patient Summary</div>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

@@ -4,26 +4,31 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
-import { AddNewPatientPage } from '../pages/add-new-patient/add-new-patient';
 import { RegisteredPatientPage } from '../pages/registered-patient/registered-patient';
 import { SinglePatientSummaryPage } from '../pages/single-patient-summary/single-patient-summary';
 import { VurnerableBabiesPage } from '../pages/vurnerable-babies/vurnerable-babies';
+import { BabyDashboardPage } from '../pages/baby-dashboard/baby-dashboard';
+import { ExpressoinFormPage } from '../pages/expressoin-form/expressoin-form';
+import { AddPatientPage } from '../pages/add-patient/add-patient';
+import { CreateNewAccountPage } from '../pages/create-new-account/create-new-account';
+import { DatePicker } from '@ionic-native/date-picker';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     HomePage,
-    ListPage,
-    AddNewPatientPage,
+    AddPatientPage,
     RegisteredPatientPage,
     SinglePatientSummaryPage,
-    VurnerableBabiesPage
+    VurnerableBabiesPage,
+    BabyDashboardPage,
+    ExpressoinFormPage,
+    CreateNewAccountPage
   ],
   imports: [
     BrowserModule,
@@ -34,15 +39,18 @@ import { VurnerableBabiesPage } from '../pages/vurnerable-babies/vurnerable-babi
     MyApp,
     LoginPage,
     HomePage,
-    ListPage,
-    AddNewPatientPage,
+    AddPatientPage,
     RegisteredPatientPage,
     SinglePatientSummaryPage,
-    VurnerableBabiesPage
+    VurnerableBabiesPage,
+    BabyDashboardPage,
+    ExpressoinFormPage,
+    CreateNewAccountPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    DatePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

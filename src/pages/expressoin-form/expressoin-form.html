@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Baby Id {{babyid}} / {{form}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card class="card-outside" *ngFor="let item of items">
+    <ion-row class="card-inside">
+      <ion-col md-2 >
+        <div class="form-group">Sl No: {{item.slno}}</div>
+      </ion-col>
+      <ion-col md-5 text-center>
+        <div class="form-group">{{item.date}}</div>
+      </ion-col>
+      <ion-col md-4 text-right>
+        <div class="form-group">{{item.time}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-fab class="fab-padding" right bottom>
+    <button ion-fab color="primary"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

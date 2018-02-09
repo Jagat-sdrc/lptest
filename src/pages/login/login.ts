@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
+import { CreateNewAccountPage } from '../create-new-account/create-new-account';
 
 
 @IonicPage()
@@ -22,7 +23,7 @@ export class LoginPage {
   }
 
   signUp(){
-
+    this.navCtrl.push(CreateNewAccountPage);
   }
   
   ionViewDidLoad() {

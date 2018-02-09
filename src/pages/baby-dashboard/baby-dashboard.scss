@@ -1,0 +1,26 @@
+page-baby-dashboard {
+    .bg-grey {
+        background-color: #717171;
+        height: 150px;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+      }  
+      .gap {
+        margin-top: 10px;
+        padding: 10px;
+        max-width: 50%;
+      }
+      .main-content {
+        margin-top: 10px;
+      }
+      .customHome{
+        margin-right: 12px;
+        zoom: 1.2;
+      }
+}

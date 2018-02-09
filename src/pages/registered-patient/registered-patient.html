@@ -1,13 +1,38 @@
-
 <ion-header>
 
   <ion-navbar color="primary">
     <ion-title>Registered Patient</ion-title>
+    <ion-buttons start>
+      <button class="customOptions" ion-button icon-only (click)="refresh()"><ion-icon name="refresh"></ion-icon></button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button class="customOptions" ion-button icon-only (click)="sorting()"><ion-icon name="options"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-card class="card-outside" *ngFor="let item of items" (click)="goToBabyDashBoard(item.id)">
+    <ion-row class="card-inside">
+      <ion-col md-6>
+        <div class="form-group">Baby Id {{item.id}}</div>
+        <div>{{item.slno}}</div>
+      </ion-col>
+      <ion-col md-6 text-right>
+        <div class="form-group">{{item.date}}</div>
+        <div>{{item.time}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-fab class="fab-padding" right bottom>
+    <button ion-fab color="primary" (click)="goToAddNewPatient()"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
 
 </ion-content>

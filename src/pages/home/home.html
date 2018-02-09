@@ -10,7 +10,7 @@
 <ion-content padding class="main-content">
 
   <ion-row>
-    <ion-col [navPush]="addNewPatientPage" class="gap">
+    <ion-col (click)="goToAddNewPatient()" class="gap">
       <div class="bg-grey">Add New Patient</div>
     </ion-col>
     <ion-col [navPush]="registeredPatientPage" class="gap">

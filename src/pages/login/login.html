@@ -9,18 +9,17 @@
 
 <ion-content padding class="Login">
 
-  <ion-list class="list-form">
-  	
-  	<ion-item class="username-item">
-	    <ion-input class="username-input" type="text" placeholder="Username"></ion-input>
-  	</ion-item>
-  	<ion-item class="username-item">
-	    <ion-input class="username-input" type="password" placeholder="Password"></ion-input>
-  	</ion-item>
+  <ion-item>
+    <ion-label floating>Username</ion-label>
+    <ion-input type="text" value=""></ion-input>
+  </ion-item>
 
-  </ion-list>
+  <ion-item>
+    <ion-label floating>Password</ion-label>
+    <ion-input type="password"></ion-input>
+  </ion-item>
 
-  <button class="login-button" ion-button  block  (click)="login()">Login</button>
+  <button class="login-button" ion-button block (click)="login()">Login</button>
 
   <!-- <div text-center class="text-link-forgotPassword" (click)="forgotPassword()">Forgot Password ?</div> -->
   <div text-center class="text-link-CreatNewAcc" (click)="signUp()">Create New Account</div>

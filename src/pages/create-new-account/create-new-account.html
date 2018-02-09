@@ -1,0 +1,82 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Create New Account</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="form-style">
+  <ion-item>
+    <ion-label stacked>First Name</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Last Name</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Email</ion-label>
+    <ion-input type="email"></ion-input>
+  </ion-item>
+
+  <ion-list padding-top>
+    <ion-item>
+      <ion-label>Country</ion-label>
+      <ion-select [(ngModel)]="country">
+        <ion-option value="nes">India</ion-option>
+        <ion-option value="n64">USA</ion-option>
+        <ion-option value="ps">UK</ion-option>
+        <ion-option value="genesis">Canara</ion-option>
+        <ion-option value="saturn">Japan</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>State</ion-label>
+      <ion-select [(ngModel)]="state">
+        <ion-option value="nes">India</ion-option>
+        <ion-option value="n64">USA</ion-option>
+        <ion-option value="ps">UK</ion-option>
+        <ion-option value="genesis">Canara</ion-option>
+        <ion-option value="saturn">Japan</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>District</ion-label>
+      <ion-select [(ngModel)]="district">
+        <ion-option value="nes">India</ion-option>
+        <ion-option value="n64">USA</ion-option>
+        <ion-option value="ps">UK</ion-option>
+        <ion-option value="genesis">Canara</ion-option>
+        <ion-option value="saturn">Japan</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Institution Name</ion-label>
+      <ion-select [(ngModel)]="institution">
+        <ion-option value="nes">India</ion-option>
+        <ion-option value="n64">USA</ion-option>
+        <ion-option value="ps">UK</ion-option>
+        <ion-option value="genesis">Canara</ion-option>
+        <ion-option value="saturn">Japan</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <div class="submit-button" text-center>
+    <button ion-button block (click)="submit()">Submit</button>
+  </div>
+
+</ion-content>
