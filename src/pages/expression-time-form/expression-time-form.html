@@ -1,0 +1,79 @@
+<!--
+  Generated template for the ExpressionTimeFormPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Baby Id {{babyid}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="lable-border">{{date}}</div>
+  <ion-list>
+    <ion-item *ngFor="let item of items; let i=index" text-wrap>
+      <span (click)="toggleGroup(i)" class="acordion-title" [ngClass]="{active: isGroupShown(i)}">
+        <span>
+          {{item.time}}
+          <ion-icon color="success" style="float:right" [name]="isGroupShown(i) ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
+        </span>
+      </span>
+      <div *ngIf="isGroupShown(i)" (click)="stopPropagation($event)">
+        <ion-item>
+          <ion-label floating>Method of expression</ion-label>
+          <ion-select [(ngModel)]="delivery_method">
+            <ion-option value="nes">Vaginal</ion-option>
+            <ion-option value="n64">C-section</ion-option>
+            <ion-option value="ps">Other</ion-option>
+            <ion-option value="genesis">Unknown</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Location where expression</ion-label>
+          <ion-select>
+            <ion-option value="">Home</ion-option>
+            <ion-option value="">Meternity ward</ion-option>
+            <ion-option value="">File Size</ion-option>
+            <ion-option value="">During skin to</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Volume of milk expressed from left</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Volume of milk expressed from right</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Time of expression</ion-label>
+            <ion-input type="text"></ion-input>
+          </ion-item>  
+          <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <button ion-button block>Edit</button>
+                </ion-col>
+                <ion-col>
+                    <button ion-button block>Save</button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>        
+      </div>
+    </ion-item>
+  </ion-list>
+  <!-- <ion-fab class="fab-padding" right bottom>
+    <button ion-fab color="primary">
+      <ion-icon name="md-add"></ion-icon>
+    </button>
+  </ion-fab> -->
+  
+</ion-content>
+<ion-footer>
+    <button class="login-button" ion-button block>Add form for new time</button>
+</ion-footer>

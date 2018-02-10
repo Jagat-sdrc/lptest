@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { ExpressionTimeFormPage } from '../expression-time-form/expression-time-form';
 /**
  * Generated class for the ExpressoinFormPage page.
  *
@@ -32,6 +32,12 @@ export class ExpressoinFormPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ExpressoinFormPage');
+  }
+  goToBabyExBfTimeView(babyId: any,date:any){
+    this.navCtrl.push(ExpressionTimeFormPage,{
+      param: babyId,
+      date:date
+    });
   }
 
 }

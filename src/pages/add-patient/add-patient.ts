@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DatePicker } from '@ionic-native/date-picker';
+
 
 /**
  * Generated class for the AddPatientPage page.
@@ -20,7 +20,7 @@ export class AddPatientPage {
 
   headerTitle: any;
   today;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.headerTitle = this.navParams.get("param");
   }
 
