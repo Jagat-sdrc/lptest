@@ -8,93 +8,138 @@
 
   <ion-navbar hideBackButton color="primary">
     <ion-buttons left>
-        <button ion-button (click)="customBackBUtton()">
-            <ion-icon class="customIcon" name="arrow-back"></ion-icon>
-        </button>
+      <button ion-button (click)="customBackBUtton()">
+        <ion-icon class="customIcon" name="arrow-back"></ion-icon>
+      </button>
     </ion-buttons>
     <ion-title>{{headerTitle}}</ion-title>
- </ion-navbar>
+  </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label stacked>Baby ID</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Hospital Baby ID</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Mother's Name</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Mother's Age</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Delivery date</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Delivery time</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-list text-wrap>
-    <ion-item>
-      <ion-label floating>Delivery Method</ion-label>
-      <ion-select [(ngModel)]="delivery_method">
-        <ion-option value="nes">Vaginal</ion-option>
-        <ion-option value="n64">C-section</ion-option>
-        <ion-option value="ps">Other</ion-option>
-        <ion-option value="genesis">Unknown</ion-option>
-      </ion-select>
+  <form [formGroup]="patientForm" novalidate>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Baby ID</ion-label>
+      <ion-input type="text" formControlName="baby_id"></ion-input>
     </ion-item>
-  </ion-list>
-  <ion-item>
-    <ion-label stacked>Baby's weight in grams</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Gestational age in weeks</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <ion-list text-wrap>
-    <ion-item>
-      <ion-label floating>Mother's prenatal intent to provide milk</ion-label>
-      <ion-select [(ngModel)]="intent_provide_milk">
-        <ion-option value="Yes">Full</ion-option>
-        <ion-option value="n64">No</ion-option>
-        <ion-option value="nes">Unknown</ion-option>
-      </ion-select>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Hospital Baby ID</ion-label>
+      <ion-input type="text" formControlName="hospital_baby_id"></ion-input>
     </ion-item>
-  </ion-list>
-  <ion-list text-wrap>
-    <ion-item>
-      <ion-label floating>Parent's knowledge on HM and lactation</ion-label>
-      <ion-select [(ngModel)]="HM_lactation">
-        <ion-option value="nes">Full</ion-option>
-        <ion-option value="n64">Partial</ion-option>
-        <ion-option value="nes">None</ion-option>
-        <ion-option value="n64">Not assessed</ion-option>
-      </ion-select>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Mother's Name</ion-label>
+      <ion-input type="text" formControlName="mother_name"></ion-input>
     </ion-item>
-  </ion-list>
-  <ion-item>
-    <ion-label stacked>Time till first expression in hours</ion-label>
-    <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="today"></ion-datetime>
-    <!-- <ion-input disabled (click)="datepicker()"></ion-input> -->
-  </ion-item>
-  <ion-list>
-    <ion-item text-wrap>
-      <ion-label floating>Inpatient/Outpatient</ion-label>
-      <ion-select [(ngModel)]="Inpatient_Outpatient">
-        <ion-option value="nes">Inpatient</ion-option>
-        <ion-option value="n64">Outpatient</ion-option>
-      </ion-select>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Mother's Age</ion-label>
+      <ion-input type="text" formControlName="mother_age"></ion-input>
     </ion-item>
-  </ion-list>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Delivery date</ion-label>
+      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="delivery_date"></ion-datetime>
+    </ion-item>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Delivery time</ion-label>
+      <ion-datetime displayFormat="HH:mm" formControlName="delivery_time"></ion-datetime>
+    </ion-item>
+    <ion-list text-wrap>
+      <ion-item class="form-group">
+        <ion-label color="black" floating>Delivery Method</ion-label>
+        <ion-select formControlName="delivery_method">
+          <ion-option value="nes">Vaginal</ion-option>
+          <ion-option value="n64">C-section</ion-option>
+          <ion-option value="ps">Other</ion-option>
+          <ion-option value="genesis">Unknown</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Baby's weight in grams</ion-label>
+      <ion-input type="text" formControlName="baby_weight"></ion-input>
+    </ion-item>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Gestational age in weeks</ion-label>
+      <ion-input type="text" formControlName="gestational_age"></ion-input>
+    </ion-item>
+    <ion-list text-wrap>
+      <ion-item class="form-group">
+        <ion-label color="black" floating>Mother's prenatal intent to provide milk</ion-label>
+        <ion-select formControlName="intent_provide_milk">
+          <ion-option value="Yes">Full</ion-option>
+          <ion-option value="n64">No</ion-option>
+          <ion-option value="nes">Unknown</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-list text-wrap>
+      <ion-item class="form-group">
+        <ion-label color="black" floating>Parent's knowledge on HM and lactation</ion-label>
+        <ion-select formControlName="hm_lactation">
+          <ion-option value="nes">Full</ion-option>
+          <ion-option value="n64">Partial</ion-option>
+          <ion-option value="nes">None</ion-option>
+          <ion-option value="n64">Not assessed</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Time till first expression in hours</ion-label>
+      <ion-datetime displayFormat="HH" formControlName="first_exp_time"></ion-datetime>
+    </ion-item>
+    <ion-list>
+      <ion-item class="form-group" text-wrap>
+        <ion-label color="black" floating>Inpatient/Outpatient</ion-label>
+        <ion-select formControlName="inpatient_outpatient">
+          <ion-option value="nes">Inpatient</ion-option>
+          <ion-option value="n64">Outpatient</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-item class="form-group">
+      <ion-label color="black" floating>Admission date (Outborn patients)</ion-label>
+      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="admission_date"></ion-datetime>
+    </ion-item>
+    <ion-list text-wrap>
+      <ion-item class="form-group">
+        <ion-label color="black" floating>Baby is admitted to</ion-label>
+        <ion-select formControlName="baby_admitted">
+          <ion-option value="nes">Isolation unit</ion-option>
+          <ion-option value="n64">SNCU</ion-option>
+          <ion-option value="nes">Step-down unit</ion-option>
+          <ion-option value="n64">KMC unit</ion-option>
+          <ion-option value="n64">Maternity ward</ion-option>
+          <ion-option value="n64">Home</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-list text-wrap>
+      <ion-item class="form-group">
+        <ion-label color="black" floating>Reason for NICU admission</ion-label>
+        <ion-select formControlName="nicu_admission">
+          <ion-option value="nes">Healthy</ion-option>
+          <ion-option value="n64">Low birth weight</ion-option>
+          <ion-option value="nes">Weight loss</ion-option>
+          <ion-option value="n64">Infection</ion-option>
+          <ion-option value="n64">Respiratory distress</ion-option>
+          <ion-option value="n64">Had/needs surgery</ion-option>
+          <ion-option value="n64">Thermoregulation</ion-option>
+          <ion-option value="n64">Jaundice</ion-option>
+          <ion-option value="n64">Other</ion-option>
+          <ion-option value="n64">Not specified</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </form>
+
+  <ion-row padding-top>
+    <ion-col col-6 padding-right>
+        <button class="login-button" ion-button block (click)="reset()">Reset</button>
+    </ion-col>
+    <ion-col col-6 padding-left>
+        <button class="login-button" ion-button block (click)="submit()">Submit</button>
+    </ion-col>
+  </ion-row>
+  
 </ion-content>

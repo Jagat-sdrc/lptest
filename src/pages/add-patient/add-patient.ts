@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms/src/model';
 
 /**
  * Generated class for the AddPatientPage page.
@@ -17,11 +19,15 @@ import { DatePicker } from '@ionic-native/date-picker';
 export class AddPatientPage {
 
 
-
+  patientForm: FormGroup;
   headerTitle: any;
-  today;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker) {
+  first_exp_time;
+  delivery_date;
+  delivery_time;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker,
+    private formBuilder: FormBuilder) {
     this.headerTitle = this.navParams.get("param");
+    this.createForm();
   }
 
   ionViewDidLoad() {
@@ -32,18 +38,30 @@ export class AddPatientPage {
     this.navCtrl.pop();
   }
   ngOnIniti(){
-    this.today = new Date().toISOString();
+    this.first_exp_time = new Date().toISOString();
+    this.delivery_date = new Date().toISOString();
+    this.delivery_time = new Date().toISOString();
   }
 
-  // datepicker(){
-  //   this.datePicker.show({
-  //     date: new Date(),
-  //     mode: 'date',
-  //     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-  //   }).then(
-  //     date => console.log('Got date: ', date),
-  //     err => console.log('Error occurred while getting date: ', err)
-  //   );
-  // }
+  createForm(){
+    this.patientForm = this.formBuilder.group({
+      baby_id: ['', [Validators.required,Validators.minLength(6)]],
+      hospital_baby_id: ['', [Validators.required,Validators.minLength(6)]],
+      mother_name: ['', [Validators.required,Validators.pattern('/^[a-zA-Z\s]*$/')]],
+      mother_age: ['', [Validators.required,Validators.minLength(2)]],
+      delivery_date: ['', [Validators.required]],
+      delivery_time: ['', [Validators.required]],
+      delivery_method: ['', [Validators.required]],
+      baby_weight: ['', [Validators.required,Validators.minLength(2)]],
+      gestational_age: ['', [Validators.required]],
+      intent_provide_milk: ['', [Validators.required]],
+      hm_lactation: ['', [Validators.required]],
+      first_exp_time: ['', [Validators.required]],
+      inpatient_outpatient: ['', [Validators.required]],
+      admission_date: ['', [Validators.required]],
+      baby_admitted: ['', [Validators.required]],
+      nicu_admission: ['', [Validators.required]],
+    });
+  }
 
 }
