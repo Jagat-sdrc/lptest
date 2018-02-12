@@ -26,6 +26,7 @@ import { FeedExpressionServiceProvider } from '../providers/feed-expression-serv
 import { ConstantProvider } from '../providers/constant/constant';
 import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
+import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { MessageProvider } from '../providers/message/message';
     UserServiceProvider,
     FeedExpressionServiceProvider,
     ConstantProvider,
-    MessageProvider
+    MessageProvider,
+    AddNewPatientServiceProvider,
   ]
 })
 export class AppModule {}
