@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
+
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -17,6 +19,7 @@ import { AddPatientPage } from '../pages/add-patient/add-patient';
 import { CreateNewAccountPage } from '../pages/create-new-account/create-new-account';
 import { DatePicker } from '@ionic-native/date-picker';
 import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression-time-form';
+import { AddNewPatientProvider } from '../providers/add-new-patient/add-new-patient';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,10 @@ import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression
   ],
   imports: [
     BrowserModule,
+    IonicStorageModule.forRoot({
+      name: '_mydb',
+         driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
@@ -55,7 +62,8 @@ import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression
     StatusBar,
     SplashScreen,
     DatePicker,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AddNewPatientProvider
   ]
 })
 export class AppModule {}
