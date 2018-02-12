@@ -27,6 +27,8 @@ import { ConstantProvider } from '../providers/constant/constant';
 import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
 import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
+import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-new-form';
+
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { AddNewPatientServiceProvider } from '../providers/add-new-patient-servi
     ExpressoinFormPage,
     CreateNewAccountPage,
     ExpressionTimeFormPage,
-    FeedPage
+    FeedPage,
+    ExpressionNewFormPage
     
   ],
   imports: [
@@ -68,7 +71,8 @@ import { AddNewPatientServiceProvider } from '../providers/add-new-patient-servi
     ExpressoinFormPage,
     CreateNewAccountPage,
     ExpressionTimeFormPage,
-    FeedPage
+    FeedPage,
+    ExpressionNewFormPage
   ],
   providers: [
     StatusBar,
