@@ -3,7 +3,32 @@
         {
             "id": 1,
             "name": "feeding methods" 
+        },
+        {
+            "id": 2,
+            "name": "mother's prenatal milk" 
+        },
+        {
+            "id": 3,
+            "name": "hm and lactation" 
+        },
+        {
+            "id": 4,
+            "name": "inpatient or outpatient" 
+        },
+        {
+            "id": 5,
+            "name": "baby admitted to" 
+        },
+        {
+            "id": 6,
+            "name": "reason for NICU admission" 
+        },
+        {
+            "id": 7,
+            "name": "delivery method" 
         }
+
     ],
     "typeDetails": [
         {
@@ -35,6 +60,151 @@
             "id": 6,
             "name": "Breastfeed (no volume input required)",
             "typeId": 1
-        }        
+        },
+        {
+            "id": 7,
+            "name": "Yes",
+            "typeId": 2
+        },
+        {
+            "id": 8,
+            "name": "No",
+            "typeId": 2
+        },
+        {
+            "id": 9,
+            "name": "Unknown",
+            "typeId": 2
+        },
+        {
+            "id": 10,
+            "name": "Full",
+            "typeId": 3
+        },
+        {
+            "id": 11,
+            "name": "Partial",
+            "typeId": 3
+        },
+        {
+            "id": 12,
+            "name": "None",
+            "typeId": 3
+        },
+        {
+            "id": 13,
+            "name": "Not assessed",
+            "typeId": 3
+        },
+        {
+            "id": 14,
+            "name": "Inpatient",
+            "typeId": 4
+        },
+        {
+            "id": 15,
+            "name": "Outpatient",
+            "typeId": 4
+        },  
+        {
+            "id": 16,
+            "name": "Isolation unit",
+            "typeId": 5
+        }, 
+        {
+            "id": 17,
+            "name": "SNCU",
+            "typeId": 5
+        },      
+        {
+            "id": 18,
+            "name": "Step-down unit",
+            "typeId": 5
+        },     
+        {
+            "id": 19,
+            "name": "KMC unit",
+            "typeId": 5
+        }, 
+        {
+            "id": 20,
+            "name": "Maternity ward",
+            "typeId": 5
+        },       
+        {
+            "id": 21,
+            "name": "Home",
+            "typeId": 5
+        },
+        {
+            "id": 22,
+            "name": "Healthy",
+            "typeId": 6
+        },
+        {
+            "id": 23,
+            "name": "Low birth weight",
+            "typeId": 6
+        },
+        {
+            "id": 24,
+            "name": "Weight loss",
+            "typeId": 6
+        },
+        {
+            "id": 25,
+            "name": "Infection",
+            "typeId": 6
+        },
+        {
+            "id": 26,
+            "name": "Respiratory distress",
+            "typeId": 6
+        },
+        {
+            "id": 27,
+            "name": "Had/ needs surgery",
+            "typeId": 6
+        },
+        {
+            "id": 28,
+            "name": "Thermoregulation",
+            "typeId": 6
+        },
+        {
+            "id": 29,
+            "name": "Jaundice",
+            "typeId": 6
+        },
+        {
+            "id": 30,
+            "name": "Other",
+            "typeId": 6
+        },
+        {
+            "id": 31,
+            "name": "Not specified",
+            "typeId": 6
+        },
+        {
+            "id": 32,
+            "name": "Vaginal",
+            "typeId": 7
+        },
+        {
+            "id": 33,
+            "name": "C-section",
+            "typeId": 7
+        },  
+        {
+            "id": 34,
+            "name": "Other",
+            "typeId": 7
+        },  
+        {
+            "id": 35,
+            "name": "Unknown",
+            "typeId": 7
+        }
     ]
 }

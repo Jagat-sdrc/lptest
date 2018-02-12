@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DatePicker } from '@ionic-native/date-picker';
-import { FormControl, FormGroup, Validators,ValidatorFn,AbstractControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
+import { MessageProvider } from '../../providers/message/message';
+import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 
 /**
  * Generated class for the AddPatientPage page.
@@ -24,23 +25,41 @@ export class AddPatientPage implements OnInit{
   first_exp_time;
   delivery_date;
   delivery_time;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker) {
-    this.headerTitle = this.navParams.get("param");
-  }
+  deliveryMethods: ITypeDetails[];
+  motherPrenatalMilk: ITypeDetails[];
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AddPatientPage');
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private addNewPatientService: AddNewPatientServiceProvider,
+    private messageService: MessageProvider) {
+    this.headerTitle = this.navParams.get("param");
   }
 
   customBackBUtton(){
     this.navCtrl.pop();
   }
-  ngOnIniti(){
+
+  ngOnInit() {
+
     this.first_exp_time = new Date().toISOString();
     this.delivery_date = new Date().toISOString();
     this.delivery_time = new Date().toISOString();
-  }
-  ngOnInit() {
+
+    //Getting delivery methods type details
+    this.addNewPatientService.getDeliveryMethod()
+    .subscribe(data =>{
+      this.deliveryMethods = data
+    }, err => {
+      this.messageService.showErrorToast(err)
+    });
+
+    //Getting mother's prenatal milk type details
+    this.addNewPatientService.getMotherParenatalMilk()
+    .subscribe(data =>{
+      this.motherPrenatalMilk = data
+    }, err => {
+      this.messageService.showErrorToast(err)
+    });
+
     //console.log(this.patientForm.invalid);
     this.patientForm = new FormGroup({
       baby_id: new FormControl('', [Validators.required,Validators.minLength(4)]),

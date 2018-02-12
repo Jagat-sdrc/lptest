@@ -26,7 +26,9 @@ import { FeedExpressionServiceProvider } from '../providers/feed-expression-serv
 import { ConstantProvider } from '../providers/constant/constant';
 import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
+import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
 import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-new-form';
+
 
 @NgModule({
   declarations: [
@@ -81,7 +83,8 @@ import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-n
     UserServiceProvider,
     FeedExpressionServiceProvider,
     ConstantProvider,
-    MessageProvider
+    MessageProvider,
+    AddNewPatientServiceProvider,
   ]
 })
 export class AppModule {}
