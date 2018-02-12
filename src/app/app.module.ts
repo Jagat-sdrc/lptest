@@ -1,3 +1,4 @@
+import { FeedPage } from './../pages/feed/feed';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -17,6 +18,13 @@ import { AddPatientPage } from '../pages/add-patient/add-patient';
 import { CreateNewAccountPage } from '../pages/create-new-account/create-new-account';
 import { DatePicker } from '@ionic-native/date-picker';
 import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression-time-form';
+import { IonicStorageModule } from '@ionic/storage';
+import { PatientServiceProvider } from '../providers/patient-service/patient-service';
+import { UserServiceProvider } from '../providers/user-service/user-service';
+import { FeedExpressionServiceProvider } from '../providers/feed-expression-service/feed-expression-service';
+import { ConstantProvider } from '../providers/constant/constant';
+import { HttpClientModule } from '@angular/common/http';
+import { MessageProvider } from '../providers/message/message';
 
 @NgModule({
   declarations: [
@@ -30,12 +38,16 @@ import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression
     BabyDashboardPage,
     ExpressoinFormPage,
     CreateNewAccountPage,
-    ExpressionTimeFormPage
+    ExpressionTimeFormPage,
+    FeedPage
     
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
+    HttpClientModule
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -49,13 +61,19 @@ import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression
     BabyDashboardPage,
     ExpressoinFormPage,
     CreateNewAccountPage,
-    ExpressionTimeFormPage
+    ExpressionTimeFormPage,
+    FeedPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     DatePicker,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    PatientServiceProvider,
+    UserServiceProvider,
+    FeedExpressionServiceProvider,
+    ConstantProvider,
+    MessageProvider
   ]
 })
 export class AppModule {}

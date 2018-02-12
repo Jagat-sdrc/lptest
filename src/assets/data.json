@@ -1,0 +1,40 @@
+{
+    "type": [
+        {
+            "id": 1,
+            "name": "feeding methods" 
+        }
+    ],
+    "typeDetails": [
+        {
+            "id": 1,
+            "name": "Parenteral (no volume data required)",
+            "typeId": 1
+        },
+        {
+            "id": 2,
+            "name": "Parenteral + Enteral (enteral volume entered)",
+            "typeId": 1
+        },
+        {
+            "id": 3,
+            "name": "Enteral only",
+            "typeId": 1
+        },
+        {
+            "id": 4,
+            "name": "Enteral + Oral",
+            "typeId": 1
+        },
+        {
+            "id": 5,
+            "name": "Oral (cup/spoon/bottle/ other)",
+            "typeId": 1
+        },
+        {
+            "id": 6,
+            "name": "Breastfeed (no volume input required)",
+            "typeId": 1
+        }        
+    ]
+}

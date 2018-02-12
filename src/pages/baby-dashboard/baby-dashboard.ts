@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ExpressoinFormPage } from '../expressoin-form/expressoin-form';
 import { HomePage } from '../home/home';
 import { AddPatientPage } from '../add-patient/add-patient';
+import { FeedPage } from '../feed/feed';
 
 /**
  * Generated class for the BabyDashboardPage page.
@@ -19,8 +20,13 @@ import { AddPatientPage } from '../add-patient/add-patient';
 export class BabyDashboardPage {
 
   babyid: any;
+  feedPage;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.babyid = navParams.get("param");
+  }
+
+  ngOnInit(){
+    this.feedPage = FeedPage
   }
 
   ionViewDidLoad() {
@@ -44,12 +50,6 @@ export class BabyDashboardPage {
         this.navCtrl.push(ExpressoinFormPage,{
           param1: this.babyid,
           param2: "BFSP"
-        });
-        break;
-        case "Feed":
-        this.navCtrl.push(ExpressoinFormPage,{
-          param1: this.babyid,
-          param2: "Feed"
         });
         break;
         case "BF-Post Discharge":
