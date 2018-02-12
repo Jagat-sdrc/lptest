@@ -53,10 +53,7 @@
       <ion-item class="form-group">
         <ion-label color="black" floating>Delivery Method</ion-label>
         <ion-select formControlName="delivery_method">
-          <ion-option value="nes">Vaginal</ion-option>
-          <ion-option value="n64">C-section</ion-option>
-          <ion-option value="ps">Other</ion-option>
-          <ion-option value="genesis">Unknown</ion-option>
+          <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
@@ -72,9 +69,7 @@
       <ion-item class="form-group">
         <ion-label color="black" floating>Mother's prenatal intent to provide milk</ion-label>
         <ion-select formControlName="intent_provide_milk">
-          <ion-option value="Yes">Full</ion-option>
-          <ion-option value="n64">No</ion-option>
-          <ion-option value="nes">Unknown</ion-option>
+          <ion-option *ngFor="let item of motherPrenatalMilk" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
