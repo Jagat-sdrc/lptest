@@ -23,7 +23,7 @@
           <ion-icon color="success" style="float:right" [name]="isGroupShown(i) ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
         </span>
       </span>
-      <div *ngIf="isGroupShown(i)" (click)="stopPropagation($event)">
+      <div *ngIf="isGroupShown(i)">
         <ion-item>
           <ion-label floating>Method of expression</ion-label>
           <ion-select [(ngModel)]="delivery_method">
@@ -36,10 +36,12 @@
         <ion-item>
           <ion-label floating>Location where expression</ion-label>
           <ion-select>
-            <ion-option value="">Home</ion-option>
-            <ion-option value="">Meternity ward</ion-option>
-            <ion-option value="">File Size</ion-option>
-            <ion-option value="">During skin to</ion-option>
+            <ion-option value="dsts">During skin to skin</ion-option>
+            <ion-option value="ifbs">Infant bed side (not in KMC)</ion-option>
+            <ion-option value="expression_room">Expression room</ion-option>
+            <ion-option value="meternity">Maternity ward</ion-option>
+            <ion-option value="home">Home</ion-option>
+            <ion-option value="other">Other</ion-option>
           </ion-select>
         </ion-item>
         <ion-item>
@@ -75,5 +77,5 @@
   
 </ion-content>
 <ion-footer>
-    <button class="login-button" ion-button block>Add form for new time</button>
+    <button class="login-button" ion-button block (click)="addExpressionTIme()">Add form for new time</button>
 </ion-footer>
