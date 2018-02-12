@@ -8,7 +8,15 @@ import { ToastController } from 'ionic-angular';
  */
 @Injectable()
 export class MessageProvider {
-
+static messages:any={
+  ENTER_DATE_OF_EXPRESSION:'Please enter date of expression',
+  ENTER_TIME_OF_EXPRESSION:'Please enter time of expression',
+  ENTER_TYPE_OF_EXPRESSION:'Please enter method of expression',
+  ENTER_LOC_OF_EXPRESSION:'Please enter location of expression',
+  ENTER_VOLUME_OF_MILK_FROM_LEFT:'Please enter volume of milk expressed from left',
+  ENTER_VOLUME_OF_MILK_FROM_RIGHT:'Please enter volume of milk expressed from right',
+  ENTER_VALID_VOLUME_OF_MILK:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)'
+}
   constructor(private toastCtrl: ToastController) {}
 
   /**
