@@ -17,6 +17,8 @@ import { AddPatientPage } from '../pages/add-patient/add-patient';
 import { CreateNewAccountPage } from '../pages/create-new-account/create-new-account';
 import { DatePicker } from '@ionic-native/date-picker';
 import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression-time-form';
+import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-new-form';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression
     BabyDashboardPage,
     ExpressoinFormPage,
     CreateNewAccountPage,
-    ExpressionTimeFormPage
+    ExpressionTimeFormPage,
+    ExpressionNewFormPage
+
     
   ],
   imports: [
@@ -49,7 +53,9 @@ import { ExpressionTimeFormPage } from '../pages/expression-time-form/expression
     BabyDashboardPage,
     ExpressoinFormPage,
     CreateNewAccountPage,
-    ExpressionTimeFormPage
+    ExpressionTimeFormPage,
+    ExpressionNewFormPage
+
   ],
   providers: [
     StatusBar,

@@ -1,0 +1,67 @@
+<!--
+  Generated template for the ExpressionNewFormPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Expression Form</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+          <ion-label color="black" floating>Date of Expression</ion-label>
+          <ion-datetime displayFormat="DD-MM-YYYY"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label color="black" floating>Time of expression</ion-label>
+          <ion-datetime displayFormat="HH:mm"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Method of expression</ion-label>
+          <ion-select>
+            <ion-option>Single Pump</ion-option>
+            <ion-option>Double Pump</ion-option>
+            <ion-option>Hand</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Location where expression</ion-label>
+          <ion-select>
+            <ion-option>During skin to skin</ion-option>
+            <ion-option>Infant bed side (not in KMC)</ion-option>
+            <ion-option>Expression room</ion-option>
+            <ion-option>Maternity ward</ion-option>
+            <ion-option>Home</ion-option>
+            <ion-option>other</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Volume of milk expressed from left</ion-label>
+          <ion-input type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Volume of milk expressed from right</ion-label>
+          <ion-input type="number"></ion-input>
+        </ion-item>
+    
+      </ion-list>
+</ion-content>
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+          <ion-col>
+            <button ion-button block>Reset</button>
+          </ion-col>
+          <ion-col>
+            <button ion-button block>Save</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+</ion-footer>
