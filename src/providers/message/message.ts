@@ -11,6 +11,21 @@ export class MessageProvider {
 
   constructor(private toastCtrl: ToastController) {}
 
+
+  /**
+   * This method will be used to show success toast to user
+   * @author Ratikanta
+   * @param message The message we want to show the user
+   * @since 0.0.1
+   */
+  showSuccessToast(message: string){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000      
+    });
+    toast.present();
+  }
+
   /**
    * This method will be used to show error toast to user
    * @author Ratikanta

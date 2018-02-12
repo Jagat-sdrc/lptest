@@ -14,6 +14,10 @@ export class ConstantProvider {
     feedingMethodTypeId: 1
   }
 
+  static dbKeyNames: IDBKeyNames = {
+   feedExpression: "feedExpression"  
+  } 
+
   constructor(public http: HttpClient) {
   }
 
