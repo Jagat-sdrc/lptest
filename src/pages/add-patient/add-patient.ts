@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormControl } from '@angular/forms/src/model';
+import { FormControl, FormGroup, Validators,ValidatorFn,AbstractControl } from '@angular/forms';
+import { OnInit } from '@angular/core';
 
 /**
  * Generated class for the AddPatientPage page.
@@ -16,18 +16,16 @@ import { FormControl } from '@angular/forms/src/model';
   selector: 'page-add-patient',
   templateUrl: 'add-patient.html',
 })
-export class AddPatientPage {
+export class AddPatientPage implements OnInit{
 
 
-  patientForm: FormGroup;
+  public patientForm: FormGroup;
   headerTitle: any;
   first_exp_time;
   delivery_date;
   delivery_time;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker,
-    private formBuilder: FormBuilder) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker) {
     this.headerTitle = this.navParams.get("param");
-    this.createForm();
   }
 
   ionViewDidLoad() {
@@ -42,26 +40,26 @@ export class AddPatientPage {
     this.delivery_date = new Date().toISOString();
     this.delivery_time = new Date().toISOString();
   }
-
-  createForm(){
-    this.patientForm = this.formBuilder.group({
-      baby_id: ['', [Validators.required,Validators.minLength(6)]],
-      hospital_baby_id: ['', [Validators.required,Validators.minLength(6)]],
-      mother_name: ['', [Validators.required,Validators.pattern('/^[a-zA-Z\s]*$/')]],
-      mother_age: ['', [Validators.required,Validators.minLength(2)]],
-      delivery_date: ['', [Validators.required]],
-      delivery_time: ['', [Validators.required]],
-      delivery_method: ['', [Validators.required]],
-      baby_weight: ['', [Validators.required,Validators.minLength(2)]],
-      gestational_age: ['', [Validators.required]],
-      intent_provide_milk: ['', [Validators.required]],
-      hm_lactation: ['', [Validators.required]],
-      first_exp_time: ['', [Validators.required]],
-      inpatient_outpatient: ['', [Validators.required]],
-      admission_date: ['', [Validators.required]],
-      baby_admitted: ['', [Validators.required]],
-      nicu_admission: ['', [Validators.required]],
-    });
-  }
+  ngOnInit() {
+    //console.log(this.patientForm.invalid);
+    this.patientForm = new FormGroup({
+      baby_id: new FormControl('', [Validators.required,Validators.minLength(4)]),
+      hospital_baby_id: new FormControl('', [Validators.required,Validators.minLength(6)]),
+      mother_name: new FormControl('', [Validators.required]),
+      mother_age: new FormControl('', [Validators.required,Validators.minLength(2),Validators.maxLength(2)]),
+      delivery_date: new FormControl('', [Validators.required]),
+      delivery_time: new FormControl('', [Validators.required]),
+      delivery_method: new FormControl('', [Validators.required]),
+      baby_weight: new FormControl('', [Validators.required,Validators.maxLength(2)]),
+      gestational_age: new FormControl('', [Validators.required]),
+      intent_provide_milk: new FormControl('', [Validators.required]),
+      hm_lactation: new FormControl('', [Validators.required]),
+      first_exp_time: new FormControl('', [Validators.required]),
+      inpatient_outpatient: new FormControl('', [Validators.required]),
+      admission_date: new FormControl('', [Validators.required]),
+      baby_admitted: new FormControl('', [Validators.required]),
+      nicu_admission: new FormControl('', [Validators.required]),
+      });
+    }
 
 }

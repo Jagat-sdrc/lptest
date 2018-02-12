@@ -7,8 +7,37 @@
 </ion-header>
 
 
-<ion-content class="form-style">
-  <ion-item>
+<ion-content padding>
+  <form form novalidate (ngSubmit)="onSubmit(user)" [formGroup]="patientForm">
+    <div class="form-group">
+      <ion-item>
+        <ion-label color="black" floating>First Name</ion-label>
+        <ion-input type="text" value="" formControlName="first_name"></ion-input>
+      </ion-item>
+      <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && patientForm.controls.baby_id.dirty">
+        Please enter valid mobile number
+      </ion-item>
+    </div>
+    <div class="form-group">
+        <ion-item>
+          <ion-label color="black" floating>Last Name</ion-label>
+          <ion-input type="text" value="" formControlName="first_name"></ion-input>
+        </ion-item>
+        <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && patientForm.controls.baby_id.dirty">
+          Please enter valid mobile number
+        </ion-item>
+      </div>
+      <div class="form-group">
+          <ion-item>
+            <ion-label color="black" floating>Last Name</ion-label>
+            <ion-input type="email" value="" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && patientForm.controls.baby_id.dirty">
+            Please enter valid mobile number
+          </ion-item>
+        </div>
+  </form>
+  <!-- <ion-item>
     <ion-label stacked>First Name</ion-label>
     <ion-input type="text"></ion-input>
   </ion-item>
@@ -73,7 +102,7 @@
         <ion-option value="saturn">Japan</ion-option>
       </ion-select>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 
   <div class="submit-button" text-center>
     <button ion-button block (click)="submit()">Submit</button>

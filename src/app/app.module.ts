@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
@@ -46,6 +47,10 @@ import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-n
   ],
   imports: [
     BrowserModule,
+    IonicStorageModule.forRoot({
+      name: '_mydb',
+         driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     HttpClientModule
