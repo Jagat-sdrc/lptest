@@ -25,7 +25,7 @@
     <ion-col (click)="goToForm('BFSP')" class="gap">
       <div class="bg-grey">BFSP</div>
     </ion-col>
-    <ion-col (click)="goToForm('Feed')" class="gap">
+    <ion-col [navPush]="feedPage" class="gap">
       <div class="bg-grey">Feed</div>
     </ion-col>
   </ion-row>
