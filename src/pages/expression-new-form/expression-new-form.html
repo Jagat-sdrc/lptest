@@ -17,38 +17,31 @@
     <ion-list>
         <ion-item>
           <ion-label color="black" floating>Date of Expression</ion-label>
-          <ion-datetime displayFormat="DD-MM-YYYY"></ion-datetime>
+          <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="expressionFormObj.date"></ion-datetime>
         </ion-item>
         <ion-item>
           <ion-label color="black" floating>Time of expression</ion-label>
-          <ion-datetime displayFormat="HH:mm"></ion-datetime>
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="expressionFormObj.time"></ion-datetime>
         </ion-item>
         <ion-item>
-          <ion-label floating>Method of expression</ion-label>
-          <ion-select>
-            <ion-option>Single Pump</ion-option>
-            <ion-option>Double Pump</ion-option>
-            <ion-option>Hand</ion-option>
+          <ion-label color="black" floating>Method of expression</ion-label>
+          <ion-select [(ngModel)]="expressionFormObj.expression" (ionChange)="expressionSelected()">
+           <ion-option [value]="d.type" *ngFor="let d of methodOfExpressionList"></ion-option>
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label floating>Location where expression</ion-label>
-          <ion-select>
-            <ion-option>During skin to skin</ion-option>
-            <ion-option>Infant bed side (not in KMC)</ion-option>
-            <ion-option>Expression room</ion-option>
-            <ion-option>Maternity ward</ion-option>
-            <ion-option>Home</ion-option>
-            <ion-option>other</ion-option>
-          </ion-select>
+          <ion-label color="black" floating>Location where expression</ion-label>
+          <ion-select [(ngModel)]="expressionFormObj.location" (ionChange)="locationSelected()">
+              <ion-option [value]="d.type" *ngFor="let d of methodOfLocationList"></ion-option>
+             </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label stacked>Volume of milk expressed from left</ion-label>
-          <ion-input type="number"></ion-input>
+          <ion-label color="black" stacked>Volume of milk expressed from left</ion-label>
+          <ion-input type="number" name="volOfMilkLeft" [(ngModel)]="volOfMilkLeft"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label stacked>Volume of milk expressed from right</ion-label>
-          <ion-input type="number"></ion-input>
+          <ion-label color="black" stacked>Volume of milk expressed from right</ion-label>
+          <ion-input type="number"  name="volOfMilkRight" [(ngModel)]="volOfMilkRight"></ion-input>
         </ion-item>
     
       </ion-list>
@@ -57,10 +50,10 @@
     <ion-grid>
         <ion-row>
           <ion-col>
-            <button ion-button block>Reset</button>
+            <button ion-button block (click)="resetForm()">Reset</button>
           </ion-col>
           <ion-col>
-            <button ion-button block>Save</button>
+            <button ion-button block (click)="saveForm()">Save</button>
           </ion-col>
         </ion-row>
       </ion-grid>
