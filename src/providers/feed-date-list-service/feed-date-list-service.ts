@@ -43,18 +43,6 @@ export class FeedDateListServiceProvider {
             //removing duplicates
             dates = Array.from(new Set(dates))
 
-            let dateArray: Date[] = [];
-
-            dates.forEach(d=>{
-              let day = parseInt(d.split('-')[0]);
-              let month = parseInt(d.split('-')[1]);
-              let year = parseInt(d.split('-')[2]);
-              let individualDate = new Date(year, month, day)
-              dateArray.push(individualDate);
-            })
-
-            
-
             resolve(dates)
           }else{
             dbOperationStatus.isSuccess = false;
