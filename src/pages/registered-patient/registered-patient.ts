@@ -4,6 +4,8 @@ import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import { BabyDashboardPage } from '../baby-dashboard/baby-dashboard';
 import { AddPatientPage } from '../add-patient/add-patient';
+import { Storage } from '@ionic/storage';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
  * Generated class for the RegisteredPatientPage page.
@@ -24,18 +26,16 @@ export class RegisteredPatientPage {
   searchControl: FormControl;
   searching: any = false;
   temp: any;
+  patientList: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,private storage: Storage) {
     this.searchControl = new FormControl();
-    this.items = [
-      {id: '1', slno: 'Sl No: 1', date: '02/06/2018', time: '19:14'},
-      {id: '2', slno: 'Sl No: 2', date: '02/06/2018', time: '19:14'},
-      {id: '3', slno: 'Sl No: 3', date: '02/06/2018', time: '19:14'},
-      {id: '4', slno: 'Sl No: 4', date: '02/06/2018', time: '19:14'},
-      {id: '5', slno: 'Sl No: 5', date: '02/06/2018', time: '19:14'},
-      {id: '6', slno: 'Sl No: 6', date: '02/06/2018', time: '19:14'}    ]
-    this.temp = this.items;
+
+    this.storage.get(ConstantProvider.dbKeyNames.patient).then((val) => {
+      this.patientList = val;
+      console.log(this.patientList);
+    });
   }
 
   ionViewDidLoad() {
@@ -43,6 +43,13 @@ export class RegisteredPatientPage {
     this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
       this.searching = false;
       this.setFilteredItems();
+    });
+  }
+
+  ngOnInit(){
+    this.storage.get(ConstantProvider.dbKeyNames.patient).then((val) => {
+      this.patientList = val;
+      console.log(this.patientList);
     });
   }
 
