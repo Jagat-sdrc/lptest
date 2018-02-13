@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ExpressoinFormPage } from '../expressoin-form/expressoin-form';
 import { HomePage } from '../home/home';
 import { AddPatientPage } from '../add-patient/add-patient';
+import { FeedDateListPage } from '../feed-date-list/feed-date-list';
 import { FeedPage } from '../feed/feed';
 
 /**
@@ -20,13 +21,15 @@ import { FeedPage } from '../feed/feed';
 export class BabyDashboardPage {
 
   babyid: any;
-  feedPage;
+  feedDateListPage;
+  // feedPage;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.babyid = navParams.get("param");
   }
 
   ngOnInit(){
-    this.feedPage = FeedPage
+    this.feedDateListPage = FeedDateListPage
+    // this.feedPage = FeedPage
   }
 
   ionViewDidLoad() {

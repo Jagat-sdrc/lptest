@@ -144,7 +144,7 @@ export class FeedExpressionServiceProvider {
 
     
     for(let i = 0; i < feedExpressions.length;i++){
-      if(feedExpressions[i].babyId === feedExpression.babyId && 
+      if(feedExpressions[i].patientId === feedExpression.patientId && 
         feedExpressions[i].dateOfFeed === feedExpression.dateOfFeed &&
         feedExpressions[i].timeOfFeed === feedExpression.timeOfFeed
       ){
