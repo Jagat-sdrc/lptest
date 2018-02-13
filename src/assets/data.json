@@ -27,6 +27,14 @@
         {
             "id": 7,
             "name": "delivery method" 
+        },
+        {
+            "id":8,
+            "name":"method of expression"
+        },
+        {
+            "id":9,
+            "name":"location of expression"
         }
 
     ],
@@ -205,6 +213,52 @@
             "id": 35,
             "name": "Unknown",
             "typeId": 7
+        },
+        {
+            "id": 36,
+            "name": "Single pump",
+            "typeId": 8
+        },
+        {
+            "id": 37,
+            "name": "Double pump",
+            "typeId": 8
+        },
+        {
+            "id": 38,
+            "name": "Hand",
+            "typeId": 8
+        },
+        {
+            "id": 39,
+            "name": "During skin to skin",
+            "typeId": 9
+        },
+       
+        {
+            "id": 40,
+            "name": "Infant bed side (not in KMC)",
+            "typeId": 9
+        },
+        {
+            "id": 41,
+            "name": "Expression room",
+            "typeId": 9
+        },
+        {
+            "id": 42,
+            "name": "Maternity ward",
+            "typeId": 9
+        },
+        {
+            "id": 43,
+            "name": "Home",
+            "typeId": 9
+        },
+        {
+            "id": 44,
+            "name": "Other",
+            "typeId": 9
         }
     ]
 }

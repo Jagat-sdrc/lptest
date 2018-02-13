@@ -6,7 +6,8 @@ import {
   NavController,
   NavParams
 } from 'ionic-angular';
-
+import { AddNewExpressionBfServiceProvider } from '../../providers/add-new-expression-bf-service/add-new-expression-bf-service';
+import { MessageProvider } from '../../providers/message/message';
 /**
  * Generated class for the ExpressionTimeFormPage page.
  *
@@ -23,11 +24,12 @@ export class ExpressionTimeFormPage {
   timeList: any;
   shownGroup: null;
   methodOfExpObj: any
-  methodOfExpressionList: any;
+  methodOfExpressionBfList: any;
   locationOfexpressionList: any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    private addNewExpressionBfService: AddNewExpressionBfServiceProvider,private messageService: MessageProvider) {
     this.timeList = [{
         time: '19:14',
         type: 'single Pump',
@@ -63,37 +65,23 @@ export class ExpressionTimeFormPage {
         volOfMilkLeft: '20',
         volOfMilkRight: '20'
       }
-    ]
-    this.methodOfExpressionList = [{
-        type: 'Single Pump'
-      },
-      {
-        type: 'Double Pump'
-      },
-      {
-        type: 'Hand'
-      }
-    ]
-    this.locationOfexpressionList = [{
-      locationOfExp: 'During skin to skin'
-      },
-      {
-        locationOfExp: 'Infant bed side (not in KMC)'
-      },
-      {
-        locationOfExp: 'Expression room'
-      },
-      {
-        locationOfExp: 'Maternity ward'
-      },
-      {
-        locationOfExp: 'Home'
-      },
-      {
-        locationOfExp: 'other'
-      }
-    ]
-
+    ]   
+  
+  }
+  ngOnInit(){
+    //Getting delivery methods type details
+    this.addNewExpressionBfService.getMethodOfExpressionBF()
+    .subscribe(data =>{
+      this.methodOfExpressionBfList = data
+    }, err => {
+      this.messageService.showErrorToast(err)
+    });
+    this.addNewExpressionBfService.getLocationOfExpressionBF()
+    .subscribe(data =>{
+      this.locationOfexpressionList = data
+    }, err => {
+      this.messageService.showErrorToast(err)
+    });
   }
 
   ionViewDidLoad() {
@@ -119,15 +107,14 @@ export class ExpressionTimeFormPage {
 
 
   }
-  expressionSelected() {
-  }
-  locationSelected(){
+  expressionSelected() {}
+  locationSelected() {
 
   }
 
-  saveExpressionTIme(item:any) {
-    if(item.type==null){
-   
+  saveExpressionTIme(item: any) {
+    if (item.type == null) {
+
     }
 
 

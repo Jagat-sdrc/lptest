@@ -31,15 +31,15 @@
           </ion-item>
           <ion-item>
             <ion-label floating>Method of expression</ion-label>
-            <ion-select [(ngModel)]="item.type" (ionChange)="expressionSelected()">
-              <ion-option [value]="d.type"  *ngFor="let d of methodOfExpressionList" >{{d.type}}</ion-option>
+            <ion-select  (ionChange)="expressionSelected()">
+              <ion-option [value]="d"  *ngFor="let d of methodOfExpressionBfList" >{{d.name}}</ion-option>
                      
             </ion-select>
           </ion-item>
           <ion-item>
             <ion-label floating>Location where expression</ion-label>
             <ion-select (ionChange)="locationSelected()">
-                <ion-option [value]="d"  *ngFor="let d of locationOfexpressionList" >{{d.locationOfExp}}</ion-option>
+                <ion-option [value]="d"  *ngFor="let d of locationOfexpressionList" >{{d.name}}</ion-option>
             </ion-select>
           </ion-item>
           <ion-item>

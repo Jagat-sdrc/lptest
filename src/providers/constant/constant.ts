@@ -42,7 +42,12 @@ export class ConstantProvider {
   static DeliveryMethodTypeIds: IDeliveryMethods = {
     deliveryMethodTypeId: 7
   }
-  
+  static MethodOfExpressionBfTypeId: IMethodOfExpressionBF = {
+    methodOfExpressionBfTypeId: 8
+  }
+  static LocationOfExpressionBfTypeId: ILocationOfExpressionBF = {
+    locationOfExpressionBfTypeId: 9
+  }
   constructor(public http: HttpClient) {
   }
 

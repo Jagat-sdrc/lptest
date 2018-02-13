@@ -28,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
 import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
 import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-new-form';
+import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 
 
 @NgModule({
@@ -85,6 +86,8 @@ import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-n
     ConstantProvider,
     MessageProvider,
     AddNewPatientServiceProvider,
+    AddNewExpressionBfServiceProvider,
+    AddNewExpressionBfServiceProvider
   ]
 })
 export class AppModule {}
