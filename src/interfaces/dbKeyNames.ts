@@ -4,5 +4,6 @@
  * @since 0.0.1
  */
 interface IDBKeyNames {
-    feedExpression: string
+    feedExpression: string,
+    bfExpression: string,
 }

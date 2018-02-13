@@ -49,7 +49,8 @@ export class ConstantProvider {
   }
 
   static dbKeyNames: IDBKeyNames = {
-    feedExpression: "feedExpression"
+    feedExpression: "feedExpression",
+    bfExpression:"bfExpression"
   }
   
   constructor(public http: HttpClient) {

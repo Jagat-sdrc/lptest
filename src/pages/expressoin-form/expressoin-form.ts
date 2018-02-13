@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ExpressionTimeFormPage } from '../expression-time-form/expression-time-form';
-import { ExpressionNewFormPage } from '../expression-new-form/expression-new-form';
+
+import { MessageProvider } from '../../providers/message/message';
+import {ExpressionBfDateProvider } from '../../providers/expression-bf-date/expression-bf-date'
 /**
  * Generated class for the ExpressoinFormPage page.
  *
@@ -19,7 +21,12 @@ export class ExpressoinFormPage {
   babyid: any;
   form: any;
   items: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  expBfDateListData: string[];
+  patientId:string;
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    private expressionBFdateService: ExpressionBfDateProvider,
+    private messageService: MessageProvider) {
     this.babyid = this.navParams.get("param1");
     this.form = this.navParams.get("param2");
     this.items = [
@@ -41,7 +48,33 @@ export class ExpressoinFormPage {
     });
   }
   addnewExpressionForm(){
-    this.navCtrl.push(ExpressionNewFormPage);
+    var d = new Date();
+    var currentTime = d.getHours() + ":" + d.getMinutes();
+    var objectToPush = {
+    
+      time: currentTime,
+      type: '',
+      locationOfExp: '',
+      volOfMilkLeft: null,
+      volOfMilkRight: null,
+      
+    }
+  
+    this.navCtrl.push(ExpressionTimeFormPage,{
+      expressionBfObject:objectToPush
+    });
+  }
+
+  ngOnInit(){
+    //Getting date list
+    this.expressionBFdateService.getExpressionBFDateListData(this.patientId)
+    .then(data=>{
+      alert('data'+data);
+      this.expBfDateListData = data
+    })
+    .catch(err=>{
+      this.messageService.showErrorToast((err as IDBOperationStatus).message)
+    })
   }
 
 }
