@@ -231,33 +231,33 @@
         },
         {
             "id": 39,
-            "name": "During skin to skin",
+            "name": "Isolation unit",
             "typeId": 9
         },
        
         {
             "id": 40,
-            "name": "Infant bed side (not in KMC)",
+            "name": "SNCU",
             "typeId": 9
         },
         {
             "id": 41,
-            "name": "Expression room",
+            "name": "Step-down unit",
             "typeId": 9
         },
         {
             "id": 42,
-            "name": "Maternity ward",
+            "name": "KMC unit",
             "typeId": 9
         },
         {
             "id": 43,
-            "name": "Home",
+            "name": "Maternity ward",
             "typeId": 9
         },
         {
             "id": 44,
-            "name": "Other",
+            "name": "Home",
             "typeId": 9
         }
     ]

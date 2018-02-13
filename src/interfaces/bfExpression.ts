@@ -4,16 +4,16 @@
  * @since 0.0.1
  */
 
-interface IBF{
-    patientId: string;
+interface IBFExpression{   
+
     babyCode: string;
     userId: string;
     dateOfExpression: string;
     timeOfExpression: string;
     durationOfExpression: number;
-    methodOfExpression: number;
-    locationOfExpression: number;
+    methodOfExpression: string;
+    locationOfExpression: string;
     volOfMilkExpressedFromL: number;
     volOfMilkExpressedFromR: number;
-    babyWeight: number;
+   
 }

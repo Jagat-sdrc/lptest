@@ -19,9 +19,9 @@ export class ExpressionBfDateProvider {
    * @author Subhadarshani
    * @since 0.0.1
    * @returns Promise<string[]> string array of dates
-   * @param patientId the patient id for which we are extracting data
+   * @param babyid the patient id for which we are extracting data
    */
-  getExpressionBFDateListData(patientId: string): Promise<string[]>{
+  getExpressionBFDateListData(babyCode: string): Promise<string[]>{
 
     let promise : Promise<string[]> = new Promise((resolve, reject) => {
 
@@ -34,12 +34,12 @@ export class ExpressionBfDateProvider {
       .then(data=>{
         if(data != null){
 
-          data = (data as IBF[]).filter(d=> d.patientId === patientId)
+          data = (data as IBFExpression[]).filter(d=> d.babyCode === babyCode)
           
           //Checking if there is any data belong to the patient id or not
-          if((data as IBF[]).length > 0){
+          if((data as IBFExpression[]).length > 0){
             let dates:string[] = [];
-            (data as IBF[]).forEach(d => {
+            (data as IBFExpression[]).forEach(d => {
               dates.push(d.dateOfExpression)
             });
             //removing duplicates

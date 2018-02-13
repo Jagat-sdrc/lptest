@@ -12,6 +12,7 @@ import {
 import {
   MessageProvider
 } from '../../providers/message/message';
+import { SaveExpressionBfProvider } from '../../providers/save-expression-bf/save-expression-bf';
 /**
  * Generated class for the ExpressionTimeFormPage page.
  *
@@ -25,74 +26,40 @@ import {
   templateUrl: 'expression-time-form.html',
 })
 export class ExpressionTimeFormPage {
-  timeList: any;
+  expressionBfTimeList: any;
   shownGroup: any;
   methodOfExpObj: any
   methodOfExpressionBfList: any;
   locationOfexpressionList: any;
-
-
+  objectToPush:any
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private addNewExpressionBfService: AddNewExpressionBfServiceProvider, private messageService: MessageProvider) {
-    this.timeList = [{
-
-        time: '19:14',
-        type: 'single Pump',
-        locationOfExp: 'Home',
-        volOfMilkLeft: '20',
-        volOfMilkRight: '20'
-      },
-      {
-
-        time: '20:14',
-        type: 'Double Pump',
-        locationOfExp: 'Home',
-        volOfMilkLeft: '20',
-        volOfMilkRight: '20'
-      },
-      {
-
-        time: '21:14',
-        type: 'Hand',
-        locationOfExp: 'Home',
-        volOfMilkLeft: '20',
-        volOfMilkRight: '20'
-      },
-      {
-
-        time: '22:14',
-        type: 'Single Pump',
-        locationOfExp: 'Home',
-        volOfMilkLeft: '20',
-        volOfMilkRight: '20'
-      },
-      {
-
-        time: '23:14',
-        type: 'Double Pump',
-        locationOfExp: 'Home',
-        volOfMilkLeft: '20',
-        volOfMilkRight: '20'
-      }
-    ]
-
-    //getting whether there is a new record
-
-
+    private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
+    private messageService: MessageProvider,
+  private saveBfExpressionnService:SaveExpressionBfProvider) {
+    this.expressionBfTimeList = [];
   }
   //getting whether there is a new record and add to the exting time list from database
   getNewRecord() {
     if (this.navParams.get("expressionBfObject") != null) {
-      this.timeList.unshift(this.navParams.get("expressionBfObject"));
-      //this.toggleGroup(this.navParams.get("expressionBfObject"));
+      this.expressionBfTimeList.push(this.navParams.get("expressionBfObject"));
       setTimeout(() => {
-        this.toggleGroup(this.timeList[0]);
+        this.toggleGroup(this.expressionBfTimeList[0]);
       }, 500);
-
-
     }
   }
   ngOnInit() {
+    this.objectToPush = {
+      babyCode: 124,
+      userId: '124',
+      dateOfExpression: '13-02-2013',
+      timeOfExpression: '07:03',
+      durationOfExpression: 1,
+      methodOfExpression: 'abc',
+      locationOfExpression: 'abc',
+      volOfMilkExpressedFromL: 20,
+      volOfMilkExpressedFromR: 20
+
+    }
     this.getNewRecord();
     //Getting method of expressionbf type details
     this.addNewExpressionBfService.getMethodOfExpressionBF()
@@ -115,9 +82,9 @@ export class ExpressionTimeFormPage {
     console.log('ionViewDidLoad ExpressionTimeFormPage');
   }
   toggleGroup(group) {
-    if (this.isGroupShown(group)) {     
+    if (this.isGroupShown(group)) {
       this.shownGroup = null;
-    } else {     
+    } else {
       this.shownGroup = group;
     }
   };
@@ -132,9 +99,9 @@ export class ExpressionTimeFormPage {
     var objectToPush = {
       time: currentTime
     }
-    this.timeList.unshift(objectToPush);
+    this.expressionBfTimeList.unshift(objectToPush);
     setTimeout(() => {
-      this.toggleGroup(this.timeList[0]);
+      this.toggleGroup(this.expressionBfTimeList[0]);
     }, 500);
 
   }
@@ -145,7 +112,16 @@ export class ExpressionTimeFormPage {
 
   saveExpressionTIme(item: any) {
 
-
+    console.log(item);
+    
+    this.saveBfExpressionnService.saveBfExpression(item)
+    .then(data=> {
+    this.messageService.showSuccessToast("save successful!")
+  })
+    .catch(err =>{
+    this.messageService.showErrorToast((err as IDBOperationStatus).message)
+  })
+    
 
   }
   editExpressionTIme() {
