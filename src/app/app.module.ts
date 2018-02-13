@@ -28,6 +28,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
 import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
 import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-new-form';
+import { FeedDateListPage } from '../pages/feed-date-list/feed-date-list';
+import { FeedDateListServiceProvider } from '../providers/feed-date-list-service/feed-date-list-service';
+import { DatePipe } from '@angular/common';
+import { OrderByDatePipe } from '../pipes/order-by-date/order-by-date';
+import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 
 
 @NgModule({
@@ -44,7 +49,9 @@ import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-n
     CreateNewAccountPage,
     ExpressionTimeFormPage,
     FeedPage,
-    ExpressionNewFormPage
+    ExpressionNewFormPage,
+    FeedDateListPage,
+    OrderByDatePipe
     
   ],
   imports: [
@@ -72,7 +79,8 @@ import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-n
     CreateNewAccountPage,
     ExpressionTimeFormPage,
     FeedPage,
-    ExpressionNewFormPage
+    ExpressionNewFormPage,
+    FeedDateListPage
   ],
   providers: [
     StatusBar,
@@ -85,6 +93,9 @@ import { ExpressionNewFormPage } from '../pages/expression-new-form/expression-n
     ConstantProvider,
     MessageProvider,
     AddNewPatientServiceProvider,
+    FeedDateListServiceProvider,
+    DatePipe,
+    AddNewExpressionBfServiceProvider
   ]
 })
 export class AppModule {}

@@ -35,16 +35,17 @@ export class FeedPage {
     //Initialize the feed expression object
     //These are the demo values, we will erase this later
     this.feedExpression = {
-     babyId: "2",
+     patientId: "qqqqq-ddddd",
+     babyCode: "baby code1",
      userId: "demo user id",
      babyWeight: 2.6,
-     dateOfFeed: "demo1",
+     dateOfFeed: "09-02-2018",
      DHMVolume: 2.9,
      formulaVolume: 2.8,
      methodOfFeed: 2,
      OMMVolume: 2.9,
      otherVolume: 7.0,
-     timeOfFeed: "demo time"
+     timeOfFeed: "19:18"
     }
 
     //Test method

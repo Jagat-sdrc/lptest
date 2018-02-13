@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-/*
-  Generated class for the ConstantProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ * This component will keep all the constant values
+ * @author Ratikanta 
+ * @since 0.0.1 
+ */
 @Injectable()
 export class ConstantProvider {
 
@@ -41,6 +40,12 @@ export class ConstantProvider {
 
   static DeliveryMethodTypeIds: IDeliveryMethods = {
     deliveryMethodTypeId: 7
+  }
+  static MethodOfExpressionBfTypeId: IMethodOfExpressionBF = {
+    methodOfExpressionBfTypeId: 8
+  }
+  static LocationOfExpressionBfTypeId: ILocationOfExpressionBF = {
+    locationOfExpressionBfTypeId: 9
   }
 
   static dbKeyNames: IDBKeyNames = {

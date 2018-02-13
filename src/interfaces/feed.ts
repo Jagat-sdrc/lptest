@@ -5,14 +5,15 @@
  */
 
 interface IFeed{
-    babyId: string,
-    userId: string,
-    dateOfFeed: string,
-    timeOfFeed: string,
-    methodOfFeed: number,
-    OMMVolume: number,
-    DHMVolume: number,
-    formulaVolume: number,
-    otherVolume: number,
-    babyWeight: number
+    patientId: string;
+    babyCode: string;
+    userId: string;
+    dateOfFeed: string;
+    timeOfFeed: string;
+    methodOfFeed: number;
+    OMMVolume: number;
+    DHMVolume: number;
+    formulaVolume: number;
+    otherVolume: number;
+    babyWeight: number;
 }
