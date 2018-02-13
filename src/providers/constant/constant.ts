@@ -48,6 +48,11 @@ export class ConstantProvider {
   static LocationOfExpressionBfTypeId: ILocationOfExpressionBF = {
     locationOfExpressionBfTypeId: 9
   }
+
+  static dbKeyNames: IDBKeyNames = {
+    feedExpression: "feedExpression"
+  }
+  
   constructor(public http: HttpClient) {
   }
 
