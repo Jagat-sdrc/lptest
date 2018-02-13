@@ -25,3 +25,9 @@ interface IBabyAdmittedTo{
 interface INICAdmissionReason{
     nicAdmissionReasonTypeId: number
 }
+interface IMethodOfExpressionBF{
+    methodOfExpressionBfTypeId: number
+}
+interface ILocationOfExpressionBF{
+    locationOfExpressionBfTypeId: number
+}
