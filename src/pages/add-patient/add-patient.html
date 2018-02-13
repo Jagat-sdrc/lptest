@@ -23,7 +23,7 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" floating>Baby Id</ion-label>
-        <ion-input type="text" value="" formControlName="baby_id" (keypress)="_numberKeyPress($event,5)"></ion-input>
+        <ion-input type="text" disabled value="" formControlName="baby_id" (keypress)="_numberKeyPress($event,5)"></ion-input>
       </ion-item>
       <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && patientForm.controls.baby_id.dirty">
         Please enter valid baby id

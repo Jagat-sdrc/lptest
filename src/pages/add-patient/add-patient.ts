@@ -41,6 +41,7 @@ export class AddPatientPage implements OnInit{
   countryName: string;
   stateName: string;
   institutionName: string;
+  maxDate: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,private storage: Storage) {
@@ -70,8 +71,9 @@ export class AddPatientPage implements OnInit{
 
   ionViewDidEnter(){
     this.autoBabyId = this.countryName.charAt(0)+this.stateName.charAt(0)+
-    this.institutionName.substring(0,3)+new Date().getMilliseconds();
-    this.datePipe.transform(new Date(),"ddMMyyyy")
+    this.institutionName.substring(0,3)+this.datePipe.transform(new Date(),"ddMMyyyy")+
+    new Date().getMilliseconds();
+  
     console.log(this.autoBabyId);
     this.patientForm.controls.baby_id.setValue(this.autoBabyId);
   }
@@ -86,7 +88,6 @@ export class AddPatientPage implements OnInit{
   ngOnInit() {
 
     this.headerTitle = this.navParams.get("param");
-
     this.first_exp_time = new Date().toISOString();
     this.delivery_date = new Date().toISOString();
     this.delivery_time = new Date().toISOString();

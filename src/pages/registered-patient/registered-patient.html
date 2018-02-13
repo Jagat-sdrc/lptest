@@ -19,15 +19,15 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-card class="card-outside" *ngFor="let item of items" (click)="goToBabyDashBoard(item.id)">
+  <ion-card class="card-outside" *ngFor="let item of patientList" (click)="goToBabyDashBoard(item.patientId)">
     <ion-row class="card-inside">
       <ion-col md-6>
-        <div class="form-group">Baby Id {{item.id}}</div>
-        <div>{{item.slno}}</div>
+        <div class="form-group">{{item.patientId}}</div>
+        <div>{{item.patientId}}</div>
       </ion-col>
       <ion-col md-6 text-right>
-        <div class="form-group">{{item.date}}</div>
-        <div>{{item.time}}</div>
+        <div class="form-group">{{item.deliveryDate}}</div>
+        <div>{{item.deliveryTime}}</div>
       </ion-col>
     </ion-row>
   </ion-card>
