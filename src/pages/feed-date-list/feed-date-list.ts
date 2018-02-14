@@ -20,7 +20,6 @@ export class FeedDateListPage {
 
   feedDateListData: string[];
   babyCode:string;
-  feedPage;
   params: Object;
 
   constructor(private feedDateListService: FeedDateListServiceProvider,
@@ -28,13 +27,8 @@ export class FeedDateListPage {
   private modalCtrl: ModalController,
 private datePipe: DatePipe) {}
 
-  ngOnInit(){
-
-    this.params = {
-      id: 42
-    }
-
-    this.feedPage = FeedPage;
+  
+  ionViewWillEnter(){
     //test
     this.babyCode = 'qqqqq'
     //Getting date list

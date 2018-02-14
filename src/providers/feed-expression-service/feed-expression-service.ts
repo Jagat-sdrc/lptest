@@ -128,6 +128,7 @@ export class FeedExpressionServiceProvider {
 
 
     // this.storage.clear();
+    // this.storage.remove(ConstantProvider.dbKeyNames.feedExpression)
   }
 
   /**
@@ -147,7 +148,7 @@ export class FeedExpressionServiceProvider {
 
     
     for(let i = 0; i < feedExpressions.length;i++){
-      if(feedExpressions[i].babyCode === feedExpression.babyCode){
+      if(feedExpressions[i].id === feedExpression.id){
         //record found, need to splice and enter new
         feedExpressions.splice(i,1)
         break;
@@ -172,7 +173,17 @@ export class FeedExpressionServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.feedExpression)
       .then(data=>{
         if(data != null){
-          data = (data as IFeed[]).filter(d => (d.babyCode === babyCode && d.dateOfFeed === date))
+          data = (data as IFeed[]).filter(d => (d.babyCode === babyCode));
+          let tempData: IFeed[] = [];
+          
+          (data as IFeed[]).forEach(d => {
+            let dateString: string = this.datePipe.transform(new Date(d.dateOfFeed), 'dd-MM-yyyy')
+            if(date === dateString){
+              tempData.push(d)
+            }
+          });
+
+          data = tempData;
           if((data as IFeed[]).length > 0){
             if(isNewExpression){
               resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
@@ -231,20 +242,20 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
       id: this.getNewFeedExpressionId(babyCode),
       babyCode: babyCode,     
       userId: this.userService.getUserId(),
-      babyWeight: 0,
-      dateOfFeed: this.datePipe.transform(date, 'dd-MM-yyyy'),
-      DHMVolume: 0,
-      formulaVolume: 0,
-      animalMilkVolume: 0,
-      methodOfFeed: 0,
-      OMMVolume: 0,
-      otherVolume: 0,
-      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
+      babyWeight: null,
+      dateOfFeed: new Date().toISOString(),
+      DHMVolume: null,
+      formulaVolume: null,
+      animalMilkVolume: null,
+      methodOfFeed: null,
+      OMMVolume: null,
+      otherVolume: null,
+      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm:ss')
     }
 
 
     if(data != null && date != undefined){
-      data.push(feed)
+      (data as IFeed[]).splice(0, 0, feed)
     }else{
       data = [];
       data.push(feed)

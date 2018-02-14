@@ -2,8 +2,6 @@ import { FeedExpressionServiceProvider } from './../../providers/feed-expression
 import { Component } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
-import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { DatePipe } from '@angular/common';
 
 
 /**
@@ -23,12 +21,9 @@ export class FeedPage {
   feedExpressions: IFeed[];
   dataForFeedEntryPage: IDataForFeedEntryPage;
   shownGroup: any;
-  testDate: Date = new Date();
-  myDate:any  = new Date().toISOString();
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
-  private messageService: MessageProvider, private navParams: NavParams, private userService: UserServiceProvider
-, private datePipe: DatePipe) {}
+  private messageService: MessageProvider, private navParams: NavParams) {}
 
   ngOnInit(){
 
@@ -38,7 +33,7 @@ export class FeedPage {
     this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode, 
       this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
     .then(data=>{
-      this.feedExpressions = data
+      this.feedExpressions = data      
     })
     .catch(err=>{
       this.messageService.showErrorToast(err)
@@ -54,24 +49,24 @@ export class FeedPage {
 
     //Initialize the feed expression object
     //These are the demo values, we will erase this later
-    this.feedExpression = {
-      id: this.feedExpressionService.getNewFeedExpressionId(this.dataForFeedEntryPage.babyCode),
-      babyCode: this.dataForFeedEntryPage.babyCode,     
-      userId: this.userService.getUserId(),
-      babyWeight: 0,
-      dateOfFeed: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-      DHMVolume: 0,
-      formulaVolume: 0,
-      animalMilkVolume: 0,
-      methodOfFeed: 0,
-      OMMVolume: 0,
-      otherVolume: 0,
-      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
-    }
+    // this.feedExpression = {
+    //   id: this.feedExpressionService.getNewFeedExpressionId(this.dataForFeedEntryPage.babyCode),
+    //   babyCode: this.dataForFeedEntryPage.babyCode,     
+    //   userId: this.userService.getUserId(),
+    //   babyWeight: 0,
+    //   dateOfFeed: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+    //   DHMVolume: 0,
+    //   formulaVolume: 0,
+    //   animalMilkVolume: 0,
+    //   methodOfFeed: 0,
+    //   OMMVolume: 0,
+    //   otherVolume: 0,
+    //   timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
+      
+    // }
 
     //Test method
     // this.feedExpressionService.getKeys()
-
 
     
 
