@@ -99,7 +99,8 @@ import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-e
     DatePipe,
     AddNewExpressionBfServiceProvider,
     ExpressionBfDateProvider,
-    SaveExpressionBfProvider
+    SaveExpressionBfProvider,
+    UserServiceProvider
   ]
 })
 export class AppModule {}

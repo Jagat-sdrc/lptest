@@ -19,7 +19,7 @@ export class FeedDateListServiceProvider {
    * @returns Promise<string[]> string array of dates
    * @param patientId the patient id for which we are extracting data
    */
-  getFeedDateListData(patientId: string): Promise<string[]>{
+  getFeedDateListData(babyCode: string): Promise<string[]>{
 
     let promise : Promise<string[]> = new Promise((resolve, reject) => {
 
@@ -32,7 +32,7 @@ export class FeedDateListServiceProvider {
       .then(data=>{
         if(data != null){
 
-          data = (data as IFeed[]).filter(d=> d.patientId === patientId)
+          data = (data as IFeed[]).filter(d=> d.babyCode === babyCode)
           
           //Checking if there is any data belong to the patient id or not
           if((data as IFeed[]).length > 0){

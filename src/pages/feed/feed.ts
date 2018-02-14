@@ -1,7 +1,9 @@
 import { FeedExpressionServiceProvider } from './../../providers/feed-expression-service/feed-expression-service';
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
+import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { DatePipe } from '@angular/common';
 
 
 /**
@@ -18,11 +20,29 @@ export class FeedPage {
 
   feedingMethods: ITypeDetails[];
   feedExpression: IFeed;
+  feedExpressions: IFeed[];
+  dataForFeedEntryPage: IDataForFeedEntryPage;
+  shownGroup: any;
+  testDate: Date = new Date();
+  myDate:any  = new Date().toISOString();
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
-  private messageService: MessageProvider) {}
+  private messageService: MessageProvider, private navParams: NavParams, private userService: UserServiceProvider
+, private datePipe: DatePipe) {}
 
   ngOnInit(){
+
+    this.dataForFeedEntryPage = this.navParams.get('dataForFeedEntryPage');
+    
+    //getting existing feed expression for given baby code and date
+    this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode, 
+      this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
+    .then(data=>{
+      this.feedExpressions = data
+    })
+    .catch(err=>{
+      this.messageService.showErrorToast(err)
+    })
 
     //Getting feeding methods type details
     this.feedExpressionService.getFeedingMethods()
@@ -35,17 +55,18 @@ export class FeedPage {
     //Initialize the feed expression object
     //These are the demo values, we will erase this later
     this.feedExpression = {
-     patientId: "qqqqq-ddddd",
-     babyCode: "baby code1",
-     userId: "demo user id",
-     babyWeight: 2.6,
-     dateOfFeed: "09-02-2018",
-     DHMVolume: 2.9,
-     formulaVolume: 2.8,
-     methodOfFeed: 2,
-     OMMVolume: 2.9,
-     otherVolume: 7.0,
-     timeOfFeed: "19:18"
+      id: this.feedExpressionService.getNewFeedExpressionId(this.dataForFeedEntryPage.babyCode),
+      babyCode: this.dataForFeedEntryPage.babyCode,     
+      userId: this.userService.getUserId(),
+      babyWeight: 0,
+      dateOfFeed: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      DHMVolume: 0,
+      formulaVolume: 0,
+      animalMilkVolume: 0,
+      methodOfFeed: 0,
+      OMMVolume: 0,
+      otherVolume: 0,
+      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
     }
 
     //Test method
@@ -54,13 +75,55 @@ export class FeedPage {
 
     
 
-    this.feedExpressionService.saveFeedExpression(this.feedExpression)
+    
+
+  }
+
+/**
+ * This method will save a single feed expression into database
+ * 
+ * @param {IFeed} feedExpression 
+ * @memberof FeedPage
+ * @author Ratikanta
+ * @since 0.0.1
+ */
+  saveExpression(feedExpression: IFeed) {   
+    this.feedExpressionService.saveFeedExpression(feedExpression)
     .then(data=> {
       this.messageService.showSuccessToast("save successful!")
     })
     .catch(err =>{
-      this.messageService.showErrorToast((err as IDBOperationStatus).message)
+       this.messageService.showErrorToast((err as IDBOperationStatus).message)
     })
+  }
+  
+
+  toggleGroup(group) {
+    if (this.isGroupShown(group)) {
+      this.shownGroup = null;
+    } else {
+      this.shownGroup = group;
+    }
+  };
+
+  isGroupShown(group) {
+
+    return this.shownGroup === group;
+  }
+
+/**
+ * This method is going to create a new expression entry for selected date and keep it on the top and open
+ * 
+ * @memberof FeedPage
+ */
+  newExpression(){
+
+    let day = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[0])
+    let month = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[1])
+    let year = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[2])
+
+    this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
+    new Date(year, month, day))
 
   }
 }

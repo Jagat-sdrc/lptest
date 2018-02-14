@@ -22,19 +22,16 @@ export class BabyDashboardPage {
 
   babyid: any;
   feedDateListPage;
-  // feedPage;
+  feedPage;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.babyid = navParams.get("param");
   }
 
   ngOnInit(){
     this.feedDateListPage = FeedDateListPage
-    // this.feedPage = FeedPage
+    this.feedPage = FeedPage
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BabyDashboardPage');
-  }
 
   goToForm(page){
       switch (page) {
