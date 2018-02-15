@@ -29,15 +29,7 @@ export class FeedPage {
 
     this.dataForFeedEntryPage = this.navParams.get('dataForFeedEntryPage');
     
-    //getting existing feed expression for given baby code and date
-    this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode, 
-      this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
-    .then(data=>{
-      this.feedExpressions = data      
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err)
-    })
+    this.findExpressionsByBabyCodeAndDate();    
 
     //Getting feeding methods type details
     this.feedExpressionService.getFeedingMethods()
@@ -45,32 +37,7 @@ export class FeedPage {
       this.feedingMethods = data
     }, err => {
       this.messageService.showErrorToast(err)
-    });
-
-    //Initialize the feed expression object
-    //These are the demo values, we will erase this later
-    // this.feedExpression = {
-    //   id: this.feedExpressionService.getNewFeedExpressionId(this.dataForFeedEntryPage.babyCode),
-    //   babyCode: this.dataForFeedEntryPage.babyCode,     
-    //   userId: this.userService.getUserId(),
-    //   babyWeight: 0,
-    //   dateOfFeed: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-    //   DHMVolume: 0,
-    //   formulaVolume: 0,
-    //   animalMilkVolume: 0,
-    //   methodOfFeed: 0,
-    //   OMMVolume: 0,
-    //   otherVolume: 0,
-    //   timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
-      
-    // }
-
-    //Test method
-    // this.feedExpressionService.getKeys()
-
-    
-
-    
+    });    
 
   }
 
@@ -85,6 +52,7 @@ export class FeedPage {
   saveExpression(feedExpression: IFeed) {   
     this.feedExpressionService.saveFeedExpression(feedExpression)
     .then(data=> {
+      this.findExpressionsByBabyCodeAndDate();
       this.messageService.showSuccessToast("save successful!")
     })
     .catch(err =>{
@@ -102,7 +70,6 @@ export class FeedPage {
   };
 
   isGroupShown(group) {
-
     return this.shownGroup === group;
   }
 
@@ -120,5 +87,22 @@ export class FeedPage {
     this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
     new Date(year, month, day))
 
+  }
+
+  /**
+   * This method will help in getting existing feed expression for given baby code and date
+   * @author Ratikanta
+   * @since 0.0.1
+   */
+  findExpressionsByBabyCodeAndDate(){
+    //getting existing feed expression for given baby code and date
+    this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode, 
+      this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
+    .then(data=>{
+      this.feedExpressions = data      
+    })
+    .catch(err=>{
+      this.messageService.showErrorToast(err)
+    })
   }
 }
