@@ -71,9 +71,11 @@ export class RegisteredPatientPage {
     } 
   }
 
-  goToBabyDashBoard(babyId: any){
+  goToBabyDashBoard(babyCode: string,babyCodeHospital: string){
+
     this.navCtrl.push(BabyDashboardPage,{
-      param: babyId
+      babyCode: babyCode,
+      babyCodeByHospital: babyCodeHospital
     });
   }
 
@@ -85,6 +87,17 @@ export class RegisteredPatientPage {
 
   refresh(){
     
+  }
+
+  removeItem(babyCodeHospital: string){
+    
+    // for(let i = 0; i < this.items.length; i++) {
+ 
+    //   if(this.items[i] == item){
+    //     this.items.splice(i, 1);
+    //   }
+ 
+    // }
   }
 
   sorting(){

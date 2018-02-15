@@ -45,6 +45,8 @@ export class AddPatientPage implements OnInit{
   maxTime: any;
   resetStatus: boolean = false;
   outPatientAdmissionStatus: boolean = false;
+  paramToExpressionPage: IParamToExpresssionPage;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,private storage: Storage,
@@ -104,12 +106,14 @@ export class AddPatientPage implements OnInit{
   }
 
   ionViewDidEnter(){
-    this.autoBabyId = this.countryName.charAt(0)+this.stateName.charAt(0)+
+    if(!(this.navParams.get('babyCode') == undefined)){
+      this.autoBabyId = this.patient.babyCode;
+      this.setFetchedDataToUi();
+    }else{
+      this.autoBabyId = this.countryName.charAt(0)+this.stateName.charAt(0)+
     this.institutionName.substring(0,3)+this.datePipe.transform(new Date(),"ddMMyyyy")+
     new Date().getMilliseconds();
-  
-    console.log(this.autoBabyId);
-    this.patientForm.controls.baby_id.setValue(this.autoBabyId);
+    }
   }
  /**
   * This method call up the initial load of add patient page.
@@ -121,10 +125,29 @@ export class AddPatientPage implements OnInit{
   */
   ngOnInit() {
 
+    if(!(this.navParams.get('babyCode') == undefined)){
+      this.headerTitle = "Edit Patient"
+      this.paramToExpressionPage = {
+        babyCode: this.navParams.get('babyCode'),
+        babyCodeByHospital: this.navParams.get('babyCodeByHospital')
+      }
+      this.addNewPatientService.findByBabyCode(this.paramToExpressionPage.babyCode)
+      .then(data=>{
+        this.patient = data      
+      })
+      .catch(err=>{
+        this.messageService.showErrorToast(err)
+      })
+
+    } else {
+      this.headerTitle = "Add New Patient"
+    }
+
+
+
     // this.maxDate = '2018-02-13';
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
     this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
-    this.headerTitle = this.navParams.get("param");
     this.first_exp_time = new Date().toISOString();
     this.delivery_date = new Date().toISOString();
     this.delivery_time = new Date().toISOString();
@@ -178,7 +201,7 @@ export class AddPatientPage implements OnInit{
     });
 
     this.patientForm = new FormGroup({
-      baby_id: new FormControl('', [Validators.required,Validators.minLength(6),Validators.minLength(6)]),
+      baby_id: new FormControl(''),
       hospital_baby_id: new FormControl(''),
       mother_name: new FormControl('', [Validators.required]),
       mother_age: new FormControl('', [Validators.required,Validators.minLength(2),Validators.maxLength(2)]),
@@ -219,7 +242,7 @@ export class AddPatientPage implements OnInit{
        } else {
         this.outPatientAdmissionStatus = false;
         this.patientForm.controls.admission_date.setValue(null);
-        this.patientForm.controls.admission_date.setErrors(null);
+        this.patientForm.controls["admission_date"].setErrors(null);
        }
         
      }
@@ -259,6 +282,7 @@ export class AddPatientPage implements OnInit{
       */
     save(){
       console.log(this.patientForm);
+      this.outpatientAdmission();
       if(!this.patientForm.valid){
         this.resetStatus = true;
         Object.keys(this.patientForm.controls).forEach(field => { // {1}
@@ -267,11 +291,10 @@ export class AddPatientPage implements OnInit{
         });
       } else {
         this.resetStatus = false;
-        console.log(this.patientForm.controls.baby_id.value);
 
         //Initialize the add new patient object
         this.patient = {
-          babyCode: this.patientForm.controls.baby_id.value,
+          babyCode: this.autoBabyId,
           babyCodeHospital: this.patientForm.controls.hospital_baby_id.value,
           babyOf: this.patientForm.controls.mother_name.value,
           mothersAge: this.patientForm.controls.mother_age.value,
@@ -298,6 +321,35 @@ export class AddPatientPage implements OnInit{
           this.messageService.showErrorToast((err as IDBOperationStatus).message)
         })
       }
+    }
+
+
+    /**
+     * This method will set the value taken from the db to ui component.
+     * 
+     * @author Jagat Bandhu Sahoo
+     * @since 0.0.1
+     */
+    setFetchedDataToUi(){
+      this.patientForm = new FormGroup({
+        baby_id: new FormControl(this.patient.babyCode),
+        hospital_baby_id: new FormControl(this.patient.babyCodeHospital),
+        mother_name: new FormControl(this.patient.babyOf, [Validators.required]),
+        mother_age: new FormControl(this.patient.mothersAge, [Validators.required,Validators.minLength(2),Validators.maxLength(2)]),
+        delivery_date: new FormControl(this.patient.deliveryDate, [Validators.required]),
+        delivery_time: new FormControl(this.patient.deliveryTime, [Validators.required]),
+        delivery_method: new FormControl(this.deliveryMethods.filter(d=>(d.id===this.patient.deliveryMethod))[0], [Validators.required]),
+        baby_weight: new FormControl(this.patient.babyWeight, [Validators.required]),
+        gestational_age: new FormControl(this.patient.gestationalAgeInWeek, [Validators.required]),
+        intent_provide_milk: new FormControl(this.motherPrenatalMilk.filter(d=>(d.id===this.patient.mothersPrenatalIntent))[0], [Validators.required]),
+        hm_lactation: new FormControl(this.hmLactation.filter(d=>(d.id===this.patient.parentsKnowledgeOnHmAndLactation))[0], [Validators.required]),
+        first_exp_time: new FormControl(this.patient.timeTillFirstExpression, [Validators.required]),
+        inpatient_outpatient: new FormControl(this.inpatientOutpatient.filter(d=>(d.id===this.patient.inpatientOrOutPatient))[0], [Validators.required]),
+        admission_date: new FormControl(this.patient.admissionDateForOutdoorPatients, [Validators.required]),
+        baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0], [Validators.required]),
+        nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0], [Validators.required]),
+      });
+      this.outpatientAdmission();
     }
 
 }

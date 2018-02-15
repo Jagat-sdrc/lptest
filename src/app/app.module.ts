@@ -35,6 +35,7 @@ import { OrderByDatePipe } from '../pipes/order-by-date/order-by-date';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expression-bf-date';
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
+import { RegisteredPatientServiceProvider } from '../providers/registered-patient-service/registered-patient-service';
 
 
 @NgModule({
@@ -100,7 +101,8 @@ import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-e
     AddNewExpressionBfServiceProvider,
     ExpressionBfDateProvider,
     SaveExpressionBfProvider,
-    UserServiceProvider
+    UserServiceProvider,
+    RegisteredPatientServiceProvider
   ]
 })
 export class AppModule {}

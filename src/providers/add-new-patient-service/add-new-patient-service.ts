@@ -193,7 +193,7 @@ export class AddNewPatientServiceProvider {
 
     
     for(let i = 0; i < patients.length;i++){
-      if(patients[i].babyCode === patient.babyCode && 
+      if(patients[i].babyCodeHospital === patient.babyCodeHospital && 
         patients[i].deliveryDate === patient.deliveryDate &&
         patients[i].deliveryTime === patient.deliveryTime
       ){
@@ -205,6 +205,28 @@ export class AddNewPatientServiceProvider {
     patients.push(patient)    
     return patients;
 
+  }
+
+
+/**
+ * This method will 
+ * 
+ * @author Jagat Bandhu
+ * @since 0.0.1
+ * @param babyCode 
+ */
+  findByBabyCode(babyCode: string): Promise<IPatient>{
+    let promise: Promise<IPatient> = new Promise((resolve, reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.patient)
+      .then(data=>{
+          data = (data as IPatient[]).filter(d => (d.babyCode === babyCode));
+          resolve(data[0]);
+      })
+      .catch(err=>{
+        reject(err.message)
+      })
+    });
+    return promise;
   }
 
 }

@@ -20,45 +20,28 @@ import { FeedPage } from '../feed/feed';
 })
 export class BabyDashboardPage {
 
-  babyid: any;
   feedDateListPage;
   feedPage;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.babyid = navParams.get("param");
+  expressoinFormPage;
+  addPatientPage;
+
+  paramToExpressionPage: IParamToExpresssionPage;
+  constructor(public navCtrl: NavController, public navParams: NavParams) {    
   }
 
   ngOnInit(){
     this.feedDateListPage = FeedDateListPage
-    this.feedPage = FeedPage
-  }
+    this.feedPage = FeedPage;
+    this.expressoinFormPage = ExpressoinFormPage;
+    this.addPatientPage = AddPatientPage;
 
+    this.paramToExpressionPage = {
+      babyCode: this.navParams.get("babyCode"),
+      babyCodeByHospital: this.navParams.get("babyCodeByHospital")
+    }
 
-  goToForm(page){
-      switch (page) {
-        case "Patient Profile":
-          this.navCtrl.push(AddPatientPage,{
-            param: "Profile"
-          });
-        break
-        case "Exp/BF":
-        this.navCtrl.push(ExpressoinFormPage,{
-          param1: this.babyid,
-          param2: "Exp/BF"
-        });
-        break;
-        case "BFSP":
-        this.navCtrl.push(ExpressoinFormPage,{
-          param1: this.babyid,
-          param2: "BFSP"
-        });
-        break;
-        case "BF-Post Discharge":
-        this.navCtrl.push(ExpressoinFormPage,{
-          param1: this.babyid,
-          param2: "BF-Post Discharge"
-        });
-        break;
-      }
+    console.log(this.paramToExpressionPage.babyCode);
+    console.log(this.paramToExpressionPage.babyCodeByHospital);
   }
 
   goToHome(){

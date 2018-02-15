@@ -20,16 +20,9 @@
 
 <ion-content padding>
   <form [formGroup]="patientForm">
-    <div class="form-group">
-      <ion-item>
-          
-        <ion-label color="black" stacked>Baby Id</ion-label>
-        <ion-input type="text" disabled value="" formControlName="baby_id" (keypress)="_numberKeyPress($event,5)"></ion-input>
-      </ion-item>
-      <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && (patientForm.controls.baby_id.dirty || patientForm.controls.baby_id.touched) && resetStatus">
-        Please enter valid baby id
-      </ion-item> 
-    </div>
+      <div class="form-group" *ngIf="false" >
+            <ion-input type="text" formControlName="baby_id"></ion-input>
+        </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Baby ID provided by hospital</ion-label>

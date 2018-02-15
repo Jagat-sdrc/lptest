@@ -3,10 +3,14 @@
   <ion-navbar color="primary">
     <ion-title>Registered Patient</ion-title>
     <ion-buttons start>
-      <button class="customOptions" ion-button icon-only (click)="refresh()"><ion-icon name="refresh"></ion-icon></button>
+      <button class="customOptions" ion-button icon-only (click)="refresh()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
     </ion-buttons>
     <ion-buttons end>
-      <button class="customOptions" ion-button icon-only (click)="sorting()"><ion-icon name="options"></ion-icon></button>
+      <button class="customOptions" ion-button icon-only (click)="sorting()">
+        <ion-icon name="options"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 
@@ -19,20 +23,45 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-card class="card-outside" *ngFor="let item of patientList" (click)="goToBabyDashBoard(item.patientId)">
-    <ion-row class="card-inside">
+  <!-- <ion-card class="card-outside" *ngFor="let item of patientList; let i = index">
+    <ion-row class="card-inside" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital)">
       <ion-col md-6>
-        <div class="form-group">{{item.babyCode}}</div>
-        <div>{{item.babyCode}}</div>
+        <div class="form-group">Sl no: {{i+1}}</div>
+        <div>Baby Id: {{item.babyCodeHospital}}</div>
       </ion-col>
       <ion-col md-6 text-right>
         <div class="form-group">{{item.deliveryDate}}</div>
         <div>{{item.deliveryTime}}</div>
       </ion-col>
     </ion-row>
-  </ion-card>
-  <ion-fab class="fab-padding" right bottom>
+  </ion-card> -->
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of patientList; let i = index">
+      <ion-item>
+        <ion-card class="card-outside">
+          <ion-row class="card-inside" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital)">
+            <ion-col md-6>
+              <div class="form-group">Sl no: {{i+1}}</div>
+              <div>Baby Id: {{item.babyCodeHospital}}</div>
+            </ion-col>
+            <ion-col md-6 text-right>
+              <div class="form-group">{{item.deliveryDate}}</div>
+              <div>{{item.deliveryTime}}</div>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button danger (click)="removeItem(item.babyCodeHospital)">
+          <ion-icon name="trash"></ion-icon>Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+  <!-- <ion-fab class="fab-padding" right bottom>
     <button ion-fab color="primary" (click)="goToAddNewPatient()"><ion-icon name="md-add"></ion-icon></button>
-  </ion-fab>
+  </ion-fab> -->
 
 </ion-content>
