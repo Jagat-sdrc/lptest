@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { CreateNewAccountPage } from '../create-new-account/create-new-account';
 import { Storage } from '@ionic/storage';
@@ -13,7 +13,8 @@ import { ConstantProvider } from '../../providers/constant/constant';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private storage: Storage, private alertCtrl: AlertController) {
   }
 
   login(){
@@ -24,7 +25,24 @@ export class LoginPage {
   }
 
   forgotPassword(){
-
+    let confirm = this.alertCtrl.create({
+      enableBackdropDismiss: false,
+      title: 'Warning',
+      message: 'You entered the value more than 4000',
+      buttons: [{
+          text: 'No',
+          handler: () => {}
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+              
+          }
+        }
+      ]
+    });
+    confirm.setCssClass('modalDialog');
+    confirm.present();
   }
 
   signUp(){

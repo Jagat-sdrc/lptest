@@ -22,8 +22,8 @@
   <ion-card class="card-outside" *ngFor="let item of patientList" (click)="goToBabyDashBoard(item.patientId)">
     <ion-row class="card-inside">
       <ion-col md-6>
-        <div class="form-group">{{item.patientId}}</div>
-        <div>{{item.patientId}}</div>
+        <div class="form-group">{{item.babyCode}}</div>
+        <div>{{item.babyCode}}</div>
       </ion-col>
       <ion-col md-6 text-right>
         <div class="form-group">{{item.deliveryDate}}</div>

@@ -4,20 +4,20 @@
  * @since 0.0.1 
  */
 interface IPatient{
-    patientId: string;
     babyCode: string;
-    mothersName: string;
+    babyCodeHospital: string;
+    babyOf: string;
     mothersAge: number;
     deliveryDate: string;
     deliveryTime: string;
     deliveryMethod: number;
-    babysWeight: number;
-    gestationalAge: number;
-    intentProvideMilk: number;
-    hmLactation: number;
-    firstExpTime: string;
-    inpatientOutpatient: number;
-    admissionDate: string;
-    babyAdmitted: number;
-    nicuAdmission: number;
+    babyWeight: number;
+    gestationalAgeInWeek: number;
+    mothersPrenatalIntent: number;
+    parentsKnowledgeOnHmAndLactation: number;
+    timeTillFirstExpression: string;
+    inpatientOrOutPatient: number;
+    admissionDateForOutdoorPatients: string;
+    babyAdmittedTo: number;
+    nicuAdmissionReason: number;
 }

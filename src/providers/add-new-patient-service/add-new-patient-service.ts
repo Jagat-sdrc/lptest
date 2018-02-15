@@ -193,7 +193,7 @@ export class AddNewPatientServiceProvider {
 
     
     for(let i = 0; i < patients.length;i++){
-      if(patients[i].patientId === patient.patientId && 
+      if(patients[i].babyCode === patient.babyCode && 
         patients[i].deliveryDate === patient.deliveryDate &&
         patients[i].deliveryTime === patient.deliveryTime
       ){
