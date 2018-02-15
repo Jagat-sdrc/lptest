@@ -175,7 +175,7 @@ export class FeedExpressionServiceProvider {
         if(data != null){
           data = (data as IFeed[]).filter(d => (d.babyCode === babyCode));
           let tempData: IFeed[] = [];
-          
+
           (data as IFeed[]).forEach(d => {
             let dateString: string = this.datePipe.transform(new Date(d.dateOfFeed), 'dd-MM-yyyy')
             if(date === dateString){
@@ -250,7 +250,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
       methodOfFeed: null,
       OMMVolume: null,
       otherVolume: null,
-      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm:ss')
+      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
     }
 
 

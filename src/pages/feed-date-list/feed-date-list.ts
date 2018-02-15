@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { FeedDateListServiceProvider } from '../../providers/feed-date-list-service/feed-date-list-service';
 import { MessageProvider } from '../../providers/message/message';
 import { FeedPage } from '../feed/feed';
@@ -23,8 +23,7 @@ export class FeedDateListPage {
   params: Object;
 
   constructor(private feedDateListService: FeedDateListServiceProvider,
-    private messageService: MessageProvider, private navCtrl: NavController, 
-  private modalCtrl: ModalController,
+    private messageService: MessageProvider, private navCtrl: NavController,   
 private datePipe: DatePipe) {}
 
   
