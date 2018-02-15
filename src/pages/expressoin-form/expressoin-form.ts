@@ -1,7 +1,21 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ExpressionTimeFormPage } from '../expression-time-form/expression-time-form';
-import { ExpressionNewFormPage } from '../expression-new-form/expression-new-form';
+import {
+  Component
+} from '@angular/core';
+import {
+  IonicPage,
+  NavController,
+  NavParams
+} from 'ionic-angular';
+import {
+  ExpressionTimeFormPage
+} from '../expression-time-form/expression-time-form';
+
+import {
+  MessageProvider
+} from '../../providers/message/message';
+import {
+  ExpressionBfDateProvider
+} from '../../providers/expression-bf-date/expression-bf-date'
 /**
  * Generated class for the ExpressoinFormPage page.
  *
@@ -16,32 +30,73 @@ import { ExpressionNewFormPage } from '../expression-new-form/expression-new-for
 })
 export class ExpressoinFormPage {
 
-  babyid: any;
+  babyCode: any;
   form: any;
   items: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.babyid = this.navParams.get("param1");
+  expBfDateListData: string[];
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private expressionBFdateService: ExpressionBfDateProvider,
+    private messageService: MessageProvider) {
+    this.babyCode = this.navParams.get("param1");
     this.form = this.navParams.get("param2");
-    this.items = [
-      {slno: '1', date: '02/06/2018', time: '19:14'},
-      {slno: '2', date: '02/06/2018', time: '19:14'},
-      {slno: '3', date: '02/06/2018', time: '19:14'},
-      {slno: '4', date: '02/06/2018', time: '19:14'},
-      {slno: '5', date: '02/06/2018', time: '19:14'},
-      {slno: '6', date: '02/06/2018', time: '19:14'}    ]
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ExpressoinFormPage');
   }
-  goToBabyExBfTimeView(babyId: any,date:any){
-    this.navCtrl.push(ExpressionTimeFormPage,{
+  goToBabyExBfTimeView(babyId: any, date: any) {
+    this.navCtrl.push(ExpressionTimeFormPage, {
       param: babyId,
-      date:date
+      date: date
     });
   }
-  addnewExpressionForm(){
-    this.navCtrl.push(ExpressionNewFormPage);
+  addnewExpressionForm() {
+    var d = new Date();
+    var currentTime = d.getHours() + ":" + d.getMinutes();
+    var objectToPush = {
+      babyCode: this.babyCode,
+      userId: '123',
+      dateOfExpression: this.getDateFormat(),
+      timeOfExpression: currentTime,
+      durationOfExpression: null,
+      methodOfExpression: '',
+      locationOfExpression: '',
+      volOfMilkExpressedFromL: null,
+      volOfMilkExpressedFromR: null
+
+    }
+
+
+    this.navCtrl.push(ExpressionTimeFormPage, {
+      expressionBfObject: objectToPush
+    });
+  }
+  getDateFormat() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = 0 + dd;
+    }
+    if (mm < 10) {
+      mm = 0 + mm;
+    }
+    var date = dd + '-' + mm + '-' + yyyy;
+    return date
+  }
+
+  ngOnInit() {
+    //Getting date list
+    this.expressionBFdateService.getExpressionBFDateListData(this.babyCode)
+      .then(data => {
+        this.expBfDateListData = data
+      })
+      .catch(err => {
+        this.messageService.showErrorToast((err as IDBOperationStatus).message)
+      })
   }
 
 }

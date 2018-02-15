@@ -33,6 +33,8 @@ import { FeedDateListServiceProvider } from '../providers/feed-date-list-service
 import { DatePipe } from '@angular/common';
 import { OrderByDatePipe } from '../pipes/order-by-date/order-by-date';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
+import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expression-bf-date';
+import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
 
 
 @NgModule({
@@ -95,7 +97,10 @@ import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expressi
     AddNewPatientServiceProvider,
     FeedDateListServiceProvider,
     DatePipe,
-    AddNewExpressionBfServiceProvider
+    AddNewExpressionBfServiceProvider,
+    ExpressionBfDateProvider,
+    SaveExpressionBfProvider,
+    UserServiceProvider
   ]
 })
 export class AppModule {}

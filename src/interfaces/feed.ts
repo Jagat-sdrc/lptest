@@ -5,7 +5,7 @@
  */
 
 interface IFeed{
-    patientId: string;
+    id:string;
     babyCode: string;
     userId: string;
     dateOfFeed: string;
@@ -14,6 +14,7 @@ interface IFeed{
     OMMVolume: number;
     DHMVolume: number;
     formulaVolume: number;
+    animalMilkVolume: number;
     otherVolume: number;
     babyWeight: number;
 }

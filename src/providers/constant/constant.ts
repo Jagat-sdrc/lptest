@@ -50,6 +50,7 @@ export class ConstantProvider {
 
   static dbKeyNames: IDBKeyNames = {
     feedExpression: "feedExpression",
+    bfExpression:"bfExpression",
     patient: "patient",
     country: "country",
     state: "state",

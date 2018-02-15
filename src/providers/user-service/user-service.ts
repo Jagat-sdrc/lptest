@@ -1,17 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-/*
-  Generated class for the UserServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ * This service is going to deal with user related stuffs
+ * @author Ratikanta
+ * @since 0.0.1
+ */
 @Injectable()
 export class UserServiceProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello UserServiceProvider Provider');
+  private userId: string;
+  constructor() {}
+
+  setUserId(userId: string){
+    this.userId = userId
+  }
+
+  getUserId(): string{
+    return this.userId
   }
 
 }
