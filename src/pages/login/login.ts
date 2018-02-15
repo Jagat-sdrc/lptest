@@ -13,6 +13,7 @@ import { ConstantProvider } from '../../providers/constant/constant';
 })
 export class LoginPage {
 
+  
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private storage: Storage, private alertCtrl: AlertController) {
   }
@@ -27,12 +28,9 @@ export class LoginPage {
   forgotPassword(){
     let confirm = this.alertCtrl.create({
       enableBackdropDismiss: false,
-      title: 'Warning',
-      message: 'You entered the value more than 4000',
-      buttons: [{
-          text: 'No',
-          handler: () => {}
-        },
+      title: 'Info',
+      message: 'Send an email to abc@ahi.com from your email requesting for your password. ',
+      buttons: [
         {
           text: 'Yes',
           handler: () => {

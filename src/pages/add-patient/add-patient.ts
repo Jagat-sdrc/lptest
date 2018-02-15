@@ -43,6 +43,8 @@ export class AddPatientPage implements OnInit{
   institutionName: string;
   maxDate: any;
   maxTime: any;
+  resetStatus: boolean = false;
+  outPatientAdmissionStatus: boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,private storage: Storage,
@@ -66,8 +68,27 @@ export class AddPatientPage implements OnInit{
    * @author Jagat Bandhu
    * @since 0.0.1
    */
-  cancel(){
-    this.navCtrl.pop();
+  reset(){
+    this.resetStatus = false;
+    Object.keys(this.patientForm.controls).forEach(field => { // {1}
+      const control = this.patientForm.get(field);            // {2}
+      control.markAsTouched({ onlySelf: true });       // {3}
+    });
+    this.patientForm.controls.hospital_baby_id.setValue(null)
+    this.patientForm.controls.mother_name.setValue(null),
+    this.patientForm.controls.mother_age.setValue(null),
+    this.patientForm.controls.delivery_date.setValue(null),
+    this.patientForm.controls.delivery_time.setValue(null),
+    this.patientForm.controls.delivery_method.setValue(null),
+    this.patientForm.controls.baby_weight.setValue(null),
+    this.patientForm.controls.gestational_age.setValue(null),
+    this.patientForm.controls.intent_provide_milk.setValue(null),
+    this.patientForm.controls.hm_lactation.setValue(null),
+    this.patientForm.controls.first_exp_time.setValue(null),
+    this.patientForm.controls.inpatient_outpatient.setValue(null),
+    this.patientForm.controls.admission_date.setValue(null),
+    this.patientForm.controls.baby_admitted.setValue(null),
+    this.patientForm.controls.nicu_admission.setValue(null)
   }
 
   ionViewDidLoad(){
@@ -192,8 +213,19 @@ export class AddPatientPage implements OnInit{
       }
      }
 
+     outpatientAdmission(){
+       if(this.patientForm.controls.inpatient_outpatient.value.id==15){
+        this.outPatientAdmissionStatus = true;
+       } else {
+        this.outPatientAdmissionStatus = false;
+        this.patientForm.controls.admission_date.setValue(null);
+        this.patientForm.controls.admission_date.setErrors(null);
+       }
+        
+     }
+
      validateBabyWeight(babyWeight){
-       if(this.patientForm.controls.baby_weight.value<300){
+       if(this.patientForm.controls.baby_weight.value<500){
          this.patientForm.controls.baby_weight.setValue(null);
        } else if(this.patientForm.controls.baby_weight.value>4000){
         let confirm = this.alertCtrl.create({
@@ -228,11 +260,13 @@ export class AddPatientPage implements OnInit{
     save(){
       console.log(this.patientForm);
       if(!this.patientForm.valid){
+        this.resetStatus = true;
         Object.keys(this.patientForm.controls).forEach(field => { // {1}
           const control = this.patientForm.get(field);            // {2}
           control.markAsTouched({ onlySelf: true });       // {3}
         });
       } else {
+        this.resetStatus = false;
         console.log(this.patientForm.controls.baby_id.value);
 
         //Initialize the add new patient object
@@ -243,16 +277,16 @@ export class AddPatientPage implements OnInit{
           mothersAge: this.patientForm.controls.mother_age.value,
           deliveryDate: this.patientForm.controls.delivery_date.value,
           deliveryTime: this.patientForm.controls.delivery_time.value,
-          deliveryMethod: this.patientForm.controls.delivery_method.value.typeId,
+          deliveryMethod: this.patientForm.controls.delivery_method.value.id,
           babyWeight: this.patientForm.controls.baby_weight.value,
           gestationalAgeInWeek: this.patientForm.controls.gestational_age.value,
-          mothersPrenatalIntent: this.patientForm.controls.intent_provide_milk.value.typeId,
-          parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value.typeId,
+          mothersPrenatalIntent: this.patientForm.controls.intent_provide_milk.value.id,
+          parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value.id,
           timeTillFirstExpression: this.patientForm.controls.first_exp_time.value,
-          inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.typeId,
+          inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.id,
           admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
-          babyAdmittedTo: this.patientForm.controls.baby_admitted.value.typeId,
-          nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.typeId
+          babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
+          nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id
         }
 
         this.addNewPatientService.saveNewPatient(this.patient)
