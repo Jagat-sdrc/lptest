@@ -19,7 +19,7 @@
 
   <ion-list>
     
-    <ion-item class="item-stable" *ngFor="let feedExpression of feedExpressions; let i=index" text-wrap>
+    <ion-item class="item-stable" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
         <div>
           <div class="acordion-title" (click)="toggleGroup(feedExpression)" [ngClass]="{active: isGroupShown(feedExpression)}">
             <div>

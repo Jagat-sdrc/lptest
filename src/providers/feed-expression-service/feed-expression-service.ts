@@ -114,23 +114,6 @@ export class FeedExpressionServiceProvider {
     
   }
 
-  //Test method
-  getKeys(){
-    //All keys
-    // this.storage.keys().then(data=>{
-    //   console.log(data)
-    // })
-
-    //Particular key value
-    // this.storage.get("feedExpression").then(data=>{
-    //   console.log(data)
-    // })
-
-
-    // this.storage.clear();
-    // this.storage.remove(ConstantProvider.dbKeyNames.feedExpression)
-  }
-
   /**
    * This method will check whether we have the record with given baby id, date and time.
    * If all the attribute value will match, this will splice that record and append incoming record.

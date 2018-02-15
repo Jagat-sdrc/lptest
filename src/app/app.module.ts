@@ -35,6 +35,7 @@ import { OrderByDatePipe } from '../pipes/order-by-date/order-by-date';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expression-bf-date';
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
+import { OrderByTimePipe } from '../pipes/order-by-time/order-by-time';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-e
     FeedPage,
     ExpressionNewFormPage,
     FeedDateListPage,
-    OrderByDatePipe
+    OrderByDatePipe,
+    OrderByTimePipe
     
   ],
   imports: [
