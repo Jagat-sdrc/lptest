@@ -103,8 +103,8 @@
           <ion-option *ngFor="let item of motherPrenatalMilk" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
-      <ion-item class="error" *ngIf="patientForm.controls.gestational_age.invalid  && (patientForm.controls.gestational_age.dirty || patientForm.controls.gestational_age.touched) && resetStatus">
-        Please enter Gestational age in weeks
+      <ion-item class="error" *ngIf="patientForm.controls.intent_provide_milk.invalid  && (patientForm.controls.intent_provide_milk.dirty || patientForm.controls.intent_provide_milk.touched) && resetStatus">
+        Please enter Mother's prenatal intent to provide milk
       </ion-item>
     </div>
     <div class="form-group">
