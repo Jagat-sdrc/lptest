@@ -7,6 +7,7 @@ import { BabyDashboardPage } from '../baby-dashboard/baby-dashboard';
 import { AddPatientPage } from '../add-patient/add-patient';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { MessageProvider } from '../../providers/message/message';
+import 'rxjs/add/operator/debounceTime';
 
 @IonicPage()
 @Component({
@@ -17,23 +18,13 @@ export class RegisteredPatientPage {
 
   searchTerm: string = '';
   searchControl: FormControl;
-  searching: any = false;
-  temp: any;
   patientList: any;
   sortBy: string;
+  searching: any = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
-    private messageService: MessageProvider) {
-    this.searchControl = new FormControl();
-  }
-
-  ionViewDidLoad() {
-    this.setFilteredItems();
-    this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
-      this.searching = false;
-      this.setFilteredItems();
-    });
+    private messageService: MessageProvider) {    
   }
 
   ionViewWillEnter(){
@@ -42,31 +33,21 @@ export class RegisteredPatientPage {
 
   ngOnInit(){
     this.sortBy = ConstantProvider.patientSortBy.deliveryDate;
+    this.searchControl = new FormControl();
   }
 
-  onSearchInput(){
-    this.searching = true;
+
+  ionViewDidLoad() { 
+    this.setSearchedPatients();
+    this.searchControl.valueChanges.debounceTime(700)
+    .subscribe(search => {
+      this.searching = false;
+      this.setSearchedPatients();
+    });
   }
 
-  setFilteredItems() {
-    this.patientList = this.filterItems(this.searchTerm);
-  }
 
-  /** 
-   * This method will refresh the list with updated data
-   * 
-   * @author Jagat Bandhu Sahoo
-   * @since 0.0.1
-  */
-  filterItems(searchTerm){
-    if(searchTerm){
-      return this.patientList.filter((patient) => {
-        return patient.babyCodeByHospital.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-    }); 
-    } else {
-        return this.patientList;
-    } 
-  }
+
 
   goToBabyDashBoard(babyCode: string,babyCodeHospital: string){
 
@@ -181,5 +162,23 @@ export class RegisteredPatientPage {
     .catch(err=>{
       this.messageService.showErrorToast(err);
     })
+  }
+
+  /** 
+   * This method will help us getting searched patients
+   * @author Ratikanta
+   * @since 0.0.1
+  */
+  setSearchedPatients(){
+    this.patientList = this.registeredPatientService.getSearchedPatients(this.searchTerm)
+  }
+
+  /** 
+   * This will make the search sprinner visible
+   * @author Ratikanta
+   * @since 0.0.1
+  */
+  onSearchInput(){
+    this.searching = true;
   }
 }

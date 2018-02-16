@@ -17,12 +17,11 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content>  
   <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
-  <!-- <div *ngIf="searching" class="spinner-container">
-    <ion-spinner></ion-spinner>
-  </div> -->
-
+  <div *ngIf="searching" class="spinner-container">
+      <ion-spinner></ion-spinner>
+  </div>
   <ion-list>
     <ion-item-sliding *ngFor="let item of patientList | sortPatient:sortBy; let i = index">
       <ion-item no-lines>
@@ -47,5 +46,4 @@
     </ion-item-sliding>
 
   </ion-list>
-
 </ion-content>
