@@ -14,8 +14,8 @@ export class ConstantProvider {
   @author:subhadarshani@sdrc.co.in
 */
   
-  static FeedingTypeIds: IFeedingMethods = {
-    feedingMethodTypeId: 1
+  static DeliveryMethodTypeIds: IDeliveryMethods = {
+    deliveryMethodTypeId: 1
   }
 
   static MotherPrenatalMilkTypeIds: IMotherPrenatalMilk = {
@@ -38,14 +38,15 @@ export class ConstantProvider {
     nicAdmissionReasonTypeId: 6
   }
 
-  static DeliveryMethodTypeIds: IDeliveryMethods = {
-    deliveryMethodTypeId: 7
-  }
   static MethodOfExpressionBfTypeId: IMethodOfExpressionBF = {
-    methodOfExpressionBfTypeId: 8
+    methodOfExpressionBfTypeId: 7
   }
   static LocationOfExpressionBfTypeId: ILocationOfExpressionBF = {
-    locationOfExpressionBfTypeId: 9
+    locationOfExpressionBfTypeId: 8
+  }
+
+  static FeedingTypeIds: IFeedingMethods = {
+    feedingMethodTypeId: 11
   }
 
   static dbKeyNames: IDBKeyNames = {

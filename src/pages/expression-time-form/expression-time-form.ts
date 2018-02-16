@@ -12,7 +12,13 @@ import {
 import {
   MessageProvider
 } from '../../providers/message/message';
-import { SaveExpressionBfProvider } from '../../providers/save-expression-bf/save-expression-bf';
+import {
+  SaveExpressionBfProvider
+} from '../../providers/save-expression-bf/save-expression-bf';
+import {
+  ExpressionBfDateProvider
+} from '../../providers/expression-bf-date/expression-bf-date'
+import { DatePipe } from '@angular/common';
 /**
  * Generated class for the ExpressionTimeFormPage page.
  *
@@ -26,62 +32,86 @@ import { SaveExpressionBfProvider } from '../../providers/save-expression-bf/sav
   templateUrl: 'expression-time-form.html',
 })
 export class ExpressionTimeFormPage {
-  expressionBfTimeList: any;
+  bFExpressions: IBFExpression[];
+  bfExpression: IBFExpression;
+  bfExpressionMethods: ITypeDetails[];
+  locationOfexpressionMethods: ITypeDetails[];
   shownGroup: any;
-  methodOfExpObj: any
-  methodOfExpressionBfList: any;
-  locationOfexpressionList: any;
-  objectToPush:any
+  dataForBFEntryPage: IDataForBFEntryPage
+  methodOfBfExpObject: any;
+  locOfExpressionObject: any;
+  maxDate:any;
+  maxTime:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
     private messageService: MessageProvider,
-  private saveBfExpressionnService:SaveExpressionBfProvider) {
-    this.expressionBfTimeList = [];
-  }
-  //getting whether there is a new record and add to the exting time list from database
-  getNewRecord() {
-    if (this.navParams.get("expressionBfObject") != null) {
-      this.expressionBfTimeList.push(this.navParams.get("expressionBfObject"));
-      setTimeout(() => {
-        this.toggleGroup(this.expressionBfTimeList[0]);
-      }, 500);
-    }
-  }
-  ngOnInit() {
-    this.objectToPush = {
-      babyCode: 124,
-      userId: '124',
-      dateOfExpression: '13-02-2013',
-      timeOfExpression: '07:03',
-      durationOfExpression: 1,
-      methodOfExpression: 'abc',
-      locationOfExpression: 'abc',
-      volOfMilkExpressedFromL: 20,
-      volOfMilkExpressedFromR: 20
+    private saveBfExpressionnService: SaveExpressionBfProvider,
+    private expressionBFdateService: ExpressionBfDateProvider,
+    private datePipe: DatePipe) {
+    this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
+    this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
 
-    }
-    this.getNewRecord();
+  }
+
+  ngOnInit() {
+    this.dataForBFEntryPage = this.navParams.get('dataForBFEntryPage');
+
+    //getting existing BF expression for given baby code and date
+    this.expressionBFdateService.findByBabyCodeAndDate(this.dataForBFEntryPage.babyCode,
+        this.dataForBFEntryPage.selectedDate, this.dataForBFEntryPage.isNewExpression)
+      .then(data => {
+        this.bFExpressions = data
+
+      })
+      .catch(err => {
+        this.messageService.showErrorToast(err)
+      })
     //Getting method of expressionbf type details
     this.addNewExpressionBfService.getMethodOfExpressionBF()
       .subscribe(data => {
-        this.methodOfExpressionBfList = data
+
+        this.bfExpressionMethods = data;
+        console.log(this.bfExpressionMethods);
       }, err => {
         this.messageService.showErrorToast(err)
       });
     //Getting location of expression type detail
     this.addNewExpressionBfService.getLocationOfExpressionBF()
       .subscribe(data => {
-        this.locationOfexpressionList = data
+        this.locationOfexpressionMethods = data
       }, err => {
         this.messageService.showErrorToast(err)
       });
 
   }
 
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ExpressionTimeFormPage');
   }
-  toggleGroup(group) {
+  toggleGroup(group, i) {
+    
+    this.methodOfBfExpObject = this.bFExpressions[i].methodOfExpression;
+    this.locOfExpressionObject = this.bFExpressions[i].locationOfExpression;
+
+    //getting the id of selected method of expression.
+    for (var j = 0; j < this.bfExpressionMethods.length; j++) {
+        var id =''+this.bfExpressionMethods[j].id
+        if (this.bFExpressions[i].methodOfExpression === id) {
+          this.methodOfBfExpObject= '' + this.bfExpressionMethods[i].name;
+          break;
+        }
+         
+    }
+     //getting the id of selected location of expression.
+
+     for (var k = 0; k < this.locationOfexpressionMethods.length; k++) {
+      var id =''+this.locationOfexpressionMethods[k].id
+      if (this.bFExpressions[i].locationOfExpression === id) {
+        this.locOfExpressionObject = '' + this.locationOfexpressionMethods[i].name;
+        break;
+      }
+    }
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {
@@ -89,42 +119,104 @@ export class ExpressionTimeFormPage {
     }
   };
   isGroupShown(group) {
-
     return this.shownGroup === group;
   };
-  //This method will add new time of expressionBF 
-  addExpressionTIme() {
-    var d = new Date();
-    var currentTime = d.getHours() + ":" + d.getMinutes();
-    var objectToPush = {
-      time: currentTime
+  
+
+
+  /**
+   * This method will save a single feed expression into database
+   * 
+   * @param {IBFExpression} BfExpression 
+   * @author Subhadarshani
+   * @since 0.0.1
+   */
+  saveExpression(bfExpression: IBFExpression) {
+    //getting the id of selected method of expression.
+    for (var i = 0; i < this.bfExpressionMethods.length; i++) {
+      if (this.bfExpressionMethods[i].name === this.methodOfBfExpObject) {
+
+        bfExpression.methodOfExpression = '' + this.bfExpressionMethods[i].id;
+        break;
+      }
     }
-    this.expressionBfTimeList.unshift(objectToPush);
-    setTimeout(() => {
-      this.toggleGroup(this.expressionBfTimeList[0]);
-    }, 500);
+    //getting the id of selected location of expression.
+
+    for (var i = 0; i < this.locationOfexpressionMethods.length; i++) {
+      if (this.locationOfexpressionMethods[i].name === this.locOfExpressionObject) {
+        bfExpression.locationOfExpression = '' + this.locationOfexpressionMethods[i].id;
+        break;
+      }
+    }
+
+    //set validations for all the fields
+    if (!this.validateDurationOfExpression(bfExpression.durationOfExpression)) {
+      this.messageService.showErrorToast(MessageProvider.messages.ENTER_VALID_DURATION_OF_EXPRESSION)
+    } else if (bfExpression.methodOfExpression == null) {
+      this.messageService.showErrorToast(MessageProvider.messages.ENTER_TYPE_OF_BF_EXPRESSION);
+    } else if (bfExpression.locationOfExpression == null) {
+      this.messageService.showErrorToast(MessageProvider.messages.ENTER_LOC_OF_EXPRESSION);
+    } else if (bfExpression.volOfMilkExpressedFromLR == null) {
+      this.messageService.showErrorToast(MessageProvider.messages.ENTER_VOLUME_OF_MILK_FROM_LEFT);
+    } else if (!this.validateVolumeOfMilk(bfExpression.volOfMilkExpressedFromLR)) {
+      this.messageService.showErrorToast(MessageProvider.messages.ENTER_VALID_VOLUME_OF_MILK);
+    } else {
+      this.saveBfExpressionnService.saveBfExpression(bfExpression)
+      .then(data => {
+        this.messageService.showSuccessToast("save successful!")
+      })
+      .catch(err => {
+        this.messageService.showErrorToast((err as IDBOperationStatus).message)
+      })
+    }
+
 
   }
-  expressionSelected() {}
-  locationSelected() {
-
-  }
-
-  saveExpressionTIme(item: any) {
-
-    console.log(item);
+  /**
+ * This method is going to create a new expression entry for selected date and keep it on the top and open
+ * 
+ * @memberof ExpressionTimeFormPage
+ */
+  newExpression(){
+    let day = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[0])
+    let month = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[1])
+    let year = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[2])
+    this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions, this.dataForBFEntryPage.babyCode, 
+    new Date(year, month, day))
     
-    this.saveBfExpressionnService.saveBfExpression(item)
-    .then(data=> {
-    this.messageService.showSuccessToast("save successful!")
-  })
-    .catch(err =>{
-    this.messageService.showErrorToast((err as IDBOperationStatus).message)
-  })
-    
+   
+  }
+  /**
+ * This method is going to validate the duration of expression field is a decimal field or not and check up to 2 decimal places.
+ * 
+ * @memberof ExpressionTimeFormPage
+ */
+  validateDurationOfExpression(value) {
+    if (value == null) {
+      return false;
+    } else {
+      var rx = /^\d+(?:\.\d{0,2})?$/
+
+      if (rx.test(value)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
   }
-  editExpressionTIme() {
+   /**
+ * This method is going to validate the volume of milk ranges from 0 to 300 or not.
+ * 
+ * @memberof ExpressionTimeFormPage
+ */
+  validateVolumeOfMilk(value) {
+   // var volume = parseInt(value);
+    if (value < 0 || value > 300) {
+      return false;
+    } else {
+      return true;
+    }
 
   }
 }

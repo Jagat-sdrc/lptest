@@ -16,6 +16,7 @@ import {
 import {
   ExpressionBfDateProvider
 } from '../../providers/expression-bf-date/expression-bf-date'
+import { DatePipe } from '@angular/common';
 /**
  * Generated class for the ExpressoinFormPage page.
  *
@@ -36,6 +37,7 @@ export class ExpressoinFormPage {
   expBfDateListData: string[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    private datePipe: DatePipe,
     private expressionBFdateService: ExpressionBfDateProvider,
     private messageService: MessageProvider) {
     this.babyCode = this.navParams.get("param1");
@@ -45,58 +47,53 @@ export class ExpressoinFormPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ExpressoinFormPage');
   }
-  goToBabyExBfTimeView(babyId: any, date: any) {
+  goToBabyExBfTimeView(date: any) {
     this.navCtrl.push(ExpressionTimeFormPage, {
-      param: babyId,
-      date: date
-    });
-  }
-  addnewExpressionForm() {
-    var d = new Date();
-    var currentTime = d.getHours() + ":" + d.getMinutes();
-    var objectToPush = {
       babyCode: this.babyCode,
-      userId: '123',
-      dateOfExpression: this.getDateFormat(),
-      timeOfExpression: currentTime,
-      durationOfExpression: null,
-      methodOfExpression: '',
-      locationOfExpression: '',
-      volOfMilkExpressedFromL: null,
-      volOfMilkExpressedFromR: null
-
-    }
-
-
-    this.navCtrl.push(ExpressionTimeFormPage, {
-      expressionBfObject: objectToPush
+      date: date,
+      isNewExpression:false
     });
   }
-  getDateFormat() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-
-    var yyyy = today.getFullYear();
-    if (dd < 10) {
-      dd = 0 + dd;
-    }
-    if (mm < 10) {
-      mm = 0 + mm;
-    }
-    var date = dd + '-' + mm + '-' + yyyy;
-    return date
-  }
-
   ngOnInit() {
     //Getting date list
     this.expressionBFdateService.getExpressionBFDateListData(this.babyCode)
       .then(data => {
-        this.expBfDateListData = data
+        this.expBfDateListData = data;
+        console.log(this.expBfDateListData);
       })
       .catch(err => {
         this.messageService.showErrorToast((err as IDBOperationStatus).message)
       })
+  }
+    /**
+   * This is going to send us to entry page with selected date and baby id
+   * @author Ratikanta
+   * @param date The selected date
+   * @since 0.0.1
+   */
+  dateSelected(date: string){
+    let dataForBFEntryPage: IDataForBFEntryPage = {
+      babyCode: this.babyCode,
+      selectedDate: date,
+      isNewExpression: false
+    }
+    this.navCtrl.push(ExpressionTimeFormPage, {dataForBFEntryPage: dataForBFEntryPage})
+  }
+
+/**
+ * This methodis going to take us to the entry modal
+ * 
+ * @memberof FeedDateListPage
+ * @author Ratikanta
+ * @since 0.0.1
+ */
+  newExpression(){
+    let dataForBFEntryPage: IDataForBFEntryPage = {
+      babyCode: this.babyCode,
+      selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      isNewExpression: true
+    }
+    this.navCtrl.push(ExpressionTimeFormPage, {dataForBFEntryPage: dataForBFEntryPage})
   }
 
 }

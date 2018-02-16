@@ -17,7 +17,7 @@ export class AddNewExpressionBfServiceProvider {
     console.log('Hello AddNewExpressionBfServiceProvider Provider');
   }
 /**
-   * This method should return feeding method lists
+   * This method should return method of BF expression lists
    * 
    * @author Subhadarshini Patra
    * @returns {Observable<ITypeDetails[]>} 
@@ -30,6 +30,13 @@ export class AddNewExpressionBfServiceProvider {
            })
         .catch(this.handleError);
   }
+  /**
+   * This method should return location of expression lists
+   * 
+   * @author Subhadarshini Patra
+   * @returns {Observable<ITypeDetails[]>} 
+   * @memberof AddNewExpressionBfServiceProvider
+   */
   getLocationOfExpressionBF(): Observable<ITypeDetails[]> {
 
     return this.http.get("./assets/data.json").map((response: Response) => {
