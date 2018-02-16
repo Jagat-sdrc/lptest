@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageProvider } from '../../providers/message/message';
+import { NewAccountServiceProvider } from '../../providers/new-account-service/new-account-service';
 
 /**
  * Generated class for the CreateNewAccountPage page.
@@ -20,7 +22,8 @@ export class CreateNewAccountPage {
   user: IUser;
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    private messageService: MessageProvider, public newAccountServiceProvider: NewAccountServiceProvider) {
   }
 
   ngOnInit(){
@@ -76,14 +79,14 @@ export class CreateNewAccountPage {
           institution: this.userForm.controls.institution.value,
         }
 
-        // this.addNewPatientService.saveNewPatient(this.user)
-        //   .then(data=> {
-        //   this.messageService.showSuccessToast("save successful!");
-        //   this.navCtrl.pop();
-        // })
-        //   .catch(err =>{
-        //   this.messageService.showErrorToast((err as IDBOperationStatus).message)
-        // })
+        this.newAccountServiceProvider.saveNewUser(this.user)
+          .then(data=> {
+          this.messageService.showSuccessToast("Created successful!");
+          this.navCtrl.pop();
+        })
+          .catch(err =>{
+          this.messageService.showErrorToast((err as IDBOperationStatus).message)
+        })
       }
   }
 

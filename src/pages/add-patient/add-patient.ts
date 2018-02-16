@@ -93,25 +93,13 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.nicu_admission.setValue(null)
   }
 
-  ionViewDidLoad(){
-    this.storage.get(ConstantProvider.dbKeyNames.country).then((val) => {
-      this.countryName = val;
-    });
-    this.storage.get(ConstantProvider.dbKeyNames.state).then((val) => {
-      this.stateName = val;
-    });
-    this.storage.get(ConstantProvider.dbKeyNames.institution).then((val) => {
-      this.institutionName = val;
-    });
-  }
 
   ionViewDidEnter(){
     if(!(this.navParams.get('babyCode') == undefined)){
       this.autoBabyId = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.autoBabyId = this.countryName.charAt(0)+this.stateName.charAt(0)+
-    this.institutionName.substring(0,3)+this.datePipe.transform(new Date(),"ddMMyyyy")+
+      this.autoBabyId = "IND"+this.datePipe.transform(new Date(),"ddMMyyyy")+
     new Date().getMilliseconds();
     }
   }

@@ -40,16 +40,7 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Country</ion-label>
-        <!-- <ion-select formControlName="delivery_method">
-            <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
-          </ion-select> -->
-        <ion-select formControlName="country">
-          <ion-option value="nes">India</ion-option>
-          <ion-option value="n64">USA</ion-option>
-          <ion-option value="ps">UK</ion-option>
-          <ion-option value="genesis">Canara</ion-option>
-          <ion-option value="saturn">Japan</ion-option>
-        </ion-select>
+        <ion-input type="text" formControlName="country"></ion-input>
       </ion-item>
       <ion-item class="error" *ngIf="userForm.controls.country.invalid && (userForm.controls.country.dirty || userForm.controls.country.touched)">
         Please enter a Country
@@ -59,18 +50,9 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>State</ion-label>
-        <!-- <ion-select formControlName="delivery_method">
-                <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
-              </ion-select> -->
-        <ion-select formControlName="state">
-          <ion-option value="nes">India</ion-option>
-          <ion-option value="n64">USA</ion-option>
-          <ion-option value="ps">UK</ion-option>
-          <ion-option value="genesis">Canara</ion-option>
-          <ion-option value="saturn">Japan</ion-option>
-        </ion-select>
+        <ion-input type="text" formControlName="state"></ion-input>
       </ion-item>
-      <ion-item class="error" *ngIf="userForm.controls.country.invalid && (userForm.controls.country.dirty || userForm.controls.country.touched)">
+      <ion-item class="error" *ngIf="userForm.controls.state.invalid && (userForm.controls.state.dirty || userForm.controls.country.touched)">
         Please enter a State
       </ion-item>
     </div>
@@ -78,16 +60,7 @@
     <div class="form-group">
         <ion-item>
           <ion-label color="black" stacked>District</ion-label>
-          <!-- <ion-select formControlName="delivery_method">
-                  <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
-                </ion-select> -->
-          <ion-select formControlName="district">
-            <ion-option value="nes">India</ion-option>
-            <ion-option value="n64">USA</ion-option>
-            <ion-option value="ps">UK</ion-option>
-            <ion-option value="genesis">Canara</ion-option>
-            <ion-option value="saturn">Japan</ion-option>
-          </ion-select>
+          <ion-input type="text" formControlName="district"></ion-input>
         </ion-item>
         <ion-item class="error" *ngIf="userForm.controls.district.invalid && (userForm.controls.district.dirty || userForm.controls.district.touched)">
           Please enter a District
@@ -97,16 +70,7 @@
       <div class="form-group">
           <ion-item>
             <ion-label color="black" stacked>Institution Name</ion-label>
-            <!-- <ion-select formControlName="delivery_method">
-                    <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
-                  </ion-select> -->
-            <ion-select formControlName="institution">
-              <ion-option value="nes">India</ion-option>
-              <ion-option value="n64">USA</ion-option>
-              <ion-option value="ps">UK</ion-option>
-              <ion-option value="genesis">Canara</ion-option>
-              <ion-option value="saturn">Japan</ion-option>
-            </ion-select>
+            <ion-input type="text" formControlName="institution"></ion-input>
           </ion-item>
           <ion-item class="error" *ngIf="userForm.controls.institution.invalid && (userForm.controls.institution.dirty || userForm.controls.institution.touched)">
             Please enter a Institution name

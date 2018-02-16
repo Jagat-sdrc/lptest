@@ -81,6 +81,8 @@ export class ConstantProvider {
     outbornPatient: "outbornPatient"
   } 
 
+  static passwordFormat = "@123#!"
+
   static typeDetailsIds = {
     inbornPatient: 14,
     outbornPatient: 15
