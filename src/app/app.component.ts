@@ -3,6 +3,8 @@ import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
+import { MessageProvider } from '../providers/message/message';
+import { SynchronizationServiceProvider } from '../providers/synchronization-service/synchronization-service'
 
 @Component({
   templateUrl: 'app.html'
@@ -13,7 +15,8 @@ export class MyApp {
   rootPage: any = LoginPage;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController, private messageProvider: MessageProvider,
+    private synchronizationService: SynchronizationServiceProvider) {
     this.initializeApp();
 
   }
@@ -60,5 +63,15 @@ export class MyApp {
       confirm.present();
         break;
     }
+  }
+
+  /**
+   * This function will be called when a user clicks on the sync button of the side menu.
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * 
+   */
+  prepareForSync(){
+    this.messageProvider.showLoader();
+    this.synchronizationService.fetchDataFromDbAndValidateForSync();
   }
 }
