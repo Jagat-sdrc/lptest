@@ -150,7 +150,7 @@ export class ExpressionBfDateProvider {
     let bf: IBFExpression = {
       id: this.getNewBfExpressionId(babyCode),
       babyCode: babyCode,     
-      userId: this.userService.getUserId(),
+      userId: this.userService.getUser().emailAddress,
       dateOfExpression: new Date().toISOString(),
       timeOfExpression: this.datePipe.transform(new Date(), 'HH:mm'),
       durationOfExpression: null,
