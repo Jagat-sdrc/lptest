@@ -28,7 +28,7 @@ export class SynchronizationServiceProvider {
   sendDataToTheServer(patientsData: Object){
     this.http.get(MessageProvider.serverUrls.SERVER_STATUS).subscribe(data => {
       this.http.post(MessageProvider.serverUrls.SYNCHRONIZE, patientsData).subscribe(data => {
-        this.displaySynchronizationStatus();
+        this.displaySynchronizationStatus(data);
       }, error => {
         this.messageProvider.stopLoader();
         console.log(error);
@@ -39,19 +39,24 @@ export class SynchronizationServiceProvider {
     });
   };
 
-  displaySynchronizationStatus(){
-    let i = 2;
+  displaySynchronizationStatus(data: any){
     let alert = this.alertController.create({
       title: 'Sync Report',
       cssClass: 'syncModal',
-      subTitle: `
-      <div class="reportBody">
-        <h5>Facility form(s) synced : {{i}} + </h5><br>
-        <h5>Facility form(s) synced : {{i}} + </h5><br>
-        <h5>Facility form(s) synced : {{i}} + </h5><br>
-        <h5>Facility form(s) synced : {{i}} + </h5><br>
-      </div>
-      `,
+      message: '<div class="reportBody">'+
+        '<h5>Users synced : '+ data.usersSynced +'</h5><br>'+
+        '<h5>Users rejected : '+ data.usersFailed +'</h5><br>'+
+        '<h5>Babies synced : '+ data.patientsSynced +'</h5><br>'+
+        '<h5>Babies rejected : '+ data.patientsFailed +'</h5><br>'+
+        '<h5>Bf exp synced : '+ data.bfExpressionSynced +'</h5><br>'+
+        '<h5>Bf exp failed : '+ data.bfExpressionFailed +'</h5><br>'+
+        '<h5>Feed synced : '+ data.logFeedSynced +'</h5><br>'+
+        '<h5>Feed failed : '+ data.logFeedFailed +'</h5><br>'+
+        '<h5>Bf supp. practice synced : '+ data.bfSupportivePracticeSynced +'</h5><br>'+
+        '<h5>Bf supp. practice failed : '+ data.bfSupportivePracticeFailed +'</h5><br>'+
+        '<h5>Bf post discharge synced : '+ data.bfPostDischargeSynced +'</h5><br>'+
+        '<h5>Bf post discharge failed : '+ data.bfPostDischargeFailed +'</h5><br>'+
+      '</div>',
       buttons: ['OK']
     });
     alert.present();
