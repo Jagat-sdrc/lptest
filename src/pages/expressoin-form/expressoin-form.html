@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Baby Id {{babyid}} / {{form}}</ion-title>
+    <ion-title>Baby Id{{babyCode}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-card class="card-outside" *ngFor="let date of expBfDateListData | orderByDate; let i = index"
-  (click)="goToBabyExBfTimeView(item.slno,item.date)">
+  (click)='dateSelected(date)'>
     <ion-row class="card-inside">
       <ion-col md-6 >
         <div class="form-group">Sl No: {{i + 1}}</div>
@@ -24,6 +24,6 @@
     <button ion-fab color="primary"><ion-icon name="md-add"></ion-icon></button>
   </ion-fab> -->
   <ion-footer>
-      <button class="login-button" ion-button block (click)="addnewExpressionForm()">Add New Date</button>
+    <button ion-button block (click)="newExpression()">New Expression</button>
     </ion-footer>
 </ion-content>

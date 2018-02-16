@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>expressionTimeForm</ion-title>
+    <ion-title>{{dataForBFEntryPage.selectedDate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,9 +16,9 @@
 <ion-content padding>
   <ion-list>
     
-      <ion-item class="item-stable" *ngFor="let item of expressionBfTimeList; let i=index" text-wrap>
+      <ion-item class="item-stable" *ngFor="let item of bFExpressions; let i=index" text-wrap>
           <div>
-            <div class="acordion-title" (click)="toggleGroup(item)" [ngClass]="{active: isGroupShown(item)}">
+            <div class="acordion-title" (click)="toggleGroup(item,i)" [ngClass]="{active: isGroupShown(item)}">
               <div>
                 {{item.timeOfExpression}}
                 <ion-icon color="success" style="float:right" [name]="isGroupShown(item) ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
@@ -28,49 +28,40 @@
             <div style="margin-top:15px" *ngIf="isGroupShown(item)">
                 <ion-item>
                     <ion-label color="black" floating>Date of Expression</ion-label>
-                    <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="item.dateOfExpression"></ion-datetime>
+                    <ion-datetime displayFormat="DD-MM-YYYY" [max]="maxDate" [(ngModel)]="item.dateOfExpression"></ion-datetime>
                   </ion-item>
 
               <ion-item>
                 <ion-label color="black" floating>Time of expression </ion-label>
-                <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.timeOfExpression"></ion-datetime>
+                <ion-datetime displayFormat="HH:mm" [max]="maxTime" [(ngModel)]="item.timeOfExpression"></ion-datetime>
               </ion-item>
               <ion-item>
-                  <ion-label color="black" floating>Duration of expression </ion-label>
-                  <ion-input type="number"  [value]="item.durationOfExpression" [ngModel]="item.durationOfExpression"></ion-input>
+                  <ion-label color="black" floating>Duration of expression in minutes </ion-label>
+                  <ion-input type="text"  [value]="item.durationOfExpression" [(ngModel)]="item.durationOfExpression"></ion-input>
               </ion-item>
-              <ion-item>
-                <ion-label floating>Method of expression</ion-label>
-                <ion-select  (ionChange)="expressionSelected()" [ngModel]="item.methodOfExpression">
-                  <ion-option [value]="d"  *ngFor="let d of methodOfExpressionBfList" >{{d.name}}</ion-option>
-                         
-                </ion-select>
-              </ion-item>
+             
+  
+                <ion-item>
+                  <ion-label floating>Method of expression</ion-label>
+                  <ion-select [(ngModel)]="methodOfBfExpObject">
+                    <ion-option *ngFor="let bfExpressions of bfExpressionMethods" text-wrap>{{bfExpressions.name}}</ion-option>               
+                  </ion-select>
+                </ion-item>
+             
               <ion-item>
                 <ion-label floating>Location where expression</ion-label>
-                <ion-select (ionChange)="locationSelected()" [ngModel]="item.locationOfExpression">
-                    <ion-option [value]="d"  *ngFor="let d of locationOfexpressionList" >{{d.name}}</ion-option>
+                <ion-select [(ngModel)]="locOfExpressionObject">
+                  <ion-option *ngFor="let locOfExpressions of locationOfexpressionMethods" text-wrap>{{locOfExpressions.name}}</ion-option>               
                 </ion-select>
               </ion-item>
               <ion-item>
-                <ion-label stacked>Volume of milk expressed from left</ion-label>
-                <ion-input type="number" [value]="item.volOfMilkExpressedFromL" [ngModel]="item.volOfMilkExpressedFromL"></ion-input>
+                <ion-label stacked>Volume of milk expressed from left and right breast (in ml,range 0-300)</ion-label>
+                <ion-input type="number" [value]="item.volOfMilkExpressedFromLR" [(ngModel)]="item.volOfMilkExpressedFromLR"></ion-input>
               </ion-item>
-              <ion-item>
-                <ion-label stacked>Volume of milk expressed from right</ion-label>
-                <ion-input type="number"  [value]="item.volOfMilkExpressedFromR" [ngModel]="item.volOfMilkExpressedFromR"></ion-input>
-              </ion-item>
+              <div>
+                <button class="save-button" ion-button  (click)="saveExpression(item)">Save</button>
+              </div>
             
-              <ion-grid>
-                <ion-row>
-                  <ion-col>
-                    <button ion-button block (click)="editExpressionTIme()">Edit</button>
-                  </ion-col>
-                  <ion-col>
-                    <button ion-button block (click)="saveExpressionTIme(item)">Save</button>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
             </div>
           </div>
         </ion-item>
@@ -78,5 +69,5 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-  <button class="login-button" ion-button block (click)="addExpressionTIme()">Add form for new time</button>
+  <button class="login-button" ion-button block (click)="newExpression()">New Expression</button>
 </ion-footer>

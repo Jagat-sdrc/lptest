@@ -5,7 +5,7 @@
  */
 
 interface IBFExpression{   
-
+    id:string;
     babyCode: string;
     userId: string;
     dateOfExpression: string;
@@ -13,7 +13,7 @@ interface IBFExpression{
     durationOfExpression: number;
     methodOfExpression: string;
     locationOfExpression: string;
-    volOfMilkExpressedFromL: number;
-    volOfMilkExpressedFromR: number;
+    volOfMilkExpressedFromLR: number;
+   
    
 }
