@@ -70,14 +70,7 @@ export class ConstantProvider {
     feedExpression: "feedExpression",
     bfExpression:"bfExpression",
     patient: "patient",
-<<<<<<< HEAD
-    user: "user",
-    country: "country",
-    state: "state",
-    institution: "institution"
-=======
     user: "user"
->>>>>>> 49c24c4a346a2de0c500eee56f7814907a65b043
   }
 
   static patientSortBy: IPatientSortBy = {
