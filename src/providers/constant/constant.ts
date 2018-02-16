@@ -56,6 +56,19 @@ export class ConstantProvider {
     state: "state",
     institution: "institution"
   }
+
+  static patientSortBy: IPatientSortBy = {
+    deliveryDate: "deliveryDate",
+    deliveryTime: "deliveryTime",
+    weight: "weight",
+    inbornPatient: "inbornPatient",
+    outbornPatient: "outbornPatient"
+  } 
+
+  static typeDetailsIds = {
+    inbornPatient: 14,
+    outbornPatient: 15
+  }
   
   constructor(public http: HttpClient) {
   }

@@ -43,7 +43,8 @@ static messages:any={
   showErrorToast(message: string){
     let toast = this.toastCtrl.create({
       message: message,
-      showCloseButton: true     
+      showCloseButton: true,
+      duration: 5000    
     });
     toast.present();
   }

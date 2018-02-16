@@ -8,101 +8,111 @@
 
 
 <ion-content padding>
-  <form form novalidate (ngSubmit)="onSubmit(user)" [formGroup]="patientForm">
+  <form [formGroup]="userForm">
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" floating>First Name</ion-label>
-        <ion-input type="text" value="" formControlName="first_name"></ion-input>
+        <ion-label color="black" stacked>First Name</ion-label>
+        <ion-input type="text" formControlName="first_name"></ion-input>
       </ion-item>
-      <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && patientForm.controls.baby_id.dirty">
-        Please enter valid mobile number
+      <ion-item class="error" *ngIf="userForm.controls.first_name.invalid  && (userForm.controls.first_name.dirty || userForm.controls.first_name.touched)">
+        Please enter First Name
       </ion-item>
     </div>
     <div class="form-group">
+      <ion-item>
+        <ion-label color="black" stacked>Last Name</ion-label>
+        <ion-input type="text" formControlName="last_name"></ion-input>
+      </ion-item>
+      <ion-item class="error" *ngIf="userForm.controls.last_name.invalid  && (userForm.controls.last_name.dirty || userForm.controls.last_name.touched)">
+        Please enter Last Name
+      </ion-item>
+    </div>
+    <div class="form-group">
+      <ion-item>
+        <ion-label color="black" stacked>Email</ion-label>
+        <ion-input type="email" value="" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item class="error" *ngIf="userForm.controls.email.invalid  && (userForm.controls.email.dirty || userForm.controls.email.touched)">
+        Please enter valid mobile number
+      </ion-item>
+    </div>
+
+    <div class="form-group">
+      <ion-item>
+        <ion-label color="black" stacked>Country</ion-label>
+        <!-- <ion-select formControlName="delivery_method">
+            <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
+          </ion-select> -->
+        <ion-select formControlName="country">
+          <ion-option value="nes">India</ion-option>
+          <ion-option value="n64">USA</ion-option>
+          <ion-option value="ps">UK</ion-option>
+          <ion-option value="genesis">Canara</ion-option>
+          <ion-option value="saturn">Japan</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item class="error" *ngIf="userForm.controls.country.invalid && (userForm.controls.country.dirty || userForm.controls.country.touched)">
+        Please enter a Country
+      </ion-item>
+    </div>
+
+    <div class="form-group">
+      <ion-item>
+        <ion-label color="black" stacked>State</ion-label>
+        <!-- <ion-select formControlName="delivery_method">
+                <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
+              </ion-select> -->
+        <ion-select formControlName="state">
+          <ion-option value="nes">India</ion-option>
+          <ion-option value="n64">USA</ion-option>
+          <ion-option value="ps">UK</ion-option>
+          <ion-option value="genesis">Canara</ion-option>
+          <ion-option value="saturn">Japan</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item class="error" *ngIf="userForm.controls.country.invalid && (userForm.controls.country.dirty || userForm.controls.country.touched)">
+        Please enter a State
+      </ion-item>
+    </div>
+
+    <div class="form-group">
         <ion-item>
-          <ion-label color="black" floating>Last Name</ion-label>
-          <ion-input type="text" value="" formControlName="first_name"></ion-input>
+          <ion-label color="black" stacked>District</ion-label>
+          <!-- <ion-select formControlName="delivery_method">
+                  <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
+                </ion-select> -->
+          <ion-select formControlName="district">
+            <ion-option value="nes">India</ion-option>
+            <ion-option value="n64">USA</ion-option>
+            <ion-option value="ps">UK</ion-option>
+            <ion-option value="genesis">Canara</ion-option>
+            <ion-option value="saturn">Japan</ion-option>
+          </ion-select>
         </ion-item>
-        <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && patientForm.controls.baby_id.dirty">
-          Please enter valid mobile number
+        <ion-item class="error" *ngIf="userForm.controls.district.invalid && (userForm.controls.district.dirty || userForm.controls.district.touched)">
+          Please enter a District
         </ion-item>
       </div>
+
       <div class="form-group">
           <ion-item>
-            <ion-label color="black" floating>Last Name</ion-label>
-            <ion-input type="email" value="" formControlName="email"></ion-input>
+            <ion-label color="black" stacked>Institution Name</ion-label>
+            <!-- <ion-select formControlName="delivery_method">
+                    <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
+                  </ion-select> -->
+            <ion-select formControlName="institution">
+              <ion-option value="nes">India</ion-option>
+              <ion-option value="n64">USA</ion-option>
+              <ion-option value="ps">UK</ion-option>
+              <ion-option value="genesis">Canara</ion-option>
+              <ion-option value="saturn">Japan</ion-option>
+            </ion-select>
           </ion-item>
-          <ion-item class="error" *ngIf="patientForm.controls.baby_id.invalid  && patientForm.controls.baby_id.dirty">
-            Please enter valid mobile number
+          <ion-item class="error" *ngIf="userForm.controls.institution.invalid && (userForm.controls.institution.dirty || userForm.controls.institution.touched)">
+            Please enter a Institution name
           </ion-item>
         </div>
   </form>
-  <!-- <ion-item>
-    <ion-label stacked>First Name</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label stacked>Last Name</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label stacked>Email</ion-label>
-    <ion-input type="email"></ion-input>
-  </ion-item>
-
-  <ion-list padding-top>
-    <ion-item>
-      <ion-label>Country</ion-label>
-      <ion-select [(ngModel)]="country">
-        <ion-option value="nes">India</ion-option>
-        <ion-option value="n64">USA</ion-option>
-        <ion-option value="ps">UK</ion-option>
-        <ion-option value="genesis">Canara</ion-option>
-        <ion-option value="saturn">Japan</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-
-  <ion-list>
-    <ion-item>
-      <ion-label>State</ion-label>
-      <ion-select [(ngModel)]="state">
-        <ion-option value="nes">India</ion-option>
-        <ion-option value="n64">USA</ion-option>
-        <ion-option value="ps">UK</ion-option>
-        <ion-option value="genesis">Canara</ion-option>
-        <ion-option value="saturn">Japan</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-
-  <ion-list>
-    <ion-item>
-      <ion-label>District</ion-label>
-      <ion-select [(ngModel)]="district">
-        <ion-option value="nes">India</ion-option>
-        <ion-option value="n64">USA</ion-option>
-        <ion-option value="ps">UK</ion-option>
-        <ion-option value="genesis">Canara</ion-option>
-        <ion-option value="saturn">Japan</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-
-  <ion-list>
-    <ion-item>
-      <ion-label>Institution Name</ion-label>
-      <ion-select [(ngModel)]="institution">
-        <ion-option value="nes">India</ion-option>
-        <ion-option value="n64">USA</ion-option>
-        <ion-option value="ps">UK</ion-option>
-        <ion-option value="genesis">Canara</ion-option>
-        <ion-option value="saturn">Japan</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list> -->
 
   <div class="submit-button" text-center>
     <button ion-button block (click)="submit()">Submit</button>

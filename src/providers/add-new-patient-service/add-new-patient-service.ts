@@ -191,16 +191,10 @@ export class AddNewPatientServiceProvider {
    */
   private validateNewEntryAndUpdate(patients: IPatient[], patient: IPatient): IPatient[]{
 
-    
-    for(let i = 0; i < patients.length;i++){
-      if(patients[i].babyCodeHospital === patient.babyCodeHospital && 
-        patients[i].deliveryDate === patient.deliveryDate &&
-        patients[i].deliveryTime === patient.deliveryTime
-      ){
-        //record found, need to splice and enter new
-        patients.splice(i,1)
-        break;
-      }
+    let index = patients.findIndex(d =>d.babyCode === patient.babyCode);
+    if(index >= 0){
+      //record found, need to splice and enter new
+      patients.splice(index,1);
     }
     patients.push(patient)    
     return patients;

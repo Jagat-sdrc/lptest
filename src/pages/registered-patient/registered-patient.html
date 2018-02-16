@@ -19,26 +19,13 @@
 
 <ion-content>
   <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
-  <div *ngIf="searching" class="spinner-container">
+  <!-- <div *ngIf="searching" class="spinner-container">
     <ion-spinner></ion-spinner>
-  </div>
-
-  <!-- <ion-card class="card-outside" *ngFor="let item of patientList; let i = index">
-    <ion-row class="card-inside" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital)">
-      <ion-col md-6>
-        <div class="form-group">Sl no: {{i+1}}</div>
-        <div>Baby Id: {{item.babyCodeHospital}}</div>
-      </ion-col>
-      <ion-col md-6 text-right>
-        <div class="form-group">{{item.deliveryDate}}</div>
-        <div>{{item.deliveryTime}}</div>
-      </ion-col>
-    </ion-row>
-  </ion-card> -->
+  </div> -->
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of patientList; let i = index">
-      <ion-item>
+    <ion-item-sliding *ngFor="let item of patientList | sortPatient:sortBy; let i = index">
+      <ion-item no-lines>
         <ion-card class="card-outside">
           <ion-row class="card-inside" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital)">
             <ion-col md-6>
@@ -60,8 +47,5 @@
     </ion-item-sliding>
 
   </ion-list>
-  <!-- <ion-fab class="fab-padding" right bottom>
-    <button ion-fab color="primary" (click)="goToAddNewPatient()"><ion-icon name="md-add"></ion-icon></button>
-  </ion-fab> -->
 
 </ion-content>

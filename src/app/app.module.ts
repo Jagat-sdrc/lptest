@@ -37,6 +37,8 @@ import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expres
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
 import { RegisteredPatientServiceProvider } from '../providers/registered-patient-service/registered-patient-service';
 import { OrderByTimePipe } from '../pipes/order-by-time/order-by-time';
+import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
+import { NewAccountServiceProvider } from '../providers/new-account-service/new-account-service';
 
 
 @NgModule({
@@ -56,7 +58,8 @@ import { OrderByTimePipe } from '../pipes/order-by-time/order-by-time';
     ExpressionNewFormPage,
     FeedDateListPage,
     OrderByDatePipe,
-    OrderByTimePipe
+    OrderByTimePipe,
+    SortPatientPipe
     
   ],
   imports: [
@@ -104,7 +107,8 @@ import { OrderByTimePipe } from '../pipes/order-by-time/order-by-time';
     ExpressionBfDateProvider,
     SaveExpressionBfProvider,
     UserServiceProvider,
-    RegisteredPatientServiceProvider
+    RegisteredPatientServiceProvider,
+    NewAccountServiceProvider
   ]
 })
 export class AppModule {}

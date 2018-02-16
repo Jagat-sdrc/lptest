@@ -32,7 +32,7 @@ export class LoginPage {
     this.storage.set(ConstantProvider.dbKeyNames.state,"TELENGANA");
     this.storage.set(ConstantProvider.dbKeyNames.institution,"SEVEN HILLS");
 
-    //this.userService.setUserId(this.loginData.username)
+    this.userService.setUserId(this.loginData.username)
 
     this.navCtrl.setRoot(HomePage);
   }
