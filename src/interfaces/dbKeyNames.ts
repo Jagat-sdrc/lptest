@@ -6,10 +6,6 @@
 interface IDBKeyNames {
     feedExpression: string,
     bfExpression: string,
-    
-    patient: string;
     user: string;
-    country: string;
-    state: string;
-    institution: string;
+    patient: string;
 }

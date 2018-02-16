@@ -1,11 +1,9 @@
 /**
  * This file contains the interfaces of Typeids
  * @author Ratikanta
+ * @author Naseem Akhtar
  * @since 0.0.1
  */
-interface IFeedingMethods{
-    feedingMethodTypeId: number
-}
 
 interface IDeliveryMethods{
     deliveryMethodTypeId: number
@@ -30,9 +28,31 @@ interface IBabyAdmittedTo{
 interface INICAdmissionReason{
     nicAdmissionReasonTypeId: number
 }
+
 interface IMethodOfExpressionBF{
     methodOfExpressionBfTypeId: number
 }
+
 interface ILocationOfExpressionBF{
     locationOfExpressionBfTypeId: number
+}
+
+interface IBFSupportivePractices{
+    bfSupportivePracticesTypeId: number
+}
+
+interface IPersonWhoPerformedBSFP{
+    personWhoPerformedBSFPTypeId: number
+}
+
+interface IFeedingMethods{
+    feedingMethodTypeId: number
+}
+
+interface ITimeOfBreastFeedingPostDischarge{
+    timeOfBreastFeedingPostDischargeTypeId: number
+}
+
+interface IBFStatusPostDischarge{
+    bfStatusPostDischargeTypeId: number
 }
