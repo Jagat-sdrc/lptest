@@ -102,7 +102,7 @@ import { OrderByTimePipe } from '../pipes/order-by-time/order-by-time';
     FeedDateListServiceProvider,
     DatePipe,
     AddNewExpressionBfServiceProvider,
-    SynchronizationServiceProvider
+    SynchronizationServiceProvider,
     ExpressionBfDateProvider,
     SaveExpressionBfProvider,
     UserServiceProvider,
