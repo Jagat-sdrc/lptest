@@ -41,21 +41,36 @@ export class ConstantProvider {
   static MethodOfExpressionBfTypeId: IMethodOfExpressionBF = {
     methodOfExpressionBfTypeId: 7
   }
+
   static LocationOfExpressionBfTypeId: ILocationOfExpressionBF = {
     locationOfExpressionBfTypeId: 8
+  }
+
+  static BFSupportivePracticesTypeId: IBFSupportivePractices = {
+    bfSupportivePracticesTypeId: 9
+  }
+
+  static PersonWhoPerformedBSFPTypeId: IPersonWhoPerformedBSFP = {
+    personWhoPerformedBSFPTypeId: 10
   }
 
   static FeedingTypeIds: IFeedingMethods = {
     feedingMethodTypeId: 11
   }
 
+  static TimeOfBreastFeedingPostDischargeTypeId: ITimeOfBreastFeedingPostDischarge = {
+    timeOfBreastFeedingPostDischargeTypeId: 12
+  }
+
+  static BFStatusPostDischargeTypeId: IBFStatusPostDischarge = {
+    bfStatusPostDischargeTypeId: 13
+  }
+
   static dbKeyNames: IDBKeyNames = {
     feedExpression: "feedExpression",
     bfExpression:"bfExpression",
     patient: "patient",
-    country: "country",
-    state: "state",
-    institution: "institution"
+    user: "user"
   }
 
   static patientSortBy: IPatientSortBy = {

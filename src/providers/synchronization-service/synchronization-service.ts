@@ -2,27 +2,38 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { MessageProvider } from '../message/message';
+import { Storage } from '@ionic/storage';
 
-/*
-  Generated class for the SynchronizationServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ * This service will be execute when an user clicks on sync button. All the sync related functions
+ * are written here.
+ * @author - Naseem Akhtar (naseem@sdrc.co.in)
+ * @since - 0.0.1
+ */
 @Injectable()
 export class SynchronizationServiceProvider {
 
+  patientArray = [];
+
   constructor(public http: HttpClient, private messageProvider: MessageProvider,
-    private alertController: AlertController) {
+    private alertController: AlertController, private storage: Storage) {
     console.log('Hello SynchronizationServiceProvider Provider');
   }
 
+  /**
+   * This function will be called by the app.component.ts files prepareForSync() function.
+   * This function will basically fetch data from the mobile db and validate them, so that the data
+   * can be send for synchronization.
+   */
   fetchDataFromDbAndValidateForSync(){
-    this.http.get('assets/synchronizationDemo.json').subscribe(data => {
-      this.sendDataToTheServer(data);
-    }, error =>{
-      console.log(error);
+    this.storage.get('patient').then((baby) => {
+      console.log(baby);
     });
+    // this.http.get('assets/synchronizationDemo.json').subscribe(data => {
+    //   this.sendDataToTheServer(data);
+    // }, error =>{
+    //   console.log(error);
+    // });
   }
 
   sendDataToTheServer(patientsData: Object){
