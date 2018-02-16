@@ -11,8 +11,16 @@ import { ConstantProvider } from '../constant/constant';
 @Injectable()
 export class UserServiceProvider {
 
+  user: IUser;
   constructor(public http: HttpClient,private storage: Storage) {}
 
+  setUser(user: IUser){
+    this.user = user;
+  }
+
+  getUser(){
+    return this.user;
+  }
   
 
   /**
@@ -28,7 +36,7 @@ export class UserServiceProvider {
     .then(data=>{
         data = (data as IUser[]).filter(d => (d.emailAddress === email));
         if(data.length != 0){
-          resolve(data[0].emailAddress);
+          resolve(data[0]);
         }else{
           reject("Invalid Credential")
         }

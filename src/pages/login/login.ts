@@ -39,6 +39,7 @@ export class LoginPage {
         .then(data=> {
         if(this.loginData.password === (this.loginData.username).substring(0,2)+ConstantProvider.passwordFormat){
           this.messageService.showSuccessToast("Login successful!");
+          this.userService.setUser(data)
           this.navCtrl.setRoot(HomePage);
         }else{
           this.messageService.showErrorToast("Invalid Credential");
