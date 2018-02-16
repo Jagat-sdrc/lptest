@@ -4,7 +4,9 @@
  * @since 0.0.1
  */
 interface IDBKeyNames {
-    feedExpression: string;
+    feedExpression: string,
+    bfExpression: string,
+    
     patient: string;
 
     country: string;

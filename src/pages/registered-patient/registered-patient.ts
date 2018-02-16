@@ -1,3 +1,4 @@
+import { RegisteredPatientServiceProvider } from './../../providers/registered-patient-service/registered-patient-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormControl } from '@angular/forms';
@@ -6,13 +7,7 @@ import { BabyDashboardPage } from '../baby-dashboard/baby-dashboard';
 import { AddPatientPage } from '../add-patient/add-patient';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../../providers/constant/constant';
-
-/**
- * Generated class for the RegisteredPatientPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { MessageProvider } from '../../providers/message/message';
 
 @IonicPage()
 @Component({
@@ -29,12 +24,13 @@ export class RegisteredPatientPage {
   patientList: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public alertCtrl: AlertController,private storage: Storage) {
+    public alertCtrl: AlertController,private storage: Storage, 
+    private registeredPatientService: RegisteredPatientServiceProvider,
+    private messageService: MessageProvider) {
     this.searchControl = new FormControl();
 
     this.storage.get(ConstantProvider.dbKeyNames.patient).then((val) => {
       this.patientList = val;
-      console.log(this.patientList);
     });
   }
 
@@ -49,7 +45,6 @@ export class RegisteredPatientPage {
   ngOnInit(){
     this.storage.get(ConstantProvider.dbKeyNames.patient).then((val) => {
       this.patientList = val;
-      console.log(this.patientList);
     });
   }
 
@@ -71,9 +66,11 @@ export class RegisteredPatientPage {
     } 
   }
 
-  goToBabyDashBoard(babyId: any){
+  goToBabyDashBoard(babyCode: string,babyCodeHospital: string){
+
     this.navCtrl.push(BabyDashboardPage,{
-      param: babyId
+      babyCode: babyCode,
+      babyCodeByHospital: babyCodeHospital
     });
   }
 
@@ -84,6 +81,22 @@ export class RegisteredPatientPage {
   }
 
   refresh(){
+    
+  }
+
+  /**
+   * This method is going to help us deleting the given patient
+   * @param babyCode The baby code of the patient to which we are going to delete
+   */
+  deletePatient(babyCode: string){
+    
+    this.registeredPatientService.deletePatient(babyCode)
+    .then(data=>{
+      this.messageService.showSuccessToast("Deleted successfully")
+    })
+    .catch(err=>{
+      this.messageService.showErrorToast("Could not delete patient, error:" + err)
+    })
     
   }
 

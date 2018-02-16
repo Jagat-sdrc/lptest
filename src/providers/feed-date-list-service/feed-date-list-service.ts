@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
+import { DatePipe } from '@angular/common';
 
 /**
  * This service will help FeedDateList component
@@ -10,7 +11,8 @@ import { ConstantProvider } from '../constant/constant';
 @Injectable()
 export class FeedDateListServiceProvider {
 
-  constructor(private storage: Storage) {}
+  constructor(private storage: Storage,
+  private datePipe: DatePipe) {}
 
   /**
    * This method will give us all the dates in string array format of which feed expression we have.
@@ -19,7 +21,7 @@ export class FeedDateListServiceProvider {
    * @returns Promise<string[]> string array of dates
    * @param patientId the patient id for which we are extracting data
    */
-  getFeedDateListData(patientId: string): Promise<string[]>{
+  getFeedDateListData(babyCode: string): Promise<string[]>{
 
     let promise : Promise<string[]> = new Promise((resolve, reject) => {
 
@@ -32,14 +34,15 @@ export class FeedDateListServiceProvider {
       .then(data=>{
         if(data != null){
 
-          data = (data as IFeed[]).filter(d=> d.patientId === patientId)
+          data = (data as IFeed[]).filter(d=> d.babyCode === babyCode)
           
           //Checking if there is any data belong to the patient id or not
           if((data as IFeed[]).length > 0){
             let dates:string[] = [];
             (data as IFeed[]).forEach(d => {
-              dates.push(d.dateOfFeed)
+              dates.push(this.datePipe.transform(new Date(d.dateOfFeed), 'dd-MM-yyyy'))              
             });
+
             //removing duplicates
             dates = Array.from(new Set(dates))
 

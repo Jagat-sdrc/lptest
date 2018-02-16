@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Baby Id {{babyid}}</ion-title>
+    <ion-title>Baby Id {{paramToExpressionPage.babyCodeByHospital}}</ion-title>
     <ion-buttons end>
       <button class="customHome" ion-button icon-only (click)="goToHome()"><ion-icon name="home"></ion-icon></button>
     </ion-buttons>
@@ -13,10 +13,10 @@
 <ion-content padding class="main-content">
 
   <ion-row>
-    <ion-col (click)="goToForm('Patient Profile')" class="gap">
+    <ion-col [navPush]="addPatientPage" class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">Profile</div>
     </ion-col>
-    <ion-col (click)="goToForm('Exp/BF')" class="gap">
+    <ion-col [navPush]="expressoinFormPage" class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">Exp / BF</div>
     </ion-col>
   </ion-row>
@@ -25,7 +25,7 @@
     <ion-col (click)="goToForm('BFSP')" class="gap">
       <div class="bg-grey">BFSP</div>
     </ion-col>
-    <ion-col [navPush]="feedDateListPage" class="gap">
+    <ion-col [navPush]="feedDateListPage" class="gap" [navParams]="paramToExpressionPage">
         <!-- <ion-col [navPush]="feedPage" class="gap"> -->
       <div class="bg-grey">Feed</div>
     </ion-col>

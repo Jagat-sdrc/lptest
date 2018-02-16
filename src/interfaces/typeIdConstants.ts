@@ -1,3 +1,8 @@
+/**
+ * This file contains the interfaces of Typeids
+ * @author Ratikanta
+ * @since 0.0.1
+ */
 interface IFeedingMethods{
     feedingMethodTypeId: number
 }

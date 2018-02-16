@@ -6,6 +6,8 @@ import { ConstantProvider } from '../constant/constant';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Storage } from '@ionic/storage';
+import { DatePipe } from '@angular/common';
+import { UserServiceProvider } from '../user-service/user-service';
 
 /**
  * This service will only provide service to Feed component
@@ -16,7 +18,8 @@ import { Storage } from '@ionic/storage';
 export class FeedExpressionServiceProvider {
 
   constructor(public http: HttpClient,
-    private storage: Storage) {   
+    private storage: Storage, private datePipe: DatePipe,
+  private userService: UserServiceProvider) {   
   }
 
   
@@ -111,22 +114,6 @@ export class FeedExpressionServiceProvider {
     
   }
 
-  //Test method
-  getKeys(){
-    //All keys
-    // this.storage.keys().then(data=>{
-    //   console.log(data)
-    // })
-
-    //Particular key value
-    // this.storage.get("feedExpression").then(data=>{
-    //   console.log(data)
-    // })
-
-
-    // this.storage.clear();
-  }
-
   /**
    * This method will check whether we have the record with given baby id, date and time.
    * If all the attribute value will match, this will splice that record and append incoming record.
@@ -144,10 +131,7 @@ export class FeedExpressionServiceProvider {
 
     
     for(let i = 0; i < feedExpressions.length;i++){
-      if(feedExpressions[i].patientId === feedExpression.patientId && 
-        feedExpressions[i].dateOfFeed === feedExpression.dateOfFeed &&
-        feedExpressions[i].timeOfFeed === feedExpression.timeOfFeed
-      ){
+      if(feedExpressions[i].id === feedExpression.id){
         //record found, need to splice and enter new
         feedExpressions.splice(i,1)
         break;
@@ -158,4 +142,107 @@ export class FeedExpressionServiceProvider {
 
   }
 
+  /**
+   * This method is going to fetch data from feed expression key by baby code and date
+   * @param babyCode The baby code for which we will fetch data
+   * @param date The date for which we will fetch data
+   * @param isNewExpression If the controll has come from feed date list, to create a new entry
+   * @returns Promise<IFeed[]> list of feed expression entries
+   * @author Ratikanta
+   * @since 0.0.1
+   */
+  findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise<IFeed[]>{
+    let promise: Promise<IFeed[]> = new Promise((resolve, reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpression)
+      .then(data=>{
+        if(data != null){
+          data = (data as IFeed[]).filter(d => (d.babyCode === babyCode));
+          let tempData: IFeed[] = [];
+
+          (data as IFeed[]).forEach(d => {
+            let dateString: string = this.datePipe.transform(new Date(d.dateOfFeed), 'dd-MM-yyyy')
+            if(date === dateString){
+              tempData.push(d)
+            }
+          });
+
+          data = tempData;
+          if((data as IFeed[]).length > 0){
+            if(isNewExpression){
+              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            }else{
+              resolve(data)
+            }
+            
+          }else{
+            if(isNewExpression){
+              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            }else{
+              reject("No data found")  
+            }
+            
+          }
+        }else{
+          if(isNewExpression){
+            resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+          }else{
+            reject("No data found")  
+          }
+        }
+      })
+      .catch(err=>{
+        reject(err.message)
+      })
+    });
+    return promise;
+  }
+
+  /**
+   * This method is going to give us a new feed expression id
+   * 
+   * @param {string} babyCode This is the baby code for which we are creating the feed expression id
+   * @returns {string} The new feed expression id
+   * @memberof FeedExpressionServiceProvider
+   * @author Ratikanta
+   * @since 0.0.1
+   */
+  getNewFeedExpressionId(babyCode: string): string{
+    return babyCode + "feid" + this.datePipe.transform(new Date(), 'ddMMyyyyHHmmssSSS');
+  }
+
+/**
+ * This method is going to append a new feed object to axisting list
+ * 
+ * @param {IFeed[]} data The existing list
+ * @param {string} babyCode The unique baby code
+ * @param {date} The date of feeding
+ * @returns {IFeed[]} The final appended list
+ * @memberof FeedExpressionServiceProvider
+ */
+appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
+    //The blank feed object
+    let feed: IFeed = {
+      id: this.getNewFeedExpressionId(babyCode),
+      babyCode: babyCode,     
+      userId: this.userService.getUserId(),
+      babyWeight: null,
+      dateOfFeed: new Date().toISOString(),
+      DHMVolume: null,
+      formulaVolume: null,
+      animalMilkVolume: null,
+      methodOfFeed: null,
+      OMMVolume: null,
+      otherVolume: null,
+      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
+    }
+
+
+    if(data != null && date != undefined){
+      (data as IFeed[]).splice(0, 0, feed)
+    }else{
+      data = [];
+      data.push(feed)
+    }
+    return data
+  }
 }

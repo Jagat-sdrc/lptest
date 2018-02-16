@@ -33,9 +33,10 @@
         background: #717171 !important;
     }
     .alert-message{
-        margin: 2em 0 1em 0;
+        margin: 1.5em 0 1em 0;
         padding-bottom: 0px !important;
         font-size: 16px;
+        color: black;
     }
     h5{
         font-size: 1.5rem;
@@ -48,9 +49,13 @@
     }
     .alert-button-group{
        color: black;
+       background-color: #717171;
     }
     .edit-button{
         float:right;
         margin-top: 5px
+    }
+    .alert-button .button-inner{
+        color: white;
     }
 }

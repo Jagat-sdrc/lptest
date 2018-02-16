@@ -6,7 +6,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>feed</ion-title>
+    <ion-title>{{dataForFeedEntryPage.selectedDate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -14,17 +14,90 @@
 
 <ion-content padding>
 
-    <!-- Date of feed -->
-    <ion-item>
-        <ion-label color="black" floating>Date of feed</ion-label>
-        <ion-datetime displayFormat="DD-MM-YYYY"></ion-datetime>
-    </ion-item>
 
 
-    <!-- Time of feed -->
-    <ion-item>
-        <ion-label color="black" floating>Time of feed</ion-label>
-        <ion-datetime displayFormat="HH:mm"></ion-datetime>
-    </ion-item>
+
+  <ion-list>
+    
+    <ion-item class="item-stable" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
+        <div>
+          <div class="acordion-title" (click)="toggleGroup(feedExpression)" [ngClass]="{active: isGroupShown(feedExpression)}">
+            <div>
+              {{feedExpression.timeOfFeed}}
+              <ion-icon color="success" style="float:right" [name]="isGroupShown(feedExpression) ? 'md-remove' : 'md-add'"></ion-icon>
+            </div>
+          </div>
+  
+          <div style="margin-top:15px" *ngIf="isGroupShown(feedExpression)">
+
+
+            <!-- Date of feed -->
+            <ion-item>
+                <ion-label color="black" floating>Date of feed</ion-label>
+                <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="feedExpression.dateOfFeed"></ion-datetime>
+            </ion-item>
+
+
+            <!-- Time of feed -->
+            <ion-item>
+                <ion-label color="black" floating>Time of feed</ion-label>                
+                <ion-datetime displayFormat="HH:mm" [(ngModel)]="feedExpression.timeOfFeed"></ion-datetime>
+            </ion-item>
+
+
+            <!-- Method of feed -->
+            <ion-item>
+              <ion-label floating>Method of expression</ion-label>
+              <ion-select>
+                <ion-option *ngFor="let feedingMethod of feedingMethods" text-wrap>{{feedingMethod.name}}</ion-option>               
+              </ion-select>
+            </ion-item>
+
+
+            <!-- Volume OMM -->
+            <ion-item>
+              <ion-label floating>Volume OMM</ion-label>
+              <ion-input type="number" [(ngModel)]="feedExpression.OMMVolume"></ion-input>
+            </ion-item>
+
+            <!-- Volume DHM -->
+            <ion-item>
+              <ion-label floating>Volume DHM</ion-label>
+              <ion-input type="number" [(ngModel)]="feedExpression.DHMVolume"></ion-input>
+            </ion-item>
+
+            <!-- Volume Formula -->
+            <ion-item>
+              <ion-label floating>Volume Formula</ion-label>
+              <ion-input type="number" [(ngModel)]="feedExpression.formulaVolume"></ion-input>
+            </ion-item>
+
+            <!-- Volume Animal Milk -->
+            <ion-item>
+              <ion-label floating>Volume Animal Milk</ion-label>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+              <ion-input type="number" [(ngModel)]="feedExpression.animalMilkVolume"></ion-input>
+            </ion-item>
+
+            <!-- Volume Other -->
+            <ion-item>
+              <ion-label floating>Volume Other</ion-label>
+              <ion-input type="number" [(ngModel)]="feedExpression.otherVolume"></ion-input>
+            </ion-item>
+              
+            <!-- Weight of baby in grams -->
+            <ion-item>
+              <ion-label floating>Weight of baby in grams</ion-label>
+              <ion-input type="number" [(ngModel)]="feedExpression.babyWeight"></ion-input>
+            </ion-item>           
+            <button ion-button block (click)="saveExpression(feedExpression)">Save</button>          
+          </div>
+        </div>
+      </ion-item>
+
+</ion-list>
+
 
 </ion-content>
+<ion-footer>
+    <button ion-button block (click)="newExpression()">New Expression</button>
+</ion-footer>

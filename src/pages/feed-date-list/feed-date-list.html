@@ -16,7 +16,7 @@
 
   <ion-card *ngFor="let date of feedDateListData | orderByDate; let i = index">
 
-    <ion-card-content>
+    <ion-card-content (click)='dateSelected(date)'>
 
       <ion-row >
         <ion-col>
@@ -33,3 +33,6 @@
   </ion-card>
 
 </ion-content>
+<ion-footer>
+    <button ion-button block (click)="newExpression()">New Expression</button>
+</ion-footer>

@@ -43,24 +43,25 @@ export class MyApp {
       case "export":
         break;
       case "logout":
-      let confirm = this.alertCtrl.create({
-        enableBackdropDismiss: false,
-        title: 'Warning',
-        message: 'Are you sure you want to logout?',
-        buttons: [{
-            text: 'No',
-            handler: () => {}
-          },
-          {
-            text: 'Yes',
-            handler: () => {
-                this.nav.setRoot(LoginPage);
-            }
-          }
-        ]
-      });
-      confirm.setCssClass('modalDialog');
-      confirm.present();
+        this.nav.setRoot(LoginPage);
+      // let confirm = this.alertCtrl.create({
+      //   enableBackdropDismiss: false,
+      //   title: 'Warning',
+      //   message: 'Are you sure you want to logout?',
+      //   buttons: [{
+      //       text: 'No',
+      //       handler: () => {}
+      //     },
+      //     {
+      //       text: 'Yes',
+      //       handler: () => {
+      //           this.nav.setRoot(LoginPage);
+      //       }
+      //     }
+      //   ]
+      // });
+      // confirm.setCssClass('modalDialog');
+      // confirm.present();
         break;
     }
   }

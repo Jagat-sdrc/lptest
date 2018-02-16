@@ -34,6 +34,10 @@ import { DatePipe } from '@angular/common';
 import { OrderByDatePipe } from '../pipes/order-by-date/order-by-date';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { SynchronizationServiceProvider } from '../providers/synchronization-service/synchronization-service';
+import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expression-bf-date';
+import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
+import { RegisteredPatientServiceProvider } from '../providers/registered-patient-service/registered-patient-service';
+import { OrderByTimePipe } from '../pipes/order-by-time/order-by-time';
 
 
 @NgModule({
@@ -52,7 +56,8 @@ import { SynchronizationServiceProvider } from '../providers/synchronization-ser
     FeedPage,
     ExpressionNewFormPage,
     FeedDateListPage,
-    OrderByDatePipe
+    OrderByDatePipe,
+    OrderByTimePipe
     
   ],
   imports: [
@@ -98,6 +103,10 @@ import { SynchronizationServiceProvider } from '../providers/synchronization-ser
     DatePipe,
     AddNewExpressionBfServiceProvider,
     SynchronizationServiceProvider
+    ExpressionBfDateProvider,
+    SaveExpressionBfProvider,
+    UserServiceProvider,
+    RegisteredPatientServiceProvider
   ]
 })
 export class AppModule {}
