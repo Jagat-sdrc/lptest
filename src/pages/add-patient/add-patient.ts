@@ -110,8 +110,7 @@ export class AddPatientPage implements OnInit{
       this.autoBabyId = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.autoBabyId = this.countryName.charAt(0)+this.stateName.charAt(0)+
-    this.institutionName.substring(0,3)+this.datePipe.transform(new Date(),"ddMMyyyy")+
+      this.autoBabyId = "IND"+this.datePipe.transform(new Date(),"ddMMyyyy")+
     new Date().getMilliseconds();
     }
   }

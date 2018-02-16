@@ -62,10 +62,7 @@ export class SortPatientPipe implements PipeTransform {
         break;
         case ConstantProvider.patientSortBy.inbornPatient:
           patients.sort((a: IPatient, b: IPatient) => {
-            let inpatientOrOutPatientA: number = a.inpatientOrOutPatient;
-            let inpatientOrOutPatientB: number = b.inpatientOrOutPatient;
-
-            if (inpatientOrOutPatientA === ConstantProvider.typeDetailsIds.inbornPatient) {
+            if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.inbornPatient) {
               return -1;
             } else {
               return 1;
@@ -74,10 +71,7 @@ export class SortPatientPipe implements PipeTransform {
         break;
         case ConstantProvider.patientSortBy.outbornPatient:
         patients.sort((a: IPatient, b: IPatient) => {
-          let inpatientOrOutPatientA: number = a.inpatientOrOutPatient;
-          let inpatientOrOutPatientB: number = b.inpatientOrOutPatient;
-
-          if (inpatientOrOutPatientA === ConstantProvider.typeDetailsIds.outbornPatient) {
+          if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.outbornPatient) {
             return -1;
           } else {
             return 1;

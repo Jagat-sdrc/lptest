@@ -53,6 +53,7 @@ export class ConstantProvider {
     feedExpression: "feedExpression",
     bfExpression:"bfExpression",
     patient: "patient",
+    user: "user",
     country: "country",
     state: "state",
     institution: "institution"
@@ -65,6 +66,8 @@ export class ConstantProvider {
     inbornPatient: "inbornPatient",
     outbornPatient: "outbornPatient"
   } 
+
+  static passwordFormat = "@123#!"
 
   static typeDetailsIds = {
     inbornPatient: 14,
