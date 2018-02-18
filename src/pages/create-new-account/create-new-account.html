@@ -40,40 +40,48 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Country</ion-label>
-        <ion-input type="text" formControlName="country"></ion-input>
+        <ion-select formControlName="country" (ionChange)="countrySelected($event)">
+          <ion-option *ngFor="let country of countries" [value]="country">{{country.name}}</ion-option>
+        </ion-select>
       </ion-item>
       <ion-item class="error" *ngIf="userForm.controls.country.invalid && (userForm.controls.country.dirty || userForm.controls.country.touched)">
-        Please enter a Country
+        Please select a Country
       </ion-item>
     </div>
 
-    <div class="form-group">
+    <div class="form-group">      
       <ion-item>
         <ion-label color="black" stacked>State</ion-label>
-        <ion-input type="text" formControlName="state"></ion-input>
+        <ion-select formControlName="state" (ionChange)="stateSelected($event)">
+          <ion-option *ngFor="let state of states" [value]="state">{{state.name}}</ion-option>
+        </ion-select>
       </ion-item>
-      <ion-item class="error" *ngIf="userForm.controls.state.invalid && (userForm.controls.state.dirty || userForm.controls.country.touched)">
-        Please enter a State
+      <ion-item class="error" *ngIf="userForm.controls.state.invalid && (userForm.controls.state.dirty || userForm.controls.state.touched)">
+        Please select a State
       </ion-item>
     </div>
 
-    <div class="form-group">
+    <div class="form-group">     
         <ion-item>
           <ion-label color="black" stacked>District</ion-label>
-          <ion-input type="text" formControlName="district"></ion-input>
+          <ion-select formControlName="district" (ionChange)="districtSelected($event)">
+            <ion-option *ngFor="let district of districts" [value]="district">{{district.name}}</ion-option>
+          </ion-select>
         </ion-item>
         <ion-item class="error" *ngIf="userForm.controls.district.invalid && (userForm.controls.district.dirty || userForm.controls.district.touched)">
-          Please enter a District
+          Please select a District
         </ion-item>
       </div>
 
       <div class="form-group">
           <ion-item>
-            <ion-label color="black" stacked>Institution Name</ion-label>
-            <ion-input type="text" formControlName="institution"></ion-input>
+            <ion-label color="black" stacked>Institution</ion-label>
+            <ion-select formControlName="institution" (ionChange)="instituteSelected($event)">
+              <ion-option *ngFor="let institute of institutes" [value]="institute">{{institute.name}}</ion-option>
+            </ion-select>
           </ion-item>
           <ion-item class="error" *ngIf="userForm.controls.institution.invalid && (userForm.controls.institution.dirty || userForm.controls.institution.touched)">
-            Please enter a Institution name
+            Please select a institution
           </ion-item>
         </div>
   </form>

@@ -21,4 +21,5 @@ interface IPatient{
     babyAdmittedTo: number;
     nicuAdmissionReason: number;
     isSynced: boolean;
+    syncFailureMessage: string;
 }

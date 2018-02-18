@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
-import { HomePage } from '../home/home';
 import { CreateNewAccountPage } from '../create-new-account/create-new-account';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -39,7 +38,7 @@ export class LoginPage {
         if(this.loginData.password === (this.loginData.username).substring(0,2)+ConstantProvider.passwordFormat){
           this.events.publish('user', data);
           this.userService.setUser(data)
-          this.navCtrl.setRoot(HomePage);
+          this.navCtrl.setRoot('HomePage');
         }else{
           this.messageService.showErrorToast(ConstantProvider.messages.invalidCredentials);
         }

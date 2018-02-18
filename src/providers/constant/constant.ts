@@ -116,6 +116,20 @@ export class ConstantProvider {
     noUserFound: 'No user found, please register!'
     
   };
+/**
+ * Area levels
+ * @author Ratikanta
+ * @since 0.0.1 
+ * @static
+ * @type {IAreaLevel}
+ * @memberof ConstantProvider
+ */
+static areaLevels: IAreaLevel ={
+    country: 1,
+    state: 2,
+    district: 3,
+    institute: 5
+  }
   
   constructor(public http: HttpClient) {
   }

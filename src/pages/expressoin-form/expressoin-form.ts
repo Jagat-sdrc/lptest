@@ -59,7 +59,6 @@ export class ExpressoinFormPage {
     this.expressionBFdateService.getExpressionBFDateListData(this.babyCode)
       .then(data => {
         this.expBfDateListData = data;
-        console.log(this.expBfDateListData);
       })
       .catch(err => {
         this.messageService.showErrorToast((err as IDBOperationStatus).message)

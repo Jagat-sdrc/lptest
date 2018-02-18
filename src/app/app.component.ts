@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { LoginPage } from '../pages/login/login';
 import { MessageProvider } from '../providers/message/message';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service'
 
@@ -12,7 +11,7 @@ import { SyncServiceProvider } from '../providers/sync-service/sync-service'
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any = 'LoginPage';
   user: IUser = {
     country: null,
     district: null,
@@ -74,6 +73,6 @@ export class MyApp {
    * @memberof MyApp
    */
   logout(){
-    this.nav.setRoot(LoginPage);
+    this.nav.setRoot('LoginPage');
   }
 }

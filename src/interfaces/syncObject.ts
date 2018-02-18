@@ -6,10 +6,9 @@
  */
 interface ISyncObject{
     users: IUser[];
-    // patients: IPatient[];
+    patients: IPatient[];
     // bfExpressions: IBFExpression[];
     // feedExpressions: IFeed[];
     // bfsps: IBFSP[];
     // bfpds: IBFPD[];
-    deviceId: string;
 }

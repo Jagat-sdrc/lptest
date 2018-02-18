@@ -1,14 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, MenuController } from 'ionic-angular';
-import { RegisteredPatientPage } from '../registered-patient/registered-patient';
-import { SinglePatientSummaryPage } from '../single-patient-summary/single-patient-summary';
-import { VurnerableBabiesPage } from '../vurnerable-babies/vurnerable-babies';
-import { AddPatientPage } from '../add-patient/add-patient';
-
+import { NavController, MenuController, IonicPage } from 'ionic-angular';
+/**
+ * 
+ * 
+ * @export
+ * @class HomePage
+ * @author Ratikanta
+ * @since 0.0.1
+ */
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
+
 export class HomePage {
 
   registeredPatientPage : any;
@@ -19,13 +25,13 @@ export class HomePage {
   }
 
   ngOnInit(){
-    this.registeredPatientPage = RegisteredPatientPage;
-    this.singlePatientSummary = SinglePatientSummaryPage;
-    this.vurnerableBabies = VurnerableBabiesPage;
+    this.registeredPatientPage = 'RegisteredPatientPage';
+    this.singlePatientSummary = 'SinglePatientSummaryPage';
+    this.vurnerableBabies = 'VurnerableBabiesPage';
   }
 
   goToAddNewPatient(){
-    this.navCtrl.push(AddPatientPage,{
+    this.navCtrl.push('AddPatientPage',{
       param: "Add New Patient"
     });
   }

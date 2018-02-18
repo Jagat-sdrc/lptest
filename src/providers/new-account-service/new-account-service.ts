@@ -1,13 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 
 /**
  * This service will only provide service to new user component
  * 
  * @author Jagat Bandhu
+ * @author Ratikanta
  * @since 0.0.1
  */
 @Injectable()
@@ -93,5 +96,30 @@ export class NewAccountServiceProvider {
     return users;
 
   }
+/**
+ * This mthod is going to return all areas
+ * @author Ratikanta
+ * @since 0.0.1
+ * @returns {Observable <IArea[]>} All areas
+ * @memberof NewAccountServiceProvider
+ */
+getAllAreas(): Observable <IArea[]>{
+    return this.http.get("./assets/data.json").map((response: Response) => {
+      return (response as any).areaDetails
+      })
+    .catch(this.handleError);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+
+    let messageToUser;
+    if (error.error instanceof ErrorEvent) {
+      messageToUser = `An error occurred: ${error.error.message}`;
+    } else {
+      messageToUser = `Backend error, code ${error.status}, ` +
+        `message: ${error.message}`;
+    }
+    return new ErrorObservable (messageToUser);
+  };
 
 }

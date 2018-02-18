@@ -6,18 +6,23 @@ import { MessageProvider } from '../../providers/message/message';
 import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 import { DatePipe } from '@angular/common';
 
-/**
- * Generated class for the AddPatientPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
+/**
+ * 
+ * 
+ * @export
+ * @class AddPatientPage
+ * @implements {OnInit}
+ * @author Ratikanta
+ * @since 0.0.1
+ */
 @IonicPage()
 @Component({
   selector: 'page-add-patient',
   templateUrl: 'add-patient.html',
 })
+
+
 export class AddPatientPage implements OnInit{
 
 
@@ -131,7 +136,6 @@ export class AddPatientPage implements OnInit{
 
 
 
-    // this.maxDate = '2018-02-13';
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
     this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
     this.first_exp_time = new Date().toISOString();
@@ -296,7 +300,9 @@ export class AddPatientPage implements OnInit{
           admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
           babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
           nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
-          isSynced: false
+          isSynced: false,
+          syncFailureMessage: null
+
         }
 
         this.addNewPatientService.saveNewPatient(this.patient)

@@ -36,16 +36,17 @@ export class SyncServiceProvider {
 
   syncObject: ISyncObject = {
     users: [],
-    // patients: [],
+    patients: [],
     // bfExpressions: [],
     // feedExpressions: [],
     // bfsps: [],
     // bfpds: [],
-    deviceId: 'abc'
   }
   syncReport: ISyncReport = {
     userSyncSuccess: 0,
-    userSyncFailed: 0
+    userSyncFailed: 0,
+    patientSyncSuccess: 0,
+    patientSyncFailed: 0
   }
   syncResult: ISyncResult;
   keyFetched: number = 0;
@@ -71,8 +72,8 @@ export class SyncServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then((patients) => {
         if (patients != null) {
-          patients = (patients as IPatient[]).filter(d => d.isSynced === false)
-          // this.syncObject.patients = patients
+          patients = (patients as IPatient[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
+          this.syncObject.patients = patients
         }
         this.sendDataToTheServer();
       });
@@ -194,8 +195,26 @@ export class SyncServiceProvider {
   private postSyncPatientWork() {
     //Checking whether we had sent any patient to server or not. If we did not send any patient to server 
     //Then no need to do following operations
-    if (this.syncObject.users.length > 0) {
-      this.showSyncReport()
+    if (this.syncObject.patients.length > 0) {
+      this.storage.get(ConstantProvider.dbKeyNames.patients)
+        .then(patients => {
+          this.syncResult.failurePatients.forEach(failurePatient => {
+            this.syncReport.patientSyncFailed++;
+            //setting the failure message
+            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === failurePatient.babyCode)].syncFailureMessage = failurePatient.reasonOfFailure;
+            //removing from patients which we had sent to sync
+            this.syncObject.patients.splice(this.syncObject.patients.findIndex(d => d.babyCode === failurePatient.babyCode), 1)
+          })
+          this.syncObject.patients.forEach(user => {
+            this.syncReport.patientSyncSuccess++;
+            // making the sync true
+            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === user.babyCode)].isSynced = true;
+          })
+          //Again keeping the updated patients in db
+          this.storage.set(ConstantProvider.dbKeyNames.patients, patients).then(() => {
+            this.showSyncReport()
+          })
+        })
     } else {
       this.showSyncReport()
     }
@@ -289,8 +308,8 @@ export class SyncServiceProvider {
         message: '<div class="reportBody">' +
           '<h5>Users synced : ' + this.syncReport.userSyncSuccess + '</h5><br>' +
           '<h5>Users rejected : ' + this.syncReport.userSyncFailed + '</h5><br>' +
-          // '<h5>Babies synced : ' + data.patientsSynced + '</h5><br>' +
-          // '<h5>Babies rejected : ' + data.patientsFailed + '</h5><br>' +
+          '<h5>Patients synced : ' + this.syncReport.patientSyncSuccess + '</h5><br>' +
+          '<h5>Patients rejected : ' + this.syncReport.patientSyncFailed + '</h5><br>' +
           // '<h5>Bf exp synced : ' + data.bfExpressionSynced + '</h5><br>' +
           // '<h5>Bf exp failed : ' + data.bfExpressionFailed + '</h5><br>' +
           // '<h5>Feed synced : ' + data.logFeedSynced + '</h5><br>' +
