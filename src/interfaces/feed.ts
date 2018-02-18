@@ -17,4 +17,5 @@ interface IFeed{
     animalMilkVolume: number;
     otherVolume: number;
     babyWeight: number;
+    isSynced: boolean;
 }

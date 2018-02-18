@@ -6,9 +6,11 @@
 interface IUser{
     firstName: string;
     lastName: string;
-    emailAddress: string;
-    country: string;
-    state: string;
-    district: string;
-    institution: string;
+    email: string;    
+    country: number;
+    state: number;
+    institution: number;
+    district: number;
+    syncFailureMessage: string;
+    isSynced: boolean;
 }

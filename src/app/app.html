@@ -3,17 +3,18 @@
   </ion-header>
 
   <ion-content>
+        
       <ion-list>
 
           <ion-item no-lines class="smenu-custom">
-              Name<br>
-              mailid@sdrc.co.in<br>
+                {{user.firstName}} {{user.lastName}}<br>
+                {{user.emailAddress}}<br>
           </ion-item>
 
           <ion-item no-lines>
               <p menuToggle (click)="prepareForSync()" class="ess-pointer">Sync</p><br>
-              <p menuToggle (click)="goTo('export')" class="ess-pointer">Export</p><br>
-              <p menuToggle (click)="goTo('logout')" class="ess-pointer">Logout</p><br>
+              <p menuToggle (click)="export()" class="ess-pointer">Export</p><br>
+              <p menuToggle (click)="logout()" class="ess-pointer">Logout</p><br>
           </ion-item>
       </ion-list>
   </ion-content>

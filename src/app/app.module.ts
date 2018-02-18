@@ -33,7 +33,7 @@ import { FeedDateListServiceProvider } from '../providers/feed-date-list-service
 import { DatePipe } from '@angular/common';
 import { OrderByDatePipe } from '../pipes/order-by-date/order-by-date';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
-import { SynchronizationServiceProvider } from '../providers/synchronization-service/synchronization-service';
+import { SyncServiceProvider } from '../providers/sync-service/sync-service';
 import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expression-bf-date';
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
 import { RegisteredPatientServiceProvider } from '../providers/registered-patient-service/registered-patient-service';
@@ -105,7 +105,7 @@ import { NewAccountServiceProvider } from '../providers/new-account-service/new-
     FeedDateListServiceProvider,
     DatePipe,
     AddNewExpressionBfServiceProvider,
-    SynchronizationServiceProvider,
+    SyncServiceProvider,
     ExpressionBfDateProvider,
     SaveExpressionBfProvider,
     UserServiceProvider,

@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { MessageProvider } from '../providers/message/message';
-import { SynchronizationServiceProvider } from '../providers/synchronization-service/synchronization-service'
+import { SyncServiceProvider } from '../providers/sync-service/sync-service'
 
 @Component({
   templateUrl: 'app.html'
@@ -13,11 +13,22 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = LoginPage;
+  user: IUser = {
+    country: null,
+    district: null,
+    email: null,
+    firstName: null,
+    institution: null,
+    lastName: null,
+    state: null,
+    isSynced: false,
+    syncFailureMessage: null
+  }
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-    private messageProvider: MessageProvider, private synchronizationService: SynchronizationServiceProvider) {
+    private messageProvider: MessageProvider, private syncService: SyncServiceProvider,
+  private events: Events) {
     this.initializeApp();
-
   }
 
   initializeApp() {
@@ -29,40 +40,21 @@ export class MyApp {
     });
   }
 
+  ngOnInit(){
+
+    this.events.subscribe('user', data=>{
+      this.user = data;
+    })
+  }
+
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
 
-  goTo(page) {
-    switch (page) {
-      case "sync":
-        break;
-      case "export":
-        break;
-      case "logout":
-        this.nav.setRoot(LoginPage);
-      // let confirm = this.alertCtrl.create({
-      //   enableBackdropDismiss: false,
-      //   title: 'Warning',
-      //   message: 'Are you sure you want to logout?',
-      //   buttons: [{
-      //       text: 'No',
-      //       handler: () => {}
-      //     },
-      //     {
-      //       text: 'Yes',
-      //       handler: () => {
-      //           this.nav.setRoot(LoginPage);
-      //       }
-      //     }
-      //   ]
-      // });
-      // confirm.setCssClass('modalDialog');
-      // confirm.present();
-        break;
-    }
+  export(){
+    this.messageProvider.showErrorToast("Under construction!")
   }
 
   /**
@@ -71,7 +63,17 @@ export class MyApp {
    * 
    */
   prepareForSync(){
-    this.messageProvider.showLoader();
-    this.synchronizationService.fetchDataFromDbAndValidateForSync();
+    this.messageProvider.showLoader("Syncing, please wait...");
+    this.syncService.fetchDataFromDbAndValidateForSync();
+  }
+
+  /**
+   * This method will let us logout from the app
+   * @author Ratikanta
+   * @since 0.0.1
+   * @memberof MyApp
+   */
+  logout(){
+    this.nav.setRoot(LoginPage);
   }
 }

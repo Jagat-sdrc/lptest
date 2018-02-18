@@ -32,7 +32,7 @@ export class ExpressionBfDateProvider {
         message: ""
       }
 
-      this.storage.get(ConstantProvider.dbKeyNames.bfExpression)
+      this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then(data=>{
         if(data != null){
 
@@ -82,7 +82,7 @@ export class ExpressionBfDateProvider {
   findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise<IBFExpression[]>{
 
     let promise: Promise<IBFExpression[]> = new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.bfExpression)
+      this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then(data=>{
         if(data != null){
           data = (data as IBFExpression[]).filter(d => (d.babyCode === babyCode));
@@ -150,13 +150,14 @@ export class ExpressionBfDateProvider {
     let bf: IBFExpression = {
       id: this.getNewBfExpressionId(babyCode),
       babyCode: babyCode,     
-      userId: this.userService.getUser().emailAddress,
+      userId: this.userService.getUser().email,
       dateOfExpression: new Date().toISOString(),
       timeOfExpression: this.datePipe.transform(new Date(), 'HH:mm'),
       durationOfExpression: null,
       methodOfExpression: null,
       locationOfExpression: null,
-      volOfMilkExpressedFromLR: null
+      volOfMilkExpressedFromLR: null,
+      isSynced: false
 
     }
 

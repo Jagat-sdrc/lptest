@@ -32,14 +32,18 @@ export class UserServiceProvider {
  */
   getUserValidation(email: string): Promise<IUser>{
   let promise: Promise<IUser> = new Promise((resolve, reject)=>{
-    this.storage.get(ConstantProvider.dbKeyNames.user)
+    this.storage.get(ConstantProvider.dbKeyNames.users)
     .then(data=>{
-        data = (data as IUser[]).filter(d => (d.emailAddress === email));
+      if(data != null){
+        data = (data as IUser[]).filter(d => (d.email === email));
         if(data.length != 0){
           resolve(data[0]);
         }else{
-          reject("Invalid Credential")
+          reject(ConstantProvider.messages.invalidCredentials)
         }
+      }else{
+        reject(ConstantProvider.messages.noUserFound)
+      }
     })
     .catch(err=>{
       reject(err.message)

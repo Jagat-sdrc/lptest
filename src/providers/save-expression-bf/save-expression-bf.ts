@@ -37,14 +37,14 @@ export class SaveExpressionBfProvider {
         isSuccess: false,
         message: ""
       }
-      this.storage.get(ConstantProvider.dbKeyNames.bfExpression)
+      this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
 
         let bfExpressions: IBFExpression[] = [];
         if(val != null){
           bfExpressions = val
           bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
-          this.storage.set(ConstantProvider.dbKeyNames.bfExpression, bfExpressions)
+          this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)
@@ -58,7 +58,7 @@ export class SaveExpressionBfProvider {
 
         }else{
           bfExpressions.push(bfExpression)
-          this.storage.set(ConstantProvider.dbKeyNames.bfExpression, bfExpressions)
+          this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)

@@ -21,10 +21,10 @@ export class RegisteredPatientServiceProvider {
    */
   deletePatient(babyCode: string): Promise<any>{
     let promise: Promise<any> = new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.patient)
+      this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then(data=>{
         (data as IPatient[]).splice((data as IPatient[]).findIndex(d=> d.babyCode === babyCode), 1)
-        this.storage.set(ConstantProvider.dbKeyNames.patient, data)
+        this.storage.set(ConstantProvider.dbKeyNames.patients, data)
         .then(result=>{
           resolve()
         })
@@ -47,7 +47,7 @@ export class RegisteredPatientServiceProvider {
   */
   findAllPatients():Promise<IPatient[]>{
     let promise: Promise<IPatient[]> = new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.patient)
+      this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then(data=>{
         if(data != null){
           this.patients = data;

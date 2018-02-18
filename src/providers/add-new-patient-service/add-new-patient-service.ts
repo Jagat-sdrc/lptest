@@ -132,14 +132,14 @@ export class AddNewPatientServiceProvider {
         isSuccess: false,
         message: ""
       }
-      this.storage.get(ConstantProvider.dbKeyNames.patient)
+      this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then((val) => {
 
         let patients: IPatient[] = [];
         if(val != null){
           patients = val
           patients = this.validateNewEntryAndUpdate(patients, patient)          
-          this.storage.set(ConstantProvider.dbKeyNames.patient, patients)
+          this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)
@@ -153,7 +153,7 @@ export class AddNewPatientServiceProvider {
 
         }else{
           patients.push(patient)
-          this.storage.set(ConstantProvider.dbKeyNames.patient, patients)
+          this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)
@@ -211,7 +211,7 @@ export class AddNewPatientServiceProvider {
  */
   findByBabyCode(babyCode: string): Promise<IPatient>{
     let promise: Promise<IPatient> = new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.patient)
+      this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then(data=>{
           data = (data as IPatient[]).filter(d => (d.babyCode === babyCode));
           resolve(data[0]);

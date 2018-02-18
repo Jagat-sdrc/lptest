@@ -30,7 +30,7 @@ export class FeedDateListServiceProvider {
         message: ""
       }
 
-      this.storage.get(ConstantProvider.dbKeyNames.feedExpression)
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
         if(data != null){
 

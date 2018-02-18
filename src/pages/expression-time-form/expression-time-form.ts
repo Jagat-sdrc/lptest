@@ -19,6 +19,7 @@ import {
   ExpressionBfDateProvider
 } from '../../providers/expression-bf-date/expression-bf-date'
 import { DatePipe } from '@angular/common';
+import { ConstantProvider } from '../../providers/constant/constant';
 /**
  * Generated class for the ExpressionTimeFormPage page.
  *
@@ -95,8 +96,8 @@ export class ExpressionTimeFormPage {
     this.locOfExpressionObject = this.bFExpressions[i].locationOfExpression;
 
     //getting the id of selected method of expression.
-    for (var j = 0; j < this.bfExpressionMethods.length; j++) {
-        var id =''+this.bfExpressionMethods[j].id
+    for (let j = 0; j < this.bfExpressionMethods.length; j++) {
+        let id =''+this.bfExpressionMethods[j].id
         if (this.bFExpressions[i].methodOfExpression === id) {
           this.methodOfBfExpObject= '' + this.bfExpressionMethods[i].name;
           break;
@@ -105,8 +106,8 @@ export class ExpressionTimeFormPage {
     }
      //getting the id of selected location of expression.
 
-     for (var k = 0; k < this.locationOfexpressionMethods.length; k++) {
-      var id =''+this.locationOfexpressionMethods[k].id
+     for (let k = 0; k < this.locationOfexpressionMethods.length; k++) {
+      let id =''+this.locationOfexpressionMethods[k].id
       if (this.bFExpressions[i].locationOfExpression === id) {
         this.locOfExpressionObject = '' + this.locationOfexpressionMethods[i].name;
         break;
@@ -133,7 +134,7 @@ export class ExpressionTimeFormPage {
    */
   saveExpression(bfExpression: IBFExpression) {
     //getting the id of selected method of expression.
-    for (var i = 0; i < this.bfExpressionMethods.length; i++) {
+    for (let i = 0; i < this.bfExpressionMethods.length; i++) {
       if (this.bfExpressionMethods[i].name === this.methodOfBfExpObject) {
 
         bfExpression.methodOfExpression = '' + this.bfExpressionMethods[i].id;
@@ -142,7 +143,7 @@ export class ExpressionTimeFormPage {
     }
     //getting the id of selected location of expression.
 
-    for (var i = 0; i < this.locationOfexpressionMethods.length; i++) {
+    for (let i = 0; i < this.locationOfexpressionMethods.length; i++) {
       if (this.locationOfexpressionMethods[i].name === this.locOfExpressionObject) {
         bfExpression.locationOfExpression = '' + this.locationOfexpressionMethods[i].id;
         break;
@@ -151,15 +152,15 @@ export class ExpressionTimeFormPage {
 
     //set validations for all the fields
     if (!this.validateDurationOfExpression(bfExpression.durationOfExpression)) {
-      this.messageService.showErrorToast(MessageProvider.messages.ENTER_VALID_DURATION_OF_EXPRESSION)
+      this.messageService.showErrorToast(ConstantProvider.messages.enterValidDurationOfExpression)
     } else if (bfExpression.methodOfExpression == null) {
-      this.messageService.showErrorToast(MessageProvider.messages.ENTER_TYPE_OF_BF_EXPRESSION);
+      this.messageService.showErrorToast(ConstantProvider.messages.enterTypeOfBFExpression);
     } else if (bfExpression.locationOfExpression == null) {
-      this.messageService.showErrorToast(MessageProvider.messages.ENTER_LOC_OF_EXPRESSION);
+      this.messageService.showErrorToast(ConstantProvider.messages.enterLocOfExpression);
     } else if (bfExpression.volOfMilkExpressedFromLR == null) {
-      this.messageService.showErrorToast(MessageProvider.messages.ENTER_VOLUME_OF_MILK_FROM_LEFT);
+      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromLeft);
     } else if (!this.validateVolumeOfMilk(bfExpression.volOfMilkExpressedFromLR)) {
-      this.messageService.showErrorToast(MessageProvider.messages.ENTER_VALID_VOLUME_OF_MILK);
+      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromRight);
     } else {
       this.saveBfExpressionnService.saveBfExpression(bfExpression)
       .then(data => {
@@ -195,7 +196,7 @@ export class ExpressionTimeFormPage {
     if (value == null) {
       return false;
     } else {
-      var rx = /^\d+(?:\.\d{0,2})?$/
+      let rx = /^\d+(?:\.\d{0,2})?$/
 
       if (rx.test(value)) {
         return true;
@@ -211,7 +212,6 @@ export class ExpressionTimeFormPage {
  * @memberof ExpressionTimeFormPage
  */
   validateVolumeOfMilk(value) {
-   // var volume = parseInt(value);
     if (value < 0 || value > 300) {
       return false;
     } else {

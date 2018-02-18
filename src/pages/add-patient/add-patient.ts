@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage'
 import { MessageProvider } from '../../providers/message/message';
 import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
-import { ConstantProvider } from '../../providers/constant/constant';
 import { DatePipe } from '@angular/common';
 
 /**
@@ -49,7 +47,7 @@ export class AddPatientPage implements OnInit{
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
-    private messageService: MessageProvider,private storage: Storage,
+    private messageService: MessageProvider,
     private alertCtrl: AlertController) {
     
   }
@@ -297,7 +295,8 @@ export class AddPatientPage implements OnInit{
           inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.id,
           admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
           babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
-          nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id
+          nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
+          isSynced: false
         }
 
         this.addNewPatientService.saveNewPatient(this.patient)

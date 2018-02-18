@@ -1,16 +1,9 @@
 {
 	"lactationUserList": [
 		{
-			"firstName": "Naseem",
-			"password": "lol",
+			"firstName": "Naseem",			
 			"email": "abc@gmail.com",
 			"isSynced": true
-		},
-		{
-			"firstName": "Naseem",
-			"password": "lol",
-			"email": "abc@gmail.com",
-			"isSynced": false
 		}
 	],
 	"patientSynchronizationModelList": [

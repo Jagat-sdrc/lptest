@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageProvider } from '../../providers/message/message';
 import { NewAccountServiceProvider } from '../../providers/new-account-service/new-account-service';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
  * Generated class for the CreateNewAccountPage page.
@@ -38,22 +39,6 @@ export class CreateNewAccountPage {
       });
   }
 
-  getCountry(){
-    alert("hiiii");
-  }
-
-  getState(){
-
-  }
-
-  getDistrict(){
-
-  }
-
-  getInstitutionName(){
-    
-  }
-
   /**
     * This method will save the deo data to the database
     * 
@@ -63,25 +48,27 @@ export class CreateNewAccountPage {
   submit(){
     console.log(this.userForm);
       if(!this.userForm.valid){
-        Object.keys(this.userForm.controls).forEach(field => { // {1}
-          const control = this.userForm.get(field);            // {2}
-          control.markAsTouched({ onlySelf: true });       // {3}
+        Object.keys(this.userForm.controls).forEach(field => {
+          const control = this.userForm.get(field);           
+          control.markAsTouched({ onlySelf: true });       
         });
       } else {
         //Initialize the add new patient object
         this.user = {
           firstName: this.userForm.controls.first_name.value,
           lastName: this.userForm.controls.last_name.value,
-          emailAddress: this.userForm.controls.email.value,
-          country: this.userForm.controls.country.value,
-          state: this.userForm.controls.state.value,
-          district: this.userForm.controls.district.value,
-          institution: this.userForm.controls.institution.value,
+          email: this.userForm.controls.email.value,
+          institution: 1,
+          country: 1,
+          state: 1,
+          district: 1,          
+          isSynced: false,
+          syncFailureMessage: null
         }
 
         this.newAccountServiceProvider.saveNewUser(this.user)
           .then(data=> {
-          this.messageService.showSuccessToast("Created successful!");
+          this.messageService.showSuccessToast(ConstantProvider.messages.registrationSuccessful);
           this.navCtrl.pop();
         })
           .catch(err =>{

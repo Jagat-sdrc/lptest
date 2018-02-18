@@ -69,14 +69,14 @@ export class FeedExpressionServiceProvider {
         isSuccess: false,
         message: ""
       }
-      this.storage.get(ConstantProvider.dbKeyNames.feedExpression)
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
 
         let feedExpressions: IFeed[] = [];
         if(val != null){
           feedExpressions = val
           feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
-          this.storage.set(ConstantProvider.dbKeyNames.feedExpression, feedExpressions)
+          this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)
@@ -90,7 +90,7 @@ export class FeedExpressionServiceProvider {
 
         }else{
           feedExpressions.push(feedExpression)
-          this.storage.set(ConstantProvider.dbKeyNames.feedExpression, feedExpressions)
+          this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)
@@ -153,7 +153,7 @@ export class FeedExpressionServiceProvider {
    */
   findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise<IFeed[]>{
     let promise: Promise<IFeed[]> = new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.feedExpression)
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
         if(data != null){
           data = (data as IFeed[]).filter(d => (d.babyCode === babyCode));
@@ -224,7 +224,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
     let feed: IFeed = {
       id: this.getNewFeedExpressionId(babyCode),
       babyCode: babyCode,     
-      userId: this.userService.getUser().emailAddress,
+      userId: this.userService.getUser().email,
       babyWeight: null,
       dateOfFeed: new Date().toISOString(),
       DHMVolume: null,
@@ -233,7 +233,8 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
       methodOfFeed: null,
       OMMVolume: null,
       otherVolume: null,
-      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
+      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm'),
+      isSynced: false
     }
 
 

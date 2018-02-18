@@ -27,14 +27,14 @@ export class NewAccountServiceProvider {
         isSuccess: false,
         message: ""
       }
-      this.storage.get(ConstantProvider.dbKeyNames.user)
+      this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((val) => {
 
         let users: IUser[] = [];
         if(val != null){
           users = val
           users = this.validateNewEntryAndUpdate(users, user)          
-          this.storage.set(ConstantProvider.dbKeyNames.user, users)
+          this.storage.set(ConstantProvider.dbKeyNames.users, users)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)
@@ -47,7 +47,7 @@ export class NewAccountServiceProvider {
 
         }else{
           users.push(user)
-          this.storage.set(ConstantProvider.dbKeyNames.user, users)
+          this.storage.set(ConstantProvider.dbKeyNames.users, users)
           .then(data=>{
             dbOperationStatus.isSuccess = true;
             resolve(dbOperationStatus)
@@ -84,7 +84,7 @@ export class NewAccountServiceProvider {
    */
   private validateNewEntryAndUpdate(users: IUser[], user: IUser): IUser[]{
 
-    let index = users.findIndex(d =>d.emailAddress === user.emailAddress);
+    let index = users.findIndex(d =>d.email === user.email);
     if(index >= 0){
       //record found, need to splice and enter new
       users.splice(index,1);

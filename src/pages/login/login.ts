@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { CreateNewAccountPage } from '../create-new-account/create-new-account';
-import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { MessageProvider } from '../../providers/message/message';
@@ -18,14 +17,14 @@ export class LoginPage {
 
   loginData: ILoginData;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private storage: Storage,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
   private userService: UserServiceProvider, private alertCtrl: AlertController,
-  private messageService: MessageProvider) {}
+  private messageService: MessageProvider, private events: Events) {}
 
   ngOnInit(){
     this.loginData = {
-      username: '',
-      password: ''
+      username: 'ratikanta@sdrc.co.in',
+      password: 'ra@123#!'
     }
   }
 
@@ -38,11 +37,11 @@ export class LoginPage {
       this.userService.getUserValidation(this.loginData.username)
         .then(data=> {
         if(this.loginData.password === (this.loginData.username).substring(0,2)+ConstantProvider.passwordFormat){
-          this.messageService.showSuccessToast("Login successful!");
+          this.events.publish('user', data);
           this.userService.setUser(data)
           this.navCtrl.setRoot(HomePage);
         }else{
-          this.messageService.showErrorToast("Invalid Credential");
+          this.messageService.showErrorToast(ConstantProvider.messages.invalidCredentials);
         }
       })
         .catch(err =>{
@@ -56,7 +55,7 @@ export class LoginPage {
     let confirm = this.alertCtrl.create({
       enableBackdropDismiss: false,
       title: 'Info',
-      message: 'Send an email to abc@ahi.com from your email requesting for your password. ',
+      message: ConstantProvider.messages.forgotPasswordMessage,
       buttons: [
         {
           text: 'Yes',
