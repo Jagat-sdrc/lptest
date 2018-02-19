@@ -49,7 +49,10 @@ export class CreateNewAccountPage {
     isSynced: false,
     syncFailureMessage: null
   }
-  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
+  firstNamePattern: RegExp = /^[a-zA-Z][a-zA-Z\.]+$/;
+  lastNamePattern: RegExp = /^[a-zA-Z]{0,25}$/;
+  emailPattern: RegExp = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+  // emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
   areas: IArea[];
   countries: IArea[];
   states: IArea[];
@@ -71,8 +74,8 @@ export class CreateNewAccountPage {
       });
 
     this.userForm = new FormGroup({
-      first_name: new FormControl('', [Validators.required]),
-      last_name: new FormControl('', [Validators.required]),
+      first_name: new FormControl('', [Validators.required, Validators.pattern(this.firstNamePattern)]),
+      last_name: new FormControl('', [Validators.required, Validators.pattern(this.lastNamePattern)]),
       email: new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]),
       country: new FormControl('', [Validators.required]),
       state: new FormControl('', [Validators.required]),
