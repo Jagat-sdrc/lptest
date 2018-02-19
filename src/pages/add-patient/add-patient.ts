@@ -49,10 +49,10 @@ export class AddPatientPage implements OnInit{
   institutionName: string;
   maxDate: any;
   maxTime: any;
-  resetStatus: boolean = false;
   outPatientAdmissionStatus: boolean = false;
   paramToExpressionPage: IParamToExpresssionPage;
   forEdit: boolean;
+  motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
@@ -79,10 +79,14 @@ export class AddPatientPage implements OnInit{
    * @since 0.0.1
    */
   reset(){
-    this.resetStatus = false;
-    Object.keys(this.patientForm.controls).forEach(field => { // {1}
-      const control = this.patientForm.get(field);            // {2}
-      control.markAsTouched({ onlySelf: true });       // {3}
+    /**
+     * This iteration will be used to untouch all the fields, because the user wants a new form.
+     * @author - Naseem Akhtar
+     */
+    Object.keys(this.patientForm.controls).forEach(field => {
+      const control = this.patientForm.get(field);
+      control.markAsUntouched({onlySelf: true});
+      control.markAsPristine({onlySelf: true});
     });
     this.patientForm.controls.hospital_baby_id.setValue(null)
     this.patientForm.controls.mother_name.setValue(null),
@@ -200,8 +204,8 @@ export class AddPatientPage implements OnInit{
     this.patientForm = new FormGroup({
       baby_id: new FormControl(''),
       hospital_baby_id: new FormControl(''),
-      mother_name: new FormControl('', [Validators.required]),
-      mother_age: new FormControl('', [Validators.required,Validators.minLength(2),Validators.maxLength(2)]),
+      mother_name: new FormControl('', [Validators.required, Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
+      mother_age: new FormControl('', [Validators.required, Validators.min(15), Validators.max(49)]),
       delivery_date: new FormControl('', [Validators.required]),
       delivery_time: new FormControl('', [Validators.required]),
       delivery_method: new FormControl('', [Validators.required]),
@@ -244,33 +248,31 @@ export class AddPatientPage implements OnInit{
         
      }
 
-     validateBabyWeight(babyWeight){
-       if(this.patientForm.controls.baby_weight.value<500){
-         this.patientForm.controls.baby_weight.setValue(null);
-       } else if(this.patientForm.controls.baby_weight.value>4000){
-        let confirm = this.alertCtrl.create({
-          enableBackdropDismiss: false,
-          title: 'Warning',
-          message: 'You entered the value more than 4000',
-          buttons: [{
-              text: 'No',
-              handler: () => {
-                this.patientForm.controls.baby_weight.setValue(null);
-              }
-            },
-            {
-              text: 'Yes',
-              handler: () => {
-                  
-              }
-            }
-          ]
-        });
-        confirm.setCssClass('modalDialog');
-        confirm.present();
+     validateBabyWeight(babyWeight) {
+       if (this.patientForm.controls.baby_weight.value < 500 ||
+         this.patientForm.controls.baby_weight.value > 4000) {
+         let confirm = this.alertCtrl.create({
+           enableBackdropDismiss: false,
+           title: 'Warning',
+           message: this.patientForm.controls.baby_weight.value < 500 ?
+             ConstantProvider.messages.babyUnderWeight : ConstantProvider.messages.babyOverWeight,
+           buttons: [{
+               text: 'No',
+               handler: () => {
+                 this.patientForm.controls.baby_weight.setValue(null);
+               }
+             },
+             {
+               text: 'Yes',
+             }
+           ]
+         });
+         confirm.setCssClass('modalDialog');
+         confirm.present();
        }
-       
      }
+
+
 
      /**
       * This method will save the patient data to the database
@@ -280,14 +282,11 @@ export class AddPatientPage implements OnInit{
     save(){
       this.outpatientAdmission();
       if(!this.patientForm.valid){
-        this.resetStatus = true;
-        Object.keys(this.patientForm.controls).forEach(field => { // {1}
-          const control = this.patientForm.get(field);            // {2}
-          control.markAsTouched({ onlySelf: true });       // {3}
+        Object.keys(this.patientForm.controls).forEach(field => {
+          const control = this.patientForm.get(field);
+          control.markAsTouched({ onlySelf: true });
         });
       } else {
-        this.resetStatus = false;
-
         let deliveryDate: string = this.patientForm.controls.delivery_date.value;
         if(this.forEdit){
           deliveryDate = this.datePipe.transform(new Date(deliveryDate), 'dd-MM-yyyy');

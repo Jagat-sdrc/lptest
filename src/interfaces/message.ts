@@ -19,4 +19,6 @@ interface IMessage{
     enterTypeOfBFExpression: string;
     noUserFound: string;
     userConstruction: string;
+    babyUnderWeight: string;
+    babyOverWeight: string;
 }

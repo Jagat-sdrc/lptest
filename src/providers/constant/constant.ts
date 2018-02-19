@@ -114,9 +114,11 @@ export class ConstantProvider {
     enterValidDurationOfExpression: 'Please enter a valid duration of expression in minutes',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',
-    userConstruction: "Under construction!"
-    
+    userConstruction: "Under construction!",
+    babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
+    babyOverWeight: "Baby's weight is more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?"
   };
+  
 /**
  * Area levels
  * @author Ratikanta
