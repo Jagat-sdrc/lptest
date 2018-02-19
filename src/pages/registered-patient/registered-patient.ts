@@ -3,8 +3,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
-import { BabyDashboardPage } from '../baby-dashboard/baby-dashboard';
-import { AddPatientPage } from '../add-patient/add-patient';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { MessageProvider } from '../../providers/message/message';
 import 'rxjs/add/operator/debounceTime';
@@ -51,14 +49,14 @@ export class RegisteredPatientPage {
 
   goToBabyDashBoard(babyCode: string,babyCodeHospital: string){
 
-    this.navCtrl.push(BabyDashboardPage,{
+    this.navCtrl.push('BabyDashboardPage',{
       babyCode: babyCode,
       babyCodeByHospital: babyCodeHospital
     });
   }
 
   goToAddNewPatient(){
-    this.navCtrl.push(AddPatientPage,{
+    this.navCtrl.push('AddPatientPage',{
       param: "Add New Patient"
     });
   }

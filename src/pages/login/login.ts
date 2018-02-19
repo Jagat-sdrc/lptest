@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
-import { CreateNewAccountPage } from '../create-new-account/create-new-account';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { MessageProvider } from '../../providers/message/message';
@@ -22,8 +21,10 @@ export class LoginPage {
 
   ngOnInit(){
     this.loginData = {
-      username: 'ratikanta@sdrc.co.in',
-      password: 'ra@123#!'
+      // username: 'jagat@sdrc.co.in',
+      // password: 'ja@123#!'
+      username: '',
+      password: ''
     }
   }
 
@@ -69,7 +70,7 @@ export class LoginPage {
   }
 
   signUp(){
-    this.navCtrl.push(CreateNewAccountPage);
+    this.navCtrl.push('CreateNewAccountPage');
   }
   
 

@@ -22,4 +22,5 @@ interface IPatient{
     nicuAdmissionReason: number;
     isSynced: boolean;
     syncFailureMessage: string;
+    userId: string;
 }

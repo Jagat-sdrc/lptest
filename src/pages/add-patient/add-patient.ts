@@ -1,3 +1,4 @@
+import { ConstantProvider } from './../../providers/constant/constant';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -5,6 +6,7 @@ import { OnInit } from '@angular/core';
 import { MessageProvider } from '../../providers/message/message';
 import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 import { DatePipe } from '@angular/common';
+import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 
 /**
@@ -53,7 +55,8 @@ export class AddPatientPage implements OnInit{
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+  private userService: UserServiceProvider) {
     
   }
 
@@ -227,7 +230,7 @@ export class AddPatientPage implements OnInit{
      }
 
      outpatientAdmission(){
-       if(this.patientForm.controls.inpatient_outpatient.value.id==15){
+       if(this.patientForm.controls.inpatient_outpatient.value.id==ConstantProvider.typeDetailsIds.outbornPatient){
         this.outPatientAdmissionStatus = true;
        } else {
         this.outPatientAdmissionStatus = false;
@@ -271,7 +274,6 @@ export class AddPatientPage implements OnInit{
       * @since 0.0.1
       */
     save(){
-      console.log(this.patientForm);
       this.outpatientAdmission();
       if(!this.patientForm.valid){
         this.resetStatus = true;
@@ -282,26 +284,35 @@ export class AddPatientPage implements OnInit{
       } else {
         this.resetStatus = false;
 
+        let deliveryDate: string = this.patientForm.controls.delivery_date.value;
+        deliveryDate = deliveryDate.split('-')[2] + "-" + deliveryDate.split('-')[1] + "-" + deliveryDate.split('-')[0];
+        let admissionDateOfOutdoorPatient: string = this.patientForm.controls.admission_date.value;        
+        if(admissionDateOfOutdoorPatient != null && admissionDateOfOutdoorPatient != undefined){
+          admissionDateOfOutdoorPatient = admissionDateOfOutdoorPatient.split('-')[2] + "-" + admissionDateOfOutdoorPatient.split('-')[1] + "-" + admissionDateOfOutdoorPatient.split('-')[0];
+        }
+
+
         //Initialize the add new patient object
         this.patient = {
           babyCode: this.autoBabyId,
           babyCodeHospital: this.patientForm.controls.hospital_baby_id.value,
           babyOf: this.patientForm.controls.mother_name.value,
-          mothersAge: this.patientForm.controls.mother_age.value,
-          deliveryDate: this.patientForm.controls.delivery_date.value,
+          mothersAge: parseInt(this.patientForm.controls.mother_age.value),
+          deliveryDate: deliveryDate,
           deliveryTime: this.patientForm.controls.delivery_time.value,
           deliveryMethod: this.patientForm.controls.delivery_method.value.id,
-          babyWeight: this.patientForm.controls.baby_weight.value,
-          gestationalAgeInWeek: this.patientForm.controls.gestational_age.value,
+          babyWeight: parseFloat(this.patientForm.controls.baby_weight.value),
+          gestationalAgeInWeek: parseInt(this.patientForm.controls.gestational_age.value),
           mothersPrenatalIntent: this.patientForm.controls.intent_provide_milk.value.id,
           parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value.id,
           timeTillFirstExpression: this.patientForm.controls.first_exp_time.value,
           inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.id,
-          admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
+          admissionDateForOutdoorPatients: admissionDateOfOutdoorPatient,
           babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
           nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
           isSynced: false,
-          syncFailureMessage: null
+          syncFailureMessage: null,
+          userId: this.userService.getUser().email
 
         }
 
@@ -322,14 +333,25 @@ export class AddPatientPage implements OnInit{
      * 
      * @author Jagat Bandhu Sahoo
      * @since 0.0.1
-     */
+     */   
     setFetchedDataToUi(){
+
+      let day = parseInt(this.patient.deliveryDate.split('-')[0]);
+      let month = parseInt(this.patient.deliveryDate.split('-')[1])-1;
+      let year = parseInt(this.patient.deliveryDate.split('-')[2]);
+
+
+      let deliveryDate: Date = new Date(year, month, day);
+      let admissionDateForOutdoorPatients:Date = null;
+      if(this.patient.admissionDateForOutdoorPatients != null){
+        admissionDateForOutdoorPatients = new Date(parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[2]), parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[1])-1, parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[0]));
+      }
       this.patientForm = new FormGroup({
         baby_id: new FormControl(this.patient.babyCode),
         hospital_baby_id: new FormControl(this.patient.babyCodeHospital),
         mother_name: new FormControl(this.patient.babyOf, [Validators.required]),
         mother_age: new FormControl(this.patient.mothersAge, [Validators.required,Validators.minLength(2),Validators.maxLength(2)]),
-        delivery_date: new FormControl(this.patient.deliveryDate, [Validators.required]),
+        delivery_date: new FormControl(deliveryDate, [Validators.required]),
         delivery_time: new FormControl(this.patient.deliveryTime, [Validators.required]),
         delivery_method: new FormControl(this.deliveryMethods.filter(d=>(d.id===this.patient.deliveryMethod))[0], [Validators.required]),
         baby_weight: new FormControl(this.patient.babyWeight, [Validators.required]),
@@ -338,7 +360,7 @@ export class AddPatientPage implements OnInit{
         hm_lactation: new FormControl(this.hmLactation.filter(d=>(d.id===this.patient.parentsKnowledgeOnHmAndLactation))[0], [Validators.required]),
         first_exp_time: new FormControl(this.patient.timeTillFirstExpression, [Validators.required]),
         inpatient_outpatient: new FormControl(this.inpatientOutpatient.filter(d=>(d.id===this.patient.inpatientOrOutPatient))[0], [Validators.required]),
-        admission_date: new FormControl(this.patient.admissionDateForOutdoorPatients, [Validators.required]),
+        admission_date: new FormControl(admissionDateForOutdoorPatients, [Validators.required]),
         baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0], [Validators.required]),
         nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0], [Validators.required]),
       });
