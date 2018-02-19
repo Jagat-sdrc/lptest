@@ -19,10 +19,12 @@
   </ion-row>
 
   <ion-row>
-    <ion-col [navPush]="singlePatientSummary" class="gap">
+    <!-- <ion-col [navPush]="singlePatientSummary" class="gap"> -->
+    <ion-col (click)="underConstruction()" class="gap">
       <div class="bg-grey">Single Patient Summary</div>
     </ion-col>
-    <ion-col [navPush]="vurnerableBabies" class="gap">
+    <!-- <ion-col [navPush]="vurnerableBabies" class="gap"> -->
+    <ion-col (click)="underConstruction()" class="gap">
       <div class="bg-grey">Vurnerable Babies</div>
     </ion-col>
   </ion-row>

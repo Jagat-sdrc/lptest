@@ -18,4 +18,5 @@ interface IMessage{
     enterValidDurationOfExpression: string;
     enterTypeOfBFExpression: string;
     noUserFound: string;
+    userConstruction: string;
 }

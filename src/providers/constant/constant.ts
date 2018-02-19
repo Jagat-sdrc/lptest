@@ -113,7 +113,8 @@ export class ConstantProvider {
     registrationSuccessful: 'Registration successful',
     enterValidDurationOfExpression: 'Please enter a valid duration of expression in minutes',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
-    noUserFound: 'No user found, please register!'
+    noUserFound: 'No user found, please register!',
+    userConstruction: "Under construction!"
     
   };
 /**

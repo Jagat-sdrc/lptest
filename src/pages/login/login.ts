@@ -21,8 +21,8 @@ export class LoginPage {
 
   ngOnInit(){
     this.loginData = {
-      // username: 'jagat@sdrc.co.in',
-      // password: 'ja@123#!'
+      // username: 'ratikanta@sdrc.co.in',
+      // password: 'ra@123#!'
       username: '',
       password: ''
     }

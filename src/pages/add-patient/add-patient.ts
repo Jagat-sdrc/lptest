@@ -7,6 +7,7 @@ import { MessageProvider } from '../../providers/message/message';
 import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+import * as moment from 'moment';
 
 
 /**
@@ -51,6 +52,7 @@ export class AddPatientPage implements OnInit{
   resetStatus: boolean = false;
   outPatientAdmissionStatus: boolean = false;
   paramToExpressionPage: IParamToExpresssionPage;
+  forEdit: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
@@ -102,6 +104,7 @@ export class AddPatientPage implements OnInit{
 
   ionViewDidEnter(){
     if(!(this.navParams.get('babyCode') == undefined)){
+      this.forEdit = true;
       this.autoBabyId = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
@@ -120,6 +123,7 @@ export class AddPatientPage implements OnInit{
   ngOnInit() {
 
     if(!(this.navParams.get('babyCode') == undefined)){
+
       this.headerTitle = "Edit Patient"
       this.paramToExpressionPage = {
         babyCode: this.navParams.get('babyCode'),
@@ -285,10 +289,21 @@ export class AddPatientPage implements OnInit{
         this.resetStatus = false;
 
         let deliveryDate: string = this.patientForm.controls.delivery_date.value;
-        deliveryDate = deliveryDate.split('-')[2] + "-" + deliveryDate.split('-')[1] + "-" + deliveryDate.split('-')[0];
+        if(this.forEdit){
+          deliveryDate = this.datePipe.transform(new Date(deliveryDate), 'dd-MM-yyyy');
+        }else{
+          deliveryDate = deliveryDate.split('-')[2] + "-" + deliveryDate.split('-')[1] + "-" + deliveryDate.split('-')[0];
+        }
+        
         let admissionDateOfOutdoorPatient: string = this.patientForm.controls.admission_date.value;        
         if(admissionDateOfOutdoorPatient != null && admissionDateOfOutdoorPatient != undefined){
-          admissionDateOfOutdoorPatient = admissionDateOfOutdoorPatient.split('-')[2] + "-" + admissionDateOfOutdoorPatient.split('-')[1] + "-" + admissionDateOfOutdoorPatient.split('-')[0];
+
+          if(this.forEdit){
+            admissionDateOfOutdoorPatient = this.datePipe.transform(new Date(admissionDateOfOutdoorPatient), 'dd-MM-yyyy');
+          }else{            
+            admissionDateOfOutdoorPatient = admissionDateOfOutdoorPatient.split('-')[2] + "-" + admissionDateOfOutdoorPatient.split('-')[1] + "-" + admissionDateOfOutdoorPatient.split('-')[0];
+          }
+          
         }
 
 
@@ -337,14 +352,17 @@ export class AddPatientPage implements OnInit{
     setFetchedDataToUi(){
 
       let day = parseInt(this.patient.deliveryDate.split('-')[0]);
-      let month = parseInt(this.patient.deliveryDate.split('-')[1])-1;
+      let month = parseInt(this.patient.deliveryDate.split('-')[1]);
       let year = parseInt(this.patient.deliveryDate.split('-')[2]);
 
 
-      let deliveryDate: Date = new Date(year, month, day);
-      let admissionDateForOutdoorPatients:Date = null;
+      let deliveryDate: string = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
+      let admissionDateForOutdoorPatients: string= null;
       if(this.patient.admissionDateForOutdoorPatients != null){
-        admissionDateForOutdoorPatients = new Date(parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[2]), parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[1])-1, parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[0]));
+        day = parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[0]);
+        month = parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[1]);
+        year = parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[2]);
+        admissionDateForOutdoorPatients = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
       }
       this.patientForm = new FormGroup({
         baby_id: new FormControl(this.patient.babyCode),
@@ -360,7 +378,7 @@ export class AddPatientPage implements OnInit{
         hm_lactation: new FormControl(this.hmLactation.filter(d=>(d.id===this.patient.parentsKnowledgeOnHmAndLactation))[0], [Validators.required]),
         first_exp_time: new FormControl(this.patient.timeTillFirstExpression, [Validators.required]),
         inpatient_outpatient: new FormControl(this.inpatientOutpatient.filter(d=>(d.id===this.patient.inpatientOrOutPatient))[0], [Validators.required]),
-        admission_date: new FormControl(admissionDateForOutdoorPatients, [Validators.required]),
+        admission_date: new FormControl(admissionDateForOutdoorPatients == null?null: admissionDateForOutdoorPatients, [Validators.required]),
         baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0], [Validators.required]),
         nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0], [Validators.required]),
       });
