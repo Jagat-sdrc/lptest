@@ -13,29 +13,33 @@
 <ion-content padding class="main-content">
 
   <ion-row>
-    <ion-col [navPush]="addPatientPage" class="gap" [navParams]="paramToExpressionPage">
+     <ion-col [navPush]="addPatientPage" class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">Profile</div>
     </ion-col>
-    <ion-col [navPush]="expressoinFormPage" class="gap" [navParams]="paramToExpressionPage">
+    <!-- <ion-col [navPush]="expressoinFormPage" class="gap" [navParams]="paramToExpressionPage"></ion-col> -->
+    <ion-col (click)="underConstruction()" class="gap">
       <div class="bg-grey">Exp / BF</div>
     </ion-col>
   </ion-row>
 
   <ion-row>
-    <ion-col (click)="goToForm('BFSP')" class="gap">
+    <!-- <ion-col (click)="goToForm('BFSP')" class="gap"> -->
+        <ion-col (click)="underConstruction()"  class="gap">
       <div class="bg-grey">BFSP</div>
     </ion-col>
-    <ion-col [navPush]="feedDateListPage" class="gap" [navParams]="paramToExpressionPage">
-        <!-- <ion-col [navPush]="feedPage" class="gap"> -->
+    <!-- <ion-col [navPush]="feedDateListPage" class="gap" [navParams]="paramToExpressionPage">         -->
+        <ion-col (click)="underConstruction()" class="gap">
       <div class="bg-grey">Feed</div>
     </ion-col>
   </ion-row>
 
   <ion-row>
-    <ion-col (click)="goToExpressionForm('BF-Post Discharge')" class="gap">
+    <!-- <ion-col (click)="goToExpressionForm('BF-Post Discharge')" class="gap"> -->
+        <ion-col (click)="underConstruction()" class="gap">
       <div class="bg-grey">BF-Post Discharge</div>
     </ion-col>
-    <ion-col [navPush]="vurnerableBabies" class="gap">
+    <!-- <ion-col [navPush]="vurnerableBabies" class="gap"> -->
+        <ion-col (click)="underConstruction()" class="gap">
       <div class="bg-grey">Single Patient Summary</div>
     </ion-col>
   </ion-row>
