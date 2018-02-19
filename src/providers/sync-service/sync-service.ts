@@ -319,7 +319,12 @@ export class SyncServiceProvider {
           // '<h5>Bf post discharge synced : ' + data.bfPostDischargeSynced + '</h5><br>' +
           // '<h5>Bf post discharge failed : ' + data.bfPostDischargeFailed + '</h5><br>' +
           '</div>',
-        buttons: ['OK']
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            this.initializeSyncReport();
+          }
+        }]
       });
       alert.present();
 
@@ -356,5 +361,19 @@ export class SyncServiceProvider {
         `message: ${error.message}`;
     }
     return new ErrorObservable(messageToUser);
+  };
+
+  /** 
+   * This function will reset the synReport object after the sync report is closed.
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since = 0.0.1
+  */
+  private initializeSyncReport() {
+   this.syncReport = {
+      userSyncSuccess: 0,
+      userSyncFailed: 0,
+      patientSyncSuccess: 0,
+      patientSyncFailed: 0
+    }
   };
 }
