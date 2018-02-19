@@ -52,7 +52,7 @@ export class AddPatientPage implements OnInit{
   outPatientAdmissionStatus: boolean = false;
   paramToExpressionPage: IParamToExpresssionPage;
   forEdit: boolean;
-  motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s]+$/;
+  motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
