@@ -52,6 +52,7 @@ export class FeedPage {
   saveExpression(feedExpression: IFeed) {   
     this.feedExpressionService.saveFeedExpression(feedExpression)
     .then(data=> {
+      this.dataForFeedEntryPage.isNewExpression = false;
       this.findExpressionsByBabyCodeAndDate();
       this.messageService.showSuccessToast("save successful!")
     })

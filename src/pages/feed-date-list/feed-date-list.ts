@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FeedDateListServiceProvider } from '../../providers/feed-date-list-service/feed-date-list-service';
 import { MessageProvider } from '../../providers/message/message';
 import { FeedPage } from '../feed/feed';
@@ -21,17 +21,25 @@ export class FeedDateListPage {
   feedDateListData: string[];
   babyCode:string;
   params: Object;
+  paramToExpressionPage: IParamToExpresssionPage;
 
   constructor(private feedDateListService: FeedDateListServiceProvider,
     private messageService: MessageProvider, private navCtrl: NavController,   
-private datePipe: DatePipe) {}
+private datePipe: DatePipe,private navParams: NavParams) {}
 
   
   ionViewWillEnter(){
-    //test
-    this.babyCode = 'qqqqq'
+
+    this.paramToExpressionPage = {
+      babyCode: this.navParams.get("babyCode"),
+      babyCodeByHospital: this.navParams.get("babyCodeByHospital")
+    }
+
+    this.babyCode = this.paramToExpressionPage.babyCode;
+    
+
     //Getting date list
-    this.feedDateListService.getFeedDateListData(this.babyCode)
+    this.feedDateListService.getFeedDateListData(this.paramToExpressionPage.babyCode)
     .then(data=>{
       this.feedDateListData = data
     })

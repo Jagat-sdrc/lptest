@@ -7,8 +7,8 @@
 interface ISyncObject{
     users: IUser[];
     patients: IPatient[];
-    // bfExpressions: IBFExpression[];
-    // feedExpressions: IFeed[];
-    // bfsps: IBFSP[];
-    // bfpds: IBFPD[];
+    bfExpressions: IBFExpression[];
+    feedExpressions: IFeed[];
+    bfsps: IBFSP[];
+    bfpds: IBFPD[];
 }

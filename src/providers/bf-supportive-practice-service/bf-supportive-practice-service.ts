@@ -169,7 +169,8 @@ export class BfSupportivePracticeServiceProvider {
       personWhoPerformedBFSP: null,
       bfspDuration: null,
       isSynced: false,
-      userId: this.userService.getUser().email
+      userId: this.userService.getUser().email,
+      syncFailureMessage: null      
     }
 
     if (data != null && date != undefined) {

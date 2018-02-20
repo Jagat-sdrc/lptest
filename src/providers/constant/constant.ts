@@ -97,7 +97,8 @@ export class ConstantProvider {
    */
   static serverUrls:any = {
     SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
-    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
+    // SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
+    SYNCHRONIZE: 'http://localhost:8080/sync'
   };
 
   static postDischargeMenu: number = 12;

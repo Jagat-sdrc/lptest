@@ -33,21 +33,21 @@
 
             <!-- Date of feed -->
             <ion-item>
-                <ion-label color="black" floating>Date of feed</ion-label>
+                <ion-label color="black" stacked>Date of feed</ion-label>
                 <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="feedExpression.dateOfFeed"></ion-datetime>
             </ion-item>
 
 
             <!-- Time of feed -->
             <ion-item>
-                <ion-label color="black" floating>Time of feed</ion-label>                
+                <ion-label color="black" stacked>Time of feed</ion-label>                
                 <ion-datetime displayFormat="HH:mm" [(ngModel)]="feedExpression.timeOfFeed"></ion-datetime>
             </ion-item>
 
 
             <!-- Method of feed -->
             <ion-item>
-              <ion-label floating>Method of expression</ion-label>
+              <ion-label stacked>Method of expression</ion-label>
               <ion-select>
                 <ion-option *ngFor="let feedingMethod of feedingMethods" text-wrap>{{feedingMethod.name}}</ion-option>               
               </ion-select>
@@ -56,37 +56,37 @@
 
             <!-- Volume OMM -->
             <ion-item>
-              <ion-label floating>Volume OMM</ion-label>
+              <ion-label stacked>Volume OMM</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.OMMVolume"></ion-input>
             </ion-item>
 
             <!-- Volume DHM -->
             <ion-item>
-              <ion-label floating>Volume DHM</ion-label>
+              <ion-label stacked>Volume DHM</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.DHMVolume"></ion-input>
             </ion-item>
 
             <!-- Volume Formula -->
             <ion-item>
-              <ion-label floating>Volume Formula</ion-label>
+              <ion-label stacked>Volume Formula</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.formulaVolume"></ion-input>
             </ion-item>
 
             <!-- Volume Animal Milk -->
             <ion-item>
-              <ion-label floating>Volume Animal Milk</ion-label>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+              <ion-label stacked>Volume Animal Milk</ion-label>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
               <ion-input type="number" [(ngModel)]="feedExpression.animalMilkVolume"></ion-input>
             </ion-item>
 
             <!-- Volume Other -->
             <ion-item>
-              <ion-label floating>Volume Other</ion-label>
+              <ion-label stacked>Volume Other</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.otherVolume"></ion-input>
             </ion-item>
               
             <!-- Weight of baby in grams -->
             <ion-item>
-              <ion-label floating>Weight of baby in grams</ion-label>
+              <ion-label stacked>Weight of baby in grams</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.babyWeight"></ion-input>
             </ion-item>           
             <button ion-button block (click)="saveExpression(feedExpression)">Save</button>          

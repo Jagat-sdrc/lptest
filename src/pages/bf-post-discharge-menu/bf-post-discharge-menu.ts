@@ -33,7 +33,7 @@ export class BfPostDischargeMenuPage {
       .subscribe(data => {
         this.menu = data;
       }, error => {
-        this.messageService.showErrorToast(err)
+        this.messageService.showErrorToast(error)
       })
   };
 
