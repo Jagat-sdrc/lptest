@@ -111,7 +111,6 @@ export class ConstantProvider {
     invalidCredentials: 'Invalid credentials!',
     forgotPasswordMessage: 'Send an email to abc@ahi.com from your email requesting for your password.',
     registrationSuccessful: 'Registration successful',
-    enterValidDurationOfExpression: 'Please enter a valid duration of expression in minutes',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',
     userConstruction: "Under construction!",

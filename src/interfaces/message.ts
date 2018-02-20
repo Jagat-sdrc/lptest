@@ -15,7 +15,6 @@ interface IMessage{
     enterValidVolumeOfMilk: string;
     forgotPasswordMessage: string;
     registrationSuccessful: string;
-    enterValidDurationOfExpression: string;
     enterTypeOfBFExpression: string;
     noUserFound: string;
     userConstruction: string;
