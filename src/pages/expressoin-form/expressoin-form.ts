@@ -1,21 +1,8 @@
-import {
-  Component
-} from '@angular/core';
-import {
-  IonicPage,
-  NavController,
-  NavParams
-} from 'ionic-angular';
-import {
-  ExpressionTimeFormPage
-} from '../expression-time-form/expression-time-form';
-
-import {
-  MessageProvider
-} from '../../providers/message/message';
-import {
-  ExpressionBfDateProvider
-} from '../../providers/expression-bf-date/expression-bf-date'
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ExpressionTimeFormPage } from '../expression-time-form/expression-time-form';
+import { MessageProvider } from '../../providers/message/message';
+import { ExpressionBfDateProvider } from '../../providers/expression-bf-date/expression-bf-date'
 import { DatePipe } from '@angular/common';
 /**
  * Generated class for the ExpressoinFormPage page.
@@ -92,7 +79,7 @@ export class ExpressoinFormPage {
       selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
       isNewExpression: true
     }
-    this.navCtrl.push(ExpressionTimeFormPage, {dataForBFEntryPage: dataForBFEntryPage})
+    this.navCtrl.push('ExpressionTimeFormPage', {dataForBFEntryPage: dataForBFEntryPage})
   }
 
 }

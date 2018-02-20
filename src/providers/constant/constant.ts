@@ -100,6 +100,8 @@ export class ConstantProvider {
     SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
   };
 
+  static postDischargeMenu: number = 12;
+
   static messages: IMessage = {
     enterDateOfExpression: 'Please enter date of expression',
     enterTimeOfExpression :'Please enter time of expression',
@@ -115,7 +117,10 @@ export class ConstantProvider {
     noUserFound: 'No user found, please register!',
     userConstruction: "Under construction!",
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
-    babyOverWeight: "Baby's weight is more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?"
+    babyOverWeight: "Baby's weight is more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
+    supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
+    personWhoPerformedBfsp: "Please select the person who performed for BFSP",
+    durationOfBfsp: "Please enter a valid duration for BFSP performed"
   };
   
 /**

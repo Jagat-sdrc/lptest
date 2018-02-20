@@ -20,4 +20,7 @@ interface IMessage{
     userConstruction: string;
     babyUnderWeight: string;
     babyOverWeight: string;
+    supportivePracticeBfsp: string;
+    personWhoPerformedBfsp: string;
+    durationOfBfsp: string;
 }

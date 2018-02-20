@@ -1,0 +1,32 @@
+<!--
+  This is the Breastfeed supportive practice page.
+  @author - Naseem Akhtar (naseem@sdrc.co.in)
+  @since - 0.0.1
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Baby Id - {{babyCodeHospital}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card *ngFor="let date of bfspDateListData; let i = index">
+    <ion-card-content (click)='dateSelected(date)'>
+      <ion-row>
+        <ion-col>
+          <div>Sl No: {{i + 1}}</div>
+        </ion-col>
+
+        <ion-col text-right>
+          <div>{{date}}</div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+    <button ion-button block (click)="newBFSP()">New BFSP</button>
+</ion-footer>
+

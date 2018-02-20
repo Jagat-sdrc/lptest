@@ -1,0 +1,77 @@
+<!--
+  @author - Naseem Akhtar
+  @since - 0.0.1
+-->
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{dataForBfspPage.selectedDate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+      <ion-item class="item-stable" *ngFor="let bfsp of bfspList; let i=index" text-wrap>
+        <div>
+          <div class="acordion-title" (click)="toggleGroup(bfsp,i)" [ngClass]="{active: isGroupShown(bfsp)}">
+            <div>
+              {{bfsp.timeOfBFSP}}
+              <ion-icon color="success" style="float:right" [name]="isGroupShown(bfsp) ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
+            </div>
+          </div>
+
+          <div style="margin-top:15px" *ngIf="isGroupShown(bfsp)">
+            <form>
+                <div class="form-group">
+                  <ion-item>
+                    <ion-label color="black" stacked>Time at which BFSP occured</ion-label>
+                    <ion-datetime displayFormat="HH:mm" [max]="maxTime" [(ngModel)] = "bfsp.timeOfBFSP" [ngModelOptions]="{standalone: true}"></ion-datetime>
+                    <ion-icon padding-top name="time" item-right></ion-icon>
+                  </ion-item>
+                  <p class="error" *ngIf="">
+                    Please enter the time at which the BFSP occurred.
+                  </p>
+                </div>
+                <div class="form-group">
+                  <ion-item>
+                    <ion-label color="black" stacked>Breastfeeding supportive practice performed</ion-label>
+                    <ion-select [(ngModel)] = "bfsp.bfspPerformed" [ngModelOptions]="{standalone: true}">
+                      <ion-option *ngFor="let item of bfSupportivePracticePerformedList" [value]="item.id">{{item.name}}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+                <div class="form-group">
+                  <ion-item>
+                    <ion-label color="black" stacked>Person who performed the BFSP</ion-label>
+                    <ion-select id="person+i" [(ngModel)] = "bfsp.personWhoPerformedBFSP" [ngModelOptions]="{standalone: true}">
+                      <ion-option *ngFor="let item of personWhoPerformedBSFPList" [value]="item.id">{{item.name}}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+                <div class="form-group">
+                  <ion-item>
+                    <ion-label color="black" stacked>Duration of BFSP performed in minutes</ion-label>
+                    <ion-input type="number" [(ngModel)] = "bfsp.bfspDuration" [ngModelOptions]="{standalone: true}"></ion-input>
+                  </ion-item>
+                </div>
+              </form>
+
+              <ion-row padding-top>
+                <ion-col col-6 padding-right>
+                  <button class="login-button" ion-button block (click)="null">Reset</button>
+                </ion-col>
+                <ion-col col-6 padding-left>
+                  <button class="login-button" ion-button block (click)="save(bfsp)">Save</button>
+                </ion-col>
+              </ion-row>
+            </div>
+        </div>
+      </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <button class="login-button" ion-button block (click)="newBFSPForm()">New BFSP</button>
+</ion-footer>
+
