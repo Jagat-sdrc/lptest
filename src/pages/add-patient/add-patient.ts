@@ -104,16 +104,16 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.baby_admitted.setValue(null),
     this.patientForm.controls.nicu_admission.setValue(null)
   }
-
-
+  
   ionViewDidEnter(){
     if(!(this.navParams.get('babyCode') == undefined)){
       this.forEdit = true;
       this.autoBabyId = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.autoBabyId = "IND"+this.datePipe.transform(new Date(),"ddMMyyyy")+
-    new Date().getMilliseconds();
+      this.autoBabyId = this.institutionName.substring(0,3).toUpperCase()+this.datePipe.transform(new Date(),"ddMMyyyy")+
+      new Date().getMilliseconds();
+      this.patientForm.controls.baby_id.setValue(this.autoBabyId);
     }
   }
  /**
@@ -142,7 +142,13 @@ export class AddPatientPage implements OnInit{
       })
 
     } else {
-      this.headerTitle = "Add New Patient"
+      this.headerTitle = "Add New Patient";
+      this.addNewPatientService.getInsitutionName(this.userService.getUser().institution)
+      .subscribe(data =>{
+         this.institutionName = data[0].name;
+      }, err => {
+        this.messageService.showErrorToast(err)
+      });
     }
 
 

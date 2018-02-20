@@ -20,8 +20,11 @@
 
 <ion-content padding>
   <form [formGroup]="patientForm">
-    <div class="form-group" *ngIf="false">
-      <ion-input type="text" formControlName="baby_id"></ion-input>
+    <div class="form-group">
+      <ion-item>
+        <ion-label color="black" stacked>Baby ID</ion-label>
+        <ion-input type="text" disabled formControlName="baby_id"></ion-input>
+      </ion-item>
     </div>
     <div class="form-group">
       <ion-item>

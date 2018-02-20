@@ -203,7 +203,7 @@ export class AddNewPatientServiceProvider {
 
 
 /**
- * This method will 
+ * This method will return the patients list from the db based on the baby code
  * 
  * @author Jagat Bandhu
  * @since 0.0.1
@@ -222,5 +222,21 @@ export class AddNewPatientServiceProvider {
     });
     return promise;
   }
+
+  /**
+   * This method will get the instiution list based on the userDetails institution id
+   * 
+   * @author Jagat Bandhu Sahoo
+   * @since 0.0.1
+   * @param instituteId
+   */
+  getInsitutionName(instituteId){
+    return this.http.get("./assets/data.json").map((response: Response) => {
+      return (response as any).areaDetails.filter(d =>(d.id === instituteId));
+      })
+    .catch(this.handleError);
+  }
+
+  
 
 }
