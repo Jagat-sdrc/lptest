@@ -234,7 +234,9 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
       OMMVolume: null,
       otherVolume: null,
       timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm'),
-      isSynced: false
+      isSynced: false,
+      locationOfFeeding: null,
+      syncFailureMessage: null
     }
 
 

@@ -98,20 +98,20 @@ export class ExpressionTimeFormPage {
     //getting the id of selected method of expression.
     for (let j = 0; j < this.bfExpressionMethods.length; j++) {
         let id =''+this.bfExpressionMethods[j].id
-        if (this.bFExpressions[i].methodOfExpression === id) {
-          this.methodOfBfExpObject= '' + this.bfExpressionMethods[i].name;
-          break;
-        }
+        // if (this.bFExpressions[i].methodOfExpression === id) {
+        //   this.methodOfBfExpObject= '' + this.bfExpressionMethods[i].name;
+        //   break;
+        // }
          
     }
      //getting the id of selected location of expression.
 
      for (let k = 0; k < this.locationOfexpressionMethods.length; k++) {
       let id =''+this.locationOfexpressionMethods[k].id
-      if (this.bFExpressions[i].locationOfExpression === id) {
-        this.locOfExpressionObject = '' + this.locationOfexpressionMethods[i].name;
-        break;
-      }
+      // if (this.bFExpressions[i].locationOfExpression === id) {
+      //   this.locOfExpressionObject = '' + this.locationOfexpressionMethods[i].name;
+      //   break;
+      // }
     }
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
@@ -137,21 +137,22 @@ export class ExpressionTimeFormPage {
     for (let i = 0; i < this.bfExpressionMethods.length; i++) {
       if (this.bfExpressionMethods[i].name === this.methodOfBfExpObject) {
 
-        bfExpression.methodOfExpression = '' + this.bfExpressionMethods[i].id;
-        break;
+        // bfExpression.methodOfExpression = '' + this.bfExpressionMethods[i].id;
+        // break;
       }
     }
     //getting the id of selected location of expression.
 
     for (let i = 0; i < this.locationOfexpressionMethods.length; i++) {
       if (this.locationOfexpressionMethods[i].name === this.locOfExpressionObject) {
-        bfExpression.locationOfExpression = '' + this.locationOfexpressionMethods[i].id;
-        break;
+        // bfExpression.locationOfExpression = '' + this.locationOfexpressionMethods[i].id;
+        // break;
       }
     }
 
     //set validations for all the fields
-    if (!this.validateDurationOfExpression(bfExpression.durationOfExpression)) {
+    // if (!this.validateDurationOfExpression(bfExpression.durationOfExpression)) {
+    if (!this.validateDurationOfExpression(true)) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterValidDurationOfExpression)
     } else if (bfExpression.methodOfExpression == null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTypeOfBFExpression);
