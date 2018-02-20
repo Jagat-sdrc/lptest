@@ -18,9 +18,7 @@ import { UserServiceProvider } from '../user-service/user-service';
 export class BfSupportivePracticeServiceProvider {
 
   constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe,
-    private userService: UserServiceProvider) {
-    console.log('Hello BfSupportivePracticeServiceProvider Provider');
-  }
+    private userService: UserServiceProvider) {}
 
   /**
    * This method should return delivery method lists
@@ -170,7 +168,7 @@ export class BfSupportivePracticeServiceProvider {
       bfspDuration: null,
       isSynced: false,
       userId: this.userService.getUser().email,
-      syncFailureMessage: null      
+      syncFailureMessage: null
     }
 
     if (data != null && date != undefined) {

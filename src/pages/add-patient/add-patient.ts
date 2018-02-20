@@ -41,7 +41,7 @@ export class AddPatientPage implements OnInit{
   babyAdmittedTo: ITypeDetails[];
   nicuAdmission: ITypeDetails[];
   babyId: any;
-
+  resetStatus: boolean = true;
   patient: IPatient;
   autoBabyId: any;
   countryName: string;
@@ -83,7 +83,9 @@ export class AddPatientPage implements OnInit{
      * This iteration will be used to untouch all the fields, because the user wants a new form.
      * @author - Naseem Akhtar
      */
+    
     Object.keys(this.patientForm.controls).forEach(field => {
+      this.resetStatus = false;
       const control = this.patientForm.get(field);
       control.markAsUntouched({onlySelf: true});
       control.markAsPristine({onlySelf: true});
@@ -99,7 +101,7 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.intent_provide_milk.setValue(null),
     this.patientForm.controls.hm_lactation.setValue(null),
     this.patientForm.controls.first_exp_time.setValue(null),
-    this.patientForm.controls.inpatient_outpatient.setValue(null),
+    this.patientForm.controls.inpatient_outpatient.setValue(""),
     this.patientForm.controls.admission_date.setValue(null),
     this.patientForm.controls.baby_admitted.setValue(null),
     this.patientForm.controls.nicu_admission.setValue(null)
@@ -237,6 +239,16 @@ export class AddPatientPage implements OnInit{
       this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
     }
 
+    /**
+     * This method will used to update the current time
+     * 
+     * @author Jagat Bandhu
+     * @since 0.0.1
+     */
+    updateDate(){
+      this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
+    }
+
     _numberKeyPress(e,no) {
       if (e.target["value"].length > no) {
         e.target["value"] = e.target["value"].substring(0, e.target["value"].length - 1);
@@ -244,14 +256,15 @@ export class AddPatientPage implements OnInit{
      }
 
      outpatientAdmission(){
-       if(this.patientForm.controls.inpatient_outpatient.value.id==ConstantProvider.typeDetailsIds.outbornPatient){
-        this.outPatientAdmissionStatus = true;
-       } else {
-        this.outPatientAdmissionStatus = false;
-        this.patientForm.controls.admission_date.setValue(null);
-        this.patientForm.controls["admission_date"].setErrors(null);
+       if(this.patientForm.controls.inpatient_outpatient.value.id != undefined || this.patientForm.controls.inpatient_outpatient.value.id != null){
+        if(this.patientForm.controls.inpatient_outpatient.value.id==ConstantProvider.typeDetailsIds.outbornPatient){
+          this.outPatientAdmissionStatus = true;
+         } else {
+          this.outPatientAdmissionStatus = false;
+          this.patientForm.controls.admission_date.setValue(null);
+          this.patientForm.controls["admission_date"].setErrors(null);
+         }
        }
-        
      }
 
      validateBabyWeight(babyWeight) {
@@ -290,14 +303,16 @@ export class AddPatientPage implements OnInit{
       * @author Jagat Bandhu
       * @since 0.0.1
       */
-    save(){
+     submit(){
       this.outpatientAdmission();
       if(!this.patientForm.valid){
+        this.resetStatus = true;
         Object.keys(this.patientForm.controls).forEach(field => {
           const control = this.patientForm.get(field);
           control.markAsTouched({ onlySelf: true });
         });
       } else {
+        this.resetStatus = false;
         let deliveryDate: string = this.patientForm.controls.delivery_date.value;
         if(this.forEdit){
           deliveryDate = this.datePipe.transform(new Date(deliveryDate), 'dd-MM-yyyy');

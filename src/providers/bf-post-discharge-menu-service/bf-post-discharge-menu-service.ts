@@ -14,7 +14,6 @@ import { Observable } from 'rxjs/Observable';
 export class BfPostDischargeMenuServiceProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello BfPostDischargeMenuServiceProvider Provider');
   }
 
   /**

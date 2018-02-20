@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
 import { DatePipe } from '@angular/common';
 import { BfspDateListServiceProvider } from '../../providers/bfsp-date-list-service/bfsp-date-list-service';
-import { BfSupportivePracticePage } from '../bf-supportive-practice/bf-supportive-practice';
 
 /**
  * Generated class for the BfSupportivePracticeDateListPage page.

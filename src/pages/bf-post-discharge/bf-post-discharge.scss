@@ -1,3 +1,10 @@
 page-bf-post-discharge {
-
+    .alignWithQuestions{
+        @media screen and (max-width: 600px) {
+            padding-left: 4%;
+        }
+        @media screen and (min-width: 601px) {
+            padding-left: 1%;
+        }
+    }
 }

@@ -11,7 +11,7 @@ interface IBFPD{
     userId: string;
     syncFailureMessage: string;
     isSynced: boolean;
-    dateOfFeed: string;
-    timeOfFeed: number;
-    status: number;
+    dateOfBreastFeeding: string;
+    timeOfBreastFeeding: number;
+    breastFeedingStatus: number;
 }

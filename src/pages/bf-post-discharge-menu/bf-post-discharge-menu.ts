@@ -25,7 +25,7 @@ export class BfPostDischargeMenuPage {
     private bfPostDischargeMenuService: BfPostDischargeMenuServiceProvider,
     private messageService: MessageProvider) {
     this.babyCode = this.navParams.data.babyCode;
-    this.babyCodeHospital = this.navParams.data.babyCodeHospital;
+    this.babyCodeHospital = this.navParams.data.babyCodeByHospital;
   }
 
   ngOnInit(){
@@ -33,8 +33,17 @@ export class BfPostDischargeMenuPage {
       .subscribe(data => {
         this.menu = data;
       }, error => {
-        this.messageService.showErrorToast(error)
+        this.messageService.showErrorToast(error);
       })
   };
+
+  goToPostDischargeForm(menuId: number){
+    let dataForPostDischarge: IDataForPostDischargePage = {
+      babyCode: this.babyCode,
+      menuItemId: menuId,
+      babyCodeHospital: this.babyCodeHospital
+    };
+    this.navCtrl.push('BfPostDischargePage', dataForPostDischarge);
+  }
 
 }
