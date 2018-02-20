@@ -97,7 +97,7 @@ export class ConstantProvider {
    */
   static serverUrls:any = {
     SERVER_STATUS: 'http://192.168.1.246:8080/serverStatus',
-    SYNCHRONIZE: 'http://192.168.1.246:8080/sync'
+    SYNCHRONIZE: 'http://192.168.43.155:8080/sync'
   };
 
   static messages: IMessage = {

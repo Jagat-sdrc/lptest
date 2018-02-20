@@ -16,6 +16,8 @@ interface IFeed{
     formulaVolume: number;
     animalMilkVolume: number;
     otherVolume: number;
+    locationOfFeeding: number;
     babyWeight: number;
+    syncFailureMessage: string;
     isSynced: boolean;
 }

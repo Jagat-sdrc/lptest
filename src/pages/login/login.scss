@@ -34,7 +34,7 @@ page-login {
         margin-top: 25px;
         height: 45px;
         font-size: 20px;
-        background: #717171;
+        background: color($colors, secondary, base);
         text-transform: none;
       }
       .text-link-forgotPassword{
