@@ -24,6 +24,9 @@ import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expres
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
 import { RegisteredPatientServiceProvider } from '../providers/registered-patient-service/registered-patient-service';
 import { NewAccountServiceProvider } from '../providers/new-account-service/new-account-service';
+import { BfSupportivePracticeServiceProvider } from '../providers/bf-supportive-practice-service/bf-supportive-practice-service';
+import { BfspDateListServiceProvider } from '../providers/bfsp-date-list-service/bfsp-date-list-service';
+import { BfPostDischargeMenuServiceProvider } from '../providers/bf-post-discharge-menu-service/bf-post-discharge-menu-service';
 
 
 @NgModule({
@@ -64,7 +67,10 @@ import { NewAccountServiceProvider } from '../providers/new-account-service/new-
     SaveExpressionBfProvider,
     UserServiceProvider,
     RegisteredPatientServiceProvider,
-    NewAccountServiceProvider
+    NewAccountServiceProvider,
+    BfSupportivePracticeServiceProvider,
+    BfspDateListServiceProvider,
+    BfPostDischargeMenuServiceProvider
   ]
 })
 export class AppModule {}

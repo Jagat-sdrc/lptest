@@ -1,0 +1,48 @@
+<!--
+  @author - Naseem Akhtar
+  @since - 0.0.1
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Baby Id - {{babyCodeHospital}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngFor="let item of menu">
+    <ion-card-content (click)='null'>
+      <ion-row>
+        <ion-col>
+          <div>{{item.name}}</div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <!-- <ion-card>
+    <ion-card-content (click)='null'>
+      <ion-row>
+        <ion-col>
+          <div>1 month post discharge</div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content (click)='null'>
+      <ion-row>
+        <ion-col>
+          <div>3 months of life</div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content (click)='null'>
+      <ion-row>
+        <ion-col>
+          <div>6 months of life</div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content> -->
+  <!-- </ion-card> -->
+</ion-content>

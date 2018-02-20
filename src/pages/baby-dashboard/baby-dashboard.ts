@@ -19,6 +19,8 @@ export class BabyDashboardPage {
   feedPage;
   expressoinFormPage;
   addPatientPage;
+  bfspDateListPage;
+  bfPostDischargeMenuPage;
 
   paramToExpressionPage: IParamToExpresssionPage;
   constructor(public navCtrl: NavController, public navParams: NavParams) {    
@@ -28,14 +30,13 @@ export class BabyDashboardPage {
     this.feedDateListPage = 'FeedDateListPage'
     this.expressoinFormPage = 'ExpressoinFormPage';
     this.addPatientPage = 'AddPatientPage';
+    this.bfspDateListPage = 'BfSupportivePracticeDateListPage';
+    this.bfPostDischargeMenuPage = 'BfPostDischargeMenuPage';
 
     this.paramToExpressionPage = {
       babyCode: this.navParams.get("babyCode"),
       babyCodeByHospital: this.navParams.get("babyCodeByHospital")
     }
-
-    console.log(this.paramToExpressionPage.babyCode);
-    console.log(this.paramToExpressionPage.babyCodeByHospital);
   }
 
   goToHome(){

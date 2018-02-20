@@ -22,7 +22,7 @@
   </ion-row>
 
   <ion-row>
-    <ion-col (click)="goToForm('BFSP')" class="gap">
+    <ion-col [navPush]=bfspDateListPage class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">BFSP</div>
     </ion-col>
     <ion-col [navPush]="feedDateListPage" class="gap" [navParams]="paramToExpressionPage">
@@ -32,7 +32,7 @@
   </ion-row>
 
   <ion-row>
-    <ion-col (click)="goToExpressionForm('BF-Post Discharge')" class="gap">
+    <ion-col [navPush]="bfPostDischargeMenuPage" class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">BF-Post Discharge</div>
     </ion-col>
     <ion-col [navPush]="vurnerableBabies" class="gap">

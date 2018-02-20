@@ -68,7 +68,7 @@ private datePipe: DatePipe) {}
       selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
       isNewExpression: true
     }
-    this.navCtrl.push(FeedPage, {dataForFeedEntryPage: dataForFeedEntryPage})
+    this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }
 
 }
