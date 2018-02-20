@@ -264,6 +264,11 @@ export class AddPatientPage implements OnInit{
              },
              {
                text: 'Yes',
+               handler: () => {
+                if(this.patientForm.controls.baby_weight.value < 500){
+                  this.patientForm.controls.baby_weight.setValue(null);
+                }
+              }
              }
            ]
          });

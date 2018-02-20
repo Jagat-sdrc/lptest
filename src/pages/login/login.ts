@@ -54,7 +54,7 @@ export class LoginPage {
   forgotPassword(){
     let confirm = this.alertCtrl.create({
       enableBackdropDismiss: false,
-      title: 'Info',
+      title: 'INFO',
       message: ConstantProvider.messages.forgotPasswordMessage,
       buttons: [
         {
