@@ -38,16 +38,25 @@ export class ExpressoinFormPage {
       isNewExpression:false
     });
   }
-  ngOnInit() {
-    //Getting date list
-    this.expressionBFdateService.getExpressionBFDateListData(this.babyCode)
-      .then(data => {
-        this.expBfDateListData = data;
-      })
-      .catch(err => {
-        this.messageService.showErrorToast((err as IDBOperationStatus).message)
-      })
+
+  /**
+   * Inside this function we are going to write the fetch expression list code.
+   * Because init is called onnly while page creation, that is the reason for the
+   * list not getting updated while coming back from the form.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   */
+  ionViewWillEnter(){
+     //Getting date list
+     this.expressionBFdateService.getExpressionBFDateListData(this.babyCode)
+     .then(data => {
+       this.expBfDateListData = data;
+     })
+     .catch(err => {
+       this.messageService.showErrorToast((err as IDBOperationStatus).message)
+     })
   }
+
     /**
    * This is going to send us to entry page with selected date and baby id
    * @author Ratikanta

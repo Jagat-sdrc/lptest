@@ -29,7 +29,14 @@ export class BfSupportivePracticeDateListPage {
       this.babyCodeHospital = this.navParams.data.babyCodeByHospital;
   }
 
-  ngOnInit() {
+  /**
+   * Inside this function we are going to write the fetch expression list code.
+   * Because init is called onnly while page creation, that is the reason for the
+   * list not getting updated while coming back from the form.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   */
+  ionViewWillEnter(){
     //Getting date list
     this.bfspDateListService.getBFSPDateList(this.babyCode)
       .then(data => {
