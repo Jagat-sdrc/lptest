@@ -31,9 +31,6 @@ export class ExpressoinFormPage {
     this.form = this.navParams.get("param2");
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ExpressoinFormPage');
-  }
   goToBabyExBfTimeView(date: any) {
     this.navCtrl.push(ExpressionTimeFormPage, {
       babyCode: this.babyCode,

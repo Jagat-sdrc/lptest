@@ -58,10 +58,13 @@
                 <ion-label stacked>Volume of milk expressed from left and right breast (in ml,range 0-300)</ion-label>
                 <ion-input type="number" [value]="item.volOfMilkExpressedFromLR" [(ngModel)]="item.volOfMilkExpressedFromLR"></ion-input>
               </ion-item>
-              <div>
-                <button class="save-button" ion-button  (click)="saveExpression(item)">Save</button>
-              </div>
-            
+
+              <ion-row padding>
+                <ion-col>
+                  <button class="login-button" ion-button block (click)="saveExpression(item)">Save</button>
+                  <!-- <button class="save-button" ion-button  (click)="saveExpression(item)">Save</button> -->
+                </ion-col>
+              </ion-row>
             </div>
           </div>
         </ion-item>
