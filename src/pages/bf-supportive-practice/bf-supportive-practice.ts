@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { BfSupportivePracticeServiceProvider } from '../../providers/bf-supportive-practice-service/bf-supportive-practice-service';
 import { MessageProvider } from '../../providers/message/message';
-import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
@@ -35,9 +34,11 @@ export class BfSupportivePracticePage {
   shownGroup: any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private messageService: MessageProvider,
-    public formBuilder: FormBuilder, private datePipe: DatePipe, private bfspService: BfSupportivePracticeServiceProvider,
-    private userService: UserServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private messageService: MessageProvider,
+    public formBuilder: FormBuilder, private datePipe: DatePipe,
+    private bfspService: BfSupportivePracticeServiceProvider,
+    ) {
       this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
       this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
     }

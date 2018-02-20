@@ -27,6 +27,7 @@ import { NewAccountServiceProvider } from '../providers/new-account-service/new-
 import { BfSupportivePracticeServiceProvider } from '../providers/bf-supportive-practice-service/bf-supportive-practice-service';
 import { BfspDateListServiceProvider } from '../providers/bfsp-date-list-service/bfsp-date-list-service';
 import { BfPostDischargeMenuServiceProvider } from '../providers/bf-post-discharge-menu-service/bf-post-discharge-menu-service';
+import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-service/bf-post-discharge-service';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { BfPostDischargeMenuServiceProvider } from '../providers/bf-post-dischar
     NewAccountServiceProvider,
     BfSupportivePracticeServiceProvider,
     BfspDateListServiceProvider,
-    BfPostDischargeMenuServiceProvider
+    BfPostDischargeMenuServiceProvider,
+    BfPostDischargeServiceProvider
   ]
 })
 export class AppModule {}

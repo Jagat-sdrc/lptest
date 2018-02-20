@@ -18,9 +18,4 @@ interface IBFSP{
     userId: string;
     syncFailureMessage: string;
     isSynced: boolean;
-    dateOfFeed: string;
-    timeOfFeed: string;
-    spPerformed: number;
-    personPerformed: number;
-    duration: number;//minute.second
 }
