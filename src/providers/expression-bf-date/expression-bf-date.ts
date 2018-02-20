@@ -153,11 +153,11 @@ export class ExpressionBfDateProvider {
       userId: this.userService.getUser().email,
       dateOfExpression: new Date().toISOString(),
       timeOfExpression: this.datePipe.transform(new Date(), 'HH:mm'),
-      durationOfExpression: null,
       methodOfExpression: null,
       locationOfExpression: null,
       volOfMilkExpressedFromLR: null,
-      isSynced: false
+      isSynced: false,
+      syncFailureMessage: null
 
     }
 

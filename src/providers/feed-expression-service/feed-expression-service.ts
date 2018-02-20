@@ -224,7 +224,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
     let feed: IFeed = {
       id: this.getNewFeedExpressionId(babyCode),
       babyCode: babyCode,     
-      userId: this.userService.getUser().emailAddress,
+      userId: this.userService.getUser().email,
       babyWeight: null,
       dateOfFeed: new Date().toISOString(),
       DHMVolume: null,
@@ -233,7 +233,10 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
       methodOfFeed: null,
       OMMVolume: null,
       otherVolume: null,
-      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm')
+      timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm'),
+      isSynced: false,
+      locationOfFeeding: null,
+      syncFailureMessage: null
     }
 
 
