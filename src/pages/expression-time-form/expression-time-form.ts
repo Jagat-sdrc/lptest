@@ -83,7 +83,7 @@ export class ExpressionTimeFormPage {
 
     //getting the id of selected method of expression.
     for (let j = 0; j < this.bfExpressionMethods.length; j++) {
-        let id =''+this.bfExpressionMethods[j].id
+        let id = this.bfExpressionMethods[j].id
         if (this.bFExpressions[i].methodOfExpression === id) {
           this.methodOfBfExpObject= '' + this.bfExpressionMethods[i].name;
           break;
@@ -93,7 +93,7 @@ export class ExpressionTimeFormPage {
      //getting the id of selected location of expression.
 
      for (let k = 0; k < this.locationOfexpressionMethods.length; k++) {
-      let id =''+this.locationOfexpressionMethods[k].id
+      let id = this.locationOfexpressionMethods[k].id
       if (this.bFExpressions[i].locationOfExpression === id) {
         this.locOfExpressionObject = '' + this.locationOfexpressionMethods[i].name;
         break;
@@ -123,7 +123,7 @@ export class ExpressionTimeFormPage {
     for (let i = 0; i < this.bfExpressionMethods.length; i++) {
       if (this.bfExpressionMethods[i].name === this.methodOfBfExpObject) {
 
-        bfExpression.methodOfExpression = '' + this.bfExpressionMethods[i].id;
+        bfExpression.methodOfExpression = this.bfExpressionMethods[i].id;
         break;
       }
     }
@@ -131,15 +131,13 @@ export class ExpressionTimeFormPage {
 
     for (let i = 0; i < this.locationOfexpressionMethods.length; i++) {
       if (this.locationOfexpressionMethods[i].name === this.locOfExpressionObject) {
-        bfExpression.locationOfExpression = '' + this.locationOfexpressionMethods[i].id;
+        bfExpression.locationOfExpression = this.locationOfexpressionMethods[i].id;
         break;
       }
     }
 
     //set validations for all the fields
-    if (!this.validateDurationOfExpression(bfExpression.durationOfExpression)) {
-      this.messageService.showErrorToast(ConstantProvider.messages.enterValidDurationOfExpression)
-    } else if (bfExpression.methodOfExpression == null) {
+    if (bfExpression.methodOfExpression == null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTypeOfBFExpression);
     } else if (bfExpression.locationOfExpression == null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterLocOfExpression);

@@ -15,6 +15,12 @@ interface IBFSP{
     bfspPerformed: number;
     personWhoPerformedBFSP: number;
     bfspDuration: number;
-    isSynced: boolean;
     userId: string;
+    syncFailureMessage: string;
+    isSynced: boolean;
+    dateOfFeed: string;
+    timeOfFeed: string;
+    spPerformed: number;
+    personPerformed: number;
+    duration: number;//minute.second
 }

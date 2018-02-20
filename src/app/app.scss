@@ -16,11 +16,12 @@
 // automatically applied to the <body> element in the app.
 
 .smenu-custom {
-    background: #717171;
+    background: color($colors, lblack, base) !important;
     height: 150px;
     padding-left: 30px; 
     font-size: 18px;
     color: white;
+    margin-bottom: 10px;
 }
 .ess-pointer {
     cursor: pointer;
@@ -31,9 +32,15 @@
 .error{
     color:red;
 } 
+.bg-color{
+    background: color($colors, lblack, base) !important;
+}
+.item-md p{
+    color: white;
+}
 .modalDialog{
     .alert-head{
-        background: #717171 !important;
+        background: color($colors, lgreen, base) !important;
     }
     .alert-message{
         margin: 1.5em 0 1em 0;
@@ -52,13 +59,20 @@
     }
     .alert-button-group{
        color: black;
-       background-color: #717171;
+       background-color: color($colors, lgreen, base);
     }
     .edit-button{
         float:right;
         margin-top: 5px
     }
     .alert-button .button-inner{
-        color: white;
+        color: black;
+    }
+    .icon-size{
+        height: 100px;
+        width: 100px;
+    }
+    .img{
+        max-width: 0px;
     }
 }

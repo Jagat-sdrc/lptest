@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { MessageProvider } from '../../providers/message/message';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
  * Generated class for the BabyDashboardPage page.
@@ -23,7 +25,8 @@ export class BabyDashboardPage {
   bfPostDischargeMenuPage;
 
   paramToExpressionPage: IParamToExpresssionPage;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {    
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+  private messageService: MessageProvider) {    
   }
 
   ngOnInit(){
@@ -41,6 +44,15 @@ export class BabyDashboardPage {
 
   goToHome(){
     this.navCtrl.setRoot('HomePage');
+  }
+
+  /**
+   * This method will just show the action under construction message
+   * 
+   * @memberof HomePage
+   */
+  underConstruction(){
+    this.messageService.showErrorToast(ConstantProvider.messages.userConstruction)
   }
 
 }

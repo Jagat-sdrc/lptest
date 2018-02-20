@@ -21,10 +21,10 @@ export class LoginPage {
 
   ngOnInit(){
     this.loginData = {
-      username: 'naseem@sdrc.co.in',
-      password: 'na@123#!'
-      // username: '',
-      // password: ''
+      // username: 'naseem@sdrc.co.in',
+      // password: 'na@123#!'
+      username: '',
+      password: ''
     }
   }
 
@@ -54,7 +54,7 @@ export class LoginPage {
   forgotPassword(){
     let confirm = this.alertCtrl.create({
       enableBackdropDismiss: false,
-      title: 'Info',
+      title: 'INFO',
       message: ConstantProvider.messages.forgotPasswordMessage,
       buttons: [
         {

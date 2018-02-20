@@ -96,8 +96,8 @@ export class ConstantProvider {
    * @since 0.0.1
    */
   static serverUrls:any = {
-    SERVER_STATUS: 'http://localhost:8080/serverStatus',
-    SYNCHRONIZE: 'http://localhost:8080/sync'
+    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
+    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
   };
 
   static postDischargeMenu: number = 12;
@@ -113,7 +113,6 @@ export class ConstantProvider {
     invalidCredentials: 'Invalid credentials!',
     forgotPasswordMessage: 'Send an email to abc@ahi.com from your email requesting for your password.',
     registrationSuccessful: 'Registration successful',
-    enterValidDurationOfExpression: 'Please enter a valid duration of expression in minutes',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',
     userConstruction: "Under construction!",

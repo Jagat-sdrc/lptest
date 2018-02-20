@@ -1,13 +1,29 @@
-<ion-header>
+<!-- <ion-header>
 
   <ion-navbar color="primary">
     <ion-title>Login</ion-title>
   </ion-navbar>
 
-</ion-header>
+</ion-header> -->
 
 
 <ion-content padding class="Login">
+
+  
+    
+        <!-- <img height="42" width="42" src="/assets/imgs/icon_svg.svg"/> -->
+    
+<ion-grid>
+  <ion-row>
+    <ion-col col-4></ion-col>
+    <ion-col col-4 class="icon-col-style">
+      <img src="/assets/imgs/icon_svg.svg" class="icon-style">
+    </ion-col>
+    <ion-col col-4></ion-col>
+  </ion-row>
+</ion-grid>   
+  
+    
 
   <ion-item>
     <ion-label floating>Username</ion-label>
@@ -21,6 +37,7 @@
 
   <button class="login-button" ion-button block (click)="login()">Login</button>
 
-  <div text-center class="text-link-forgotPassword" (click)="forgotPassword()">Forgot Password ?</div>
   <div text-center class="text-link-CreatNewAcc" (click)="signUp()">Create New Account</div>
+  <div text-center class="text-link-forgotPassword" (click)="forgotPassword()">Forgot Password ?</div>
+  
 </ion-content>
