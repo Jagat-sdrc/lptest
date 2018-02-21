@@ -7,6 +7,7 @@ import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
+import * as moment from 'moment';
 
 /*
   Generated class for the BfSupportivePracticeServiceProvider provider.
@@ -45,15 +46,16 @@ export class BfSupportivePracticeServiceProvider {
 
   saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP): Promise <any> {
     let promise = new Promise((resolve, reject) => {
-      
+      bfspForm.isSynced = false;
+      bfspForm.dateOfBFSP = this.datePipe.transform(new Date(bfspForm.dateOfBFSP), 'dd-MM-yyyy')
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then((val) => {
 
           let bfspForms: IBFSP[] = [];
           if (val != null) {
             bfspForms = val
-            // patients = this.validateNewEntryAndUpdate(patients, patient)     
-            this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForm)
+            bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)          
+            this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
               .then(data => {
                 resolve()
               })
@@ -83,16 +85,15 @@ export class BfSupportivePracticeServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then(data => {
           if (data != null) {
-            data = (data as IBFSP[]).filter(d => (d.babyCode === babyCode));
-            let tempData: IBFSP[] = [];
+            data = (data as IBFSP[]).filter(d => d.babyCode === babyCode && d.dateOfBFSP === date);
+
             (data as IBFSP[]).forEach(d => {
-              let dateString: string = this.datePipe.transform(new Date(d.dateOfBFSP), 'dd-MM-yyyy')
-              if (date === dateString) {
-                tempData.push(d)
-              }
+              let day = parseInt(d.dateOfBFSP.split('-')[0]);
+              let month = parseInt(d.dateOfBFSP.split('-')[1]);
+              let year = parseInt(d.dateOfBFSP.split('-')[2]);
+              d.dateOfBFSP = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
             });
 
-            data = tempData;
             if ((data as IBFSP[]).length > 0) {
               if (isNewExpression) {
                 resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
@@ -104,7 +105,7 @@ export class BfSupportivePracticeServiceProvider {
               if (isNewExpression) {
                 resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
               } else {
-                reject("No data found")
+                resolve([])
               }
 
             }
@@ -112,7 +113,7 @@ export class BfSupportivePracticeServiceProvider {
             if (isNewExpression) {
               resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
             } else {
-              reject("No data found")
+              resolve([])
             }
           }
         })
@@ -149,8 +150,7 @@ export class BfSupportivePracticeServiceProvider {
     let bf: IBFSP = {
       id: this.getNewBfspId(babyCode),
       babyCode: babyCode,
-      babyCodeHospital: null,
-      dateOfBFSP: new Date().toISOString(),
+      dateOfBFSP: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
       timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
       bfspPerformed: null,
       personWhoPerformedBFSP: null,
@@ -179,5 +179,68 @@ export class BfSupportivePracticeServiceProvider {
     }
     return new ErrorObservable(messageToUser);
   };
+
+
+  /**
+   * This method will delete a bfsp expression
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param {string} id 
+   * @returns {Promise<any>} 
+   * 
+   */
+  delete(id: string): Promise<any>{
+    let promise =  new Promise((resolve, reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.bfsps)
+      .then(data=>{
+        let index = (data as IBFSP[]).findIndex(d=>d.id === id);
+        if(index >= 0){
+          (data as IBFSP[]).splice(index, 1)
+          this.storage.set(ConstantProvider.dbKeyNames.bfsps, data)
+          .then(()=>{
+            resolve()
+          })
+          .catch(err=>{
+            reject(err.message)
+          })
+        }else{
+          reject(ConstantProvider.messages.recordNotFound)  
+        }
+      })
+      .catch(err=>{
+        reject(err.message)
+      })
+    });
+    return promise;
+  }
+
+
+    /**
+   * This method will check whether we have the record with given baby id, date and time.
+   * If all the attribute value will match, this will splice that record and append incoming record.
+   * Because it has come for an update.
+   * 
+   * If record does not match, this will just push the input record with existing once
+   * 
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param feedExpressions All the existing feed expressions
+   * @param feedExpression incoming feed expression
+   * @returns IFeed[] modified feed expressions
+   */
+  private validateNewEntryAndUpdate(bfsps: IBFSP[], bfsp: IBFSP): IBFSP[]{
+
+    
+    for(let i = 0; i < bfsps.length;i++){
+      if(bfsps[i].id === bfsp.id){
+        //record found, need to splice and enter new
+        bfsps.splice(i,1)
+        break;
+      }
+    }
+    bfsps.push(bfsp)    
+    return bfsps;
+
+  }
 
 }

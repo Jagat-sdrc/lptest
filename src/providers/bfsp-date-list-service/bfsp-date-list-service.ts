@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
-import { DatePipe } from '@angular/common';
 
 /**
  * This service will help BFSPList component
@@ -13,7 +12,7 @@ import { DatePipe } from '@angular/common';
 @Injectable()
 export class BfspDateListServiceProvider {
 
-  constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe) {
+  constructor(public http: HttpClient, private storage: Storage) {
   }
 
   getBFSPDateList(babyCode: string): Promise < string[] > {
@@ -29,7 +28,7 @@ export class BfspDateListServiceProvider {
             if ((data as IBFSP[]).length > 0) {
               let dates: string[] = [];
               (data as IBFSP[]).forEach(d => {
-                dates.push(this.datePipe.transform(new Date(d.dateOfBFSP), 'dd-MM-yyyy'))
+                dates.push(d.dateOfBFSP)
               });
 
               //removing duplicates
@@ -37,11 +36,11 @@ export class BfspDateListServiceProvider {
 
               resolve(dates)
             } else {
-              reject([]);
+              resolve([]);
             }
 
           } else {
-            reject([]);
+            resolve([]);
           }
 
         })

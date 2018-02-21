@@ -52,16 +52,8 @@ export class BfSupportivePracticePage {
    */
   ngOnInit() {
     this.dataForBfspPage = this.navParams.get('dataForBfspPage');
-    // this.newBFSPForm();
 
-    this.bfspService.findByBabyCodeAndDate(this.dataForBfspPage.babyCode,
-      this.dataForBfspPage.selectedDate, this.dataForBfspPage.isNewBfsp)
-      .then(data => {
-        this.bfspList = data;
-      })
-      .catch(err => {
-        this.messageService.showErrorToast(err)
-      });
+    this.findExpressionsByBabyCodeAndDate();
 
     this.bfspService.getBreastfeedingSupportivePractice()
       .subscribe(data => {
@@ -88,10 +80,6 @@ export class BfSupportivePracticePage {
 
   isGroupShown(group) {
     return this.shownGroup === group;
-  };
-
-  saveExpression(bfExpression: IBFExpression) {
-
   };
 
   /**
@@ -136,6 +124,48 @@ export class BfSupportivePracticePage {
         this.messageService.showErrorToast(err)
       })
     }
+  }
+
+
+    /**
+   * This method will help in getting existing feed expression for given baby code and date
+   * @author Ratikanta
+   * @since 0.0.1
+   */
+  findExpressionsByBabyCodeAndDate(){
+    //getting existing feed expression for given baby code and date
+
+    this.bfspService.findByBabyCodeAndDate(this.dataForBfspPage.babyCode,
+      this.dataForBfspPage.selectedDate, this.dataForBfspPage.isNewBfsp)
+      .then(data => {
+        this.bfspList = data;
+      })
+      .catch(err => {
+        this.messageService.showErrorToast(err)
+        this.bfspList = []
+      });
+  }
+
+
+
+
+  /**
+   * This method will delete the given bf expression
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param {IBFExpression} bfExpression The expression which needs to be deleted
+   * @memberof ExpressionTimeFormPage
+   */
+  delete(bfsp: IBFSP){
+    this.bfspService.delete(bfsp.id)
+    .then(()=>{
+      //refreshing the list 
+      this.findExpressionsByBabyCodeAndDate();
+      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+    })
+    .catch(err=>{
+      this.messageService.showErrorToast(err)
+    })
   }
 
 }

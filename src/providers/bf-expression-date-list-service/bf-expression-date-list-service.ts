@@ -143,7 +143,7 @@ export class BFExpressionDateListProvider {
       id: this.getNewBfExpressionId(babyCode),
       babyCode: babyCode,     
       userId: this.userService.getUser().email,
-      dateOfExpression: new Date().toISOString(),
+      dateOfExpression: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
       timeOfExpression: this.datePipe.transform(new Date(), 'HH:mm'),
       methodOfExpression: null,
       locationOfExpression: null,

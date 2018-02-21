@@ -71,10 +71,10 @@ export class BfSupportivePracticeDateListPage {
    * @since 0.0.1
   */
   newBFSP() {
-    let dataForBfspPage: IDataForFeedEntryPage = {
+    let dataForBfspPage: IDataForBfspPage = {
       babyCode: this.babyCode,
       selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-      isNewExpression: true
+      isNewBfsp: true
     }
     this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: dataForBfspPage})
   };

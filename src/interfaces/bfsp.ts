@@ -9,7 +9,6 @@
 interface IBFSP{
     id: string;
     babyCode: string;
-    babyCodeHospital: string;
     dateOfBFSP: string;
     timeOfBFSP: string;
     bfspPerformed: number;
