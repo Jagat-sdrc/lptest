@@ -88,7 +88,7 @@ export class SyncServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((bfExpressions) => {
         if (bfExpressions != null) {
-          bfExpressions = (bfExpressions as IBFExpression[]).filter(d => d.isSynced === false)
+          bfExpressions = (bfExpressions as IBFExpression[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.bfExpressions = bfExpressions
         }
         this.sendDataToTheServer();
@@ -97,7 +97,7 @@ export class SyncServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((feedExpressions) => {
         if (feedExpressions != null) {
-          feedExpressions = (feedExpressions as IFeed[]).filter(d => d.isSynced === false)
+          feedExpressions = (feedExpressions as IFeed[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.feedExpressions = feedExpressions
         }
         this.sendDataToTheServer();
@@ -105,7 +105,7 @@ export class SyncServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.bfsps)
       .then((bfsps) => {
         if (bfsps != null) {
-          bfsps = (bfsps as IBFSP[]).filter(d => d.isSynced === false)
+          bfsps = (bfsps as IBFSP[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.bfsps = bfsps
         }
         this.sendDataToTheServer();
@@ -113,7 +113,7 @@ export class SyncServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.bfpds)
       .then((bfpds) => {
         if (bfpds != null) {
-          bfpds = (bfpds as IBFPD[]).filter(d => d.isSynced === false)
+          bfpds = (bfpds as IBFPD[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.bfpds = bfpds
         }
         this.sendDataToTheServer();
@@ -130,14 +130,30 @@ export class SyncServiceProvider {
     this.keyFetched++;
     //Checking all key fetched or not
     if (this.keyFetched == 6) {
-      this.getSyncResult()
+      //Checking there is any data to sync or not
+      if( 
+        this.syncObject.users.length > 0 ||
+        this.syncObject.patients.length > 0 ||
+        this.syncObject.bfExpressions.length > 0 ||
+        this.syncObject.feedExpressions.length > 0 ||
+        this.syncObject.bfsps.length > 0 ||
+        this.syncObject.bfpds.length > 0
+      ){
+        this.getSyncResult()
         .subscribe(data => {
           this.syncResult = data;
           this.postSyncWork();
         }, err => {
+          this.keyFetched = 0;
           this.messageProvider.stopLoader();
           this.messageProvider.showErrorToast(err)
         })
+      }else{
+        this.keyFetched = 0;
+        this.messageProvider.stopLoader();
+        this.messageProvider.showErrorToast(ConstantProvider.messages.noDataToSync)
+      }
+      
     }
 
   };
@@ -213,10 +229,10 @@ export class SyncServiceProvider {
             //removing from patients which we had sent to sync
             this.syncObject.patients.splice(this.syncObject.patients.findIndex(d => d.babyCode === failurePatient.babyCode), 1)
           })
-          this.syncObject.patients.forEach(user => {
+          this.syncObject.patients.forEach(patient => {
             this.syncReport.patientSyncSuccess++;
             // making the sync true
-            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === user.babyCode)].isSynced = true;
+            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === patient.babyCode)].isSynced = true;
           })
           //Again keeping the updated patients in db
           this.storage.set(ConstantProvider.dbKeyNames.patients, patients).then(() => {
@@ -242,19 +258,19 @@ export class SyncServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
         .then(bfExpressions => {
           this.syncResult.failureBFExpressions.forEach(failureBFExpression => {
-            this.syncReport.bfExpressionSyncFailed ++;
+            this.syncReport.bfExpressionSyncFailed++;
             //setting the failure message
-            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === failurePatient.babyCode)].syncFailureMessage = failurePatient.reasonOfFailure;
-            //removing from patients which we had sent to sync
-            this.syncObject.patients.splice(this.syncObject.patients.findIndex(d => d.babyCode === failurePatient.babyCode), 1)
+            (bfExpressions as IBFExpression[])[(bfExpressions as IBFExpression[]).findIndex(d => d.id === failureBFExpression.id)].syncFailureMessage = failureBFExpression.reasonOfFailure;
+            //removing from bfExpression which we had sent to sync
+            this.syncObject.bfExpressions.splice(this.syncObject.bfExpressions.findIndex(d => d.id === failureBFExpression.id), 1)
           })
-          this.syncObject.patients.forEach(user => {
-            this.syncReport.patientSyncSuccess++;
+          this.syncObject.bfExpressions.forEach(bfExpression => {
+            this.syncReport.bfExpressionSyncSuccess++;
             // making the sync true
-            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === user.babyCode)].isSynced = true;
+            (bfExpressions as IBFExpression[])[(bfExpressions as IBFExpression[]).findIndex(d => d.id === bfExpression.id)].isSynced = true;
           })
           //Again keeping the updated patients in db
-          this.storage.set(ConstantProvider.dbKeyNames.patients, patients).then(() => {
+          this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions).then(() => {
             this.showSyncReport()
           })
         })
@@ -274,8 +290,26 @@ export class SyncServiceProvider {
   private postSyncFeedExpressionWork() {
     //Checking whether we had sent any FeedExpression to server or not. If we did not send any FeedExpression to server 
     //Then no need to do following operations
-    if (this.syncObject.users.length > 0) {
-      this.showSyncReport()
+    if (this.syncObject.feedExpressions.length > 0) {
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+        .then(feedExpressions => {
+          this.syncResult.failureFeedExpressions.forEach(failureFeedExpression => {
+            this.syncReport.feedSyncFailed++;
+            //setting the failure message
+            (feedExpressions as IFeed[])[(feedExpressions as IFeed[]).findIndex(d => d.id === failureFeedExpression.id)].syncFailureMessage = failureFeedExpression.reasonOfFailure;
+            //removing from feed Expression which we had sent to sync
+            this.syncObject.feedExpressions.splice(this.syncObject.feedExpressions.findIndex(d => d.id === failureFeedExpression.id), 1)
+          })
+          this.syncObject.feedExpressions.forEach(feedExpression => {
+            this.syncReport.feedSyncSuccess++;
+            // making the sync true
+            (feedExpressions as IFeed[])[(feedExpressions as IFeed[]).findIndex(d => d.id === feedExpression.id)].isSynced = true;
+          })
+          //Again keeping the updated patients in db
+          this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions).then(() => {
+            this.showSyncReport()
+          })
+        })
     } else {
       this.showSyncReport()
     }
@@ -292,8 +326,26 @@ export class SyncServiceProvider {
   private postSyncBFSPWork() {
     //Checking whether we had sent any BFSP to server or not. If we did not send any BFSP to server 
     //Then no need to do following operations
-    if (this.syncObject.users.length > 0) {
-      this.showSyncReport()
+    if (this.syncObject.bfsps.length > 0) {
+      this.storage.get(ConstantProvider.dbKeyNames.bfsps)
+        .then(bfsps => {
+          this.syncResult.failureBFSPs.forEach(failureBFSP => {
+            this.syncReport.bfspSyncFailed++;
+            //setting the failure message
+            (bfsps as IBFSP[])[(bfsps as IBFSP[]).findIndex(d => d.id === failureBFSP.id)].syncFailureMessage = failureBFSP.reasonOfFailure;
+            //removing from BFSP which we had sent to sync
+            this.syncObject.bfsps.splice(this.syncObject.bfsps.findIndex(d => d.id === failureBFSP.id), 1)
+          })
+          this.syncObject.bfsps.forEach(bfsp => {
+            this.syncReport.bfspSyncSuccess++;
+            // making the sync true
+            (bfsps as IBFSP[])[(bfsps as IBFSP[]).findIndex(d => d.id === bfsp.id)].isSynced = true;
+          })
+          //Again keeping the updated patients in db
+          this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfsps).then(() => {
+            this.showSyncReport()
+          })
+        })
     } else {
       this.showSyncReport()
     }
@@ -310,8 +362,26 @@ export class SyncServiceProvider {
   private postSyncBFPDWork() {
     //Checking whether we had sent any BFPD to server or not. If we did not send any BFPD to server 
     //Then no need to do following operations
-    if (this.syncObject.users.length > 0) {
-      this.showSyncReport()
+    if (this.syncObject.bfpds.length > 0) {
+      this.storage.get(ConstantProvider.dbKeyNames.bfpds)
+        .then(bfpds => {
+          this.syncResult.failureBFPDs.forEach(failureBFPD => {
+            this.syncReport.bfpdSyncFailed++;
+            //setting the failure message
+            (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === failureBFPD.id)].syncFailureMessage = failureBFPD.reasonOfFailure;
+            //removing from IBFPD which we had sent to sync
+            this.syncObject.bfpds.splice(this.syncObject.bfpds.findIndex(d => d.id === failureBFPD.id), 1)
+          })
+          this.syncObject.bfpds.forEach(bfpd => {
+            this.syncReport.bfpdSyncSuccess++;
+            // making the sync true
+            (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === bfpd.id)].isSynced = true;
+          })
+          //Again keeping the updated patients in db
+          this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfpds).then(() => {
+            this.showSyncReport()
+          })
+        })
     } else {
       this.showSyncReport()
     }
@@ -336,14 +406,14 @@ export class SyncServiceProvider {
           '<h5>Users rejected : ' + this.syncReport.userSyncFailed + '</h5><br>' +
           '<h5>Patients synced : ' + this.syncReport.patientSyncSuccess + '</h5><br>' +
           '<h5>Patients rejected : ' + this.syncReport.patientSyncFailed + '</h5><br>' +
-          // '<h5>Bf exp synced : ' + data.bfExpressionSynced + '</h5><br>' +
-          // '<h5>Bf exp failed : ' + data.bfExpressionFailed + '</h5><br>' +
-          // '<h5>Feed synced : ' + data.logFeedSynced + '</h5><br>' +
-          // '<h5>Feed failed : ' + data.logFeedFailed + '</h5><br>' +
-          // '<h5>Bf supp. practice synced : ' + data.bfSupportivePracticeSynced + '</h5><br>' +
-          // '<h5>Bf supp. practice failed : ' + data.bfSupportivePracticeFailed + '</h5><br>' +
-          // '<h5>Bf post discharge synced : ' + data.bfPostDischargeSynced + '</h5><br>' +
-          // '<h5>Bf post discharge failed : ' + data.bfPostDischargeFailed + '</h5><br>' +
+          '<h5>Bf exp synced : ' + this.syncReport.bfExpressionSyncSuccess + '</h5><br>' +
+          '<h5>Bf exp failed : ' + this.syncReport.bfExpressionSyncFailed + '</h5><br>' +
+          '<h5>Feed synced : ' + this.syncReport.feedSyncSuccess + '</h5><br>' +
+          '<h5>Feed failed : ' + this.syncReport.feedSyncFailed + '</h5><br>' +
+          '<h5>Bf supp. practice synced : ' + this.syncReport.bfspSyncSuccess + '</h5><br>' +
+          '<h5>Bf supp. practice failed : ' + this.syncReport.bfspSyncFailed + '</h5><br>' +
+          '<h5>Bf post discharge synced : ' + this.syncReport.bfpdSyncSuccess + '</h5><br>' +
+          '<h5>Bf post discharge failed : ' + this.syncReport.bfpdSyncFailed + '</h5><br>' +
           '</div>',
         buttons: [{
           text: 'OK',
@@ -383,8 +453,16 @@ export class SyncServiceProvider {
     if (error.error instanceof ErrorEvent) {
       messageToUser = `An error occurred: ${error.error.message}`;
     } else {
-      messageToUser = `Backend error, code ${error.status}, ` +
+      switch(error.status){
+        case 500:
+        messageToUser = ConstantProvider.messages.serverErrorContactAdmin;
+        break;
+        default:
+        messageToUser = `Backend error, code ${error.status}, ` +
         `message: ${error.message}`;
+        break;
+      }
+      
     }
     return new ErrorObservable(messageToUser);
   };
@@ -399,7 +477,15 @@ export class SyncServiceProvider {
       userSyncSuccess: 0,
       userSyncFailed: 0,
       patientSyncSuccess: 0,
-      patientSyncFailed: 0
+      patientSyncFailed: 0,
+      bfExpressionSyncSuccess: 0,
+      bfExpressionSyncFailed: 0,
+      feedSyncSuccess: 0,
+      feedSyncFailed: 0,
+      bfspSyncSuccess: 0,
+      bfspSyncFailed: 0,
+      bfpdSyncSuccess: 0,
+      bfpdSyncFailed: 0
     }
   };
 }

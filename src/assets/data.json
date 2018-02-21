@@ -354,6 +354,36 @@
             "id": 60,
             "name": "None",
             "typeId": 13
+        },
+        {
+            "id": 61,
+            "name": "Level 3 NICU / High Dependency",
+            "typeId": 14
+        },
+        {
+            "id": 62,
+            "name": "Level 2 SNCU / Low Dependency",
+            "typeId": 14
+        },
+        {
+            "id": 63,
+            "name": "Level 1 NICU",
+            "typeId": 14
+        },
+        {
+            "id": 64,
+            "name": "Step-down unit",
+            "typeId": 14
+        },
+        {
+            "id": 65,
+            "name": "KMC unit",
+            "typeId": 14
+        },
+        {
+            "id": 66,
+            "name": "Maternity ward",
+            "typeId": 14
         }
     ],
     "areaDetails": [

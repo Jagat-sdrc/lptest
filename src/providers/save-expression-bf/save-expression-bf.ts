@@ -10,17 +10,18 @@ import {
 import {
   ConstantProvider
 } from '../constant/constant';
-/*
-  Generated class for the SaveExpressionBfProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ * 
+ * @author Ratikanta
+ * @since 0.0.1
+ * @export
+ * @class SaveExpressionBfProvider
+ */
 @Injectable()
 export class SaveExpressionBfProvider {
 
   constructor(public http: HttpClient, private storage: Storage) {
-    console.log('Hello SaveExpressionBfProvider Provider');
   }
   /**
    * This method will give us all the save the BF expression in local storage.
@@ -107,6 +108,39 @@ export class SaveExpressionBfProvider {
     bfExpressions.push(bfExpression)    
     return bfExpressions;
 
+  }
+
+  /**
+   * This method will delete a expression
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param {string} id 
+   * @returns {Promise<any>} 
+   * @memberof SaveExpressionBfProvider
+   */
+  delete(id: string): Promise<any>{
+    let promise =  new Promise((resolve, reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
+      .then(data=>{
+        let index = (data as IBFExpression[]).findIndex(d=>d.id === id);
+        if(index >= 0){
+          (data as IBFExpression[]).splice(index, 1)
+          this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, data)
+          .then(()=>{
+            resolve()
+          })
+          .catch(err=>{
+            reject(err.message)
+          })
+        }else{
+          reject(ConstantProvider.messages.recordNotFound)  
+        }
+      })
+      .catch(err=>{
+        reject(err.message)
+      })
+    });
+    return promise;
   }
 
 }

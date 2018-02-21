@@ -21,7 +21,7 @@
             <div class="acordion-title" (click)="toggleGroup(item,i)" [ngClass]="{active: isGroupShown(item)}">
               <div>
                 {{item.timeOfExpression}}
-                <ion-icon color="success" style="float:right" [name]="isGroupShown(item) ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
+                <ion-icon color="success" style="float:right" [name]="isGroupShown(item) ? 'md-remove' : 'md-add'"></ion-icon>
               </div>
             </div>
     
@@ -34,19 +34,14 @@
               <ion-item>
                 <ion-label color="black" floating>Time of expression </ion-label>
                 <ion-datetime displayFormat="HH:mm" [max]="maxTime" [(ngModel)]="item.timeOfExpression"></ion-datetime>
-              </ion-item>
-              <ion-item>
-                  <ion-label color="black" floating>Duration of expression in minutes </ion-label>
-                  <ion-input type="text"  [value]="item.durationOfExpression" [(ngModel)]="item.durationOfExpression"></ion-input>
-              </ion-item>
-             
+              </ion-item>                   
   
-                <ion-item>
-                  <ion-label floating>Method of expression</ion-label>
-                  <ion-select [(ngModel)]="methodOfBfExpObject">
-                    <ion-option *ngFor="let bfExpressions of bfExpressionMethods" text-wrap>{{bfExpressions.name}}</ion-option>               
-                  </ion-select>
-                </ion-item>
+              <ion-item>
+                <ion-label floating>Method of expression</ion-label>
+                <ion-select [(ngModel)]="methodOfBfExpObject">
+                  <ion-option *ngFor="let bfExpressions of bfExpressionMethods" text-wrap>{{bfExpressions.name}}</ion-option>               
+                </ion-select>
+              </ion-item>
              
               <ion-item>
                 <ion-label floating>Location where expression</ion-label>
@@ -61,8 +56,10 @@
 
               <ion-row padding>
                 <ion-col>
-                  <button class="login-button" ion-button block (click)="saveExpression(item)">Save</button>
-                  <!-- <button class="save-button" ion-button  (click)="saveExpression(item)">Save</button> -->
+                  <button class="login-button" ion-button block (click)="delete(item)">Delete</button>                  
+                </ion-col>
+                <ion-col>
+                    <button class="login-button" ion-button block (click)="saveExpression(item)">Save</button>
                 </ion-col>
               </ion-row>
             </div>

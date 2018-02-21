@@ -2,6 +2,7 @@ import { FeedExpressionServiceProvider } from './../../providers/feed-expression
 import { Component } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 
 /**
@@ -21,6 +22,7 @@ export class FeedPage {
   feedExpressions: IFeed[];
   dataForFeedEntryPage: IDataForFeedEntryPage;
   shownGroup: any;
+  locationOfFeedings: ITypeDetails[];
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
   private messageService: MessageProvider, private navParams: NavParams) {}
@@ -37,7 +39,16 @@ export class FeedPage {
       this.feedingMethods = data
     }, err => {
       this.messageService.showErrorToast(err)
-    });    
+    }); 
+    
+    
+    //Getting location of feeding type details
+    this.feedExpressionService.getLocationOfFeedings()
+    .subscribe(data =>{
+      this.locationOfFeedings = data
+    }, err => {
+      this.messageService.showErrorToast(err)
+    }); 
 
   }
 
@@ -106,4 +117,25 @@ export class FeedPage {
       this.messageService.showErrorToast(err)
     })
   }
+
+
+/**
+   * This method will delete the given bf expression
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param {IBFExpression} bfExpression The expression which needs to be deleted
+   * @memberof ExpressionTimeFormPage
+   */
+  delete(feedExpression: IFeed){
+    this.feedExpressionService.delete(feedExpression.id)
+    .then(()=>{
+      //refreshing the list 
+      this.findExpressionsByBabyCodeAndDate();
+      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+    })
+    .catch(err=>{
+      this.messageService.showErrorToast(err)
+    })
+  }
+
 }

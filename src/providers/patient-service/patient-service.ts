@@ -11,7 +11,6 @@ import { Injectable } from '@angular/core';
 export class PatientServiceProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello PatientServiceProvider Provider');
   }
 
 }

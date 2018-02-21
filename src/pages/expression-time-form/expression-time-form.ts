@@ -32,7 +32,7 @@ export class ExpressionTimeFormPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
     private messageService: MessageProvider,
-    private saveBfExpressionnService: SaveExpressionBfProvider,
+    private bfExpressionTimeService: SaveExpressionBfProvider,
     private expressionBFdateService: ExpressionBfDateProvider,
     private datePipe: DatePipe) {
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
@@ -43,22 +43,12 @@ export class ExpressionTimeFormPage {
   ngOnInit() {
     this.dataForBFEntryPage = this.navParams.get('dataForBFEntryPage');
 
-    //getting existing BF expression for given baby code and date
-    this.expressionBFdateService.findByBabyCodeAndDate(this.dataForBFEntryPage.babyCode,
-        this.dataForBFEntryPage.selectedDate, this.dataForBFEntryPage.isNewExpression)
-      .then(data => {
-        this.bFExpressions = data
-
-      })
-      .catch(err => {
-        this.messageService.showErrorToast(err)
-      })
+    this.findExpressionsByBabyCodeAndDate();    
     //Getting method of expressionbf type details
     this.addNewExpressionBfService.getMethodOfExpressionBF()
       .subscribe(data => {
 
         this.bfExpressionMethods = data;
-        console.log(this.bfExpressionMethods);
       }, err => {
         this.messageService.showErrorToast(err)
       });
@@ -73,9 +63,6 @@ export class ExpressionTimeFormPage {
   }
 
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ExpressionTimeFormPage');
-  }
   toggleGroup(group, i) {
     
     this.methodOfBfExpObject = this.bFExpressions[i].methodOfExpression;
@@ -122,7 +109,6 @@ export class ExpressionTimeFormPage {
     //getting the id of selected method of expression.
     for (let i = 0; i < this.bfExpressionMethods.length; i++) {
       if (this.bfExpressionMethods[i].name === this.methodOfBfExpObject) {
-
         bfExpression.methodOfExpression = this.bfExpressionMethods[i].id;
         break;
       }
@@ -146,7 +132,7 @@ export class ExpressionTimeFormPage {
     } else if (!this.validateVolumeOfMilk(bfExpression.volOfMilkExpressedFromLR)) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromRight);
     } else {
-      this.saveBfExpressionnService.saveBfExpression(bfExpression)
+      this.bfExpressionTimeService.saveBfExpression(bfExpression)
       .then(data => {
         this.messageService.showSuccessToast("save successful!")
       })
@@ -201,6 +187,44 @@ export class ExpressionTimeFormPage {
     } else {
       return true;
     }
+
+  }
+
+  /**
+   * This method will delete the given bf expression
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param {IBFExpression} bfExpression The expression which needs to be deleted
+   * @memberof ExpressionTimeFormPage
+   */
+  delete(bfExpression: IBFExpression){
+    this.bfExpressionTimeService.delete(bfExpression.id)
+    .then(()=>{
+      //refreshing the list 
+      this.findExpressionsByBabyCodeAndDate();
+      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+    })
+    .catch(err=>{
+      this.messageService.showErrorToast(err)
+    })
+  }
+
+  /**
+   * This method will help in getting existing bf expression for given baby code and date
+   * @author Ratikanta
+   * @since 0.0.1
+   */
+  findExpressionsByBabyCodeAndDate(){
+
+    //getting existing BF expression for given baby code and date
+    this.expressionBFdateService.findByBabyCodeAndDate(this.dataForBFEntryPage.babyCode,
+      this.dataForBFEntryPage.selectedDate, this.dataForBFEntryPage.isNewExpression)
+    .then(data => {
+      this.bFExpressions = data
+    })
+    .catch(err => {
+      this.messageService.showErrorToast(err)
+    })
 
   }
 }

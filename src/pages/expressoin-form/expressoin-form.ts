@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ExpressionTimeFormPage } from '../expression-time-form/expression-time-form';
 import { MessageProvider } from '../../providers/message/message';
 import { ExpressionBfDateProvider } from '../../providers/expression-bf-date/expression-bf-date'
 import { DatePipe } from '@angular/common';
@@ -27,16 +26,6 @@ export class ExpressoinFormPage {
     private datePipe: DatePipe,
     private expressionBFdateService: ExpressionBfDateProvider,
     private messageService: MessageProvider) {
-    this.babyCode = this.navParams.get("param1");
-    this.form = this.navParams.get("param2");
-  }
-
-  goToBabyExBfTimeView(date: any) {
-    this.navCtrl.push(ExpressionTimeFormPage, {
-      babyCode: this.babyCode,
-      date: date,
-      isNewExpression:false
-    });
   }
 
   /**
@@ -47,6 +36,8 @@ export class ExpressoinFormPage {
    * @since - 0.0.1
    */
   ionViewWillEnter(){
+
+    this.babyCode = this.navParams.get('babyCode')
      //Getting date list
      this.expressionBFdateService.getExpressionBFDateListData(this.babyCode)
      .then(data => {
@@ -69,7 +60,7 @@ export class ExpressoinFormPage {
       selectedDate: date,
       isNewExpression: false
     }
-    this.navCtrl.push(ExpressionTimeFormPage, {dataForBFEntryPage: dataForBFEntryPage})
+    this.navCtrl.push('ExpressionTimeFormPage', {dataForBFEntryPage: dataForBFEntryPage})
   }
 
 /**

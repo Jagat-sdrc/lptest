@@ -123,7 +123,6 @@ export class RegisteredPatientPage {
     alert.addButton({
       text: 'OK',
       handler: data => { 
-           console.log("Sort by:"+ data);
            switch(data){
              case "Delivery Date":
              this.sortBy = ConstantProvider.patientSortBy.deliveryDate

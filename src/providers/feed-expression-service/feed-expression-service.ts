@@ -8,6 +8,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
+import * as moment from 'moment';
 
 /**
  * This service will only provide service to Feed component
@@ -39,6 +40,21 @@ export class FeedExpressionServiceProvider {
         .catch(this.handleError);
   }
 
+  /**
+   * This method should return location of feeding lists
+   * 
+   * @author Ratikanta
+   * @returns {Observable<ITypeDetails[]>} 
+   * @memberof FeedExpressionServiceProvider
+   */
+  getLocationOfFeedings(): Observable<ITypeDetails[]> {
+
+    return this.http.get("./assets/data.json").map((response: Response) => {
+               return (response as any).typeDetails.filter(d => d.typeId === ConstantProvider.FeedingTypeIds.locationOfFeeding)
+           })
+        .catch(this.handleError);
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     let messageToUser;
@@ -64,6 +80,9 @@ export class FeedExpressionServiceProvider {
   saveFeedExpression(feedExpression: IFeed): Promise<IDBOperationStatus>{
 
     let promise : Promise<IDBOperationStatus> = new Promise((resolve, reject) => {
+
+      feedExpression.isSynced = false;
+      feedExpression.dateOfFeed = this.datePipe.transform(new Date(feedExpression.dateOfFeed), 'dd-MM-yyyy')
 
       let dbOperationStatus: IDBOperationStatus = {
         isSuccess: false,
@@ -156,17 +175,15 @@ export class FeedExpressionServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
         if(data != null){
-          data = (data as IFeed[]).filter(d => (d.babyCode === babyCode));
-          let tempData: IFeed[] = [];
+          data = (data as IFeed[]).filter(d => (d.babyCode === babyCode && d.dateOfFeed === date));
 
           (data as IFeed[]).forEach(d => {
-            let dateString: string = this.datePipe.transform(new Date(d.dateOfFeed), 'dd-MM-yyyy')
-            if(date === dateString){
-              tempData.push(d)
-            }
+            let day = parseInt(d.dateOfFeed.split('-')[0]);
+            let month = parseInt(d.dateOfFeed.split('-')[1]);
+            let year = parseInt(d.dateOfFeed.split('-')[2]);
+            d.dateOfFeed = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
           });
 
-          data = tempData;
           if((data as IFeed[]).length > 0){
             if(isNewExpression){
               resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
@@ -178,7 +195,8 @@ export class FeedExpressionServiceProvider {
             if(isNewExpression){
               resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
             }else{
-              reject("No data found")  
+              data = [];
+              resolve(data)
             }
             
           }
@@ -186,7 +204,8 @@ export class FeedExpressionServiceProvider {
           if(isNewExpression){
             resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
           }else{
-            reject("No data found")  
+            data = [];
+            resolve(data)  
           }
         }
       })
@@ -226,12 +245,12 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
       babyCode: babyCode,     
       userId: this.userService.getUser().email,
       babyWeight: null,
-      dateOfFeed: new Date().toISOString(),
-      DHMVolume: null,
+      dateOfFeed: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
+      dhmVolume: null,
       formulaVolume: null,
       animalMilkVolume: null,
       methodOfFeed: null,
-      OMMVolume: null,
+      ommVolume: null,
       otherVolume: null,
       timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm'),
       isSynced: false,
@@ -247,5 +266,38 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
       data.push(feed)
     }
     return data
+  }
+
+  /**
+   * This method will delete a expression
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param {string} id 
+   * @returns {Promise<any>} 
+   * @memberof SaveExpressionBfProvider
+   */
+  delete(id: string): Promise<any>{
+    let promise =  new Promise((resolve, reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+      .then(data=>{
+        let index = (data as IFeed[]).findIndex(d=>d.id === id);
+        if(index >= 0){
+          (data as IFeed[]).splice(index, 1)
+          this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, data)
+          .then(()=>{
+            resolve()
+          })
+          .catch(err=>{
+            reject(err.message)
+          })
+        }else{
+          reject(ConstantProvider.messages.recordNotFound)  
+        }
+      })
+      .catch(err=>{
+        reject(err.message)
+      })
+    });
+    return promise;
   }
 }

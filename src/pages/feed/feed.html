@@ -33,14 +33,14 @@
 
             <!-- Date of feed -->
             <ion-item>
-                <ion-label color="black" stacked>Date of feed</ion-label>
-                <ion-datetime displayFormat="DD-MM-YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="feedExpression.dateOfFeed"></ion-datetime>
+                <ion-label color="black" stacked >Date of feed</ion-label>
+                <ion-datetime  displayFormat="DD-MM-YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="feedExpression.dateOfFeed"></ion-datetime>
             </ion-item>
 
 
             <!-- Time of feed -->
             <ion-item>
-                <ion-label color="black" stacked>Time of feed</ion-label>                
+                <ion-label color="black" stacked >Time of feed</ion-label>                
                 <ion-datetime displayFormat="HH:mm" [(ngModel)]="feedExpression.timeOfFeed"></ion-datetime>
             </ion-item>
 
@@ -48,26 +48,26 @@
             <!-- Method of feed -->
             <ion-item>
               <ion-label stacked>Method of expression</ion-label>
-              <ion-select>
-                <ion-option *ngFor="let feedingMethod of feedingMethods" text-wrap>{{feedingMethod.name}}</ion-option>               
+              <ion-select [(ngModel)]="feedExpression.methodOfFeed">
+                <ion-option *ngFor="let feedingMethod of feedingMethods" [value]="feedingMethod.id" text-wrap>{{feedingMethod.name}}</ion-option>               
               </ion-select>
             </ion-item>
 
 
             <!-- Volume OMM -->
             <ion-item>
-              <ion-label stacked>Volume OMM</ion-label>
-              <ion-input type="number" [(ngModel)]="feedExpression.OMMVolume"></ion-input>
+              <ion-label stacked >Volume OMM</ion-label>
+              <ion-input  type="number" [(ngModel)]="feedExpression.ommVolume"></ion-input>
             </ion-item>
 
             <!-- Volume DHM -->
-            <ion-item>
+            <ion-item >
               <ion-label stacked>Volume DHM</ion-label>
-              <ion-input type="number" [(ngModel)]="feedExpression.DHMVolume"></ion-input>
+              <ion-input type="number" [(ngModel)]="feedExpression.dhmVolume"></ion-input>
             </ion-item>
 
             <!-- Volume Formula -->
-            <ion-item>
+            <ion-item >
               <ion-label stacked>Volume Formula</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.formulaVolume"></ion-input>
             </ion-item>
@@ -83,13 +83,28 @@
               <ion-label stacked>Volume Other</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.otherVolume"></ion-input>
             </ion-item>
+
+            <!-- Location of feeding -->
+            <ion-item>
+              <ion-label stacked>Location of feeding</ion-label>
+              <ion-select [(ngModel)]="feedExpression.locationOfFeeding">
+                <ion-option *ngFor="let locationOfFeeding of locationOfFeedings" [value]="locationOfFeeding.id" text-wrap>{{locationOfFeeding.name}}</ion-option>               
+              </ion-select>
+            </ion-item>
               
             <!-- Weight of baby in grams -->
             <ion-item>
               <ion-label stacked>Weight of baby in grams</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.babyWeight"></ion-input>
-            </ion-item>           
-            <button ion-button block (click)="saveExpression(feedExpression)">Save</button>          
+            </ion-item>  
+            <ion-row padding>
+                <ion-col>
+                  <button class="login-button" ion-button block (click)="delete(feedExpression)">Delete</button>                  
+                </ion-col>
+                <ion-col>
+                    <button class="login-button" ion-button block (click)="saveExpression(feedExpression)">Save</button>
+                </ion-col>
+            </ion-row>                              
           </div>
         </div>
       </ion-item>

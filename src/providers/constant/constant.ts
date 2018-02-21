@@ -55,7 +55,8 @@ export class ConstantProvider {
   }
 
   static FeedingTypeIds: IFeedingMethods = {
-    feedingMethodTypeId: 11
+    feedingMethodTypeId: 11,
+    locationOfFeeding: 14
   }
 
   static TimeOfBreastFeedingPostDischargeTypeId: ITimeOfBreastFeedingPostDischarge = {
@@ -121,7 +122,12 @@ export class ConstantProvider {
     babyOverWeight: "Baby's weight is more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
-    durationOfBfsp: "Please enter a valid duration for BFSP performed"
+    durationOfBfsp: "Please enter a valid duration for BFSP performed",
+    deleted: 'Deleted successfully!',
+    recordNotFound: 'Record not found!',
+    noDataFound: 'No data found!',
+    serverErrorContactAdmin: 'Server error, please contact admin!',
+    noDataToSync: 'No data to sync!'
   };
   
 /**

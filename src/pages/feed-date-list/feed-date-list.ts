@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FeedDateListServiceProvider } from '../../providers/feed-date-list-service/feed-date-list-service';
 import { MessageProvider } from '../../providers/message/message';
-import { FeedPage } from '../feed/feed';
 import { DatePipe } from '@angular/common';
 
 /**
@@ -60,7 +59,7 @@ private datePipe: DatePipe,private navParams: NavParams) {}
       selectedDate: date,
       isNewExpression: false
     }
-    this.navCtrl.push(FeedPage, {dataForFeedEntryPage: dataForFeedEntryPage})
+    this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }
 
 /**

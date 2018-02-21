@@ -14,7 +14,6 @@ import { HttpErrorResponse } from '@angular/common/http/src/response';
 export class AddNewExpressionBfServiceProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello AddNewExpressionBfServiceProvider Provider');
   }
 /**
    * This method should return method of BF expression lists

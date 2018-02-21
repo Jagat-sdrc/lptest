@@ -46,7 +46,8 @@ interface IPersonWhoPerformedBSFP{
 }
 
 interface IFeedingMethods{
-    feedingMethodTypeId: number
+    feedingMethodTypeId: number;
+    locationOfFeeding: number;
 }
 
 interface ITimeOfBreastFeedingPostDischarge{

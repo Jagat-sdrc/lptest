@@ -11,8 +11,8 @@ interface IFeed{
     dateOfFeed: string;
     timeOfFeed: string;
     methodOfFeed: number;
-    OMMVolume: number;
-    DHMVolume: number;
+    ommVolume: number;
+    dhmVolume: number;
     formulaVolume: number;
     animalMilkVolume: number;
     otherVolume: number;

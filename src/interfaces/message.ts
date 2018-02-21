@@ -23,4 +23,9 @@ interface IMessage{
     supportivePracticeBfsp: string;
     personWhoPerformedBfsp: string;
     durationOfBfsp: string;
+    deleted: string;
+    recordNotFound: string;
+    noDataFound: string;
+    serverErrorContactAdmin: string;
+    noDataToSync: string;
 }

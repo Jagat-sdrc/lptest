@@ -153,7 +153,6 @@ export class BfSupportivePracticePage {
   };
 
   save(bfsp: IBFSP){
-    console.log(bfsp.babyCode);
     if(bfsp.bfspPerformed == null){
       this.messageService.showErrorToast(ConstantProvider.messages.supportivePracticeBfsp);
     }else if(bfsp.personWhoPerformedBFSP == null){

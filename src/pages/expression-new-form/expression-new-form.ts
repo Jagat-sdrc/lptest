@@ -34,14 +34,4 @@ export class ExpressionNewFormPage {
     }
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ExpressionNewFormPage');
-  }
-  saveForm() {
-   
-
-  }
-  resetForm() {    
-  }
-
 }

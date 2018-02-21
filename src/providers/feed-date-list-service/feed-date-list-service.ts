@@ -40,23 +40,19 @@ export class FeedDateListServiceProvider {
           if((data as IFeed[]).length > 0){
             let dates:string[] = [];
             (data as IFeed[]).forEach(d => {
-              dates.push(this.datePipe.transform(new Date(d.dateOfFeed), 'dd-MM-yyyy'))              
+              dates.push(d.dateOfFeed)              
             });
 
             //removing duplicates
             dates = Array.from(new Set(dates))
 
             resolve(dates)
-          }else{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = "No data found";
-            reject(dbOperationStatus);  
+          }else{            
+            resolve([]);  
           }
 
-        }else{
-          dbOperationStatus.isSuccess = false;
-          dbOperationStatus.message = "No data found";
-          reject(dbOperationStatus);  
+        }else{          
+          resolve([]);  
         }
 
       })

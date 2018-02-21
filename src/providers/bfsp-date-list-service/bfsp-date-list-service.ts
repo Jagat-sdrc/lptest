@@ -14,7 +14,6 @@ import { DatePipe } from '@angular/common';
 export class BfspDateListServiceProvider {
 
   constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe) {
-    console.log('Hello BfspDateListServiceProvider Provider');
   }
 
   getBFSPDateList(babyCode: string): Promise < string[] > {

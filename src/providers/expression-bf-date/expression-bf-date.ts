@@ -14,7 +14,6 @@ import { UserServiceProvider } from '../user-service/user-service';
 export class ExpressionBfDateProvider {
 
   constructor(public http: HttpClient,private storage: Storage,private datePipe: DatePipe, private userService: UserServiceProvider) {
-    console.log('Hello ExpressionBfDateProvider Provider');
   }
  /**
    * This method will give us all the dates in string array format of which ExpressionBF we have.
