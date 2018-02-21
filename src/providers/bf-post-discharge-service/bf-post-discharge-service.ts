@@ -5,6 +5,8 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { ConstantProvider } from '../constant/constant';
 import { DatePipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
+import * as moment from 'moment';
+import { UserServiceProvider } from '../user-service/user-service';
 
 /*
   Generated class for the BfPostDischargeServiceProvider provider.
@@ -16,7 +18,7 @@ import { Storage } from '@ionic/storage';
 export class BfPostDischargeServiceProvider {
 
   constructor(public http: HttpClient, private datePipe: DatePipe,
-    private storage: Storage) {}
+    private storage: Storage, private userService: UserServiceProvider) {}
 
   getMaxTime(){
     return this.datePipe.transform(new Date(),"yyyy-MM-dd");
@@ -29,7 +31,7 @@ export class BfPostDischargeServiceProvider {
    * @since 0.0.1
    */
   getNewBfPdId(babyCode: string): string {
-    return babyCode + "bfsp" + this.datePipe.transform(new Date(), 'ddMMyyyyHHmmssSSS');
+    return babyCode + "bfpd" + this.datePipe.transform(new Date(), 'ddMMyyyyHHmmssSSS');
   }
 
   /**
@@ -58,29 +60,19 @@ export class BfPostDischargeServiceProvider {
   };
 
   saveNewBfPostDischargeForm(bfPdForm: IBFPD): Promise <any> {
-    bfPdForm.id = this.getNewBfPdId(bfPdForm.babyCode);
-    let promise = new Promise((resolve, reject) => {      
+    
+    let promise = new Promise((resolve, reject) => {     
+      bfPdForm.id = this.getNewBfPdId(bfPdForm.babyCode);
+      bfPdForm.isSynced = false;
+      bfPdForm.dateOfBreastFeeding = this.datePipe.transform(new Date(bfPdForm.dateOfBreastFeeding), 'dd-MM-yyyy')
+      
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then((val) => {
 
           let bfPdForms: IBFPD[] = [];
           if (val != null) {
-            let exist: boolean = false;
             bfPdForms = val;
-            bfPdForms.forEach(d => {
-              if(d.babyCode === bfPdForm.babyCode && d.timeOfBreastFeeding === bfPdForm.timeOfBreastFeeding){
-                d.breastFeedingStatus = bfPdForm.breastFeedingStatus;
-                d.dateOfBreastFeeding = bfPdForm.dateOfBreastFeeding;
-                d.timeOfBreastFeeding = bfPdForm.timeOfBreastFeeding;
-                d.isSynced = false;
-                exist = true;
-              }
-            });
-
-            if(exist === false){
-              bfPdForms.push(bfPdForm);
-            }
-
+            bfPdForms = this.validateNewEntryAndUpdate(bfPdForms, bfPdForm)
             this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfPdForms)
               .then(data => {
                 resolve()
@@ -111,14 +103,18 @@ export class BfPostDischargeServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then(data => {
           if (data != null) {
-            data = (data as IBFPD[]).filter(d => (d.babyCode === babyCode && d.timeOfBreastFeeding === timeOfBf ));
+            data = (data as IBFPD[]).filter(d => d.babyCode === babyCode && d.timeOfBreastFeeding === timeOfBf);
             if(data.length === 1){
+              let day = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[0]);
+              let month = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[1]);
+              let year = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[2]);
+              (data as IBFPD[])[0].dateOfBreastFeeding = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
               resolve(data[0]);
-            }else{
-              reject("No data found");
+            }else{              
+              resolve(this.getBfPd(babyCode, timeOfBf));
             }
           } else {
-              reject("No data found");
+            resolve(this.getBfPd(babyCode, timeOfBf));
           }
         })
         .catch(err => {
@@ -138,5 +134,82 @@ export class BfPostDischargeServiceProvider {
     }
     return new ErrorObservable(messageToUser);
   };
+
+
+  /**
+   * This method will check whether we have the record with given baby id, date and time.
+   * If all the attribute value will match, this will splice that record and append incoming record.
+   * Because it has come for an update.
+   * 
+   * If record does not match, this will just push the input record with existing once
+   * 
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param feedExpressions All the existing feed expressions
+   * @param feedExpression incoming feed expression
+   * @returns IFeed[] modified feed expressions
+   */
+  private validateNewEntryAndUpdate(bfPdForms: IBFPD[], bfPdForm: IBFPD): IBFPD[]{
+
+    let index = bfPdForms.findIndex(d=> d.babyCode === bfPdForm.babyCode && d.timeOfBreastFeeding === bfPdForm.timeOfBreastFeeding)
+    if(index >=0){
+      bfPdForms.splice(index, 1)
+    }
+    bfPdForms.push(bfPdForm)    
+    return bfPdForms;
+
+  }
+
+  /**
+   * This method will delete a expression
+   * @author Ratikanta
+   * @since 0.0.1
+   * @param {string} id 
+   * @returns {Promise<any>} 
+   * @memberof SaveExpressionBfProvider
+   */
+  delete(id: string): Promise<any>{
+    let promise =  new Promise((resolve, reject)=>{
+      if(id != null && id != undefined){       
+        this.storage.get(ConstantProvider.dbKeyNames.bfpds)
+        .then(data=>{
+          let index = (data as IBFPD[]).findIndex(d=>d.id === id);
+          if(index >= 0){
+            (data as IBFPD[]).splice(index, 1)
+            this.storage.set(ConstantProvider.dbKeyNames.bfpds, data)
+            .then(()=>{
+              resolve()
+            })
+            .catch(err=>{
+              reject(err.message)
+            })
+          }else{
+            reject(ConstantProvider.messages.recordNotFound)  
+          }
+        })
+        .catch(err=>{
+          reject(err.message)
+        })
+      } else {
+        reject(ConstantProvider.messages.recordNotFound)
+      }
+    });
+    return promise;
+  }
+
+  private getBfPd(babyCode: string, timeOfBf: number): IBFPD{
+    let bfpd : IBFPD = {
+      babyCode: babyCode,
+      dateOfBreastFeeding: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
+      id: null,
+      isSynced: false,
+      breastFeedingStatus: null,
+      syncFailureMessage: null,
+      timeOfBreastFeeding: timeOfBf,
+      userId: this.userService.getUser().email
+
+    }
+    return bfpd;
+  }
 
 }

@@ -18,17 +18,17 @@ import { MessageProvider } from '../../providers/message/message';
 export class BfPostDischargeMenuPage {
 
   babyCode: string;
-  babyCodeHospital: string;
   menu: ITypeDetails[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private bfPostDischargeMenuService: BfPostDischargeMenuServiceProvider,
     private messageService: MessageProvider) {
-    this.babyCode = this.navParams.data.babyCode;
-    this.babyCodeHospital = this.navParams.data.babyCodeByHospital;
+    
   }
 
   ngOnInit(){
+
+    this.babyCode = this.navParams.data.babyCode;
     this.bfPostDischargeMenuService.getPostDischargeMenu()
       .subscribe(data => {
         this.menu = data;
@@ -40,8 +40,7 @@ export class BfPostDischargeMenuPage {
   goToPostDischargeForm(menuId: number){
     let dataForPostDischarge: IDataForPostDischargePage = {
       babyCode: this.babyCode,
-      menuItemId: menuId,
-      babyCodeHospital: this.babyCodeHospital
+      menuItemId: menuId
     };
     this.navCtrl.push('BfPostDischargePage', dataForPostDischarge);
   }

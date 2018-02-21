@@ -4,7 +4,6 @@
  * @since 0.0.1
  */
 interface IDataForPostDischargePage{
-    babyCodeHospital: string;
     babyCode: string;
     menuItemId: number;
 }
