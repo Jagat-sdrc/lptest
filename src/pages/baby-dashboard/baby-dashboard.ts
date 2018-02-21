@@ -9,7 +9,6 @@ import { ConstantProvider } from '../../providers/constant/constant';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
 @IonicPage()
 @Component({
   selector: 'page-baby-dashboard',
@@ -19,7 +18,7 @@ export class BabyDashboardPage {
 
   feedDateListPage;
   feedPage;
-  expressoinFormPage;
+  bfExpressionDateListPage;
   addPatientPage;
   bfspDateListPage;
   bfPostDischargeMenuPage;
@@ -31,7 +30,7 @@ export class BabyDashboardPage {
 
   ngOnInit(){
     this.feedDateListPage = 'FeedDateListPage'
-    this.expressoinFormPage = 'ExpressoinFormPage';
+    this.bfExpressionDateListPage = 'BFExpressionDateListPage';
     this.addPatientPage = 'AddPatientPage';
     this.bfspDateListPage = 'BfSupportivePracticeDateListPage';
     this.bfPostDischargeMenuPage = 'BfPostDischargeMenuPage';

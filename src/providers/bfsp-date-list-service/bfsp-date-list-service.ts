@@ -18,12 +18,7 @@ export class BfspDateListServiceProvider {
 
   getBFSPDateList(babyCode: string): Promise < string[] > {
 
-    let promise: Promise < string[] > = new Promise((resolve, reject) => {
-
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
+    let promise: Promise < string[] > = new Promise((resolve, reject) => {     
 
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then(data => {
@@ -42,22 +37,16 @@ export class BfspDateListServiceProvider {
 
               resolve(dates)
             } else {
-              dbOperationStatus.isSuccess = false;
-              dbOperationStatus.message = "No data found";
-              reject(dbOperationStatus);
+              reject([]);
             }
 
           } else {
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = "No data found";
-            reject(dbOperationStatus);
+            reject([]);
           }
 
         })
         .catch(err => {
-          dbOperationStatus.isSuccess = false;
-          dbOperationStatus.message = err.message;
-          reject(dbOperationStatus);
+          reject(err.message);
         })
 
 

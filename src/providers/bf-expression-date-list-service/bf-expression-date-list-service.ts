@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
+import * as moment from 'moment';
 /*
   Generated class for the ExpressionBfDateProvider provider.
 
@@ -11,9 +12,10 @@ import { UserServiceProvider } from '../user-service/user-service';
   and Angular DI.
 */
 @Injectable()
-export class ExpressionBfDateProvider {
+export class BFExpressionDateListProvider {
 
-  constructor(public http: HttpClient,private storage: Storage,private datePipe: DatePipe, private userService: UserServiceProvider) {
+  constructor(public http: HttpClient,private storage: Storage,
+    private datePipe: DatePipe, private userService: UserServiceProvider) {
   }
  /**
    * This method will give us all the dates in string array format of which ExpressionBF we have.
@@ -24,12 +26,8 @@ export class ExpressionBfDateProvider {
    */
   getExpressionBFDateListData(babyCode: string): Promise<string[]>{
 
-    let promise : Promise<string[]> = new Promise((resolve, reject) => {
+    let promise : Promise<string[]>= new Promise((resolve, reject) => {
 
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
 
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then(data=>{
@@ -41,30 +39,23 @@ export class ExpressionBfDateProvider {
           if((data as IBFExpression[]).length > 0){
             let dates:string[] = [];
             (data as IBFExpression[]).forEach(d => {
-              let dateString: string = this.datePipe.transform(new Date(d.dateOfExpression), 'dd-MM-yyyy')
-              dates.push(dateString)
+              dates.push(d.dateOfExpression)
             });
             //removing duplicates
             dates = Array.from(new Set(dates))
 
             resolve(dates)
           }else{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = "No data found";
-            reject(dbOperationStatus);  
+            resolve([]);  
           }
 
-        }else{
-          dbOperationStatus.isSuccess = false;
-          dbOperationStatus.message = "No data found";
-          reject(dbOperationStatus);  
+        }else{          
+          resolve([]);  
         }
 
       })
       .catch(err=>{
-        dbOperationStatus.isSuccess = false;
-        dbOperationStatus.message = err.message;
-        reject(dbOperationStatus);
+        reject(err.message);
       })
 
 
@@ -84,16 +75,18 @@ export class ExpressionBfDateProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then(data=>{
         if(data != null){
-          data = (data as IBFExpression[]).filter(d => (d.babyCode === babyCode));
-          let tempData: IBFExpression[] = [];
+          data = (data as IBFExpression[]).filter(d => d.babyCode === babyCode && d.dateOfExpression === date);
+
+
+          
           (data as IBFExpression[]).forEach(d => {
-            let dateString: string = this.datePipe.transform(new Date(d.dateOfExpression), 'dd-MM-yyyy')
-            if(date === dateString){
-              tempData.push(d)
-            }
+            let day = parseInt(d.dateOfExpression.split('-')[0]);
+            let month = parseInt(d.dateOfExpression.split('-')[1]);
+            let year = parseInt(d.dateOfExpression.split('-')[2]);
+            d.dateOfExpression = moment.utc(year+ "-"+ month+"-"+ day).toISOString()  
           });
 
-          data = tempData;
+          
           if((data as IBFExpression[]).length > 0){
             if(isNewExpression){
               resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
@@ -105,7 +98,7 @@ export class ExpressionBfDateProvider {
             if(isNewExpression){
               resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
             }else{
-              reject("No data found")  
+              resolve([])  
             }
             
           }
@@ -113,7 +106,7 @@ export class ExpressionBfDateProvider {
           if(isNewExpression){
             resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
           }else{
-            reject("No data found")  
+            resolve([])  
           }
         }
       })

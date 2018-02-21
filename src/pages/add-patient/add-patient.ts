@@ -362,7 +362,7 @@ export class AddPatientPage implements OnInit{
           this.navCtrl.pop();
         })
           .catch(err =>{
-          this.messageService.showErrorToast((err as IDBOperationStatus).message)
+          this.messageService.showErrorToast(err)
         })
       }
     }

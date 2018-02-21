@@ -98,7 +98,7 @@ export class BfPostDischargePage {
         this.navCtrl.pop();
       })
       .catch(err =>{
-        this.messageService.showErrorToast((err as IDBOperationStatus).message)
+        this.messageService.showErrorToast(err)
       })
     }
   };

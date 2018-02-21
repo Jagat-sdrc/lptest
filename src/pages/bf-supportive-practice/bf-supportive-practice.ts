@@ -78,28 +78,7 @@ export class BfSupportivePracticePage {
       });
   };
 
-  toggleGroup(group, i) {
-    // this.methodOfBfExpObject = this.bFExpressions[i].methodOfExpression;
-    // this.locOfExpressionObject = this.bFExpressions[i].locationOfExpression;
-
-    // //getting the id of selected method of expression.
-    // for (let j = 0; j < this.bfExpressionMethods.length; j++) {
-    //     let id =''+this.bfExpressionMethods[j].id
-    //     if (this.bFExpressions[i].methodOfExpression === id) {
-    //       this.methodOfBfExpObject= '' + this.bfExpressionMethods[i].name;
-    //       break;
-    //     }
-         
-    // }
-    //  //getting the id of selected location of expression.
-
-    //  for (let k = 0; k < this.locationOfexpressionMethods.length; k++) {
-    //   let id =''+this.locationOfexpressionMethods[k].id
-    //   if (this.bFExpressions[i].locationOfExpression === id) {
-    //     this.locOfExpressionObject = '' + this.locationOfexpressionMethods[i].name;
-    //     break;
-    //   }
-    // }
+  toggleGroup(group, i) {    
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {
@@ -125,17 +104,6 @@ export class BfSupportivePracticePage {
 
     this.bfspList = this.bfspService.appendNewRecordAndReturn(this.bfspList, this.dataForBfspPage.babyCode,
       new Date(year, month, day));
-
-    // this.supportivePracticeForm = this.formBuilder.group({
-    //   id: [this.bfspService.getNewBfspId(this.dataForBfspPage.babyCode)],
-    //   babyCode: [this.dataForBfspPage.babyCode],
-    //   dateOfBFSP: [new Date().toISOString],
-    //   timeOfBFSP: [this.bfspService.getTime(new Date(year, month, day)), [Validators.required]],
-    //   bfspPerformed: ['', [Validators.required]],
-    //   personWhoPerformedBFSP: ['', [Validators.required]],
-    //   bfspDuration: ['', [Validators.required, Validators.pattern(this.onlyNumberRegex)]],
-    //   userId: this.userService.getUser().email
-    // });
   };
 
   
@@ -165,24 +133,9 @@ export class BfSupportivePracticePage {
         this.messageService.showSuccessToast("save successful!")
       })
       .catch(err => {
-        this.messageService.showErrorToast((err as IDBOperationStatus).message)
+        this.messageService.showErrorToast(err)
       })
     }
-    // if(!this.supportivePracticeForm.valid){
-    //   Object.keys(this.supportivePracticeForm.controls).forEach(field => {
-    //     const control = this.supportivePracticeForm.get(field);
-    //     control.markAsTouched({ onlySelf: true });
-    //   });
-    // } else {
-    //   this.bfspService.saveNewBreastFeedingSupportivePracticeForm(this.supportivePracticeForm.value)
-    //   .then(data=> {
-    //     this.messageService.showSuccessToast("save successful!");
-    //     this.navCtrl.pop();
-    //   })
-    //   .catch(err =>{
-    //     this.messageService.showErrorToast((err as IDBOperationStatus).message)
-    //   })
-    // }
   }
 
 }

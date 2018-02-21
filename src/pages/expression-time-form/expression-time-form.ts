@@ -3,9 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AddNewExpressionBfServiceProvider } from '../../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { MessageProvider } from '../../providers/message/message';
 import { SaveExpressionBfProvider } from '../../providers/save-expression-bf/save-expression-bf';
-import { ExpressionBfDateProvider } from '../../providers/expression-bf-date/expression-bf-date'
 import { DatePipe } from '@angular/common';
 import { ConstantProvider } from '../../providers/constant/constant';
+import { BFExpressionDateListProvider } from '../../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 /**
  * Generated class for the ExpressionTimeFormPage page.
  *
@@ -33,7 +33,7 @@ export class ExpressionTimeFormPage {
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
     private messageService: MessageProvider,
     private bfExpressionTimeService: SaveExpressionBfProvider,
-    private expressionBFdateService: ExpressionBfDateProvider,
+    private expressionBFdateService: BFExpressionDateListProvider,
     private datePipe: DatePipe) {
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
     this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
@@ -47,7 +47,6 @@ export class ExpressionTimeFormPage {
     //Getting method of expressionbf type details
     this.addNewExpressionBfService.getMethodOfExpressionBF()
       .subscribe(data => {
-
         this.bfExpressionMethods = data;
       }, err => {
         this.messageService.showErrorToast(err)
@@ -137,7 +136,7 @@ export class ExpressionTimeFormPage {
         this.messageService.showSuccessToast("save successful!")
       })
       .catch(err => {
-        this.messageService.showErrorToast((err as IDBOperationStatus).message)
+        this.messageService.showErrorToast(err)
       })
     }
 
@@ -224,6 +223,7 @@ export class ExpressionTimeFormPage {
     })
     .catch(err => {
       this.messageService.showErrorToast(err)
+      this.bFExpressions = []
     })
 
   }

@@ -43,7 +43,7 @@ private datePipe: DatePipe,private navParams: NavParams) {}
       this.feedDateListData = data
     })
     .catch(err=>{
-      this.messageService.showErrorToast((err as IDBOperationStatus).message)
+      this.messageService.showErrorToast(err)
     })
   }
 

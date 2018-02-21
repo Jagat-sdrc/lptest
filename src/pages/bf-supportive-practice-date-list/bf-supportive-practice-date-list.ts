@@ -43,7 +43,7 @@ export class BfSupportivePracticeDateListPage {
         this.bfspDateListData = data;
       })
       .catch(err => {
-        this.messageService.showErrorToast((err as IDBOperationStatus).message)
+        this.messageService.showErrorToast(err)
       })
   }
 

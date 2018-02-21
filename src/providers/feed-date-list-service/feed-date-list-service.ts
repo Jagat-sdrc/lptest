@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
-import { DatePipe } from '@angular/common';
 
 /**
  * This service will help FeedDateList component
@@ -11,8 +10,7 @@ import { DatePipe } from '@angular/common';
 @Injectable()
 export class FeedDateListServiceProvider {
 
-  constructor(private storage: Storage,
-  private datePipe: DatePipe) {}
+  constructor(private storage: Storage) {}
 
   /**
    * This method will give us all the dates in string array format of which feed expression we have.
@@ -23,12 +21,7 @@ export class FeedDateListServiceProvider {
    */
   getFeedDateListData(babyCode: string): Promise<string[]>{
 
-    let promise : Promise<string[]> = new Promise((resolve, reject) => {
-
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
+    let promise : Promise<string[]> = new Promise((resolve, reject) => {      
 
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
@@ -57,9 +50,7 @@ export class FeedDateListServiceProvider {
 
       })
       .catch(err=>{
-        dbOperationStatus.isSuccess = false;
-        dbOperationStatus.message = err.message;
-        reject(dbOperationStatus);
+        reject(err.message);
       })
 
 

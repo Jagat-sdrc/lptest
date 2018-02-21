@@ -20,7 +20,6 @@ import { FeedDateListServiceProvider } from '../providers/feed-date-list-service
 import { DatePipe } from '@angular/common';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service';
-import { ExpressionBfDateProvider } from '../providers/expression-bf-date/expression-bf-date';
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
 import { RegisteredPatientServiceProvider } from '../providers/registered-patient-service/registered-patient-service';
 import { NewAccountServiceProvider } from '../providers/new-account-service/new-account-service';
@@ -28,6 +27,7 @@ import { BfSupportivePracticeServiceProvider } from '../providers/bf-supportive-
 import { BfspDateListServiceProvider } from '../providers/bfsp-date-list-service/bfsp-date-list-service';
 import { BfPostDischargeMenuServiceProvider } from '../providers/bf-post-discharge-menu-service/bf-post-discharge-menu-service';
 import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-service/bf-post-discharge-service';
+import { BFExpressionDateListProvider } from '../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 
 
 @NgModule({
@@ -64,7 +64,7 @@ import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-s
     DatePipe,
     AddNewExpressionBfServiceProvider,
     SyncServiceProvider,
-    ExpressionBfDateProvider,
+    BFExpressionDateListProvider,
     SaveExpressionBfProvider,
     UserServiceProvider,
     RegisteredPatientServiceProvider,

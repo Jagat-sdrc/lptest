@@ -27,24 +27,24 @@
     
             <div style="margin-top:15px" *ngIf="isGroupShown(item)">
                 <ion-item>
-                    <ion-label color="black" floating>Date of Expression</ion-label>
+                    <ion-label color="black" stacked>Date of Expression</ion-label>
                     <ion-datetime displayFormat="DD-MM-YYYY" [max]="maxDate" [(ngModel)]="item.dateOfExpression"></ion-datetime>
                   </ion-item>
 
               <ion-item>
-                <ion-label color="black" floating>Time of expression </ion-label>
+                <ion-label color="black" stacked>Time of expression </ion-label>
                 <ion-datetime displayFormat="HH:mm" [max]="maxTime" [(ngModel)]="item.timeOfExpression"></ion-datetime>
               </ion-item>                   
   
               <ion-item>
-                <ion-label floating>Method of expression</ion-label>
+                <ion-label stacked>Method of expression</ion-label>
                 <ion-select [(ngModel)]="methodOfBfExpObject">
                   <ion-option *ngFor="let bfExpressions of bfExpressionMethods" text-wrap>{{bfExpressions.name}}</ion-option>               
                 </ion-select>
               </ion-item>
              
               <ion-item>
-                <ion-label floating>Location where expression</ion-label>
+                <ion-label stacked>Location where expression</ion-label>
                 <ion-select [(ngModel)]="locOfExpressionObject">
                   <ion-option *ngFor="let locOfExpressions of locationOfexpressionMethods" text-wrap>{{locOfExpressions.name}}</ion-option>               
                 </ion-select>

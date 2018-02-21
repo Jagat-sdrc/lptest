@@ -57,13 +57,9 @@ export class BfPostDischargeServiceProvider {
       .catch(this.handleError);
   };
 
-  saveNewBfPostDischargeForm(bfPdForm: IBFPD): Promise < IDBOperationStatus > {
+  saveNewBfPostDischargeForm(bfPdForm: IBFPD): Promise <any> {
     bfPdForm.id = this.getNewBfPdId(bfPdForm.babyCode);
-    let promise: Promise < IDBOperationStatus > = new Promise((resolve, reject) => {
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
+    let promise = new Promise((resolve, reject) => {      
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then((val) => {
 
@@ -87,31 +83,23 @@ export class BfPostDischargeServiceProvider {
 
             this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfPdForms)
               .then(data => {
-                dbOperationStatus.isSuccess = true;
-                resolve(dbOperationStatus)
+                resolve()
               })
               .catch(err => {
-                dbOperationStatus.isSuccess = false;
-                dbOperationStatus.message = err.message;
-                reject(dbOperationStatus);
+                reject(err.message);
               })
           } else {
             bfPdForms.push(bfPdForm)
             this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfPdForms)
               .then(data => {
-                dbOperationStatus.isSuccess = true;
-                resolve(dbOperationStatus)
+                resolve()
               })
               .catch(err => {
-                dbOperationStatus.isSuccess = false;
-                dbOperationStatus.message = err.message;
-                reject(dbOperationStatus);
+                reject(err.message);
               })
           }
         }).catch(err => {
-          dbOperationStatus.isSuccess = false;
-          dbOperationStatus.message = err.message;
-          reject(dbOperationStatus);
+          reject(err.message);
         })
 
     });

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ExpressoinFormPage } from './expressoin-form';
 import { PipesModule } from '../../pipes/pipes.module';
+import { BFExpressionDateListPage } from './bf-expression-date-list';
 
 @NgModule({
   declarations: [
-    ExpressoinFormPage,
+    BFExpressionDateListPage,
   ],
   imports: [
-    IonicPageModule.forChild(ExpressoinFormPage),
+    IonicPageModule.forChild(BFExpressionDateListPage),
     PipesModule
   ],
 })
-export class ExpressoinFormPageModule {}
+export class BFExpressionDateListPageModule {}

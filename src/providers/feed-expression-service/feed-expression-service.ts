@@ -77,17 +77,13 @@ export class FeedExpressionServiceProvider {
    * 
    */
 
-  saveFeedExpression(feedExpression: IFeed): Promise<IDBOperationStatus>{
+  saveFeedExpression(feedExpression: IFeed): Promise<any>{
 
-    let promise : Promise<IDBOperationStatus> = new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
 
       feedExpression.isSynced = false;
       feedExpression.dateOfFeed = this.datePipe.transform(new Date(feedExpression.dateOfFeed), 'dd-MM-yyyy')
 
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
 
@@ -97,13 +93,10 @@ export class FeedExpressionServiceProvider {
           feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
           this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
           .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+            reject(err.message);    
           })
 
 
@@ -111,20 +104,15 @@ export class FeedExpressionServiceProvider {
           feedExpressions.push(feedExpression)
           this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
           .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+            reject(err.message);    
           })
           
         }                
       }).catch(err=>{
-        dbOperationStatus.isSuccess = false;
-        dbOperationStatus.message = err.message;
-        reject(dbOperationStatus);
+        reject(err.message);
       })
     
       

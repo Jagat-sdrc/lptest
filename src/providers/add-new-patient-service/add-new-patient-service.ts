@@ -126,12 +126,9 @@ export class AddNewPatientServiceProvider {
    * @since 0.0.1
    * @param IPatient the patient which we need to save in the database.
    */
-  saveNewPatient(patient: IPatient) : Promise<IDBOperationStatus>{
-    let promise : Promise<IDBOperationStatus> = new Promise((resolve, reject) => {
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
+  saveNewPatient(patient: IPatient) : Promise<any>{
+    let promise = new Promise((resolve, reject) => {
+      
       this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then((val) => {
 
@@ -141,13 +138,10 @@ export class AddNewPatientServiceProvider {
           patients = this.validateNewEntryAndUpdate(patients, patient)          
           this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
-          .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+          .catch(err=>{            
+            reject(err.message);    
           })
 
 
@@ -155,20 +149,15 @@ export class AddNewPatientServiceProvider {
           patients.push(patient)
           this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
           .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+            reject(err.message);    
           })
           
         }                
       }).catch(err=>{
-        dbOperationStatus.isSuccess = false;
-        dbOperationStatus.message = err.message;
-        reject(dbOperationStatus);
+        reject(err.message);
       })
     
     });

@@ -10,6 +10,7 @@ import {
 import {
   ConstantProvider
 } from '../constant/constant';
+import { DatePipe } from '@angular/common';
 
 /**
  * 
@@ -21,7 +22,8 @@ import {
 @Injectable()
 export class SaveExpressionBfProvider {
 
-  constructor(public http: HttpClient, private storage: Storage) {
+  constructor(public http: HttpClient, private storage: Storage,
+  private datePipe: DatePipe) {
   }
   /**
    * This method will give us all the save the BF expression in local storage.
@@ -30,14 +32,12 @@ export class SaveExpressionBfProvider {
    * @returns Promise<string[]> string array of dates
    * @param babyid the patient id for which we are saving data
    */
-  saveBfExpression(bfExpression: IBFExpression): Promise<IDBOperationStatus>{
+  saveBfExpression(bfExpression: IBFExpression): Promise<any>{
 
-    let promise : Promise<IDBOperationStatus> = new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
 
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
+      bfExpression.isSynced = false;
+      bfExpression.dateOfExpression = this.datePipe.transform(new Date(bfExpression.dateOfExpression), 'dd-MM-yyyy')
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
 
@@ -47,13 +47,10 @@ export class SaveExpressionBfProvider {
           bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
           this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
           .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+            reject(err.message);    
           })
 
 
@@ -61,20 +58,15 @@ export class SaveExpressionBfProvider {
           bfExpressions.push(bfExpression)
           this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
           .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+            reject(err.message);    
           })
           
         }                
       }).catch(err=>{
-        dbOperationStatus.isSuccess = false;
-        dbOperationStatus.message = err.message;
-        reject(dbOperationStatus);
+        reject(err.message);
       })
     
       

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
-import { ExpressionBfDateProvider } from '../../providers/expression-bf-date/expression-bf-date'
 import { DatePipe } from '@angular/common';
+import { BFExpressionDateListProvider } from '../../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 /**
  * Generated class for the ExpressoinFormPage page.
  *
@@ -13,9 +13,9 @@ import { DatePipe } from '@angular/common';
 @IonicPage()
 @Component({
   selector: 'page-expressoin-form',
-  templateUrl: 'expressoin-form.html',
+  templateUrl: 'bf-expression-date-list.html',
 })
-export class ExpressoinFormPage {
+export class BFExpressionDateListPage {
 
   babyCode: any;
   form: any;
@@ -24,7 +24,7 @@ export class ExpressoinFormPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private datePipe: DatePipe,
-    private expressionBFdateService: ExpressionBfDateProvider,
+    private bfExpressionDateListService: BFExpressionDateListProvider,
     private messageService: MessageProvider) {
   }
 
@@ -39,12 +39,13 @@ export class ExpressoinFormPage {
 
     this.babyCode = this.navParams.get('babyCode')
      //Getting date list
-     this.expressionBFdateService.getExpressionBFDateListData(this.babyCode)
+     this.bfExpressionDateListService.getExpressionBFDateListData(this.babyCode)
      .then(data => {
        this.expBfDateListData = data;
      })
      .catch(err => {
-       this.messageService.showErrorToast((err as IDBOperationStatus).message)
+      this.expBfDateListData=[]
+       this.messageService.showErrorToast(err)
      })
   }
 

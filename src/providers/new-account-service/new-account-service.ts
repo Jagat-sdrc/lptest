@@ -24,12 +24,9 @@ export class NewAccountServiceProvider {
    * @since 0.0.1
    * @param IUser the user which we need to save in the database.
    */
-  saveNewUser(user: IUser) : Promise<IDBOperationStatus>{
-    let promise : Promise<IDBOperationStatus> = new Promise((resolve, reject) => {
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
+  saveNewUser(user: IUser) : Promise<any>{
+    let promise = new Promise((resolve, reject) => {
+      
       this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((val) => {
 
@@ -39,33 +36,25 @@ export class NewAccountServiceProvider {
           users = this.validateNewEntryAndUpdate(users, user)          
           this.storage.set(ConstantProvider.dbKeyNames.users, users)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
           .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+            reject(err.message);    
           })
 
         }else{
           users.push(user)
           this.storage.set(ConstantProvider.dbKeyNames.users, users)
           .then(data=>{
-            dbOperationStatus.isSuccess = true;
-            resolve(dbOperationStatus)
+            resolve()
           })
           .catch(err=>{
-            dbOperationStatus.isSuccess = false;
-            dbOperationStatus.message = err.message;
-            reject(dbOperationStatus);    
+            reject(err.message);    
           })
           
         }                
       }).catch(err=>{
-        dbOperationStatus.isSuccess = false;
-        dbOperationStatus.message = err.message;
-        reject(dbOperationStatus);
+        reject(err.message);
       })
     
     });

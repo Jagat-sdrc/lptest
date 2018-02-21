@@ -43,12 +43,9 @@ export class BfSupportivePracticeServiceProvider {
       .catch(this.handleError);
   };
 
-  saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP): Promise < IDBOperationStatus > {
-    let promise: Promise < IDBOperationStatus > = new Promise((resolve, reject) => {
-      let dbOperationStatus: IDBOperationStatus = {
-        isSuccess: false,
-        message: ""
-      }
+  saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP): Promise <any> {
+    let promise = new Promise((resolve, reject) => {
+      
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then((val) => {
 
@@ -58,31 +55,23 @@ export class BfSupportivePracticeServiceProvider {
             // patients = this.validateNewEntryAndUpdate(patients, patient)     
             this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForm)
               .then(data => {
-                dbOperationStatus.isSuccess = true;
-                resolve(dbOperationStatus)
+                resolve()
               })
               .catch(err => {
-                dbOperationStatus.isSuccess = false;
-                dbOperationStatus.message = err.message;
-                reject(dbOperationStatus);
+                reject(err.message);
               })
           } else {
             bfspForms.push(bfspForm)
             this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
               .then(data => {
-                dbOperationStatus.isSuccess = true;
-                resolve(dbOperationStatus)
+                resolve()
               })
               .catch(err => {
-                dbOperationStatus.isSuccess = false;
-                dbOperationStatus.message = err.message;
-                reject(dbOperationStatus);
+                reject(err.message);
               })
           }
         }).catch(err => {
-          dbOperationStatus.isSuccess = false;
-          dbOperationStatus.message = err.message;
-          reject(dbOperationStatus);
+          reject(err.message);
         })
 
     });

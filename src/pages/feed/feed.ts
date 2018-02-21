@@ -68,7 +68,7 @@ export class FeedPage {
       this.messageService.showSuccessToast("save successful!")
     })
     .catch(err =>{
-       this.messageService.showErrorToast((err as IDBOperationStatus).message)
+       this.messageService.showErrorToast(err)
     })
   }
   
