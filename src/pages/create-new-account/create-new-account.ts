@@ -58,7 +58,9 @@ export class CreateNewAccountPage {
   states: IArea[];
   districts: IArea[];
   institutes: IArea[];
-
+  countryStatus: boolean = true;
+  districtStatus: boolean = true;
+  institutionStatus: boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider, public newAccountServiceProvider: NewAccountServiceProvider) {}
 
@@ -82,8 +84,42 @@ export class CreateNewAccountPage {
       district: new FormControl('', [Validators.required]),
       institution: new FormControl('', [Validators.required]),
     });
+  }
 
+  /**
+   * This method will show the error message if user will select the state wihtout selecting the country
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  onClickState(){
+    if(this.userForm.controls.country.value == ""){
+      this.messageService.showErrorToast(ConstantProvider.messages.stateAlert);
+    }
+  }
 
+  /**
+   * This method will show the error message if user will select the district wihtout selecting the state
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  onClickDistrict(){
+    if(this.userForm.controls.state.value == ""){
+      this.messageService.showErrorToast(ConstantProvider.messages.districtAlert);
+    }
+  }
+
+  /**
+   * This method will show the error message if user will select the institution wihtout selecting the district
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  onClickInstitution(){
+    if(this.userForm.controls.district.value == ""){
+      this.messageService.showErrorToast(ConstantProvider.messages.institutionAlert);
+    }
   }
 
   /**
@@ -92,7 +128,7 @@ export class CreateNewAccountPage {
    * @author Jagat Bandhu
    * @since 0.0.1
    */
-  submit() {
+  save() {
     if (!this.userForm.valid) {
       Object.keys(this.userForm.controls).forEach(field => {
         const control = this.userForm.get(field);
@@ -116,8 +152,10 @@ export class CreateNewAccountPage {
 
       this.newAccountServiceProvider.saveNewUser(this.user)
         .then(data => {
-          this.messageService.showSuccessToast(ConstantProvider.messages.registrationSuccessful);
-          this.navCtrl.pop();
+          this.messageService.showOkAlert(ConstantProvider.messages.saveSuccessfull,ConstantProvider.messages.forgotPasswordMessage)
+          .then(()=>{
+            this.navCtrl.pop();
+          })
         })
         .catch(err => {
           this.messageService.showErrorToast(err)
@@ -134,6 +172,7 @@ export class CreateNewAccountPage {
   countrySelected(country: IArea) {
     this.user.country = country.id;
     this.states = this.areas.filter(d => d.parentAreaId === country.id)
+    this.countryStatus = false;
   }
 
   /**
@@ -146,6 +185,7 @@ export class CreateNewAccountPage {
   stateSelected(state: IArea) {
     this.user.state = state.id;
     this.districts = this.areas.filter(d => d.parentAreaId === state.id)
+    this.districtStatus  = false;
   }
 
 
@@ -159,6 +199,7 @@ export class CreateNewAccountPage {
   districtSelected(district: IArea) {
     this.user.district = district.id;
     this.institutes = this.areas.filter(d => d.parentAreaId === district.id)
+    this.institutionStatus = false;
   }
 
 

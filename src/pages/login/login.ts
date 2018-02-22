@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { MessageProvider } from '../../providers/message/message';
@@ -16,15 +16,15 @@ export class LoginPage {
   loginData: ILoginData;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private userService: UserServiceProvider, private alertCtrl: AlertController,
+  private userService: UserServiceProvider,
   private messageService: MessageProvider, private events: Events) {}
 
   ngOnInit(){
     this.loginData = {
-      // username: 'ratikanta@sdrc.co.in',
-      // password: 'ra@123#!'
-      username: '',
-      password: ''
+      username: 'jagat@sdrc.co.in',
+      password: 'ja@123#!'
+      // username: '',
+      // password: ''
     }
   }
 
@@ -52,24 +52,14 @@ export class LoginPage {
   }
 
   forgotPassword(){
-    let confirm = this.alertCtrl.create({
-      enableBackdropDismiss: false,
-      title: 'INFO',
-      message: ConstantProvider.messages.forgotPasswordMessage,
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () => {
-              
-          }
-        }
-      ]
-    });
-    confirm.setCssClass('modalDialog');
-    confirm.present();
+    this.messageService.showOkAlert(ConstantProvider.messages.info,ConstantProvider.messages.forgotPasswordMessage);
   }
 
   signUp(){
+    this.loginData = {
+      username: '',
+      password: ''
+    }
     this.navCtrl.push('CreateNewAccountPage');
   }
   

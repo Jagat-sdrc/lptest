@@ -29,7 +29,6 @@ import { BfPostDischargeMenuServiceProvider } from '../providers/bf-post-dischar
 import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-service/bf-post-discharge-service';
 import { BFExpressionDateListProvider } from '../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 
-
 @NgModule({
   declarations: [
     MyApp
@@ -42,8 +41,7 @@ import { BFExpressionDateListProvider } from '../providers/bf-expression-date-li
     }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    HttpClientModule
-    
+    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

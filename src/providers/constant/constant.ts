@@ -120,6 +120,8 @@ export class ConstantProvider {
     userConstruction: "Under construction!",
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyOverWeight: "Baby's weight is more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
+    babyGestational: "Gestational age in weeks is more than the age (28-32 age). Do you want to proceed with the entry?",
+    motherAge: "Mother's delivery age is more than the normal age (15-49 age). Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
@@ -127,7 +129,13 @@ export class ConstantProvider {
     recordNotFound: 'Record not found!',
     noDataFound: 'No data found!',
     serverErrorContactAdmin: 'Server error, please contact admin!',
-    noDataToSync: 'No data to sync!'
+    noDataToSync: 'No data to sync!',
+    stateAlert: 'Please select the country before selecting state',
+    districtAlert: 'Please select the state before selecting district',
+    institutionAlert: 'Please select the district before selecting insitution',
+    saveSuccessfull: 'Save Successfully',
+    info: 'Info',
+    warning: 'Warning'
   };
   
 /**
