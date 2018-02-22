@@ -92,14 +92,14 @@ export class FeedPage {
  */
   newExpression(){
 
-    let day = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[0])
-    let month = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[1])
-    let year = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[2])
+    // let day = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[0])
+    // let month = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[1])
+    // let year = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[2])
 
     this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
-    new Date(year, month, day))
-
-  }
+    new Date());
+    this.isGroupShown(this.feedExpressions[0]);
+  };
 
   /**
    * This method will help in getting existing feed expression for given baby code and date
@@ -111,7 +111,10 @@ export class FeedPage {
     this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode, 
       this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
     .then(data=>{
-      this.feedExpressions = data      
+      this.feedExpressions = data;
+      if(this.feedExpressions.length > 0){
+        this.isGroupShown( this.feedExpressions[0]);
+      }
     })
     .catch(err=>{
       this.messageService.showErrorToast(err)

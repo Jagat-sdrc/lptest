@@ -82,44 +82,46 @@ export class BfSupportivePracticeServiceProvider {
 
   findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise < IBFSP[] > {
     let promise: Promise < IBFSP[] > = new Promise((resolve, reject) => {
+      if(date !== null){
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then(data => {
           if (data != null) {
             data = (data as IBFSP[]).filter(d => d.babyCode === babyCode && d.dateOfBFSP === date);
 
-            (data as IBFSP[]).forEach(d => {
-              let day = parseInt(d.dateOfBFSP.split('-')[0]);
-              let month = parseInt(d.dateOfBFSP.split('-')[1]);
-              let year = parseInt(d.dateOfBFSP.split('-')[2]);
-              d.dateOfBFSP = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
-            });
-
             if ((data as IBFSP[]).length > 0) {
-              if (isNewExpression) {
-                resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-              } else {
+              (data as IBFSP[]).forEach(d => {
+                let day = parseInt(d.dateOfBFSP.split('-')[0]);
+                let month = parseInt(d.dateOfBFSP.split('-')[1]);
+                let year = parseInt(d.dateOfBFSP.split('-')[2]);
+                d.dateOfBFSP = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
+              });
+
+              // if (isNewExpression) {
+              //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
+              // } else {
                 resolve(data)
-              }
-
+              // }
             } else {
-              if (isNewExpression) {
-                resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-              } else {
+              // if (isNewExpression) {
+              //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
+              // } else {
                 resolve([])
-              }
-
+              // }
             }
           } else {
-            if (isNewExpression) {
-              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            } else {
+            // if (isNewExpression) {
+            //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
+            // } else {
               resolve([])
-            }
+            // }
           }
         })
         .catch(err => {
           reject(err.message)
         })
+      }else{
+        resolve([]);
+      }
     });
     return promise;
   }
@@ -150,8 +152,9 @@ export class BfSupportivePracticeServiceProvider {
     let bf: IBFSP = {
       id: this.getNewBfspId(babyCode),
       babyCode: babyCode,
-      dateOfBFSP: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
-      timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
+      dateOfBFSP: date === null ? null : moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
+      // timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
+      timeOfBFSP: null,
       bfspPerformed: null,
       personWhoPerformedBFSP: null,
       bfspDuration: null,

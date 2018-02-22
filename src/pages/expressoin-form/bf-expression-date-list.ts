@@ -74,7 +74,8 @@ export class BFExpressionDateListPage {
   newExpression(){
     let dataForBFEntryPage: IDataForBFEntryPage = {
       babyCode: this.babyCode,
-      selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      // selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      selectedDate: null,
       isNewExpression: true
     }
     this.navCtrl.push('ExpressionTimeFormPage', {dataForBFEntryPage: dataForBFEntryPage})

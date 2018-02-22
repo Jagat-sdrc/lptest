@@ -122,7 +122,11 @@ export class ExpressionTimeFormPage {
     }
 
     //set validations for all the fields
-    if (bfExpression.methodOfExpression == null) {
+    if(bfExpression.dateOfExpression === null){
+      this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfExpression);
+    }else if(bfExpression.timeOfExpression === null){
+      this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfExpression);
+    }else if (bfExpression.methodOfExpression == null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTypeOfBFExpression);
     } else if (bfExpression.locationOfExpression == null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterLocOfExpression);
@@ -148,14 +152,14 @@ export class ExpressionTimeFormPage {
  * @memberof ExpressionTimeFormPage
  */
   newExpression(){
-    let day = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[0])
-    let month = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[1])
-    let year = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[2])
+    // let day = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[0])
+    // let month = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[1])
+    // let year = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[2])
     this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions, this.dataForBFEntryPage.babyCode, 
-    new Date(year, month, day))
-    
-   
+    new Date());
+    this.isGroupShown(this.bFExpressions[0]);
   }
+
   /**
  * This method is going to validate the duration of expression field is a decimal field or not and check up to 2 decimal places.
  * 
@@ -219,7 +223,10 @@ export class ExpressionTimeFormPage {
     this.expressionBFdateService.findByBabyCodeAndDate(this.dataForBFEntryPage.babyCode,
       this.dataForBFEntryPage.selectedDate, this.dataForBFEntryPage.isNewExpression)
     .then(data => {
-      this.bFExpressions = data
+      this.bFExpressions = data;
+      if(this.bFExpressions.length > 0){
+        this.isGroupShown(this.bFExpressions[0]);
+      }
     })
     .catch(err => {
       this.messageService.showErrorToast(err)

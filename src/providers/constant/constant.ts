@@ -127,7 +127,9 @@ export class ConstantProvider {
     recordNotFound: 'Record not found!',
     noDataFound: 'No data found!',
     serverErrorContactAdmin: 'Server error, please contact admin!',
-    noDataToSync: 'No data to sync!'
+    noDataToSync: 'No data to sync!',
+    enterDateOfBfsp: 'Please enter date of BFSP',
+    enterTimeOfBfsp :'Please enter time of BFSP'
   };
   
 /**

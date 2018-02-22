@@ -9,22 +9,23 @@
 </ion-header>
 
 <ion-content padding>  
-    
+
+      <h4 text-center class="customHeading">{{formHeading}}</h4>
       <ion-item>
         <ion-label color="black" stacked>Date</ion-label>
         <ion-datetime displayFormat="DD-MM-YYYY" [max]="maxDate" [(ngModel)]="bfpd.dateOfBreastFeeding"></ion-datetime>
         <ion-icon padding-top name="calendar" item-right></ion-icon>
       </ion-item>  
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label color="black" stacked>Time of breastfeeding post discharge</ion-label>
         <ion-select [(ngModel)]="bfpd.timeOfBreastFeeding">
           <ion-option *ngFor="let item of timeOfFeedList" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
-      </ion-item>
+      </ion-item> -->
 
       <ion-item>
-        <ion-label color="black" stacked>Breastfeeding status post discharge</ion-label>
+        <ion-label text-wrap color="black" stacked>Breastfeeding status post discharge</ion-label>
         <ion-select [(ngModel)]="bfpd.breastFeedingStatus">
           <ion-option *ngFor="let item of bfStatusPostDischargeList" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>

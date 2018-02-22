@@ -72,7 +72,8 @@ private datePipe: DatePipe,private navParams: NavParams) {}
   newExpression(){
     let dataForFeedEntryPage: IDataForFeedEntryPage = {
       babyCode: this.babyCode,
-      selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      selectedDate: null,
+      // selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
       isNewExpression: true
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})

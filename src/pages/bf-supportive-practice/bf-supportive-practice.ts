@@ -86,12 +86,17 @@ export class BfSupportivePracticePage {
    * For creating or resetting breastfeedign supportive practice form
    */
   newBFSPForm() {
-    let day = parseInt(this.dataForBfspPage.selectedDate.split('-')[0]);
-    let month = parseInt(this.dataForBfspPage.selectedDate.split('-')[1]);
-    let year = parseInt(this.dataForBfspPage.selectedDate.split('-')[2]);
+    let date:Date = null;
+    if(this.dataForBfspPage.selectedDate !== null) {
+      let day = parseInt(this.dataForBfspPage.selectedDate.split('-')[0]);
+      let month = parseInt(this.dataForBfspPage.selectedDate.split('-')[1]);
+      let year = parseInt(this.dataForBfspPage.selectedDate.split('-')[2]);
+      date = new Date(year, month, day);
+    }
 
     this.bfspList = this.bfspService.appendNewRecordAndReturn(this.bfspList, this.dataForBfspPage.babyCode,
-      new Date(year, month, day));
+      date);
+    setTimeout( data => this.toggleGroup(this.bfspList[0], 0), 100);
   };
 
   
@@ -109,11 +114,15 @@ export class BfSupportivePracticePage {
   };
 
   save(bfsp: IBFSP){
-    if(bfsp.bfspPerformed == null){
+    if(bfsp.dateOfBFSP === null){
+      this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
+    }else if(bfsp.timeOfBFSP === null){
+      this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfBfsp);
+    }else if(bfsp.bfspPerformed === null){
       this.messageService.showErrorToast(ConstantProvider.messages.supportivePracticeBfsp);
-    }else if(bfsp.personWhoPerformedBFSP == null){
+    }else if(bfsp.personWhoPerformedBFSP === null){
       this.messageService.showErrorToast(ConstantProvider.messages.personWhoPerformedBfsp);
-    }else if(bfsp.bfspDuration === null || !this.onlyNumberRegex.test(bfsp.bfspDuration.toString())) {
+    }else if(bfsp.bfspDuration === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.durationOfBfsp);
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp)
@@ -139,6 +148,10 @@ export class BfSupportivePracticePage {
       this.dataForBfspPage.selectedDate, this.dataForBfspPage.isNewBfsp)
       .then(data => {
         this.bfspList = data;
+        if(this.bfspList.length === 0){
+          this.newBFSPForm();
+          // setTimeout(d => this.toggleGroup(this.bfspList[0], 0), 200);
+        }
       })
       .catch(err => {
         this.messageService.showErrorToast(err)

@@ -28,4 +28,6 @@ interface IMessage{
     noDataFound: string;
     serverErrorContactAdmin: string;
     noDataToSync: string;
+    enterDateOfBfsp: string;
+    enterTimeOfBfsp: string;
 }
