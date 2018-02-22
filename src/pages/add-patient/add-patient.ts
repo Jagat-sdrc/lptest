@@ -1,12 +1,13 @@
 import { ConstantProvider } from './../../providers/constant/constant';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { MessageProvider } from '../../providers/message/message';
 import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 
 
@@ -56,8 +57,7 @@ export class AddPatientPage implements OnInit{
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
-    private messageService: MessageProvider,
-    private alertCtrl: AlertController,
+    private messageService: MessageProvider,private datePicker: DatePicker,
   private userService: UserServiceProvider) {
     
   }
@@ -267,34 +267,41 @@ export class AddPatientPage implements OnInit{
        }
      }
 
-     validateBabyWeight(babyWeight) {
+     validateMotherAge(){
+      if (this.patientForm.controls.mother_age.value < 15 ||
+        this.patientForm.controls.mother_age.value > 49) {
+       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.motherAge)
+       .then((data)=>{
+         if(!data){
+           this.patientForm.controls.mother_age.setValue(null);
+         }
+       })
+      }
+     }
+
+     validateBabyWeight() {
        if (this.patientForm.controls.baby_weight.value < 500 ||
          this.patientForm.controls.baby_weight.value > 4000) {
-         let confirm = this.alertCtrl.create({
-           enableBackdropDismiss: false,
-           title: 'Warning',
-           message: this.patientForm.controls.baby_weight.value < 500 ?
-             ConstantProvider.messages.babyUnderWeight : ConstantProvider.messages.babyOverWeight,
-           buttons: [{
-               text: 'No',
-               handler: () => {
-                 this.patientForm.controls.baby_weight.setValue(null);
-               }
-             },
-             {
-               text: 'Yes',
-               handler: () => {
-                if(this.patientForm.controls.baby_weight.value < 500){
-                  this.patientForm.controls.baby_weight.setValue(null);
-                }
-              }
-             }
-           ]
-         });
-         confirm.setCssClass('modalDialog');
-         confirm.present();
+        this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
+        .then((data)=>{
+          if(!data){
+            this.patientForm.controls.baby_weight.setValue(null);
+          }
+        })
        }
      }
+
+     validateGestational() {
+      if (this.patientForm.controls.gestational_age.value < 28 ||
+        this.patientForm.controls.gestational_age.value > 32) {
+       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyGestational)
+       .then((data)=>{
+         if(!data){
+           this.patientForm.controls.gestational_age.setValue(null);
+         }
+       })
+      }
+    }
 
 
 
@@ -305,6 +312,9 @@ export class AddPatientPage implements OnInit{
       */
      submit(){
       this.outpatientAdmission();
+      // this.validateMotherAge();
+      // this.validateBabyWeight();
+      // this.validateGestational();
       if(!this.patientForm.valid){
         this.resetStatus = true;
         Object.keys(this.patientForm.controls).forEach(field => {
@@ -409,5 +419,28 @@ export class AddPatientPage implements OnInit{
       });
       this.outpatientAdmission();
     }
+
+    datePickerDialog(){
+        this.datePicker.show({
+        date: new Date(),
+        maxDate: new Date(),
+        mode: 'date',
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+      }).then(
+        date => console.log('Got date: ', date),
+        err => console.log('Error occurred while getting date: ', err)
+      );
+    }
+
+    timePickerDialog(){
+      this.datePicker.show({
+      date: new Date(),
+      mode: 'time',
+      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+    }).then(
+      time => console.log('Got time: ', time),
+      err => console.log('Error occurred while getting time: ', err)
+    );
+  }
 
 }
