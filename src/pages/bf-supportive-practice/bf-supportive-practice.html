@@ -45,7 +45,7 @@
                 <div class="form-group">
                   <ion-item>
                     <ion-label color="black" stacked>Breastfeeding supportive practice performed</ion-label>
-                    <ion-select [(ngModel)] = "bfsp.bfspPerformed" [ngModelOptions]="{standalone: true}">
+                    <ion-select [(ngModel)] = "bfsp.bfspPerformed" [ngModelOptions]="{standalone: true}" (ionChange)="setPersonWhoPerformed(bfsp)">
                       <ion-option *ngFor="let item of bfSupportivePracticePerformedList" [value]="item.id">{{item.name}}</ion-option>
                     </ion-select>
                   </ion-item>
@@ -53,7 +53,8 @@
                 <div class="form-group">
                   <ion-item>
                     <ion-label color="black" stacked>Person who performed the BFSP</ion-label>
-                    <ion-select id="person+i" [(ngModel)] = "bfsp.personWhoPerformedBFSP" [ngModelOptions]="{standalone: true}">
+                    <ion-select id="person+i" [(ngModel)] = "bfsp.personWhoPerformedBFSP" [ngModelOptions]="{standalone: true}"
+                      [disabled]="bfsp.bfspPerformed === 41 ? true : false">
                       <ion-option *ngFor="let item of personWhoPerformedBSFPList" [value]="item.id">{{item.name}}</ion-option>
                     </ion-select>
                   </ion-item>
@@ -61,7 +62,8 @@
                 <div class="form-group">
                   <ion-item>
                     <ion-label color="black" stacked>Duration of BFSP performed in minutes</ion-label>
-                    <ion-input type="number" [(ngModel)] = "bfsp.bfspDuration" [ngModelOptions]="{standalone: true}"></ion-input>
+                    <ion-input type="number" [(ngModel)] = "bfsp.bfspDuration" [pattern]="onlyNumberRegex"
+                      [ngModelOptions]="{standalone: true}"></ion-input>
                   </ion-item>
                 </div>
               </form>

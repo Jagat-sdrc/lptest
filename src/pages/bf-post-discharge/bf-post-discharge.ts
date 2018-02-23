@@ -73,7 +73,12 @@ export class BfPostDischargePage {
   };
 
   save() {
-    this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
+    if(this.bfpd.dateOfBreastFeeding === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.dateOfBfpd)
+    }else if(this.bfpd.breastFeedingStatus === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.bfStatusPd)
+    }else{
+      this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
       .then(data=> {
         this.messageService.showSuccessToast("save successful!");
         this.navCtrl.pop();
@@ -81,6 +86,8 @@ export class BfPostDischargePage {
       .catch(err =>{
         this.messageService.showErrorToast(err)
       })
+    }
+
     // if(!this.postDischargeForm.valid){
     //   Object.keys(this.postDischargeForm.controls).forEach(field => {
     //     const control = this.postDischargeForm.get(field);

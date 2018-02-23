@@ -150,6 +150,8 @@ export class ConstantProvider {
     otherVolume: 'Please enter other voulme',
     locationWhereFeedOccured: 'Please enter location where feed occured',
     babyWeight: 'Please enter weight of the baby',
+    dateOfBfpd: 'Please enter date of breastfeeding post discharge',
+    bfStatusPd: 'Please enter breastfeeding status post discharge'
   };
   
 /**

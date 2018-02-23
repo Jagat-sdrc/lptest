@@ -50,4 +50,6 @@ interface IMessage{
     otherVolume: string;
     locationWhereFeedOccured: string;
     babyWeight: string;
+    dateOfBfpd: string;
+    bfStatusPd: string;
 }
