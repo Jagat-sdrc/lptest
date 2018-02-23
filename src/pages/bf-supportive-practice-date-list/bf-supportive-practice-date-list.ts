@@ -21,7 +21,7 @@ export class BfSupportivePracticeDateListPage {
   babyCode:string;
   babyCodeHospital: any;
   items: any;
-  bfspDateListData: string[];
+  bfspDateListData: string[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private datePipe: DatePipe,
     private bfspDateListService: BfspDateListServiceProvider, private messageService: MessageProvider) {
