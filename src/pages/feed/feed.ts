@@ -60,16 +60,38 @@ export class FeedPage {
  * @author Ratikanta
  * @since 0.0.1
  */
-  saveExpression(feedExpression: IFeed) {   
-    this.feedExpressionService.saveFeedExpression(feedExpression)
-    .then(data=> {
-      this.dataForFeedEntryPage.isNewExpression = false;
-      this.findExpressionsByBabyCodeAndDate();
-      this.messageService.showSuccessToast("save successful!")
-    })
-    .catch(err =>{
-       this.messageService.showErrorToast(err)
-    })
+  saveExpression(feedExpression: IFeed) {
+    if(feedExpression.dateOfFeed === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
+    }else if(feedExpression.timeOfFeed === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
+    }else if(feedExpression.methodOfFeed === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.methodOfFeed)  
+    }else if(feedExpression.ommVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
+    }else if(feedExpression.dhmVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
+    }else if(feedExpression.formulaVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
+    }else if(feedExpression.animalMilkVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
+    }else if(feedExpression.otherVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
+    }else if(feedExpression.locationOfFeeding === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.locationWhereFeedOccured)
+    }else if(feedExpression.babyWeight === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.babyWeight)
+    }else{
+      this.feedExpressionService.saveFeedExpression(feedExpression)
+      .then(data=> {
+        this.dataForFeedEntryPage.isNewExpression = false;
+        this.findExpressionsByBabyCodeAndDate();
+        this.messageService.showSuccessToast("save successful!")
+      })
+      .catch(err =>{
+        this.messageService.showErrorToast(err)
+      })
+    }
   }
   
 

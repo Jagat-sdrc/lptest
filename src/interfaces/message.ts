@@ -39,4 +39,15 @@ interface IMessage{
     info: string;
     warning: string;
     deletePatient: string;
+    duplicateTime: string;
+    enterDateOfFeed: string;
+    enterTimeOfFeed: string;
+    methodOfFeed: string;
+    ommVolumne: string;
+    dhmVolume: string;
+    formulaVolume: string;
+    animalMilkVolume: string;
+    otherVolume: string;
+    locationWhereFeedOccured: string;
+    babyWeight: string;
 }

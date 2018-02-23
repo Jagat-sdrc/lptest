@@ -22,7 +22,6 @@ export class BfSupportivePracticePage {
 
   supportivePracticeForm: FormGroup;
   maxDate:any;
-  maxTime:any;
   forEdit: boolean;
   autoBabyId: string;
   bfspList: IBFSP[];
@@ -40,7 +39,6 @@ export class BfSupportivePracticePage {
     private bfspService: BfSupportivePracticeServiceProvider,
     ) {
       this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
-      this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
     }
 
   /**
@@ -86,16 +84,8 @@ export class BfSupportivePracticePage {
    * For creating or resetting breastfeedign supportive practice form
    */
   newBFSPForm() {
-    let date:Date = null;
-    if(this.dataForBfspPage.selectedDate !== null) {
-      let day = parseInt(this.dataForBfspPage.selectedDate.split('-')[0]);
-      let month = parseInt(this.dataForBfspPage.selectedDate.split('-')[1]);
-      let year = parseInt(this.dataForBfspPage.selectedDate.split('-')[2]);
-      date = new Date(year, month, day);
-    }
-
     this.bfspList = this.bfspService.appendNewRecordAndReturn(this.bfspList, this.dataForBfspPage.babyCode,
-      date);
+      null);
     setTimeout( data => this.toggleGroup(this.bfspList[0], 0), 100);
   };
 

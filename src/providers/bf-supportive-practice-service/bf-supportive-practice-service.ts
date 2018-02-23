@@ -54,14 +54,19 @@ export class BfSupportivePracticeServiceProvider {
           let bfspForms: IBFSP[] = [];
           if (val != null) {
             bfspForms = val
-            bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)          
-            this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
+            let index = bfspForms.findIndex(d=>d.dateOfBFSP === bfspForm.dateOfBFSP && d.timeOfBFSP === bfspForm.timeOfBFSP)
+            if(index < 0) {
+              reject(ConstantProvider.messages.duplicateTime);
+            }else{
+              bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)          
+              this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
               .then(data => {
                 resolve()
               })
               .catch(err => {
                 reject(err.message);
               })
+            }
           } else {
             bfspForms.push(bfspForm)
             this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)

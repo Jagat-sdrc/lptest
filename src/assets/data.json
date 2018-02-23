@@ -401,351 +401,387 @@
         },
         {
             "id": 3,
+            "areaLevel": 2,
+            "name": "Maharashtra",
+            "parentAreaId": 1
+        },
+        {
+            "id": 4,
+            "areaLevel": 2,
+            "name": "Karnataka",
+            "parentAreaId": 1
+        },
+        {
+            "id": 5,
             "areaLevel": 3,
             "name": "Ananathapur",
             "parentAreaId": 2
         },
         {
-            "id": 4,
+            "id": 6,
             "areaLevel": 3,
             "name": "Chittoor",
             "parentAreaId": 2
         },
         {
-            "id": 5,
+            "id": 7,
             "areaLevel": 3,
             "name": "East Godavari",
             "parentAreaId": 2
         },
         {
-            "id": 6,
+            "id": 8,
             "areaLevel": 3,
             "name": "Guntur",
             "parentAreaId": 2
         },
         {
-            "id": 7,
+            "id": 9,
             "areaLevel": 3,
             "name": "Kadapa",
             "parentAreaId": 2
         },
         {
-            "id": 8,
+            "id": 10,
             "areaLevel": 3,
             "name": "Krishna",
             "parentAreaId": 2
         },
         {
-            "id": 9,
+            "id": 11,
             "areaLevel": 3,
             "name": "Kurnool",
             "parentAreaId": 2
         },
         {
-            "id": 10,
+            "id": 12,
             "areaLevel": 3,
             "name": "Nellore",
             "parentAreaId": 2
         },
         {
-            "id": 11,
+            "id": 13,
             "areaLevel": 3,
             "name": "Prakasam",
             "parentAreaId": 2
         },
         {
-            "id": 12,
+            "id": 14,
             "areaLevel": 3,
             "name": "Srikakulam",
             "parentAreaId": 2
         },
         {
-            "id": 13,
+            "id": 15,
             "areaLevel": 3,
             "name": "Visakhapatnam",
             "parentAreaId": 2
         },
         {
-            "id": 14,
+            "id": 16,
             "areaLevel": 3,
             "name": "Vizianagaram",
             "parentAreaId": 2
         },
         {
-            "id": 15,
+            "id": 17,
             "areaLevel": 3,
             "name": "West Godavari",
             "parentAreaId": 2
         },
         {
-            "id": 16,
-            "areaLevel": 5,
-            "name": "Sri Krishna Devaraya Medical College Hospital",
+            "id": 18,
+            "areaLevel": 3,
+            "name": "Pune",
             "parentAreaId": 3
         },
         {
-            "id": 17,
-            "areaLevel": 5,
-            "name": "District Hospital Chittoor",
-            "parentAreaId": 4
-        },
-        {
-            "id": 18,
-            "areaLevel": 5,
-            "name": "Government Maternity Hospital, Tirupathi",
-            "parentAreaId": 4
-        },
-        {
             "id": 19,
-            "areaLevel": 5,
-            "name": "PES Institute of Medical Sciences and Research Hospital, Kuppam",
+            "areaLevel": 3,
+            "name": "Bengaluru",
             "parentAreaId": 4
         },
         {
             "id": 20,
             "areaLevel": 5,
-            "name": "SVRR Hospital, Thirupathi",
-            "parentAreaId": 4
+            "name": "Sri Krishna Devaraya Medical College Hospital",
+            "parentAreaId": 5
         },
         {
             "id": 21,
             "areaLevel": 5,
-            "name": "Area Hospital, Rampachodavaram (T)",
-            "parentAreaId": 5
+            "name": "District Hospital Chittoor",
+            "parentAreaId": 6
         },
         {
             "id": 22,
             "areaLevel": 5,
-            "name": "District Hospital, Rajahmundry",
-            "parentAreaId": 5
+            "name": "Government Maternity Hospital, Tirupathi",
+            "parentAreaId": 6
         },
         {
             "id": 23,
             "areaLevel": 5,
-            "name": "Government General hospital Kakinada",
-            "parentAreaId": 5
+            "name": "PES Institute of Medical Sciences and Research Hospital, Kuppam",
+            "parentAreaId": 6
         },
         {
             "id": 24,
             "areaLevel": 5,
-            "name": "District Hospital, Tenali",
+            "name": "SVRR Hospital, Thirupathi",
             "parentAreaId": 6
         },
         {
             "id": 25,
             "areaLevel": 5,
-            "name": "Government General Hospital Guntur",
-            "parentAreaId": 6
+            "name": "Area Hospital, Rampachodavaram (T)",
+            "parentAreaId": 7
         },
         {
             "id": 26,
             "areaLevel": 5,
-            "name": "NRI Academy of Sciences, Mangalagiri",
-            "parentAreaId": 6
+            "name": "District Hospital, Rajahmundry",
+            "parentAreaId": 7
         },
         {
             "id": 27,
             "areaLevel": 5,
-            "name": "Sri Ramachandra Childrens Hospital",
-            "parentAreaId": 6
+            "name": "Government General hospital Kakinada",
+            "parentAreaId": 7
         },
         {
             "id": 28,
             "areaLevel": 5,
-            "name": "District Hospital, Proddatur",
-            "parentAreaId": 7
+            "name": "District Hospital, Tenali",
+            "parentAreaId": 8
         },
         {
             "id": 29,
             "areaLevel": 5,
-            "name": "RIMS, Kadapa",
-            "parentAreaId": 7
+            "name": "Government General Hospital Guntur",
+            "parentAreaId": 8
         },
         {
             "id": 30,
             "areaLevel": 5,
-            "name": "AIMS for Child Health, Vijayawada",
+            "name": "NRI Academy of Sciences, Mangalagiri",
             "parentAreaId": 8
         },
         {
             "id": 31,
             "areaLevel": 5,
-            "name": "Government District Hospital Machilipatnam",
+            "name": "Sri Ramachandra Childrens Hospital",
             "parentAreaId": 8
         },
         {
             "id": 32,
             "areaLevel": 5,
-            "name": "Pinnamanneni Institute of Medical Sciences, Gannavaram",
-            "parentAreaId": 8
+            "name": "District Hospital, Proddatur",
+            "parentAreaId": 9
         },
         {
             "id": 33,
             "areaLevel": 5,
-            "name": "Siddartha Medical College, Vijayawada",
-            "parentAreaId": 8
+            "name": "RIMS, Kadapa",
+            "parentAreaId": 9
         },
         {
             "id": 34,
             "areaLevel": 5,
-            "name": "Area Hospital, Srisailam (T)",
-            "parentAreaId": 9
+            "name": "AIMS for Child Health, Vijayawada",
+            "parentAreaId": 10
         },
         {
             "id": 35,
             "areaLevel": 5,
-            "name": "Government District Hospital Nandyal",
-            "parentAreaId": 9
+            "name": "Government District Hospital Machilipatnam",
+            "parentAreaId": 10
         },
         {
             "id": 36,
             "areaLevel": 5,
-            "name": "Government General Hospital Kurnool",
-            "parentAreaId": 9
+            "name": "Pinnamanneni Institute of Medical Sciences, Gannavaram",
+            "parentAreaId": 10
         },
         {
             "id": 37,
             "areaLevel": 5,
-            "name": "GVR Children Hospital",
-            "parentAreaId": 9
+            "name": "Siddartha Medical College, Vijayawada",
+            "parentAreaId": 10
         },
         {
             "id": 38,
             "areaLevel": 5,
-            "name": "Government General Hospital, Nellore",
-            "parentAreaId": 10
+            "name": "Area Hospital, Srisailam (T)",
+            "parentAreaId": 11
         },
         {
             "id": 39,
             "areaLevel": 5,
-            "name": "Krishna Institute of Medical Sciences",
-            "parentAreaId": 10
+            "name": "Government District Hospital Nandyal",
+            "parentAreaId": 11
         },
         {
             "id": 40,
             "areaLevel": 5,
-            "name": "Narayan Medical College",
-            "parentAreaId": 10
+            "name": "Government General Hospital Kurnool",
+            "parentAreaId": 11
         },
         {
             "id": 41,
             "areaLevel": 5,
-            "name": "RICH Hospital",
-            "parentAreaId": 10
+            "name": "GVR Children Hospital",
+            "parentAreaId": 11
         },
         {
             "id": 42,
             "areaLevel": 5,
-            "name": "St. Joseph s General Hospital",
-            "parentAreaId": 10
+            "name": "Government General Hospital, Nellore",
+            "parentAreaId": 12
         },
         {
             "id": 43,
             "areaLevel": 5,
-            "name": "Chandamama Children s hospital, Ongole",
-            "parentAreaId": 11
+            "name": "Krishna Institute of Medical Sciences",
+            "parentAreaId": 12
         },
         {
             "id": 44,
             "areaLevel": 5,
-            "name": "RIMS, Ongole",
-            "parentAreaId": 11
+            "name": "Narayan Medical College",
+            "parentAreaId": 12
         },
         {
             "id": 45,
             "areaLevel": 5,
-            "name": "Sai Veena Childrens Hospital, Ongole",
-            "parentAreaId": 11
+            "name": "RICH Hospital",
+            "parentAreaId": 12
         },
         {
             "id": 46,
             "areaLevel": 5,
-            "name": "Rajiv Gandhi Institute of Medical Sciences, Srikakulum",
+            "name": "St. Joseph s General Hospital",
             "parentAreaId": 12
         },
         {
             "id": 47,
             "areaLevel": 5,
-            "name": "Area Hospital, Chinthapally (T)",
+            "name": "Chandamama Children s hospital, Ongole",
             "parentAreaId": 13
         },
         {
             "id": 48,
             "areaLevel": 5,
-            "name": "Area Hospital, Paderu (T)",
+            "name": "RIMS, Ongole",
             "parentAreaId": 13
         },
         {
             "id": 49,
             "areaLevel": 5,
-            "name": "Icon Krisis Hospital Private Limited",
+            "name": "Sai Veena Childrens Hospital, Ongole",
             "parentAreaId": 13
         },
         {
             "id": 50,
             "areaLevel": 5,
-            "name": "King George Hospital",
-            "parentAreaId": 13
+            "name": "Rajiv Gandhi Institute of Medical Sciences, Srikakulum",
+            "parentAreaId": 14
         },
         {
             "id": 51,
             "areaLevel": 5,
-            "name": "Mycure Manipal Hospital",
-            "parentAreaId": 13
+            "name": "Area Hospital, Chinthapally (T)",
+            "parentAreaId": 15
         },
         {
             "id": 52,
             "areaLevel": 5,
-            "name": "Victoria Meternity Hospital",
-            "parentAreaId": 13
+            "name": "Area Hospital, Paderu (T)",
+            "parentAreaId": 15
         },
         {
             "id": 53,
             "areaLevel": 5,
-            "name": "Andhra Hospital",
-            "parentAreaId": 14
+            "name": "Icon Krisis Hospital Private Limited",
+            "parentAreaId": 15
         },
         {
             "id": 54,
             "areaLevel": 5,
-            "name": "Area Hospital, Parvathipuram (T)",
-            "parentAreaId": 14
+            "name": "King George Hospital",
+            "parentAreaId": 15
         },
         {
             "id": 55,
             "areaLevel": 5,
-            "name": "Maharaja Institute of Medical Sciences, Nellimarla",
-            "parentAreaId": 14
+            "name": "Mycure Manipal Hospital",
+            "parentAreaId": 15
         },
         {
             "id": 56,
             "areaLevel": 5,
-            "name": "Mother and child hospital",
-            "parentAreaId": 14
+            "name": "Victoria Meternity Hospital",
+            "parentAreaId": 15
         },
         {
             "id": 57,
             "areaLevel": 5,
-            "name": "Venkata Padma Hospital",
-            "parentAreaId": 14
+            "name": "Andhra Hospital",
+            "parentAreaId": 16
         },
         {
             "id": 58,
             "areaLevel": 5,
-            "name": "Alluri Sitaram Raju Academy of Medical Sciences, Eluru",
-            "parentAreaId": 15
+            "name": "Area Hospital, Parvathipuram (T)",
+            "parentAreaId": 16
         },
         {
             "id": 59,
             "areaLevel": 5,
-            "name": "Apple Hospital, Tanuku",
-            "parentAreaId": 15
+            "name": "Maharaja Institute of Medical Sciences, Nellimarla",
+            "parentAreaId": 16
         },
         {
             "id": 60,
             "areaLevel": 5,
+            "name": "Mother and child hospital",
+            "parentAreaId": 16
+        },
+        {
+            "id": 61,
+            "areaLevel": 5,
+            "name": "Venkata Padma Hospital",
+            "parentAreaId": 16
+        },
+        {
+            "id": 62,
+            "areaLevel": 5,
+            "name": "Alluri Sitaram Raju Academy of Medical Sciences, Eluru",
+            "parentAreaId": 17
+        },
+        {
+            "id": 63,
+            "areaLevel": 5,
+            "name": "Apple Hospital, Tanuku",
+            "parentAreaId": 17
+        },
+        {
+            "id": 64,
+            "areaLevel": 5,
             "name": "District Hospital, Eluru",
-            "parentAreaId": 15
+            "parentAreaId": 17
+        },
+        {
+            "id": 65,
+            "areaLevel": 5,
+            "name": "King Edward Memorial Hospital",
+            "parentAreaId": 18
+        },
+        {
+            "id": 66,
+            "areaLevel": 5,
+            "name": "Rainbow Hospital",
+            "parentAreaId": 19
         }
     ]
 }
