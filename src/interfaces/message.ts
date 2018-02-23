@@ -38,6 +38,7 @@ interface IMessage{
     saveSuccessfull: string;
     info: string;
     warning: string;
+    deletePatient: string;
     duplicateTime: string;
     enterDateOfFeed: string;
     enterTimeOfFeed: string;

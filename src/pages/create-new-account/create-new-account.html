@@ -8,11 +8,12 @@
 
 
 <ion-content padding>
+  <p class="text-color">All * fields are mandatory</p>
   <form [formGroup]="userForm">
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>First Name</ion-label>
-        <ion-input type="text" formControlName="first_name"></ion-input>
+        <ion-label color="black" stacked>First Name<span class="text-color"> *</span></ion-label>
+        <ion-input type="text" (keypress)="omit_special_char($event)" formControlName="first_name"></ion-input>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.first_name.invalid  && (userForm.controls.first_name.dirty || userForm.controls.first_name.touched)">
         Please enter First Name
@@ -20,8 +21,8 @@
     </div>
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>Last Name</ion-label>
-        <ion-input type="text" formControlName="last_name"></ion-input>
+        <ion-label color="black" stacked>Last Name<span class="text-color"> *</span></ion-label>
+        <ion-input type="text" (keypress)="omit_special_char($event)" formControlName="last_name"></ion-input>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.last_name.invalid  && (userForm.controls.last_name.dirty || userForm.controls.last_name.touched)">
         Please enter Last Name
@@ -29,7 +30,7 @@
     </div>
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>Email</ion-label>
+        <ion-label color="black" stacked>Email<span class="text-color"> *</span></ion-label>
         <ion-input type="email" value="" formControlName="email"></ion-input>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.email.invalid  && (userForm.controls.email.dirty || userForm.controls.email.touched)">
@@ -39,7 +40,7 @@
 
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>Country</ion-label>
+        <ion-label color="black" stacked>Country<span class="text-color"> *</span></ion-label>
         <ion-select formControlName="country" (ionChange)="countrySelected($event)">
           <ion-option *ngFor="let country of countries" [value]="country">{{country.name}}</ion-option>
         </ion-select>
@@ -51,7 +52,7 @@
 
     <div class="form-group">
       <ion-item (click)="onClickState()">
-        <ion-label color="black" stacked>State</ion-label>
+        <ion-label color="black" stacked>State<span class="text-color"> *</span></ion-label>
         <ion-select [disabled]="countryStatus" formControlName="state" (ionChange)="stateSelected($event)">
           <ion-option *ngFor="let state of states" [value]="state">{{state.name}}</ion-option>
         </ion-select>
@@ -63,7 +64,7 @@
 
     <div class="form-group">
       <ion-item (click)="onClickDistrict()">
-        <ion-label color="black" stacked>District</ion-label>
+        <ion-label color="black" stacked>District<span class="text-color"> *</span></ion-label>
         <ion-select [disabled]="districtStatus" formControlName="district" (ionChange)="districtSelected($event)">
           <ion-option *ngFor="let district of districts" [value]="district">{{district.name}}</ion-option>
         </ion-select>
@@ -75,7 +76,7 @@
 
     <div class="form-group">
       <ion-item (click)="onClickInstitution()">
-        <ion-label color="black" stacked>Institution</ion-label>
+        <ion-label color="black" stacked>Institution<span class="text-color"> *</span></ion-label>
         <ion-select [disabled]="institutionStatus" formControlName="institution" (ionChange)="instituteSelected($event)">
           <ion-option *ngFor="let institute of institutes" [value]="institute">{{institute.name}}</ion-option>
         </ion-select>

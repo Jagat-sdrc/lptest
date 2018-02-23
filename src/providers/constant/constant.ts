@@ -138,6 +138,7 @@ export class ConstantProvider {
     saveSuccessfull: 'Save Successfully',
     info: 'Info',
     warning: 'Warning',
+    deletePatient: 'Do you want to delete the selected Patient record?',
     duplicateTime: 'Duplicate time',
     enterDateOfFeed: 'Please enter date of feed',
     enterTimeOfFeed :'Please enter time of feed',

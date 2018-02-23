@@ -54,6 +54,7 @@ export class AddPatientPage implements OnInit{
   paramToExpressionPage: IParamToExpresssionPage;
   forEdit: boolean;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
+  babyIdPattern: RegExp = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
@@ -211,9 +212,9 @@ export class AddPatientPage implements OnInit{
 
     this.patientForm = new FormGroup({
       baby_id: new FormControl(''),
-      hospital_baby_id: new FormControl(''),
+      hospital_baby_id: new FormControl('',Validators.pattern(this.babyIdPattern)),
       mother_name: new FormControl('', [Validators.required, Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
-      mother_age: new FormControl('', [Validators.required, Validators.min(15), Validators.max(49)]),
+      mother_age: new FormControl('', [Validators.required]),
       delivery_date: new FormControl('', [Validators.required]),
       delivery_time: new FormControl('', [Validators.required]),
       delivery_method: new FormControl('', [Validators.required]),
@@ -226,6 +227,7 @@ export class AddPatientPage implements OnInit{
       admission_date: new FormControl('', [Validators.required]),
       baby_admitted: new FormControl('', [Validators.required]),
       nicu_admission: new FormControl('', [Validators.required]),
+      discharge_date: new FormControl(''),
       });
     }
 
@@ -348,7 +350,7 @@ export class AddPatientPage implements OnInit{
           babyCodeHospital: this.patientForm.controls.hospital_baby_id.value,
           babyOf: this.patientForm.controls.mother_name.value,
           mothersAge: parseInt(this.patientForm.controls.mother_age.value),
-          deliveryDate: deliveryDate,
+          deliveryDate: this.patientForm.controls.delivery_date.value,
           deliveryTime: this.patientForm.controls.delivery_time.value,
           deliveryMethod: this.patientForm.controls.delivery_method.value.id,
           babyWeight: parseFloat(this.patientForm.controls.baby_weight.value),
@@ -360,6 +362,7 @@ export class AddPatientPage implements OnInit{
           admissionDateForOutdoorPatients: admissionDateOfOutdoorPatient,
           babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
           nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
+          dischargeDate: this.patientForm.controls.discharge_date.value.id,
           isSynced: false,
           syncFailureMessage: null,
           userId: this.userService.getUser().email
@@ -401,10 +404,10 @@ export class AddPatientPage implements OnInit{
       }
       this.patientForm = new FormGroup({
         baby_id: new FormControl(this.patient.babyCode),
-        hospital_baby_id: new FormControl(this.patient.babyCodeHospital),
-        mother_name: new FormControl(this.patient.babyOf, [Validators.required]),
-        mother_age: new FormControl(this.patient.mothersAge, [Validators.required,Validators.minLength(2),Validators.maxLength(2)]),
-        delivery_date: new FormControl(deliveryDate, [Validators.required]),
+        hospital_baby_id: new FormControl(this.patient.babyCodeHospital,Validators.pattern(this.babyIdPattern)),
+        mother_name: new FormControl(this.patient.babyOf, [Validators.required,Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
+        mother_age: new FormControl(this.patient.mothersAge, [Validators.required]),
+        delivery_date: new FormControl(this.patient.deliveryDate,[Validators.required]),
         delivery_time: new FormControl(this.patient.deliveryTime, [Validators.required]),
         delivery_method: new FormControl(this.deliveryMethods.filter(d=>(d.id===this.patient.deliveryMethod))[0], [Validators.required]),
         baby_weight: new FormControl(this.patient.babyWeight, [Validators.required]),
@@ -416,18 +419,32 @@ export class AddPatientPage implements OnInit{
         admission_date: new FormControl(admissionDateForOutdoorPatients == null?null: admissionDateForOutdoorPatients, [Validators.required]),
         baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0], [Validators.required]),
         nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0], [Validators.required]),
+        discharge_date: new FormControl(this.patient.dischargeDate),
       });
       this.outpatientAdmission();
     }
 
-    datePickerDialog(){
+    datePickerDialog(type: string){
         this.datePicker.show({
         date: new Date(),
         maxDate: new Date(),
+        allowFutureDates: false,
         mode: 'date',
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
       }).then(
-        date => console.log('Got date: ', date),
+        date => {
+          switch(type){
+            case "delivery":
+              this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
+            break;
+            case "addmission":
+              this.patientForm.controls.admission_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
+            break;
+            case "discharge":
+              this.patientForm.controls.discharge_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
+            break;
+          }
+        },
         err => console.log('Error occurred while getting date: ', err)
       );
     }
@@ -438,9 +455,24 @@ export class AddPatientPage implements OnInit{
       mode: 'time',
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(
-      time => console.log('Got time: ', time),
+      time => {
+        this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
+      },
       err => console.log('Error occurred while getting time: ', err)
-    );
-  }
+      );
+    }
+
+    /**
+     * This method is used to restrict the special character in the input field
+     * 
+     * @author Jagat Bandhu
+     * @since 0.0.1
+     * @param event 
+     */
+    omit_special_char(event){   
+      var k;  
+      k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+      return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+    }
 
 }

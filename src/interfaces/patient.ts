@@ -20,6 +20,7 @@ interface IPatient{
     admissionDateForOutdoorPatients: string;
     babyAdmittedTo: number;
     nicuAdmissionReason: number;
+    dischargeDate: string;
     isSynced: boolean;
     syncFailureMessage: string;
     userId: string;

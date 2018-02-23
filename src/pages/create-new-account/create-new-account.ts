@@ -204,9 +204,6 @@ export class CreateNewAccountPage {
     this.institutionStatus = false;
   }
 
-
-
-
   /**
    * This method is going to get executed when institution is selected
    * @author Ratikanta
@@ -216,6 +213,19 @@ export class CreateNewAccountPage {
    */
   instituteSelected(institution: IArea) {
     this.user.institution = institution.id;
+  }
+  
+  /**
+   * This method is used to restrict the special character in the input field
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   * @param event 
+   */
+  omit_special_char(event){   
+    var k;  
+    k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+    return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
   }
 
 }
