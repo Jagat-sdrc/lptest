@@ -152,12 +152,17 @@ export class ExpressionTimeFormPage {
  * @memberof ExpressionTimeFormPage
  */
   newExpression(){
-    // let day = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[0])
-    // let month = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[1])
-    // let year = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[2])
-    this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions, this.dataForBFEntryPage.babyCode, 
-    new Date());
-    this.isGroupShown(this.bFExpressions[0]);
+    let date:Date = null;
+    if(this.dataForBFEntryPage.selectedDate !== null) {
+      let day = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[0]);
+      let month = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[1]);
+      let year = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[2]);
+      date = new Date(year, month, day);
+    }
+
+    this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions,
+      this.dataForBFEntryPage.babyCode, date);
+    setTimeout(d => this.toggleGroup(this.bFExpressions[0], 0),200);
   }
 
   /**
@@ -224,8 +229,8 @@ export class ExpressionTimeFormPage {
       this.dataForBFEntryPage.selectedDate, this.dataForBFEntryPage.isNewExpression)
     .then(data => {
       this.bFExpressions = data;
-      if(this.bFExpressions.length > 0){
-        this.isGroupShown(this.bFExpressions[0]);
+      if(this.bFExpressions.length === 0){
+        this.newExpression();
       }
     })
     .catch(err => {

@@ -137,7 +137,8 @@ export class ConstantProvider {
     institutionAlert: 'Please select the district before selecting insitution',
     saveSuccessfull: 'Save Successfully',
     info: 'Info',
-    warning: 'Warning'
+    warning: 'Warning',
+    duplicateTime: 'Duplicate time' 
   };
   
 /**
