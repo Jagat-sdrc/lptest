@@ -38,4 +38,5 @@ interface IMessage{
     saveSuccessfull: string;
     info: string;
     warning: string;
+    deletePatient: string;
 }

@@ -66,23 +66,6 @@ export class RegisteredPatientPage {
     this.findAllPatients();
   }
 
-  /**
-   * This method is going to help us deleting the given patient
-   * @param babyCode The baby code of the patient to which we are going to delete
-   */
-  deletePatient(babyCode: string){
-    
-    this.registeredPatientService.deletePatient(babyCode)
-    .then(data=>{
-      this.findAllPatients();
-      this.messageService.showSuccessToast("Deleted successfully");
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast("Could not delete patient, error:" + err)
-    })
-    
-  }
-
   /** 
    * This method will sort the data based on the sort by type.
    * 
@@ -177,5 +160,26 @@ export class RegisteredPatientPage {
   */
   onSearchInput(){
     this.searching = true;
+  }
+
+   /**
+   * This method is going to help us deleting the given patient
+   * @param babyCode The baby code of the patient to which we are going to delete
+   */
+  deletePatient(babyCode: string){
+    console.log("Delete");
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deletePatient).
+    then((data)=>{
+      if(data){
+        this.registeredPatientService.deletePatient(babyCode)
+        .then(data=>{
+          this.findAllPatients();
+          this.messageService.showSuccessToast("Deleted successfully");
+        })
+        .catch(err=>{
+          this.messageService.showErrorToast("Could not delete patient, error:" + err)
+        })
+      }
+    })
   }
 }
