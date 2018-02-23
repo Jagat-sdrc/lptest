@@ -138,7 +138,17 @@ export class ConstantProvider {
     saveSuccessfull: 'Save Successfully',
     info: 'Info',
     warning: 'Warning',
-    duplicateTime: 'Duplicate time' 
+    duplicateTime: 'Duplicate time',
+    enterDateOfFeed: 'Please enter date of feed',
+    enterTimeOfFeed :'Please enter time of feed',
+    methodOfFeed: 'Please enter method of feed',
+    ommVolumne: 'Please enter omm volume',
+    dhmVolume: 'Please enter dhm volume',
+    formulaVolume: 'Please enter formula volume',
+    animalMilkVolume: 'Please enter animal milk voulme',
+    otherVolume: 'Please enter other voulme',
+    locationWhereFeedOccured: 'Please enter location where feed occured',
+    babyWeight: 'Please enter weight of the baby',
   };
   
 /**
