@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common';
 })
 export class FeedDateListPage {
 
-  feedDateListData: string[];
+  feedDateListData: string[] = [];
   babyCode:string;
   params: Object;
   paramToExpressionPage: IParamToExpresssionPage;

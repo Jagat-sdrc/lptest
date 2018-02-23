@@ -20,7 +20,8 @@ export class BFExpressionDateListPage {
   babyCode: any;
   form: any;
   items: any;
-  expBfDateListData: string[];
+  expBfDateListData: string[] = [];
+  
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private datePipe: DatePipe,

@@ -51,4 +51,6 @@ interface IMessage{
     locationWhereFeedOccured: string;
     babyWeight: string;
     emailIdExists: string;
+    dateOfBfpd: string;
+    bfStatusPd: string;
 }

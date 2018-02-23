@@ -17,9 +17,11 @@
       <ion-col md-6 text-right>
         <div class="form-group">{{date}}</div>
       </ion-col>
-     
     </ion-row>
   </ion-card>
+
+  <h4 class="noRecords" *ngIf="expBfDateListData.length === 0">No record found</h4>
+
   <ion-footer>
     <button ion-button block (click)="newExpression()">New Expression</button>
     </ion-footer>

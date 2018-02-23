@@ -32,7 +32,6 @@ export class BfSupportivePracticePage {
   onlyNumberRegex: RegExp = /^[0-9]*$/;
   shownGroup: any;
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider,
     public formBuilder: FormBuilder, private datePipe: DatePipe,
@@ -104,6 +103,7 @@ export class BfSupportivePracticePage {
   };
 
   save(bfsp: IBFSP){
+    debugger;
     if(bfsp.dateOfBFSP === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
     }else if(bfsp.timeOfBFSP === null){
@@ -112,7 +112,8 @@ export class BfSupportivePracticePage {
       this.messageService.showErrorToast(ConstantProvider.messages.supportivePracticeBfsp);
     }else if(bfsp.personWhoPerformedBFSP === null){
       this.messageService.showErrorToast(ConstantProvider.messages.personWhoPerformedBfsp);
-    }else if(bfsp.bfspDuration === null) {
+    }else if(bfsp.bfspDuration === undefined || bfsp.bfspDuration === null || 
+      bfsp.bfspDuration.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.durationOfBfsp);
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp)
@@ -169,6 +170,19 @@ export class BfSupportivePracticePage {
     .catch(err=>{
       this.messageService.showErrorToast(err)
     })
+  }
+
+  /**
+   * This function will be used to check the validation for bfspPerformed question, accordingly the next
+   * field is disabled or enabled.
+   * @author - Naseem Akhtar
+   * @param bfsp - the object in the front-end for which the user is entering the data
+   * @since - 0.0.1
+   */
+  setPersonWhoPerformed(bfsp: IBFSP){
+    if(bfsp.bfspPerformed === 41){
+      bfsp.personWhoPerformedBFSP = 43;
+    }
   }
 
 }
