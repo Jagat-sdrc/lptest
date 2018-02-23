@@ -70,7 +70,9 @@ export class CreateNewAccountPage {
     this.newAccountServiceProvider.getAllAreas()
       .subscribe(data => {
         this.areas = data
+        console.log(this.areas);
         this.countries = this.areas.filter(d => d.areaLevel === ConstantProvider.areaLevels.country)
+        console.log(this.countries)
       }, err => {
         this.messageService.showErrorToast(err)
       });
