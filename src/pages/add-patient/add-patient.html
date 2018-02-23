@@ -57,7 +57,7 @@
       <ion-item>
         <ion-label color="black" stacked>Delivery date</ion-label>
         <ion-input formControlName="delivery_date" [disabled]="true"></ion-input>
-        <ion-icon padding-top name="calendar" (click)="datePickerDialog('delivery')" item-right></ion-icon>
+        <ion-icon padding-top name="calendar" (click)="datePickerDialog('deliveryDate')" item-right></ion-icon>
       </ion-item>
       <p class="error" *ngIf="patientForm.controls.delivery_date.invalid  && (patientForm.controls.delivery_date.dirty || patientForm.controls.delivery_date.touched) && resetStatus">
         Please enter the delivery date
@@ -149,7 +149,7 @@
       <ion-item>
         <ion-label color="black" stacked>Admission date (Outborn patients)</ion-label>
         <ion-input formControlName="admission_date" [disabled]="true"></ion-input>
-        <ion-icon name="calendar" (click)="datePickerDialog('addmission')" item-right></ion-icon>
+        <ion-icon name="calendar" (click)="datePickerDialog('addmissionDate')" item-right></ion-icon>
       </ion-item>
       <p class="error" *ngIf="patientForm.controls.admission_date.invalid  && (patientForm.controls.admission_date.dirty || patientForm.controls.admission_date.touched) && resetStatus">
         Please enter Admission date (Outborn patients)
@@ -181,7 +181,7 @@
       <ion-item>
         <ion-label color="black" stacked>Discharge date</ion-label>
         <ion-input formControlName="discharge_date" [disabled]="true"></ion-input>
-        <ion-icon padding-top name="calendar" (click)="datePickerDialog('discharge')" item-right></ion-icon>
+        <ion-icon padding-top name="calendar" (click)="datePickerDialog('dischargeDate')" item-right></ion-icon>
       </ion-item>
       <p class="error" *ngIf="patientForm.controls.discharge_date.invalid  && (patientForm.controls.discharge_date.dirty || patientForm.controls.discharge_date.touched) && resetStatus">
         Please enter the delivery date

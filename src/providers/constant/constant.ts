@@ -81,14 +81,22 @@ export class ConstantProvider {
     deliveryTime: "deliveryTime",
     weight: "weight",
     inbornPatient: "inbornPatient",
-    outbornPatient: "outbornPatient"
+    outbornPatient: "outbornPatient",
+    vaginal: "vaginal",
+    csection: "csection",
+    other: "other",
+    unknown: "unknown",
   } 
 
   static passwordFormat = "@123#!"
 
   static typeDetailsIds = {
     inbornPatient: 12,
-    outbornPatient: 13
+    outbornPatient: 13,
+    vaginal: 1,
+    csection: 2,
+    other: 3,
+    unknown: 4,
   }
 
   /**
@@ -150,6 +158,7 @@ export class ConstantProvider {
     otherVolume: 'Please enter other voulme',
     locationWhereFeedOccured: 'Please enter location where feed occured',
     babyWeight: 'Please enter weight of the baby',
+    emailIdExists: 'Email id exists!'
   };
   
 /**
@@ -166,8 +175,16 @@ static areaLevels: IAreaLevel ={
     district: 3,
     institute: 5
   }
+
+  static datePickerType: IDatePickerType = {
+    deliveryDate: "deliveryDate",
+    dischargeDate: "dischargeDate",
+    addmissionDate: "addmissionDate"
+  }
   
   constructor(public http: HttpClient) {
   }
+
+
 
 }

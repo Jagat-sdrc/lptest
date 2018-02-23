@@ -78,6 +78,41 @@ export class SortPatientPipe implements PipeTransform {
           } 
         });
         break;
+        case ConstantProvider.patientSortBy.vaginal:
+        patients.sort((a: IPatient, b: IPatient) => {
+          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.vaginal) {
+            return -1;
+          } else {
+            return 1;
+          } 
+        });
+        break;
+        case ConstantProvider.patientSortBy.csection:
+        patients.sort((a: IPatient, b: IPatient) => {
+          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.csection) {
+            return -1;
+          } else {
+            return 1;
+          } 
+        });
+        break;
+        case ConstantProvider.patientSortBy.other:
+        patients.sort((a: IPatient, b: IPatient) => {
+          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.other) {
+            return -1;
+          } else {
+            return 1;
+          } 
+        });
+        case ConstantProvider.patientSortBy.unknown:
+        patients.sort((a: IPatient, b: IPatient) => {
+          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.unknown) {
+            return -1;
+          } else {
+            return 1;
+          } 
+        });
+        break;
       }
       return patients;
     }

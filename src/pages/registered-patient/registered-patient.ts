@@ -1,6 +1,6 @@
 import { RegisteredPatientServiceProvider } from './../../providers/registered-patient-service/registered-patient-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, MenuController } from 'ionic-angular';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import { ConstantProvider } from '../../providers/constant/constant';
@@ -22,11 +22,19 @@ export class RegisteredPatientPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
-    private messageService: MessageProvider) {    
+    private messageService: MessageProvider, private menuCtrl: MenuController) {    
   }
 
   ionViewWillEnter(){
     this.findAllPatients();
+  }
+
+  ionViewDidEnter() {
+    this.menuCtrl.swipeEnable(false);
+  }
+
+  ionViewWillLeave() {
+    this.menuCtrl.swipeEnable(true);
   }
 
   ngOnInit(){
@@ -101,6 +109,26 @@ export class RegisteredPatientPage {
       label: 'Outborn Patient',
       value: 'Outborn Patient'
     });
+    alert.addInput({
+      type: 'radio',
+      label: 'Vaginal',
+      value: 'Vaginal'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'C-section',
+      value: 'C-section'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Other',
+      value: 'Other'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Unknown',
+      value: 'Unknown'
+    });
 
     alert.addButton('Cancel');
     alert.addButton({
@@ -121,6 +149,19 @@ export class RegisteredPatientPage {
              break;
              case "Outborn Patient":
              this.sortBy = ConstantProvider.patientSortBy.outbornPatient
+             break;
+
+             case "Vaginal":
+             this.sortBy = ConstantProvider.patientSortBy.vaginal
+             break;
+             case "C-section":
+             this.sortBy = ConstantProvider.patientSortBy.csection
+             break;
+             case "Other":
+             this.sortBy = ConstantProvider.patientSortBy.other
+             break;
+             case "Unknown":
+             this.sortBy = ConstantProvider.patientSortBy.unknown
              break;
            }
       }

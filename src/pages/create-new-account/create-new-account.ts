@@ -4,7 +4,8 @@ import {
 import {
   IonicPage,
   NavController,
-  NavParams
+  NavParams,
+  MenuController
 } from 'ionic-angular';
 import {
   FormControl,
@@ -61,13 +62,21 @@ export class CreateNewAccountPage {
   countryStatus: boolean = true;
   districtStatus: boolean = true;
   institutionStatus: boolean = true;
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    private messageService: MessageProvider, public newAccountServiceProvider: NewAccountServiceProvider) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams,public menuCtrl: MenuController,
+    private messageService: MessageProvider, public createNewAccountService: NewAccountServiceProvider) {}
 
+
+  ionViewDidEnter() {
+    this.menuCtrl.swipeEnable(false);
+  }
+
+  ionViewWillLeave() {
+    this.menuCtrl.swipeEnable(true);
+  }
+  
   ngOnInit() {
-
     //Getting all areas
-    this.newAccountServiceProvider.getAllAreas()
+    this.createNewAccountService.getAllAreas()
       .subscribe(data => {
         this.areas = data
         this.countries = this.areas.filter(d => d.areaLevel === ConstantProvider.areaLevels.country)
@@ -150,7 +159,7 @@ export class CreateNewAccountPage {
         syncFailureMessage: null
       }
 
-      this.newAccountServiceProvider.saveNewUser(this.user)
+      this.createNewAccountService.saveNewUser(this.user)
         .then(data => {
           this.messageService.showOkAlert(ConstantProvider.messages.saveSuccessfull,ConstantProvider.messages.forgotPasswordMessage)
           .then(()=>{
@@ -224,6 +233,22 @@ export class CreateNewAccountPage {
     var k;  
     k = event.charCode;  //         k = event.keyCode;  (Both can be used)
     return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+  }
+
+  /**
+   * This method is used to find the duplicate email id.
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  validateEmailId(){
+    this.createNewAccountService.validateEmailId(this.userForm.controls.email.value)
+    .then((data)=>{
+      if(!data){
+        this.userForm.controls.email.setValue(null);
+        this.messageService.showErrorToast(ConstantProvider.messages.emailIdExists)
+      }
+    })
   }
 
 }

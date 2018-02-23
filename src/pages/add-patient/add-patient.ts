@@ -1,6 +1,6 @@
 import { ConstantProvider } from './../../providers/constant/constant';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { MessageProvider } from '../../providers/message/message';
@@ -55,11 +55,12 @@ export class AddPatientPage implements OnInit{
   forEdit: boolean;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   babyIdPattern: RegExp = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
+  hasError: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,private datePicker: DatePicker,
-  private userService: UserServiceProvider) {
+  private userService: UserServiceProvider, private menuCtrl: MenuController) {
     
   }
 
@@ -109,6 +110,7 @@ export class AddPatientPage implements OnInit{
   }
   
   ionViewDidEnter(){
+    this.menuCtrl.swipeEnable(false);
     if(!(this.navParams.get('babyCode') == undefined)){
       this.forEdit = true;
       this.autoBabyId = this.patient.babyCode;
@@ -119,6 +121,11 @@ export class AddPatientPage implements OnInit{
       this.patientForm.controls.baby_id.setValue(this.autoBabyId);
     }
   }
+
+  ionViewWillLeave() {
+    this.menuCtrl.swipeEnable(true);
+  }
+
  /**
   * This method call up the initial load of add patient page.
    * date will be initialize
@@ -270,38 +277,56 @@ export class AddPatientPage implements OnInit{
      }
 
      validateMotherAge(){
-      if (this.patientForm.controls.mother_age.value < 15 ||
-        this.patientForm.controls.mother_age.value > 49) {
-       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.motherAge)
-       .then((data)=>{
-         if(!data){
-           this.patientForm.controls.mother_age.setValue(null);
-         }
-       })
-      }
-     }
-
-     validateBabyWeight() {
-       if (this.patientForm.controls.baby_weight.value < 500 ||
-         this.patientForm.controls.baby_weight.value > 4000) {
-        this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
-        .then((data)=>{
-          if(!data){
-            this.patientForm.controls.baby_weight.setValue(null);
+       if(!this.hasError){
+        if (this.patientForm.controls.mother_age.value != ""){
+          if (this.patientForm.controls.mother_age.value < 15 ||
+            this.patientForm.controls.mother_age.value > 49) {
+            this.hasError = true;
+           this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.motherAge)
+           .then((data)=>{
+             if(!data){
+               this.patientForm.controls.mother_age.setValue(null);
+             }
+             this.hasError = false;
+           })
           }
-        })
+        }
        }
      }
 
+     validateBabyWeight() {
+      if(!this.hasError){
+        if(this.patientForm.controls.baby_weight.value != ""){
+          if (this.patientForm.controls.baby_weight.value < 500 ||
+            this.patientForm.controls.baby_weight.value > 4000) {
+              this.hasError = true;
+           this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
+           .then((data)=>{
+             if(!data){
+               this.patientForm.controls.baby_weight.setValue(null);
+             }
+             this.hasError = false;
+           })
+          }
+         } 
+        }
+      }
+
      validateGestational() {
-      if (this.patientForm.controls.gestational_age.value < 28 ||
-        this.patientForm.controls.gestational_age.value > 32) {
-       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyGestational)
-       .then((data)=>{
-         if(!data){
-           this.patientForm.controls.gestational_age.setValue(null);
-         }
-       })
+      if(!this.hasError){
+        if (this.patientForm.controls.gestational_age.value != ""){
+          if (this.patientForm.controls.gestational_age.value < 28 ||
+            this.patientForm.controls.gestational_age.value > 32) {
+              this.hasError = true;
+           this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyGestational)
+           .then((data)=>{
+             if(!data){
+               this.patientForm.controls.gestational_age.setValue(null);
+             }
+             this.hasError = false;
+           })
+          }
+        }
       }
     }
 
@@ -362,7 +387,7 @@ export class AddPatientPage implements OnInit{
           admissionDateForOutdoorPatients: admissionDateOfOutdoorPatient,
           babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
           nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
-          dischargeDate: this.patientForm.controls.discharge_date.value.id,
+          dischargeDate: this.patientForm.controls.discharge_date.value,
           isSynced: false,
           syncFailureMessage: null,
           userId: this.userService.getUser().email
@@ -393,8 +418,6 @@ export class AddPatientPage implements OnInit{
       let month = parseInt(this.patient.deliveryDate.split('-')[1]);
       let year = parseInt(this.patient.deliveryDate.split('-')[2]);
 
-
-      let deliveryDate: string = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
       let admissionDateForOutdoorPatients: string= null;
       if(this.patient.admissionDateForOutdoorPatients != null){
         day = parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[0]);
@@ -434,13 +457,13 @@ export class AddPatientPage implements OnInit{
       }).then(
         date => {
           switch(type){
-            case "delivery":
+            case ConstantProvider.datePickerType.deliveryDate:
               this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
             break;
-            case "addmission":
+            case ConstantProvider.datePickerType.addmissionDate:
               this.patientForm.controls.admission_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
             break;
-            case "discharge":
+            case ConstantProvider.datePickerType.dischargeDate:
               this.patientForm.controls.discharge_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
             break;
           }

@@ -4,4 +4,8 @@ interface IPatientSortBy {
     weight: string;
     inbornPatient: string;
     outbornPatient: string;
+    vaginal: string;
+    csection: string;
+    other: string;
+    unknown: string;
 }
