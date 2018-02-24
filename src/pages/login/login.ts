@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Events, Platform } from 'ionic-angular';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { MessageProvider } from '../../providers/message/message';
+import { AppVersion } from '@ionic-native/app-version';
 
 
 @IonicPage()
@@ -14,10 +15,22 @@ export class LoginPage {
 
 
   loginData: ILoginData;
+  appVersionNumber: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
   private userService: UserServiceProvider, private alertCtrl: AlertController,
-  private messageService: MessageProvider, private events: Events) {}
+  private messageService: MessageProvider, private events: Events,
+  private appVersion: AppVersion, private platform: Platform) {
+    this.platform.ready().then((readySource) => {
+      if(this.platform.is('android') && this.platform.is('cordova')){
+        this.appVersion.getVersionNumber()
+        .then(data=>{
+          this.appVersionNumber = data
+        })
+      }
+      
+    });
+  }
 
   ngOnInit(){
     this.loginData = {

@@ -73,7 +73,7 @@ export class RegisteredPatientServiceProvider {
     
     if(this.patients != undefined && this.patients != null){
       return this.patients.filter((patient) => {
-        return patient.babyCodeHospital.indexOf(searchTerm) > -1;
+        return patient.babyCode.indexOf(searchTerm) > -1;
       }); 
     }else{
       return this.patients

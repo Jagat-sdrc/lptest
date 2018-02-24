@@ -28,6 +28,7 @@ import { BfspDateListServiceProvider } from '../providers/bfsp-date-list-service
 import { BfPostDischargeMenuServiceProvider } from '../providers/bf-post-discharge-menu-service/bf-post-discharge-menu-service';
 import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-service/bf-post-discharge-service';
 import { BFExpressionDateListProvider } from '../providers/bf-expression-date-list-service/bf-expression-date-list-service';
+import { AppVersion } from '@ionic-native/app-version';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { BFExpressionDateListProvider } from '../providers/bf-expression-date-li
     BfSupportivePracticeServiceProvider,
     BfspDateListServiceProvider,
     BfPostDischargeMenuServiceProvider,
-    BfPostDischargeServiceProvider
+    BfPostDischargeServiceProvider,
+    AppVersion
   ]
 })
 export class AppModule {}
