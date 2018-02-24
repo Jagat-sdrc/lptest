@@ -30,12 +30,12 @@ export class LoginPage {
       }
       
     });
-  }
+  }  
 
   ngOnInit(){
     this.loginData = {
-      // username: 'ratikanta@sdrc.co.in',
-      // password: 'ra@123#!'
+      // username: 'naseem@sdrc.co.in',
+      // password: 'na@123#!'
       username: '',
       password: ''
     }
@@ -65,24 +65,14 @@ export class LoginPage {
   }
 
   forgotPassword(){
-    let confirm = this.alertCtrl.create({
-      enableBackdropDismiss: false,
-      title: 'INFO',
-      message: ConstantProvider.messages.forgotPasswordMessage,
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () => {
-              
-          }
-        }
-      ]
-    });
-    confirm.setCssClass('modalDialog');
-    confirm.present();
+    this.messageService.showOkAlert(ConstantProvider.messages.info,ConstantProvider.messages.forgotPasswordMessage);
   }
 
   signUp(){
+    this.loginData = {
+      username: '',
+      password: ''
+    }
     this.navCtrl.push('CreateNewAccountPage');
   }
   

@@ -7,26 +7,16 @@
 </ion-header> -->
 
 
-<ion-content padding class="Login">
+<ion-content padding>
 
-  
-    
-        <!-- <img height="42" width="42" src="/assets/imgs/icon_svg.svg"/> -->
-    
-<ion-grid>
-  <ion-row>
-    <ion-col col-4></ion-col>
-    <ion-col col-4 class="icon-col-style">
-      <img src="/assets/imgs/icon_svg.svg" class="icon-style">
-    </ion-col>
-    <ion-col col-4></ion-col>
-  </ion-row>
-</ion-grid>   
-  
-    
+  <div class="logodiv">
+    <ion-img class="logo" width="100" height="100" src="assets/imgs/icon_svg.svg"></ion-img>
+  </div>
+
+
 
   <ion-item>
-    <ion-label floating>Username</ion-label>
+    <ion-label floating>Email</ion-label>
     <ion-input type="text" [(ngModel)]="loginData.username"></ion-input>
   </ion-item>
 
@@ -44,4 +34,5 @@
 
   <div text-center>v{{appVersionNumber}}</div>
   
+
 </ion-content>

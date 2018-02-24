@@ -4,7 +4,8 @@ import {
 import {
   IonicPage,
   NavController,
-  NavParams
+  NavParams,
+  MenuController
 } from 'ionic-angular';
 import {
   FormControl,
@@ -58,17 +59,29 @@ export class CreateNewAccountPage {
   states: IArea[];
   districts: IArea[];
   institutes: IArea[];
+  countryStatus: boolean = true;
+  districtStatus: boolean = true;
+  institutionStatus: boolean = true;
+  constructor(public navCtrl: NavController, public navParams: NavParams,public menuCtrl: MenuController,
+    private messageService: MessageProvider, public createNewAccountService: NewAccountServiceProvider) {}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    private messageService: MessageProvider, public newAccountServiceProvider: NewAccountServiceProvider) {}
 
+  ionViewDidEnter() {
+    this.menuCtrl.swipeEnable(false);
+  }
+
+  ionViewWillLeave() {
+    this.menuCtrl.swipeEnable(true);
+  }
+  
   ngOnInit() {
-
     //Getting all areas
-    this.newAccountServiceProvider.getAllAreas()
+    this.createNewAccountService.getAllAreas()
       .subscribe(data => {
         this.areas = data
+        console.log(this.areas);
         this.countries = this.areas.filter(d => d.areaLevel === ConstantProvider.areaLevels.country)
+        console.log(this.countries)
       }, err => {
         this.messageService.showErrorToast(err)
       });
@@ -82,8 +95,42 @@ export class CreateNewAccountPage {
       district: new FormControl('', [Validators.required]),
       institution: new FormControl('', [Validators.required]),
     });
+  }
 
+  /**
+   * This method will show the error message if user will select the state wihtout selecting the country
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  onClickState(){
+    if(this.userForm.controls.country.value == ""){
+      this.messageService.showErrorToast(ConstantProvider.messages.stateAlert);
+    }
+  }
 
+  /**
+   * This method will show the error message if user will select the district wihtout selecting the state
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  onClickDistrict(){
+    if(this.userForm.controls.state.value == ""){
+      this.messageService.showErrorToast(ConstantProvider.messages.districtAlert);
+    }
+  }
+
+  /**
+   * This method will show the error message if user will select the institution wihtout selecting the district
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  onClickInstitution(){
+    if(this.userForm.controls.district.value == ""){
+      this.messageService.showErrorToast(ConstantProvider.messages.institutionAlert);
+    }
   }
 
   /**
@@ -92,7 +139,7 @@ export class CreateNewAccountPage {
    * @author Jagat Bandhu
    * @since 0.0.1
    */
-  submit() {
+  save() {
     if (!this.userForm.valid) {
       Object.keys(this.userForm.controls).forEach(field => {
         const control = this.userForm.get(field);
@@ -114,10 +161,12 @@ export class CreateNewAccountPage {
         syncFailureMessage: null
       }
 
-      this.newAccountServiceProvider.saveNewUser(this.user)
+      this.createNewAccountService.saveNewUser(this.user)
         .then(data => {
-          this.messageService.showSuccessToast(ConstantProvider.messages.registrationSuccessful);
-          this.navCtrl.pop();
+          this.messageService.showOkAlert(ConstantProvider.messages.saveSuccessfull,ConstantProvider.messages.forgotPasswordMessage)
+          .then(()=>{
+            this.navCtrl.pop();
+          })
         })
         .catch(err => {
           this.messageService.showErrorToast(err)
@@ -134,6 +183,7 @@ export class CreateNewAccountPage {
   countrySelected(country: IArea) {
     this.user.country = country.id;
     this.states = this.areas.filter(d => d.parentAreaId === country.id)
+    this.countryStatus = false;
   }
 
   /**
@@ -146,6 +196,7 @@ export class CreateNewAccountPage {
   stateSelected(state: IArea) {
     this.user.state = state.id;
     this.districts = this.areas.filter(d => d.parentAreaId === state.id)
+    this.districtStatus  = false;
   }
 
 
@@ -159,10 +210,8 @@ export class CreateNewAccountPage {
   districtSelected(district: IArea) {
     this.user.district = district.id;
     this.institutes = this.areas.filter(d => d.parentAreaId === district.id)
+    this.institutionStatus = false;
   }
-
-
-
 
   /**
    * This method is going to get executed when institution is selected
@@ -173,6 +222,35 @@ export class CreateNewAccountPage {
    */
   instituteSelected(institution: IArea) {
     this.user.institution = institution.id;
+  }
+  
+  /**
+   * This method is used to restrict the special character in the input field
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   * @param event 
+   */
+  omit_special_char(event){   
+    var k;  
+    k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+    return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+  }
+
+  /**
+   * This method is used to find the duplicate email id.
+   * 
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  validateEmailId(){
+    this.createNewAccountService.validateEmailId(this.userForm.controls.email.value)
+    .then((data)=>{
+      if(!data){
+        this.userForm.controls.email.setValue(null);
+        this.messageService.showErrorToast(ConstantProvider.messages.emailIdExists)
+      }
+    })
   }
 
 }

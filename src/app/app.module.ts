@@ -30,7 +30,6 @@ import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-s
 import { BFExpressionDateListProvider } from '../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 import { AppVersion } from '@ionic-native/app-version';
 
-
 @NgModule({
   declarations: [
     MyApp
@@ -43,8 +42,7 @@ import { AppVersion } from '@ionic-native/app-version';
     }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    HttpClientModule
-    
+    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -22,6 +22,7 @@ export class BfPostDischargePage {
   timeOfFeedList: ITypeDetails[];
   bfStatusPostDischargeList: ITypeDetails[];
   maxDate:any;
+  formHeading: string;
   bfpd: IBFPD = {
     babyCode: null,
     dateOfBreastFeeding: null,
@@ -40,38 +41,8 @@ export class BfPostDischargePage {
       
   }
 
-  createPostDischargeForm() {
-    // this.postDischargeForm = this.formBuilder.group({
-    //   id: [null],
-    //   babyCode: [null],
-    //   userId: [this.userService.getUser().email],
-    //   syncFailureMessage: [null],
-    //   isSynced: [false],
-    //   dateOfBreastFeeding: [moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(), Validators.required],
-    //   timeOfBreastFeeding: [this.navParams.data.menuItemId, [Validators.required]],
-    //   breastFeedingStatus: ['', Validators.required],
-    // });
-  };
-
-  displayExistingRecord(bfPdForm: IBFPD){
-    // let day = parseInt(bfPdForm.dateOfBreastFeeding.split('-')[0]);
-    // let month = parseInt(bfPdForm.dateOfBreastFeeding.split('-')[1]);
-    // let year = parseInt(bfPdForm.dateOfBreastFeeding.split('-')[2]);
-    // this.postDischargeForm = this.formBuilder.group({
-    //   id: [bfPdForm.id],
-    //   babyCode: [bfPdForm.babyCode],
-    //   userId: [bfPdForm.userId],
-    //   syncFailureMessage: [bfPdForm.syncFailureMessage],
-    //   isSynced: [bfPdForm.isSynced],
-    //   dateOfBreastFeeding: [moment.utc(year+ "-"+ month+"-"+ day).toISOString(), Validators.required],
-    //   timeOfBreastFeeding: [bfPdForm.timeOfBreastFeeding, [Validators.required]],
-    //   breastFeedingStatus: [bfPdForm.breastFeedingStatus, Validators.required],
-    // });
-  }
-
   ngOnInit() {
 
-    
     this.maxDate = this.bfPostDischargeService.getMaxTime();
     this.babyCode = this.navParams.data.babyCode;
 
@@ -84,7 +55,11 @@ export class BfPostDischargePage {
 
     this.bfPostDischargeService.getTimeOfBreastfeedingPostDischarge()
       .subscribe(data => {
+        let timeOfBf: ITypeDetails;
         this.timeOfFeedList = data;
+        timeOfBf = this.timeOfFeedList.find(d => d.id === this.navParams.data.menuItemId);
+        this.bfpd.timeOfBreastFeeding = timeOfBf.id;
+        this.formHeading = timeOfBf.name;
       }, error => {
         this.messageService.showErrorToast(error);
       });
@@ -98,7 +73,12 @@ export class BfPostDischargePage {
   };
 
   save() {
-    this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
+    if(this.bfpd.dateOfBreastFeeding === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.dateOfBfpd)
+    }else if(this.bfpd.breastFeedingStatus === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.bfStatusPd)
+    }else{
+      this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
       .then(data=> {
         this.messageService.showSuccessToast("save successful!");
         this.navCtrl.pop();
@@ -106,6 +86,8 @@ export class BfPostDischargePage {
       .catch(err =>{
         this.messageService.showErrorToast(err)
       })
+    }
+
     // if(!this.postDischargeForm.valid){
     //   Object.keys(this.postDischargeForm.controls).forEach(field => {
     //     const control = this.postDischargeForm.get(field);

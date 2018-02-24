@@ -60,16 +60,38 @@ export class FeedPage {
  * @author Ratikanta
  * @since 0.0.1
  */
-  saveExpression(feedExpression: IFeed) {   
-    this.feedExpressionService.saveFeedExpression(feedExpression)
-    .then(data=> {
-      this.dataForFeedEntryPage.isNewExpression = false;
-      this.findExpressionsByBabyCodeAndDate();
-      this.messageService.showSuccessToast("save successful!")
-    })
-    .catch(err =>{
-       this.messageService.showErrorToast(err)
-    })
+  saveExpression(feedExpression: IFeed) {
+    if(feedExpression.dateOfFeed === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
+    }else if(feedExpression.timeOfFeed === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
+    }else if(feedExpression.methodOfFeed === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.methodOfFeed)  
+    }else if(feedExpression.ommVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
+    }else if(feedExpression.dhmVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
+    }else if(feedExpression.formulaVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
+    }else if(feedExpression.animalMilkVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
+    }else if(feedExpression.otherVolume === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
+    }else if(feedExpression.locationOfFeeding === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.locationWhereFeedOccured)
+    }else if(feedExpression.babyWeight === null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.babyWeight)
+    }else{
+      this.feedExpressionService.saveFeedExpression(feedExpression)
+      .then(data=> {
+        this.dataForFeedEntryPage.isNewExpression = false;
+        this.findExpressionsByBabyCodeAndDate();
+        this.messageService.showSuccessToast("save successful!")
+      })
+      .catch(err =>{
+        this.messageService.showErrorToast(err)
+      })
+    }
   }
   
 
@@ -92,14 +114,14 @@ export class FeedPage {
  */
   newExpression(){
 
-    let day = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[0])
-    let month = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[1])
-    let year = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[2])
+    // let day = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[0])
+    // let month = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[1])
+    // let year = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[2])
 
     this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
-    new Date(year, month, day))
-
-  }
+    new Date());
+    this.isGroupShown(this.feedExpressions[0]);
+  };
 
   /**
    * This method will help in getting existing feed expression for given baby code and date
@@ -111,7 +133,10 @@ export class FeedPage {
     this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode, 
       this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
     .then(data=>{
-      this.feedExpressions = data      
+      this.feedExpressions = data;
+      if(this.feedExpressions.length > 0){
+        this.isGroupShown( this.feedExpressions[0]);
+      }
     })
     .catch(err=>{
       this.messageService.showErrorToast(err)

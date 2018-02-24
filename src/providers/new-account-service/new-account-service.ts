@@ -111,4 +111,28 @@ getAllAreas(): Observable <IArea[]>{
     return new ErrorObservable (messageToUser);
   };
 
+/**
+ * This method will validate the email id
+ * 
+ * 
+ * @author Jagat Bandhu
+ * @since 0.0.1
+ * @param email 
+ */
+  validateEmailId(email: string): Promise<boolean>{
+    return new Promise<boolean>((resolve,reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.users)
+      .then(data=>{
+        if(data != null){
+         let index = (data as IUser[]).findIndex(d=>d.email == email)
+         if(index < 0){
+           resolve(true)
+         }else{
+           resolve(false)
+         }
+        }
+      })
+    })
+  }
+
 }

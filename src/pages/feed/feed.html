@@ -49,7 +49,7 @@
             <ion-item>
               <ion-label stacked>Method of expression</ion-label>
               <ion-select [(ngModel)]="feedExpression.methodOfFeed">
-                <ion-option *ngFor="let feedingMethod of feedingMethods" [value]="feedingMethod.id" text-wrap>{{feedingMethod.name}}</ion-option>               
+                <ion-option text-wrap *ngFor="let feedingMethod of feedingMethods" [value]="feedingMethod.id" text-wrap>{{feedingMethod.name}}</ion-option>               
               </ion-select>
             </ion-item>
 
@@ -88,7 +88,7 @@
             <ion-item>
               <ion-label stacked>Location of feeding</ion-label>
               <ion-select [(ngModel)]="feedExpression.locationOfFeeding">
-                <ion-option *ngFor="let locationOfFeeding of locationOfFeedings" [value]="locationOfFeeding.id" text-wrap>{{locationOfFeeding.name}}</ion-option>               
+                <ion-option text-wrap *ngFor="let locationOfFeeding of locationOfFeedings" [value]="locationOfFeeding.id" text-wrap>{{locationOfFeeding.name}}</ion-option>               
               </ion-select>
             </ion-item>
               

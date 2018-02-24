@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastController, LoadingController } from 'ionic-angular';
+import { ToastController, LoadingController, AlertController } from 'ionic-angular';
 
 /**
  * This service we only use to show messages
@@ -11,7 +11,8 @@ import { ToastController, LoadingController } from 'ionic-angular';
 export class MessageProvider {
   loading;  
 
-  constructor(private toastCtrl: ToastController, private loadingCtrl: LoadingController) {}
+  constructor(private toastCtrl: ToastController, private loadingCtrl: LoadingController,
+  private alertCtrl: AlertController) {}
 
   /**
    * This method will be used to show success toast to user
@@ -60,6 +61,52 @@ export class MessageProvider {
 
   stopLoader(){
     this.loading.dismiss();
+  }
+
+  showAlert(title: string, message: string): Promise<boolean>{
+    let promise: Promise<boolean> = new Promise((resolve, reject)=>{
+      let confirm = this.alertCtrl.create({
+        enableBackdropDismiss: false,
+        title: title,
+        message: message,
+        buttons: [
+          {
+            text: 'Cancel',
+            handler: () => {
+              resolve(false)
+            }
+          },
+          {
+            text: 'Ok',
+            handler: () => {
+              resolve(true)
+            }
+          }
+        ]
+      });
+      confirm.present();
+    })
+    return promise;
+  }
+
+  showOkAlert(title: string, message: string): Promise<any>{
+    let promise= new Promise((resolve, reject)=>{
+      let confirm = this.alertCtrl.create({
+        enableBackdropDismiss: false,
+        title: title,
+        message: message,
+        buttons: [
+          {
+            text: 'Ok',
+            handler: () => {
+              resolve()
+            }
+          }
+        ]
+      });
+      confirm.present();
+    })
+    return promise;
   }
 
 }

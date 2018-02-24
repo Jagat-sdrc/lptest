@@ -20,7 +20,8 @@ export class BFExpressionDateListPage {
   babyCode: any;
   form: any;
   items: any;
-  expBfDateListData: string[];
+  expBfDateListData: string[] = [];
+  
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private datePipe: DatePipe,
@@ -74,7 +75,8 @@ export class BFExpressionDateListPage {
   newExpression(){
     let dataForBFEntryPage: IDataForBFEntryPage = {
       babyCode: this.babyCode,
-      selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      // selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      selectedDate: null,
       isNewExpression: true
     }
     this.navCtrl.push('ExpressionTimeFormPage', {dataForBFEntryPage: dataForBFEntryPage})

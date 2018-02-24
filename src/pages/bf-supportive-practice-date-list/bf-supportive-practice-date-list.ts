@@ -21,7 +21,7 @@ export class BfSupportivePracticeDateListPage {
   babyCode:string;
   babyCodeHospital: any;
   items: any;
-  bfspDateListData: string[];
+  bfspDateListData: string[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private datePipe: DatePipe,
     private bfspDateListService: BfspDateListServiceProvider, private messageService: MessageProvider) {
@@ -31,7 +31,7 @@ export class BfSupportivePracticeDateListPage {
 
   /**
    * Inside this function we are going to write the fetch expression list code.
-   * Because init is called onnly while page creation, that is the reason for the
+   * Because init is called only while page creation, that is the reason for the
    * list not getting updated while coming back from the form.
    * @author - Naseem Akhtar
    * @since - 0.0.1
@@ -73,7 +73,8 @@ export class BfSupportivePracticeDateListPage {
   newBFSP() {
     let dataForBfspPage: IDataForBfspPage = {
       babyCode: this.babyCode,
-      selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      // selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
+      selectedDate: null,
       isNewBfsp: true
     }
     this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: dataForBfspPage})

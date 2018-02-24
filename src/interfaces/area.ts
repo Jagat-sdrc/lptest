@@ -6,6 +6,7 @@
  */
 interface IArea{
     id: number;
+    shortName: string;
     areaLevel: number;
     name: string;
     parentAreaId: number;

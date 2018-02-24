@@ -20,6 +20,8 @@ interface IMessage{
     userConstruction: string;
     babyUnderWeight: string;
     babyOverWeight: string;
+    babyGestational: string;
+    motherAge: string;
     supportivePracticeBfsp: string;
     personWhoPerformedBfsp: string;
     durationOfBfsp: string;
@@ -28,4 +30,27 @@ interface IMessage{
     noDataFound: string;
     serverErrorContactAdmin: string;
     noDataToSync: string;
+    enterDateOfBfsp: string;
+    enterTimeOfBfsp: string;
+    stateAlert: string;
+    districtAlert: string;
+    institutionAlert: string;
+    saveSuccessfull: string;
+    info: string;
+    warning: string;
+    deletePatient: string;
+    duplicateTime: string;
+    enterDateOfFeed: string;
+    enterTimeOfFeed: string;
+    methodOfFeed: string;
+    ommVolumne: string;
+    dhmVolume: string;
+    formulaVolume: string;
+    animalMilkVolume: string;
+    otherVolume: string;
+    locationWhereFeedOccured: string;
+    babyWeight: string;
+    emailIdExists: string;
+    dateOfBfpd: string;
+    bfStatusPd: string;
 }

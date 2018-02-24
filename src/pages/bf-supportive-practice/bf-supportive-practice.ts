@@ -22,7 +22,6 @@ export class BfSupportivePracticePage {
 
   supportivePracticeForm: FormGroup;
   maxDate:any;
-  maxTime:any;
   forEdit: boolean;
   autoBabyId: string;
   bfspList: IBFSP[];
@@ -33,14 +32,12 @@ export class BfSupportivePracticePage {
   onlyNumberRegex: RegExp = /^[0-9]*$/;
   shownGroup: any;
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider,
     public formBuilder: FormBuilder, private datePipe: DatePipe,
     private bfspService: BfSupportivePracticeServiceProvider,
     ) {
       this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
-      this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
     }
 
   /**
@@ -86,12 +83,9 @@ export class BfSupportivePracticePage {
    * For creating or resetting breastfeedign supportive practice form
    */
   newBFSPForm() {
-    let day = parseInt(this.dataForBfspPage.selectedDate.split('-')[0]);
-    let month = parseInt(this.dataForBfspPage.selectedDate.split('-')[1]);
-    let year = parseInt(this.dataForBfspPage.selectedDate.split('-')[2]);
-
     this.bfspList = this.bfspService.appendNewRecordAndReturn(this.bfspList, this.dataForBfspPage.babyCode,
-      new Date(year, month, day));
+      null);
+    setTimeout( data => this.toggleGroup(this.bfspList[0], 0), 100);
   };
 
   
@@ -109,11 +103,16 @@ export class BfSupportivePracticePage {
   };
 
   save(bfsp: IBFSP){
-    if(bfsp.bfspPerformed == null){
+    if(bfsp.dateOfBFSP === null){
+      this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
+    }else if(bfsp.timeOfBFSP === null){
+      this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfBfsp);
+    }else if(bfsp.bfspPerformed === null){
       this.messageService.showErrorToast(ConstantProvider.messages.supportivePracticeBfsp);
-    }else if(bfsp.personWhoPerformedBFSP == null){
+    }else if(bfsp.personWhoPerformedBFSP === null){
       this.messageService.showErrorToast(ConstantProvider.messages.personWhoPerformedBfsp);
-    }else if(bfsp.bfspDuration === null || !this.onlyNumberRegex.test(bfsp.bfspDuration.toString())) {
+    }else if(bfsp.bfspDuration === undefined || bfsp.bfspDuration === null || 
+      bfsp.bfspDuration.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.durationOfBfsp);
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp)
@@ -139,6 +138,10 @@ export class BfSupportivePracticePage {
       this.dataForBfspPage.selectedDate, this.dataForBfspPage.isNewBfsp)
       .then(data => {
         this.bfspList = data;
+        if(this.bfspList.length === 0){
+          this.newBFSPForm();
+          // setTimeout(d => this.toggleGroup(this.bfspList[0], 0), 200);
+        }
       })
       .catch(err => {
         this.messageService.showErrorToast(err)
@@ -166,6 +169,19 @@ export class BfSupportivePracticePage {
     .catch(err=>{
       this.messageService.showErrorToast(err)
     })
+  }
+
+  /**
+   * This function will be used to check the validation for bfspPerformed question, accordingly the next
+   * field is disabled or enabled.
+   * @author - Naseem Akhtar
+   * @param bfsp - the object in the front-end for which the user is entering the data
+   * @since - 0.0.1
+   */
+  setPersonWhoPerformed(bfsp: IBFSP){
+    if(bfsp.bfspPerformed === 41){
+      bfsp.personWhoPerformedBFSP = 43;
+    }
   }
 
 }

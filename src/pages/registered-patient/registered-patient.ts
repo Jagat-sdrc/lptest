@@ -1,6 +1,6 @@
 import { RegisteredPatientServiceProvider } from './../../providers/registered-patient-service/registered-patient-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, MenuController } from 'ionic-angular';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import { ConstantProvider } from '../../providers/constant/constant';
@@ -22,11 +22,19 @@ export class RegisteredPatientPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
-    private messageService: MessageProvider) {    
+    private messageService: MessageProvider, private menuCtrl: MenuController) {    
   }
 
   ionViewWillEnter(){
     this.findAllPatients();
+  }
+
+  ionViewDidEnter() {
+    this.menuCtrl.swipeEnable(false);
+  }
+
+  ionViewWillLeave() {
+    this.menuCtrl.swipeEnable(true);
   }
 
   ngOnInit(){
@@ -66,23 +74,6 @@ export class RegisteredPatientPage {
     this.findAllPatients();
   }
 
-  /**
-   * This method is going to help us deleting the given patient
-   * @param babyCode The baby code of the patient to which we are going to delete
-   */
-  deletePatient(babyCode: string){
-    
-    this.registeredPatientService.deletePatient(babyCode)
-    .then(data=>{
-      this.findAllPatients();
-      this.messageService.showSuccessToast("Deleted successfully");
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast("Could not delete patient, error:" + err)
-    })
-    
-  }
-
   /** 
    * This method will sort the data based on the sort by type.
    * 
@@ -118,6 +109,26 @@ export class RegisteredPatientPage {
       label: 'Outborn Patient',
       value: 'Outborn Patient'
     });
+    alert.addInput({
+      type: 'radio',
+      label: 'Vaginal',
+      value: 'Vaginal'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'C-section',
+      value: 'C-section'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Other',
+      value: 'Other'
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Unknown',
+      value: 'Unknown'
+    });
 
     alert.addButton('Cancel');
     alert.addButton({
@@ -138,6 +149,19 @@ export class RegisteredPatientPage {
              break;
              case "Outborn Patient":
              this.sortBy = ConstantProvider.patientSortBy.outbornPatient
+             break;
+
+             case "Vaginal":
+             this.sortBy = ConstantProvider.patientSortBy.vaginal
+             break;
+             case "C-section":
+             this.sortBy = ConstantProvider.patientSortBy.csection
+             break;
+             case "Other":
+             this.sortBy = ConstantProvider.patientSortBy.other
+             break;
+             case "Unknown":
+             this.sortBy = ConstantProvider.patientSortBy.unknown
              break;
            }
       }
@@ -177,5 +201,26 @@ export class RegisteredPatientPage {
   */
   onSearchInput(){
     this.searching = true;
+  }
+
+   /**
+   * This method is going to help us deleting the given patient
+   * @param babyCode The baby code of the patient to which we are going to delete
+   */
+  deletePatient(babyCode: string){
+    console.log("Delete");
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deletePatient).
+    then((data)=>{
+      if(data){
+        this.registeredPatientService.deletePatient(babyCode)
+        .then(data=>{
+          this.findAllPatients();
+          this.messageService.showSuccessToast("Deleted successfully");
+        })
+        .catch(err=>{
+          this.messageService.showErrorToast("Could not delete patient, error:" + err)
+        })
+      }
+    })
   }
 }

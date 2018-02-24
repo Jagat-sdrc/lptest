@@ -200,7 +200,7 @@ export class BfPostDischargeServiceProvider {
   private getBfPd(babyCode: string, timeOfBf: number): IBFPD{
     let bfpd : IBFPD = {
       babyCode: babyCode,
-      dateOfBreastFeeding: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
+      dateOfBreastFeeding: null,
       id: null,
       isSynced: false,
       breastFeedingStatus: null,

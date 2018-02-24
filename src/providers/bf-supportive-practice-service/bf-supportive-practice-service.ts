@@ -54,14 +54,19 @@ export class BfSupportivePracticeServiceProvider {
           let bfspForms: IBFSP[] = [];
           if (val != null) {
             bfspForms = val
-            bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)          
-            this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
+            let index = bfspForms.findIndex(d=>d.dateOfBFSP === bfspForm.dateOfBFSP && d.timeOfBFSP === bfspForm.timeOfBFSP)
+            if(index < 0) {
+              bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)
+              this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
               .then(data => {
                 resolve()
               })
               .catch(err => {
                 reject(err.message);
               })
+            }else{
+              reject(ConstantProvider.messages.duplicateTime);
+            }
           } else {
             bfspForms.push(bfspForm)
             this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
@@ -82,44 +87,46 @@ export class BfSupportivePracticeServiceProvider {
 
   findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise < IBFSP[] > {
     let promise: Promise < IBFSP[] > = new Promise((resolve, reject) => {
+      if(date !== null){
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then(data => {
           if (data != null) {
             data = (data as IBFSP[]).filter(d => d.babyCode === babyCode && d.dateOfBFSP === date);
 
-            (data as IBFSP[]).forEach(d => {
-              let day = parseInt(d.dateOfBFSP.split('-')[0]);
-              let month = parseInt(d.dateOfBFSP.split('-')[1]);
-              let year = parseInt(d.dateOfBFSP.split('-')[2]);
-              d.dateOfBFSP = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
-            });
-
             if ((data as IBFSP[]).length > 0) {
-              if (isNewExpression) {
-                resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-              } else {
+              (data as IBFSP[]).forEach(d => {
+                let day = parseInt(d.dateOfBFSP.split('-')[0]);
+                let month = parseInt(d.dateOfBFSP.split('-')[1]);
+                let year = parseInt(d.dateOfBFSP.split('-')[2]);
+                d.dateOfBFSP = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
+              });
+
+              // if (isNewExpression) {
+              //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
+              // } else {
                 resolve(data)
-              }
-
+              // }
             } else {
-              if (isNewExpression) {
-                resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-              } else {
+              // if (isNewExpression) {
+              //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
+              // } else {
                 resolve([])
-              }
-
+              // }
             }
           } else {
-            if (isNewExpression) {
-              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            } else {
+            // if (isNewExpression) {
+            //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
+            // } else {
               resolve([])
-            }
+            // }
           }
         })
         .catch(err => {
           reject(err.message)
         })
+      }else{
+        resolve([]);
+      }
     });
     return promise;
   }
@@ -150,8 +157,10 @@ export class BfSupportivePracticeServiceProvider {
     let bf: IBFSP = {
       id: this.getNewBfspId(babyCode),
       babyCode: babyCode,
-      dateOfBFSP: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
-      timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
+      dateOfBFSP: null,
+      // dateOfBFSP: date === null ? null : moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
+      // timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
+      timeOfBFSP: null,
       bfspPerformed: null,
       personWhoPerformedBFSP: null,
       bfspDuration: null,
@@ -160,8 +169,8 @@ export class BfSupportivePracticeServiceProvider {
       syncFailureMessage: null
     }
 
-    if (data != null && date != undefined) {
-      (data as IBFSP[]).splice(0, 0, bf)
+    if (data != null) {
+      (data as IBFSP[]).splice(0, 0, bf);
     } else {
       data = [];
       data.push(bf)
@@ -229,8 +238,6 @@ export class BfSupportivePracticeServiceProvider {
    * @returns IFeed[] modified feed expressions
    */
   private validateNewEntryAndUpdate(bfsps: IBFSP[], bfsp: IBFSP): IBFSP[]{
-
-    
     for(let i = 0; i < bfsps.length;i++){
       if(bfsps[i].id === bfsp.id){
         //record found, need to splice and enter new
@@ -240,7 +247,6 @@ export class BfSupportivePracticeServiceProvider {
     }
     bfsps.push(bfsp)    
     return bfsps;
-
   }
 
 }

@@ -81,14 +81,22 @@ export class ConstantProvider {
     deliveryTime: "deliveryTime",
     weight: "weight",
     inbornPatient: "inbornPatient",
-    outbornPatient: "outbornPatient"
+    outbornPatient: "outbornPatient",
+    vaginal: "vaginal",
+    csection: "csection",
+    other: "other",
+    unknown: "unknown",
   } 
 
   static passwordFormat = "@123#!"
 
   static typeDetailsIds = {
     inbornPatient: 12,
-    outbornPatient: 13
+    outbornPatient: 13,
+    vaginal: 1,
+    csection: 2,
+    other: 3,
+    unknown: 4,
   }
 
   /**
@@ -120,6 +128,8 @@ export class ConstantProvider {
     userConstruction: "Under construction!",
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyOverWeight: "Baby's weight is more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
+    babyGestational: "Gestational age in weeks is more than the age (28-32 age). Do you want to proceed with the entry?",
+    motherAge: "Mother's delivery age is more than the normal age (15-49 age). Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
@@ -127,7 +137,30 @@ export class ConstantProvider {
     recordNotFound: 'Record not found!',
     noDataFound: 'No data found!',
     serverErrorContactAdmin: 'Server error, please contact admin!',
-    noDataToSync: 'No data to sync!'
+    noDataToSync: 'No data to sync!',
+    enterDateOfBfsp: 'Please enter date of BFSP',
+    enterTimeOfBfsp :'Please enter time of BFSP',
+    stateAlert: 'Please select the country before selecting state',
+    districtAlert: 'Please select the state before selecting district',
+    institutionAlert: 'Please select the district before selecting insitution',
+    saveSuccessfull: 'Save Successfully',
+    info: 'Info',
+    warning: 'Warning',
+    deletePatient: 'Do you want to delete the selected Patient record?',
+    duplicateTime: 'Duplicate time',
+    enterDateOfFeed: 'Please enter date of feed',
+    enterTimeOfFeed :'Please enter time of feed',
+    methodOfFeed: 'Please enter method of feed',
+    ommVolumne: 'Please enter omm volume',
+    dhmVolume: 'Please enter dhm volume',
+    formulaVolume: 'Please enter formula volume',
+    animalMilkVolume: 'Please enter animal milk voulme',
+    otherVolume: 'Please enter other voulme',
+    locationWhereFeedOccured: 'Please enter location where feed occured',
+    babyWeight: 'Please enter weight of the baby',
+    emailIdExists: 'Email id exists!',
+    dateOfBfpd: 'Please enter date of breastfeeding post discharge',
+    bfStatusPd: 'Please enter breastfeeding status post discharge'
   };
   
 /**
@@ -144,8 +177,16 @@ static areaLevels: IAreaLevel ={
     district: 3,
     institute: 5
   }
+
+  static datePickerType: IDatePickerType = {
+    deliveryDate: "deliveryDate",
+    dischargeDate: "dischargeDate",
+    addmissionDate: "addmissionDate"
+  }
   
   constructor(public http: HttpClient) {
   }
+
+
 
 }

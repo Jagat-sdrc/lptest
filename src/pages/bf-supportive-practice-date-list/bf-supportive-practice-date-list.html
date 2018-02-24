@@ -5,7 +5,7 @@
 -->
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>Baby Id - {{babyCodeHospital}}</ion-title>
+    <ion-title>Baby Id - {{babyCode}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -24,9 +24,11 @@
       </ion-row>
     </ion-card-content>
   </ion-card>
+
+  <h4 class="noRecords" *ngIf="bfspDateListData.length === 0">No record found</h4>
 </ion-content>
 
 <ion-footer>
-    <button ion-button block (click)="newBFSP()">New BFSP</button>
+    <button ion-button block (click)="newBFSP()">New Expression</button>
 </ion-footer>
 
