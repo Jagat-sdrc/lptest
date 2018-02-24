@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { BfSupportivePracticeServiceProvider } from '../../providers/bf-supportive-practice-service/bf-supportive-practice-service';
 import { MessageProvider } from '../../providers/message/message';
 import { ConstantProvider } from '../../providers/constant/constant';
+import { DatePicker } from '@ionic-native/date-picker';
 
 /**
  * This page will be used to enter the data of breast feeding supportive practice
@@ -36,6 +37,7 @@ export class BfSupportivePracticePage {
     private messageService: MessageProvider,
     public formBuilder: FormBuilder, private datePipe: DatePipe,
     private bfspService: BfSupportivePracticeServiceProvider,
+    private datePicker: DatePicker
     ) {
       this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
     }
@@ -182,6 +184,34 @@ export class BfSupportivePracticePage {
     if(bfsp.bfspPerformed === 41){
       bfsp.personWhoPerformedBFSP = 43;
     }
+  }
+
+  datePickerDialog(bfsp: IBFSP){
+    this.datePicker.show({
+    date: new Date(),
+    maxDate: new Date(),
+    allowFutureDates: false,
+    mode: 'date',
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+    }).then(
+      date => {
+        bfsp.dateOfBFSP = this.datePipe.transform(date,"dd-MM-yyyy")
+      },
+      err => console.log('Error occurred while getting date: ', err)
+    );
+  }
+
+  timePickerDialog(bfsp: IBFSP){
+    this.datePicker.show({
+    date: new Date(),
+    mode: 'time',
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+  }).then(
+    time => {
+      bfsp.timeOfBFSP = this.datePipe.transform(time,"HH:mm")
+    },
+    err => console.log('Error occurred while getting time: ', err)
+    );
   }
 
 }

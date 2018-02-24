@@ -23,6 +23,7 @@ export class FeedPage {
   dataForFeedEntryPage: IDataForFeedEntryPage;
   shownGroup: any;
   locationOfFeedings: ITypeDetails[];
+  onlyNumberRegex: RegExp = /^[0-9]*$/;
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
   private messageService: MessageProvider, private navParams: NavParams) {}
@@ -67,15 +68,20 @@ export class FeedPage {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
     }else if(feedExpression.methodOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.methodOfFeed)  
-    }else if(feedExpression.ommVolume === null) {
+    }else if(feedExpression.ommVolume === undefined || feedExpression.ommVolume === null 
+      || feedExpression.ommVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
-    }else if(feedExpression.dhmVolume === null) {
+    }else if(feedExpression.dhmVolume === undefined || feedExpression.dhmVolume === null 
+      || feedExpression.dhmVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
-    }else if(feedExpression.formulaVolume === null) {
+    }else if(feedExpression.formulaVolume === undefined || feedExpression.formulaVolume === null
+      || feedExpression.formulaVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
-    }else if(feedExpression.animalMilkVolume === null) {
+    }else if(feedExpression.animalMilkVolume === undefined || feedExpression.animalMilkVolume === null 
+      || feedExpression.animalMilkVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
-    }else if(feedExpression.otherVolume === null) {
+    }else if(feedExpression.otherVolume === undefined || feedExpression.otherVolume === null 
+      || feedExpression.otherVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
     }else if(feedExpression.locationOfFeeding === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.locationWhereFeedOccured)
@@ -113,14 +119,9 @@ export class FeedPage {
  * @memberof FeedPage
  */
   newExpression(){
-
-    // let day = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[0])
-    // let month = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[1])
-    // let year = parseInt(this.dataForFeedEntryPage.selectedDate.split('-')[2])
-
     this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
-    new Date());
-    this.isGroupShown(this.feedExpressions[0]);
+    null);
+    setTimeout( data => this.toggleGroup(this.feedExpressions[0]), 100);
   };
 
   /**
@@ -134,8 +135,8 @@ export class FeedPage {
       this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
     .then(data=>{
       this.feedExpressions = data;
-      if(this.feedExpressions.length > 0){
-        this.isGroupShown( this.feedExpressions[0]);
+      if(this.feedExpressions.length === 0){
+        this.newExpression();
       }
     })
     .catch(err=>{
