@@ -103,7 +103,6 @@ export class BfSupportivePracticePage {
   };
 
   save(bfsp: IBFSP){
-    debugger;
     if(bfsp.dateOfBFSP === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
     }else if(bfsp.timeOfBFSP === null){

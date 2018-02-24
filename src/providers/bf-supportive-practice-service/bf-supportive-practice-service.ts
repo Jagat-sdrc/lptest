@@ -56,9 +56,7 @@ export class BfSupportivePracticeServiceProvider {
             bfspForms = val
             let index = bfspForms.findIndex(d=>d.dateOfBFSP === bfspForm.dateOfBFSP && d.timeOfBFSP === bfspForm.timeOfBFSP)
             if(index < 0) {
-              reject(ConstantProvider.messages.duplicateTime);
-            }else{
-              bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)          
+              bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)
               this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
               .then(data => {
                 resolve()
@@ -66,6 +64,8 @@ export class BfSupportivePracticeServiceProvider {
               .catch(err => {
                 reject(err.message);
               })
+            }else{
+              reject(ConstantProvider.messages.duplicateTime);
             }
           } else {
             bfspForms.push(bfspForm)
@@ -157,7 +157,8 @@ export class BfSupportivePracticeServiceProvider {
     let bf: IBFSP = {
       id: this.getNewBfspId(babyCode),
       babyCode: babyCode,
-      dateOfBFSP: date === null ? null : moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
+      dateOfBFSP: null,
+      // dateOfBFSP: date === null ? null : moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
       // timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
       timeOfBFSP: null,
       bfspPerformed: null,
@@ -168,8 +169,8 @@ export class BfSupportivePracticeServiceProvider {
       syncFailureMessage: null
     }
 
-    if (data != null && date != undefined) {
-      (data as IBFSP[]).splice(0, 0, bf)
+    if (data != null) {
+      (data as IBFSP[]).splice(0, 0, bf);
     } else {
       data = [];
       data.push(bf)
@@ -237,8 +238,6 @@ export class BfSupportivePracticeServiceProvider {
    * @returns IFeed[] modified feed expressions
    */
   private validateNewEntryAndUpdate(bfsps: IBFSP[], bfsp: IBFSP): IBFSP[]{
-
-    
     for(let i = 0; i < bfsps.length;i++){
       if(bfsps[i].id === bfsp.id){
         //record found, need to splice and enter new
@@ -248,7 +247,6 @@ export class BfSupportivePracticeServiceProvider {
     }
     bfsps.push(bfsp)    
     return bfsps;
-
   }
 
 }
