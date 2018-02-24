@@ -90,16 +90,19 @@ export class FeedExpressionServiceProvider {
         let feedExpressions: IFeed[] = [];
         if(val != null){
           feedExpressions = val
-          feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
-          this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
-          .then(data=>{
-            resolve()
-          })
-          .catch(err=>{
-            reject(err.message);    
-          })
-
-
+          let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
+          if(index < 0){
+            feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
+            this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
+              .then(data=>{
+                resolve()
+              })
+              .catch(err=>{
+                reject(err.message);
+              })
+          }else{
+            reject(ConstantProvider.messages.duplicateTime);
+          }
         }else{
           feedExpressions.push(feedExpression)
           this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
@@ -109,7 +112,6 @@ export class FeedExpressionServiceProvider {
           .catch(err=>{
             reject(err.message);    
           })
-          
         }                
       }).catch(err=>{
         reject(err.message);
@@ -160,46 +162,56 @@ export class FeedExpressionServiceProvider {
    */
   findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise<IFeed[]>{
     let promise: Promise<IFeed[]> = new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
-      .then(data=>{
-        if(data != null){
-          data = (data as IFeed[]).filter(d => (d.babyCode === babyCode && d.dateOfFeed === date));
+      if(date !== null){
+        this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+        .then(data=>{
+          if(data != null){
+            data = (data as IFeed[]).filter(d => (d.babyCode === babyCode && d.dateOfFeed === date));
 
-          (data as IFeed[]).forEach(d => {
-            let day = parseInt(d.dateOfFeed.split('-')[0]);
-            let month = parseInt(d.dateOfFeed.split('-')[1]);
-            let year = parseInt(d.dateOfFeed.split('-')[2]);
-            d.dateOfFeed = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
-          });
+            if ((data as IFeed[]).length > 0) {
+              (data as IFeed[]).forEach(d => {
+                let day = parseInt(d.dateOfFeed.split('-')[0]);
+                let month = parseInt(d.dateOfFeed.split('-')[1]);
+                let year = parseInt(d.dateOfFeed.split('-')[2]);
+                d.dateOfFeed = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
+              });
+              resolve(data)
+            }else{
+              resolve([])
+            }
 
-          if((data as IFeed[]).length > 0){
-            if(isNewExpression){
-              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            }else{
-              resolve(data)
-            }
-            
+            // if((data as IFeed[]).length > 0){
+            //   if(isNewExpression){
+            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            //   }else{
+            //     resolve(data)
+            //   }
+              
+            // }else{
+            //   if(isNewExpression){
+            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            //   }else{
+            //     data = [];
+            //     resolve(data)
+            //   }
+              
+            // }
           }else{
-            if(isNewExpression){
-              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            }else{
-              data = [];
-              resolve(data)
-            }
-            
+            resolve([])
+            // if(isNewExpression){
+            //   resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            // }else{
+            //   data = [];
+            //   resolve(data)  
+            // }
           }
-        }else{
-          if(isNewExpression){
-            resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-          }else{
-            data = [];
-            resolve(data)  
-          }
-        }
-      })
-      .catch(err=>{
-        reject(err.message)
-      })
+        })
+        .catch(err=>{
+          reject(err.message)
+        })
+      }else{
+        resolve([]);
+      }
     });
     return promise;
   }
@@ -249,7 +261,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
     }
 
 
-    if(data != null && date != undefined){
+    if(data != null){
       (data as IFeed[]).splice(0, 0, feed)
     }else{
       data = [];

@@ -50,7 +50,6 @@ export class BfSupportivePracticeServiceProvider {
       bfspForm.dateOfBFSP = this.datePipe.transform(new Date(bfspForm.dateOfBFSP), 'dd-MM-yyyy')
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then((val) => {
-
           let bfspForms: IBFSP[] = [];
           if (val != null) {
             bfspForms = val

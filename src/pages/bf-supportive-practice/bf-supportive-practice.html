@@ -28,6 +28,7 @@
                   <!-- Date of feed -->
                   <ion-item>
                       <ion-label color="black" stacked >Date of BFSP</ion-label>
+                      <!-- <ion-input [disabled]="true" (click)="datePickerDialog(bfsp)"></ion-input> -->
                       <ion-datetime  displayFormat="DD-MM-YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="bfsp.dateOfBFSP" [ngModelOptions]="{standalone: true}"></ion-datetime>
                       <ion-icon padding-top name="calendar" item-right></ion-icon>
                   </ion-item>
@@ -36,6 +37,7 @@
                     <ion-label color="black" stacked>Time at which BFSP occured</ion-label>
                     <ion-datetime displayFormat="HH:mm"
                       [(ngModel)] = "bfsp.timeOfBFSP" [ngModelOptions]="{standalone: true}"></ion-datetime>
+                    <!-- <ion-input [disabled]="true" (click)="timePickerDialog(bfsp)"></ion-input> -->
                     <ion-icon padding-top name="time" item-right></ion-icon>
                   </ion-item>
                   <p class="error" *ngIf="">

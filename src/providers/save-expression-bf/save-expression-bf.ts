@@ -35,25 +35,28 @@ export class SaveExpressionBfProvider {
   saveBfExpression(bfExpression: IBFExpression): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
-
       bfExpression.isSynced = false;
       bfExpression.dateOfExpression = this.datePipe.transform(new Date(bfExpression.dateOfExpression), 'dd-MM-yyyy')
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
-
         let bfExpressions: IBFExpression[] = [];
         if(val != null){
-          bfExpressions = val
-          bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
-          this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
-          .then(data=>{
-            resolve()
-          })
-          .catch(err=>{
-            reject(err.message);    
-          })
-
-
+          bfExpressions = val;
+          let index = bfExpressions.findIndex(d=>d.dateOfExpression === bfExpression.dateOfExpression 
+            && d.timeOfExpression === bfExpression.timeOfExpression);
+          
+          if(index < 0){
+            bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
+            this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
+              .then(data=>{
+                resolve()
+              })
+              .catch(err=>{
+                reject(err.message);    
+              })
+          }else{
+            reject(ConstantProvider.messages.duplicateTime);
+          }
         }else{
           bfExpressions.push(bfExpression)
           this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
@@ -72,7 +75,6 @@ export class SaveExpressionBfProvider {
       
     });
     return promise;
-    
   }
    /**
    * This method will check whether we have the record with given baby id, date and time.

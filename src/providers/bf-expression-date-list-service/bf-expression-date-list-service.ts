@@ -24,11 +24,9 @@ export class BFExpressionDateListProvider {
    * @returns Promise<string[]> string array of dates
    * @param babyid the patient id for which we are extracting data
    */
-  getExpressionBFDateListData(babyCode: string): Promise<string[]>{
+  getExpressionBFDateListData(babyCode: string): Promise<string[]> {
 
     let promise : Promise<string[]>= new Promise((resolve, reject) => {
-
-
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then(data=>{
         if(data != null){
@@ -48,17 +46,13 @@ export class BFExpressionDateListProvider {
           }else{
             resolve([]);  
           }
-
         }else{          
           resolve([]);  
         }
-
       })
       .catch(err=>{
         reject(err.message);
       })
-
-
     });
     return promise;
   }
@@ -72,47 +66,52 @@ export class BFExpressionDateListProvider {
   findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise<IBFExpression[]>{
 
     let promise: Promise<IBFExpression[]> = new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
-      .then(data=>{
-        if(data != null){
-          data = (data as IBFExpression[]).filter(d => d.babyCode === babyCode && d.dateOfExpression === date);
+      if(date !== null){
+        this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
+        .then(data=>{
+          if(data != null){
+            data = (data as IBFExpression[]).filter(d => d.babyCode === babyCode && d.dateOfExpression === date);
+            if((data as IBFExpression[]).length > 0){
+              (data as IBFExpression[]).forEach(d => {
+                let day = parseInt(d.dateOfExpression.split('-')[0]);
+                let month = parseInt(d.dateOfExpression.split('-')[1]);
+                let year = parseInt(d.dateOfExpression.split('-')[2]);
+                d.dateOfExpression = moment.utc(year+ "-"+ month+"-"+ day).toISOString()  
+              });
 
-
-          
-          (data as IBFExpression[]).forEach(d => {
-            let day = parseInt(d.dateOfExpression.split('-')[0]);
-            let month = parseInt(d.dateOfExpression.split('-')[1]);
-            let year = parseInt(d.dateOfExpression.split('-')[2]);
-            d.dateOfExpression = moment.utc(year+ "-"+ month+"-"+ day).toISOString()  
-          });
-
-          
-          if((data as IBFExpression[]).length > 0){
-            if(isNewExpression){
-              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            }else{
               resolve(data)
-            }
-            
-          }else{
-            if(isNewExpression){
-              resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
             }else{
-              resolve([])  
+              resolve([]);
             }
-            
-          }
-        }else{
-          if(isNewExpression){
-            resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            // if((data as IBFExpression[]).length > 0){
+            //   if(isNewExpression){
+            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            //   }else{
+            //     resolve(data)
+            //   }
+              
+            // }else{
+            //   if(isNewExpression){
+            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            //   }else{
+            //     resolve([])  
+            //   }
+              
+            // }
           }else{
-            resolve([])  
+            // if(isNewExpression){
+            //   resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
+            // }else{
+              resolve([])
+            // }
           }
-        }
-      })
-      .catch(err=>{
-        reject(err.message)
-      })
+        })
+        .catch(err=>{
+          reject(err.message)
+        })
+      }else{
+        resolve([])
+      }
     });
     return promise;
   }
@@ -156,7 +155,7 @@ export class BFExpressionDateListProvider {
     }
 
 
-    if(data != null && date != undefined){
+    if(data != null){
       (data as IBFExpression[]).splice(0, 0, bf)
     }else{
       data = [];

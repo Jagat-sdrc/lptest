@@ -28,7 +28,6 @@ export class ExpressionTimeFormPage {
   methodOfBfExpObject: any;
   locOfExpressionObject: any;
   maxDate:any;
-  maxTime:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
     private messageService: MessageProvider,
@@ -36,8 +35,6 @@ export class ExpressionTimeFormPage {
     private expressionBFdateService: BFExpressionDateListProvider,
     private datePipe: DatePipe) {
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
-    this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
-
   }
 
   ngOnInit() {
@@ -63,28 +60,6 @@ export class ExpressionTimeFormPage {
 
 
   toggleGroup(group, i) {
-    
-    this.methodOfBfExpObject = this.bFExpressions[i].methodOfExpression;
-    this.locOfExpressionObject = this.bFExpressions[i].locationOfExpression;
-
-    //getting the id of selected method of expression.
-    for (let j = 0; j < this.bfExpressionMethods.length; j++) {
-        let id = this.bfExpressionMethods[j].id
-        if (this.bFExpressions[i].methodOfExpression === id) {
-          this.methodOfBfExpObject= '' + this.bfExpressionMethods[i].name;
-          break;
-        }
-         
-    }
-     //getting the id of selected location of expression.
-
-     for (let k = 0; k < this.locationOfexpressionMethods.length; k++) {
-      let id = this.locationOfexpressionMethods[k].id
-      if (this.bFExpressions[i].locationOfExpression === id) {
-        this.locOfExpressionObject = '' + this.locationOfexpressionMethods[i].name;
-        break;
-      }
-    }
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {
@@ -105,22 +80,6 @@ export class ExpressionTimeFormPage {
    * @since 0.0.1
    */
   saveExpression(bfExpression: IBFExpression) {
-    //getting the id of selected method of expression.
-    for (let i = 0; i < this.bfExpressionMethods.length; i++) {
-      if (this.bfExpressionMethods[i].name === this.methodOfBfExpObject) {
-        bfExpression.methodOfExpression = this.bfExpressionMethods[i].id;
-        break;
-      }
-    }
-    //getting the id of selected location of expression.
-
-    for (let i = 0; i < this.locationOfexpressionMethods.length; i++) {
-      if (this.locationOfexpressionMethods[i].name === this.locOfExpressionObject) {
-        bfExpression.locationOfExpression = this.locationOfexpressionMethods[i].id;
-        break;
-      }
-    }
-
     //set validations for all the fields
     if(bfExpression.dateOfExpression === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfExpression);
@@ -143,8 +102,6 @@ export class ExpressionTimeFormPage {
         this.messageService.showErrorToast(err)
       })
     }
-
-
   }
   /**
  * This method is going to create a new expression entry for selected date and keep it on the top and open
@@ -152,16 +109,8 @@ export class ExpressionTimeFormPage {
  * @memberof ExpressionTimeFormPage
  */
   newExpression(){
-    let date:Date = null;
-    if(this.dataForBFEntryPage.selectedDate !== null) {
-      let day = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[0]);
-      let month = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[1]);
-      let year = parseInt(this.dataForBFEntryPage.selectedDate.split('-')[2]);
-      date = new Date(year, month, day);
-    }
-
     this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions,
-      this.dataForBFEntryPage.babyCode, date);
+      this.dataForBFEntryPage.babyCode, null);
     setTimeout(d => this.toggleGroup(this.bFExpressions[0], 0),200);
   }
 
