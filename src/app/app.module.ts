@@ -29,6 +29,7 @@ import { BfPostDischargeMenuServiceProvider } from '../providers/bf-post-dischar
 import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-service/bf-post-discharge-service';
 import { BFExpressionDateListProvider } from '../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 import { AppVersion } from '@ionic-native/app-version';
+import { SearchPipe } from '../pipes/search/search';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { AppVersion } from '@ionic-native/app-version';
     BfspDateListServiceProvider,
     BfPostDischargeMenuServiceProvider,
     BfPostDischargeServiceProvider,
-    AppVersion
+    AppVersion,
+    SearchPipe
   ]
 })
 export class AppModule {}

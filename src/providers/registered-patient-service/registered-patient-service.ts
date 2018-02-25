@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
+import { SearchPipe } from '../../pipes/search/search';
 
 /**
  * This service will only provide service to Registered Patient component
@@ -13,7 +14,7 @@ export class RegisteredPatientServiceProvider {
 
   patients: IPatient[];
 
-  constructor(private storage: Storage){}
+  constructor(private storage: Storage, private searchPipe: SearchPipe){}
 
   /**
    * 
@@ -71,12 +72,6 @@ export class RegisteredPatientServiceProvider {
   */
   getSearchedPatients(searchTerm: string): IPatient[]{
     
-    if(this.patients != undefined && this.patients != null){
-      return this.patients.filter((patient) => {
-        return patient.babyCode.indexOf(searchTerm) > -1;
-      }); 
-    }else{
-      return this.patients
-    }
+    return this.searchPipe.transform(this.patients, searchTerm)
   }
 }

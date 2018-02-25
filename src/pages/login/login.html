@@ -32,7 +32,7 @@
   <br/>
   <br/>
 
-  <div text-center>v{{appVersionNumber}}</div>
+  <div text-center *ngIf="!(appVersionNumber === undefined || appVersionNumber === null)">v{{appVersionNumber}}</div>
   
 
 </ion-content>
