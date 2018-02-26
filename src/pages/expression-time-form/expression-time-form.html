@@ -16,7 +16,7 @@
 <ion-content padding>
   <ion-list>
     
-      <ion-item class="item-stable" *ngFor="let item of bFExpressions; let i=index" text-wrap>
+      <ion-item class="item-stable" *ngFor="let item of bFExpressions | orderByTimeExpressionFrom; let i=index" text-wrap>
           <div>
             <div class="acordion-title" (click)="toggleGroup(item,i)" [ngClass]="{active: isGroupShown(item)}">
               <div>

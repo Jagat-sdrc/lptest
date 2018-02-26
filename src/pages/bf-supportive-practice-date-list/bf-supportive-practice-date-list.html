@@ -11,7 +11,7 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let date of bfspDateListData; let i = index">
+  <ion-card *ngFor="let date of bfspDateListData | orderByDate; let i = index">
     <ion-card-content (click)='dateSelected(date)'>
       <ion-row>
         <ion-col>
