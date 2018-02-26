@@ -27,12 +27,12 @@
 
   <button class="login-button" ion-button block (click)="login()">Login</button>
 
-  <div text-center class="text-link-CreatNewAcc" (click)="signUp()">Create New Account</div>
-  <div text-center class="text-link-forgotPassword" (click)="forgotPassword()">Forgot Password ?</div>
+  <div text-center class="text-link-CreatNewAcc"><span (click)="signUp()">Create New Account</span></div>
+  <div text-center class="text-link-forgotPassword"><span (click)="forgotPassword()">Forgot Password ?</span></div>
   <br/>
   <br/>
 
-  <div text-center *ngIf="!(appVersionNumber === undefined || appVersionNumber === null)">v{{appVersionNumber}}</div>
+  <div text-center *ngIf="!(appVersionNumber === undefined || appVersionNumber === null)">Version {{appVersionNumber}}</div>
   
 
 </ion-content>

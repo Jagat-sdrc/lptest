@@ -2,8 +2,8 @@ interface IPatientSortBy {
     deliveryDate: string;
     deliveryTime: string;
     weight: string;
-    inbornPatient: string;
-    outbornPatient: string;
+    inPatient: string;
+    outPatient: string;
     vaginal: string;
     csection: string;
     other: string;

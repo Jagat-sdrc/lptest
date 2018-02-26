@@ -23,7 +23,7 @@
       <ion-spinner></ion-spinner>
   </div>
   <ion-list>
-      <ion-item wrap-text no-lines *ngFor="let item of patientList | sortPatient:sortBy; let i = index">
+      <ion-item wrap-text no-lines *ngFor="let item of patientList; let i = index">
         <ion-card class="card-outside">
           <ion-row class="card-inside" (press)="deletePatient(item.babyCode)" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital,item.deliveryDate)">
             <ion-col md-6>
@@ -31,11 +31,12 @@
               <div>Baby Id: {{item.babyCode}}</div>
             </ion-col>
             <ion-col md-6 text-right>
-              <div class="form-group">{{item.deliveryDate}},{{item.deliveryTime}}</div>
-              <div>{{item.babyCodeHospital}}</div>
+              <div class="form-group">{{item.deliveryDate}} {{item.deliveryTime}}</div>
+              <div>Hospital baby id: {{item.babyCodeHospital}}</div>
             </ion-col>
           </ion-row>
         </ion-card>
       </ion-item>
   </ion-list>
+  <h4 class="noRecords" *ngIf="patientList === undefined || patientList.length === 0">No record found</h4>
 </ion-content>

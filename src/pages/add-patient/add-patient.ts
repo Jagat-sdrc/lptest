@@ -105,7 +105,8 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.inpatient_outpatient.setValue(""),
     this.patientForm.controls.admission_date.setValue(null),
     this.patientForm.controls.baby_admitted.setValue(null),
-    this.patientForm.controls.nicu_admission.setValue(null)
+    this.patientForm.controls.nicu_admission.setValue(null),
+    this.patientForm.controls.discharge_date.setValue(null)
   }
   
   ionViewDidEnter(){
@@ -266,7 +267,7 @@ export class AddPatientPage implements OnInit{
 
      outpatientAdmission(){
        if(this.patientForm.controls.inpatient_outpatient.value.id != undefined || this.patientForm.controls.inpatient_outpatient.value.id != null){
-        if(this.patientForm.controls.inpatient_outpatient.value.id==ConstantProvider.typeDetailsIds.outbornPatient){
+        if(this.patientForm.controls.inpatient_outpatient.value.id==ConstantProvider.typeDetailsIds.outPatient){
           this.outPatientAdmissionStatus = true;
          } else {
           this.outPatientAdmissionStatus = false;
@@ -315,8 +316,8 @@ export class AddPatientPage implements OnInit{
      validateGestational() {
       if(!this.hasError){
         if (this.patientForm.controls.gestational_age.value != "" || this.patientForm.controls.gestational_age.value != null){
-          if (this.patientForm.controls.gestational_age.value < 28 ||
-            this.patientForm.controls.gestational_age.value > 32) {
+          if (this.patientForm.controls.gestational_age.value < 38 ||
+            this.patientForm.controls.gestational_age.value > 42) {
               this.hasError = true;
            this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyGestational)
            .then((data)=>{
@@ -338,56 +339,51 @@ export class AddPatientPage implements OnInit{
       * @since 0.0.1
       */
      submit(){
-      this.outpatientAdmission();
-      this.validateMotherAge();
-      this.validateBabyWeight();
-      this.validateGestational();
-      this.validateDischargeDate();
-      if(!this.patientForm.valid){
-        this.resetStatus = true;
-        Object.keys(this.patientForm.controls).forEach(field => {
-          const control = this.patientForm.get(field);
-          control.markAsTouched({ onlySelf: true });
-        });
-      } else {
-        this.resetStatus = false;
-
-        //Initialize the add new patient object
-        this.patient = {
-          babyCode: this.autoBabyId,
-          babyCodeHospital: this.patientForm.controls.hospital_baby_id.value,
-          babyOf: this.patientForm.controls.mother_name.value,
-          mothersAge: parseInt(this.patientForm.controls.mother_age.value),
-          deliveryDate: this.patientForm.controls.delivery_date.value,
-          deliveryTime: this.patientForm.controls.delivery_time.value,
-          deliveryMethod: this.patientForm.controls.delivery_method.value.id,
-          babyWeight: parseFloat(this.patientForm.controls.baby_weight.value),
-          gestationalAgeInWeek: parseInt(this.patientForm.controls.gestational_age.value),
-          mothersPrenatalIntent: this.patientForm.controls.intent_provide_milk.value.id,
-          parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value.id,
-          timeTillFirstExpression: this.patientForm.controls.first_exp_time.value,
-          inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.id,
-          admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
-          babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
-          nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
-          dischargeDate: this.patientForm.controls.discharge_date.value,
-          isSynced: false,
-          syncFailureMessage: null,
-          userId: this.userService.getUser().email
-
+        this.outpatientAdmission();
+        if(!this.patientForm.valid){
+          this.resetStatus = true;
+          Object.keys(this.patientForm.controls).forEach(field => {
+            const control = this.patientForm.get(field);
+            control.markAsTouched({ onlySelf: true });
+          });
+        } else {
+          this.resetStatus = false;
+  
+          //Initialize the add new patient object
+          this.patient = {
+            babyCode: this.autoBabyId,
+            babyCodeHospital: this.patientForm.controls.hospital_baby_id.value,
+            babyOf: this.patientForm.controls.mother_name.value,
+            mothersAge: parseInt(this.patientForm.controls.mother_age.value),
+            deliveryDate: this.patientForm.controls.delivery_date.value,
+            deliveryTime: this.patientForm.controls.delivery_time.value,
+            deliveryMethod: this.patientForm.controls.delivery_method.value.id,
+            babyWeight: parseFloat(this.patientForm.controls.baby_weight.value),
+            gestationalAgeInWeek: parseInt(this.patientForm.controls.gestational_age.value),
+            mothersPrenatalIntent: this.patientForm.controls.intent_provide_milk.value.id,
+            parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value.id,
+            timeTillFirstExpression: this.patientForm.controls.first_exp_time.value,
+            inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.id,
+            admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
+            babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
+            nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
+            dischargeDate: this.patientForm.controls.discharge_date.value,
+            isSynced: false,
+            syncFailureMessage: null,
+            userId: this.userService.getUser().email
+  
+          }
+  
+          this.addNewPatientService.saveNewPatient(this.patient)
+            .then(data=> {
+            this.messageService.showSuccessToast("save successful!");
+            this.navCtrl.pop();
+          })
+            .catch(err =>{
+            this.messageService.showErrorToast(err)
+          })
         }
-
-        this.addNewPatientService.saveNewPatient(this.patient)
-          .then(data=> {
-          this.messageService.showSuccessToast("save successful!");
-          this.navCtrl.pop();
-        })
-          .catch(err =>{
-          this.messageService.showErrorToast(err)
-        })
       }
-    }
-
 
     /**
      * This method will set the value taken from the db to ui component.
@@ -420,36 +416,39 @@ export class AddPatientPage implements OnInit{
     }
 
     datePickerDialog(type: string){
+      if(!this.hasError){
         this.datePicker.show({
-        mode: 'date',
-        date: new Date(),
-        allowOldDates: false,
-        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-      }).then(
-        date => {
-          switch(type){
-            case ConstantProvider.datePickerType.deliveryDate:
-              this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"));
-              if(this.patientForm.controls.discharge_date.value != ""){
-                this.patientForm.controls.discharge_date.setValue(null);
-              }
-            break;
-            case ConstantProvider.datePickerType.addmissionDate:
-              this.patientForm.controls.admission_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
-            break;
-            case ConstantProvider.datePickerType.dischargeDate:
-              this.patientForm.controls.discharge_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
-            break;
-          }
-        },
-        err => console.log('Error occurred while getting date: ', err)
-      );
+          mode: 'date',
+          date: new Date(),
+          maxDate: new Date().valueOf(),
+          androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+        }).then(
+          date => {
+            switch(type){
+              case ConstantProvider.datePickerType.deliveryDate:
+                this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"));
+                if(this.patientForm.controls.discharge_date.value != ""){
+                  this.patientForm.controls.discharge_date.setValue(null);
+                }
+              break;
+              case ConstantProvider.datePickerType.addmissionDate:
+                this.patientForm.controls.admission_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
+              break;
+              case ConstantProvider.datePickerType.dischargeDate:
+                this.patientForm.controls.discharge_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
+              break;
+            }
+          },
+          err => console.log('Error occurred while getting date: ', err)
+        );
+      }
     }
 
     timePickerDialog(){
       this.datePicker.show({
       date: new Date(),
       mode: 'time',
+      is24Hour: true,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(
       time => {
@@ -468,7 +467,21 @@ export class AddPatientPage implements OnInit{
      */
     validateDischargeDate(){
       if(this.patientForm.controls.delivery_date.value != ""){
-        if(this.patientForm.controls.discharge_date.value > this.patientForm.controls.delivery_date.value){
+
+        let dateA = this.patientForm.controls.discharge_date.value;
+        let dayA = parseInt(dateA.split('-')[0])
+        let monthA = parseInt(dateA.split('-')[1])
+        let yearA = parseInt(dateA.split('-')[2])
+
+        let dateB = this.patientForm.controls.delivery_date.value;
+        let dayB = parseInt(dateB.split('-')[0])
+        let monthB = parseInt(dateB.split('-')[1])
+        let yearB = parseInt(dateB.split('-')[2])
+
+        let dateOfA: Date = new Date(yearA, monthA, dayA)
+        let dateOfB: Date = new Date(yearB, monthB, dayB)
+
+        if(dateOfA < dateOfB){
           this.patientForm.controls.discharge_date.setValue(null);
         }
       }

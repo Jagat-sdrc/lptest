@@ -30,6 +30,7 @@ import { BfPostDischargeServiceProvider } from '../providers/bf-post-discharge-s
 import { BFExpressionDateListProvider } from '../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 import { AppVersion } from '@ionic-native/app-version';
 import { SearchPipe } from '../pipes/search/search';
+import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { SearchPipe } from '../pipes/search/search';
     BfPostDischargeMenuServiceProvider,
     BfPostDischargeServiceProvider,
     AppVersion,
-    SearchPipe
+    SearchPipe,
+    SortPatientPipe
   ]
 })
 export class AppModule {}

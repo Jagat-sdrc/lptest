@@ -52,4 +52,9 @@ interface IMessage{
     emailIdExists: string;
     dateOfBfpd: string;
     bfStatusPd: string;
+    selectCountry: string;
+    selectState: string;
+    selectDistrict: string;
+    selectInstitute: string;
+    emailNoted: string;
 }
