@@ -6,6 +6,7 @@ import 'rxjs/add/operator/debounceTime';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { MessageProvider } from '../../providers/message/message';
 import 'rxjs/add/operator/debounceTime';
+import { SortPatientPipe } from '../../pipes/sort-patient/sort-patient';
 
 @IonicPage()
 @Component({
@@ -16,13 +17,13 @@ export class RegisteredPatientPage {
 
   searchTerm: string = '';
   searchControl: FormControl;
-  patientList: any;
+  patientList: IPatient[] = [];
   sortBy: string;
   searching: any = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
-    private messageService: MessageProvider, private menuCtrl: MenuController) {    
+    private messageService: MessageProvider, private menuCtrl: MenuController, private sortPatient: SortPatientPipe) {    
   }
 
   ionViewWillEnter(){
@@ -81,18 +82,12 @@ export class RegisteredPatientPage {
    * @since 0.0.1
   */
   sorting(){
-    // this.dataService.getTxnDataCount();
     let alert = this.alertCtrl.create({enableBackdropDismiss:false});
     alert.setTitle('Sort By');
     alert.addInput({
       type: 'radio',
       label: 'Delivery Date',
       value: 'Delivery Date'
-    });
-     alert.addInput({
-      type: 'radio',
-      label: 'Delivery Time',
-      value: 'Delivery Time'
     });
     alert.addInput({
       type: 'radio',
@@ -101,13 +96,13 @@ export class RegisteredPatientPage {
     });
     alert.addInput({
       type: 'radio',
-      label: 'Inborn Patient',
-      value: 'Inborn Patient'
+      label: 'Inpatient',
+      value: 'Inpatient'
     });
     alert.addInput({
       type: 'radio',
-      label: 'Outborn Patient',
-      value: 'Outborn Patient'
+      label: 'Outpatient',
+      value: 'Outpatient'
     });
     alert.addInput({
       type: 'radio',
@@ -138,20 +133,17 @@ export class RegisteredPatientPage {
              case "Delivery Date":
              this.sortBy = ConstantProvider.patientSortBy.deliveryDate
              break;
-             case "Delivery Time":
-             this.sortBy = ConstantProvider.patientSortBy.deliveryTime
-             break;
              case "Weight":
              this.sortBy = ConstantProvider.patientSortBy.weight
              break;
-             case "Inborn Patient":
-             this.sortBy = ConstantProvider.patientSortBy.inbornPatient
+             case "Inpatient":
+             this.sortBy = ConstantProvider.patientSortBy.inPatient
              break;
-             case "Outborn Patient":
-             this.sortBy = ConstantProvider.patientSortBy.outbornPatient
+             case "Outpatient":
+             this.sortBy = ConstantProvider.patientSortBy.outPatient
              break;
-
              case "Vaginal":
+             debugger;
              this.sortBy = ConstantProvider.patientSortBy.vaginal
              break;
              case "C-section":
@@ -164,6 +156,7 @@ export class RegisteredPatientPage {
              this.sortBy = ConstantProvider.patientSortBy.unknown
              break;
            }
+           this.patientList = this.sortPatient.transform(this.patientList,this.sortBy);
       }
     });
     alert.present();
@@ -176,9 +169,11 @@ export class RegisteredPatientPage {
    * @since 0.0.1
   */
   findAllPatients(){
+    debugger;
     this.registeredPatientService.findAllPatients()
     .then(data=>{
       this.patientList = data;
+      this.patientList = this.sortPatient.transform(this.patientList,this.sortBy);
     })
     .catch(err=>{
       this.messageService.showErrorToast(err);

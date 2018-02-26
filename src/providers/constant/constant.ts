@@ -80,8 +80,8 @@ export class ConstantProvider {
     deliveryDate: "deliveryDate",
     deliveryTime: "deliveryTime",
     weight: "weight",
-    inbornPatient: "inbornPatient",
-    outbornPatient: "outbornPatient",
+    inPatient: "inPatient",
+    outPatient: "outPatient",
     vaginal: "vaginal",
     csection: "csection",
     other: "other",
@@ -91,8 +91,8 @@ export class ConstantProvider {
   static passwordFormat = "@123#!"
 
   static typeDetailsIds = {
-    inbornPatient: 12,
-    outbornPatient: 13,
+    inPatient: 12,
+    outPatient: 13,
     vaginal: 1,
     csection: 2,
     other: 3,
@@ -121,15 +121,15 @@ export class ConstantProvider {
     enterVolumeOfMilkFromRight:'Please enter volume of milk expressed from right',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
     invalidCredentials: 'Invalid credentials!',
-    forgotPasswordMessage: 'Send an email to vijaya.lakshmi@accessh.org from your email requesting for your password.',
+    forgotPasswordMessage: 'Send an email to <u>vijaya.lakshmi@accessh.org</u> from your email requesting for your password.',
     registrationSuccessful: 'Registration successful',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',
     userConstruction: "Under construction!",
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
-    babyOverWeight: "Baby's weight is more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
-    babyGestational: "Gestational age in weeks is more than the age (28-32 age). Do you want to proceed with the entry?",
-    motherAge: "Mother's delivery age is more than the normal age (15-49 age). Do you want to proceed with the entry?",
+    babyOverWeight: "Baby's weight is less/more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
+    babyGestational: "A normal pregnancy ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
+    motherAge: "Reproductive age group for women lies in the range between 15-49 years. Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
@@ -160,7 +160,12 @@ export class ConstantProvider {
     babyWeight: 'Please enter weight of the baby',
     emailIdExists: 'Email id exists!',
     dateOfBfpd: 'Please enter date of breastfeeding post discharge',
-    bfStatusPd: 'Please enter breastfeeding status post discharge'
+    bfStatusPd: 'Please enter breastfeeding status post discharge',
+    selectCountry: 'Select Country',
+    selectState: 'Select State',
+    selectDistrict: 'Select District',
+    selectInstitute: 'Select Institute',
+    emailNoted: 'Yes, I understand the process that would help me to receive my password via email.'
   };
   
 /**

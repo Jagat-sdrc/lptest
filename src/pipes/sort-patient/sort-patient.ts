@@ -60,58 +60,82 @@ export class SortPatientPipe implements PipeTransform {
             }
           });
         break;
-        case ConstantProvider.patientSortBy.inbornPatient:
+        case ConstantProvider.patientSortBy.inPatient:
+        if((patients.filter(d => d.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.inPatient)).length > 0){
           patients.sort((a: IPatient, b: IPatient) => {
-            if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.inbornPatient) {
+            if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.inPatient) {
               return -1;
             } else {
               return 1;
             } 
           });
+        }else{
+          patients = [];
+        }
         break;
-        case ConstantProvider.patientSortBy.outbornPatient:
-        patients.sort((a: IPatient, b: IPatient) => {
-          if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.outbornPatient) {
-            return -1;
-          } else {
-            return 1;
-          } 
-        });
+        case ConstantProvider.patientSortBy.outPatient:
+        if((patients.filter(d => d.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.outPatient)).length > 0){
+          patients.sort((a: IPatient, b: IPatient) => {
+            if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.outPatient) {
+              return -1;
+            } else {
+              return 1;
+            } 
+          });
+        }else{
+          patients = [];
+        }
         break;
         case ConstantProvider.patientSortBy.vaginal:
-        patients.sort((a: IPatient, b: IPatient) => {
-          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.vaginal) {
-            return -1;
-          } else {
-            return 1;
-          } 
-        });
+        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.vaginal)).length > 0){
+          patients.sort((a: IPatient, b: IPatient) => {
+            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.vaginal) {
+              return -1;
+            } else {
+              return 1;
+            } 
+          });
+        }else{
+          patients = [];
+        }
         break;
         case ConstantProvider.patientSortBy.csection:
-        patients.sort((a: IPatient, b: IPatient) => {
-          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.csection) {
-            return -1;
-          } else {
-            return 1;
-          } 
-        });
+        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.csection)).length > 0){
+          patients.sort((a: IPatient, b: IPatient) => {
+            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.csection) {
+              return -1;
+            } else {
+              return 1;
+            } 
+          });
+        }else{
+          patients = [];
+        }
         break;
         case ConstantProvider.patientSortBy.other:
-        patients.sort((a: IPatient, b: IPatient) => {
-          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.other) {
-            return -1;
-          } else {
-            return 1;
-          } 
-        });
+        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.other)).length > 0){
+          patients.sort((a: IPatient, b: IPatient) => {
+            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.other) {
+              return -1;
+            } else {
+              return 1;
+            } 
+          });
+        }else{
+          patients = [];
+        }
         case ConstantProvider.patientSortBy.unknown:
-        patients.sort((a: IPatient, b: IPatient) => {
-          if (a.deliveryMethod === ConstantProvider.typeDetailsIds.unknown) {
-            return -1;
-          } else {
-            return 1;
-          } 
-        });
+        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.unknown)).length > 0){        
+          patients.sort((a: IPatient, b: IPatient) => {
+            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.unknown) {
+              return -1;
+            } else {
+              return 1;
+            } 
+          });
+        }else{
+          patients = [];
+        }
         break;
       }
       return patients;
