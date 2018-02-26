@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { BfPostDischargeServiceProvider } from '../../providers/bf-post-discharge-service/bf-post-discharge-service';
 import { MessageProvider } from '../../providers/message/message';
 import { ConstantProvider } from '../../providers/constant/constant';
+import { DatePicker } from '@ionic-native/date-picker';
+import { DatePipe } from '@angular/common';
 
 /**
  * Generated class for the BfPostDischargePage page.
@@ -21,6 +23,7 @@ export class BfPostDischargePage {
   babyCode: string;
   timeOfFeedList: ITypeDetails[];
   bfStatusPostDischargeList: ITypeDetails[];
+  minDate: any;
   maxDate:any;
   formHeading: string;
   bfpd: IBFPD = {
@@ -36,15 +39,16 @@ export class BfPostDischargePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private bfPostDischargeService: BfPostDischargeServiceProvider,
-    private messageService: MessageProvider,
+    private messageService: MessageProvider, private datePicker: DatePicker,
+    private datePipe: DatePipe
   ) {
       
   }
 
   ngOnInit() {
-
     this.maxDate = this.bfPostDischargeService.getMaxTime();
     this.babyCode = this.navParams.data.babyCode;
+    this.minDate = this.navParams.data.deliveryDate.split('-');
 
     this.bfPostDischargeService.findByBabyCodeAndTimeOfBreastFeedingId(this.babyCode, this.navParams.data.menuItemId)
       .then(data => {
@@ -87,23 +91,6 @@ export class BfPostDischargePage {
         this.messageService.showErrorToast(err)
       })
     }
-
-    // if(!this.postDischargeForm.valid){
-    //   Object.keys(this.postDischargeForm.controls).forEach(field => {
-    //     const control = this.postDischargeForm.get(field);
-    //     control.markAsTouched({ onlySelf: true });
-    //   });
-    // } else {
-    //   this.postDischargeForm.get('babyCode').setValue(this.babyCode);
-    //   this.bfPostDischargeService.saveNewBfPostDischargeForm(this.postDischargeForm.value)
-    //   .then(data=> {
-    //     this.messageService.showSuccessToast("save successful!");
-    //     this.navCtrl.pop();
-    //   })
-    //   .catch(err =>{
-    //     this.messageService.showErrorToast(err)
-    //   })
-    // }
   };
 
   
@@ -124,6 +111,29 @@ export class BfPostDischargePage {
     .catch(err=>{
       this.messageService.showErrorToast(err)
     })
+  }
+
+  /**
+   * This following method will help in opening the native date and time picker respectively.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   */
+
+  datePickerDialog(bfpd: IBFPD){
+    let day = this.minDate[0];
+    let month = this.minDate[1];
+    let year = this.minDate[2];
+    this.datePicker.show({
+    date: new Date(),
+    maxDate: new Date().valueOf(),
+    mode: 'date',
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+    }).then(
+      date => {
+        bfpd.dateOfBreastFeeding = this.datePipe.transform(date,"dd-MM-yyyy")
+      },
+      err => console.log('Error occurred while getting date: ', err)
+    );
   }
 
 }

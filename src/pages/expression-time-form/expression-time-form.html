@@ -28,26 +28,28 @@
             <div style="margin-top:15px" *ngIf="isGroupShown(item)">
                 <ion-item>
                     <ion-label color="black" stacked>Date of Expression</ion-label>
-                    <ion-datetime displayFormat="DD-MM-YYYY" [max]="maxDate" [(ngModel)]="item.dateOfExpression"></ion-datetime>
+                    <ion-input [readonly]="true" [(ngModel)]="item.dateOfExpression" (focus)="datePickerDialog(item)" 
+                      [ngModelOptions]="{standalone: true}"></ion-input>
                     <ion-icon padding-top name="calendar" item-right></ion-icon>
                   </ion-item>
 
               <ion-item>
                 <ion-label color="black" stacked>Time of expression </ion-label>
-                <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.timeOfExpression"></ion-datetime>
+                <ion-input [readonly]="true" [(ngModel)] = "item.timeOfExpression" (focus)="timePickerDialog(item)" 
+                  [ngModelOptions]="{standalone: true}"></ion-input>
                 <ion-icon padding-top name="time" item-right></ion-icon>
               </ion-item>                   
   
               <ion-item>
                 <ion-label stacked>Method of expression</ion-label>
-                <ion-select [(ngModel)]="item.methodOfExpression">
+                <ion-select [(ngModel)]="item.methodOfExpression" [ngModelOptions]="{standalone: true}">
                   <ion-option *ngFor="let bfExpMethod of bfExpressionMethods" text-wrap [value]="bfExpMethod.id">{{bfExpMethod.name}}</ion-option>               
                 </ion-select>
               </ion-item>
              
               <ion-item>
                 <ion-label stacked>Location where expression</ion-label>
-                <ion-select [(ngModel)]="item.locationOfExpression">
+                <ion-select [(ngModel)]="item.locationOfExpression" [ngModelOptions]="{standalone: true}">
                   <ion-option *ngFor="let locOfExpMethod of locationOfexpressionMethods" text-wrap [value]="locOfExpMethod.id">{{locOfExpMethod.name}}</ion-option>               
                 </ion-select>
               </ion-item>

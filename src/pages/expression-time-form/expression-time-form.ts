@@ -6,6 +6,7 @@ import { SaveExpressionBfProvider } from '../../providers/save-expression-bf/sav
 import { DatePipe } from '@angular/common';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { BFExpressionDateListProvider } from '../../providers/bf-expression-date-list-service/bf-expression-date-list-service';
+import { DatePicker } from '@ionic-native/date-picker';
 /**
  * Generated class for the ExpressionTimeFormPage page.
  *
@@ -33,7 +34,7 @@ export class ExpressionTimeFormPage {
     private messageService: MessageProvider,
     private bfExpressionTimeService: SaveExpressionBfProvider,
     private expressionBFdateService: BFExpressionDateListProvider,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe, private datePicker: DatePicker) {
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
   }
 
@@ -186,6 +187,41 @@ export class ExpressionTimeFormPage {
       this.messageService.showErrorToast(err)
       this.bFExpressions = []
     })
+  }
 
+  /**
+   * This following two methods i.e datepicker dialog and timepicker dialog will
+   * help in opening the native date and time picker respectively.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   */
+  
+  datePickerDialog(bfExpForm: IBFExpression){
+    this.datePicker.show({
+    date: new Date(),
+    maxDate: new Date(),
+    allowFutureDates: false,
+    mode: 'date',
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+    }).then(
+      date => {
+        bfExpForm.dateOfExpression = this.datePipe.transform(date,"dd-MM-yyyy")
+      },
+      err => console.log('Error occurred while getting date: ', err)
+    );
+  }
+
+  timePickerDialog(bfExpForm: IBFExpression){
+    this.datePicker.show({
+    date: new Date(),
+    maxDate: new Date().valueOf(),
+    mode: 'time',
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+  }).then(
+    time => {
+      bfExpForm.timeOfExpression = this.datePipe.transform(time,"HH:mm")
+    },
+    err => console.log('Error occurred while getting time: ', err)
+    );
   }
 }

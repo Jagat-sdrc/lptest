@@ -186,6 +186,13 @@ export class BfSupportivePracticePage {
     }
   }
 
+  /**
+   * This following two methods i.e datepicker dialog and timepicker dialog will
+   * help in opening the native date and time picker respectively.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   */
+
   datePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
     date: new Date(),
@@ -204,6 +211,7 @@ export class BfSupportivePracticePage {
   timePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
     date: new Date(),
+    maxDate: new Date().valueOf(),
     mode: 'time',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
   }).then(

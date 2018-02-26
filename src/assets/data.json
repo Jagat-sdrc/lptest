@@ -61,7 +61,7 @@
         },
         {
             "id": 2,
-            "name": "C-Section",
+            "name": "C-section",
             "typeId": 1
         },
         {
@@ -86,7 +86,7 @@
         },
         {
             "id": 7,
-            "name": "Unkown",
+            "name": "Unknown",
             "typeId": 2
         },
         {
@@ -121,269 +121,303 @@
         },
         {
             "id": 14,
-            "name": "Isolation Unit",
+            "name": "Level 3 NICU/High Dependency",
             "typeId": 5
         },
         {
             "id": 15,
-            "name": "SNCU",
+            "name": "Level 2 SNCU/Low Dependency",
             "typeId": 5
-        },  
+        },
         {
             "id": 16,
-            "name": "Step-down unit",
+            "name": "Level 1 NICU",
             "typeId": 5
-        }, 
+        },
         {
             "id": 17,
-            "name": "KMC unit",
+            "name": "Step-down unit",
             "typeId": 5
-        },      
+        },
         {
             "id": 18,
-            "name": "Mternity ward",
+            "name": "KMC unit",
             "typeId": 5
-        },     
+        },
         {
             "id": 19,
-            "name": "Home",
+            "name": "Maternity ward",
             "typeId": 5
-        }, 
+        },
         {
             "id": 20,
-            "name": "Healthy",
+            "name": "Prematurity < 34 weeks",
             "typeId": 6
-        },       
+        },
         {
             "id": 21,
-            "name": "Low birth weight",
+            "name": "Low birth weight < 1800gm",
             "typeId": 6
         },
         {
             "id": 22,
-            "name": "Weight loss",
+            "name": "Perinatal asphyxia",
             "typeId": 6
         },
         {
             "id": 23,
-            "name": "Infection",
+            "name": "Neonatal jaundice",
             "typeId": 6
         },
         {
             "id": 24,
-            "name": "Respiratory distress",
+            "name": "Respiratory distress (rate > 60 or grunt/retractions)",
             "typeId": 6
         },
         {
             "id": 25,
-            "name": "Had/needs surgery",
+            "name": "Large baby (> 4kg at 40 weeks)",
             "typeId": 6
         },
         {
             "id": 26,
-            "name": "Thermoregulation",
+            "name": "Refusal to feed",
             "typeId": 6
         },
         {
             "id": 27,
-            "name": "Jaundice",
+            "name": "Central cyanosis",
             "typeId": 6
         },
         {
             "id": 28,
-            "name": "Other",
+            "name": "Apnea/gasping",
             "typeId": 6
         },
         {
             "id": 29,
-            "name": "Not specified",
+            "name": "Neonatal convulsions",
             "typeId": 6
         },
         {
             "id": 30,
-            "name": "Breastfeed (no volume input required)",
-            "typeId": 7
+            "name": "Baby of diabetic mother",
+            "typeId": 6
         },
         {
             "id": 31,
+            "name": "Oligura",
+            "typeId": 6
+        },
+        {
+            "id": 32,
+            "name": "Abdominal distension",
+            "typeId": 6
+        },
+        {
+            "id": 33,
+            "name": "Hypothermia < 35.4",
+            "typeId": 6
+        },
+        {
+            "id": 34,
+            "name": "Hyperthermia > 37.5",
+            "typeId": 6
+        },
+        {
+            "id": 35,
+            "name": "Hypoglycemia < 45mg",
+            "typeId": 6
+        },
+        {
+            "id": 36,
+            "name": "Shock",
+            "typeId": 6
+        },
+        {
+            "id": 37,
+            "name": "Meconium aspiration",
+            "typeId": 6
+        },
+        {
+            "id": 38,
+            "name": "Bleeding",
+            "typeId": 6
+        },
+        {
+            "id": 39,
+            "name": "Diarrhoea",
+            "typeId": 6
+        },
+        {
+            "id": 40,
+            "name": "Congenital malformation",
+            "typeId": 6
+        },
+        {
+            "id": 41,
+            "name": "Unconsciousness",
+            "typeId": 6
+        },
+        {
+            "id": 42,
+            "name": "Any other",
+            "typeId": 6
+        },
+        {
+            "id": 43,
+            "name": "Breastfeed (no volumne input required)",
+            "typeId": 7
+        },
+        {
+            "id": 44,
             "name": "Single pump",
             "typeId": 7
         },
         {
-            "id": 32,
+            "id": 45,
             "name": "Double pump",
             "typeId": 7
         },
         {
-            "id": 33,
-            "name": "Hand",
+            "id": 46,
+            "name": "Manual (Hand)",
             "typeId": 7
-        },  
+        },
         {
-            "id": 34,
+            "id": 47,
             "name": "During skin to skin",
             "typeId": 8
-        },  
+        },
         {
-            "id": 35,
+            "id": 48,
             "name": "Infant bed side (not in KMC)",
             "typeId": 8
         },
         {
-            "id": 36,
+            "id": 49,
             "name": "Expression room",
             "typeId": 8
         },
         {
-            "id": 37,
+            "id": 50,
             "name": "Maternity ward",
             "typeId": 8
         },
         {
-            "id": 38,
+            "id": 51,
             "name": "Home",
             "typeId": 8
         },
         {
-            "id": 39,
+            "id": 52,
             "name": "Other",
             "typeId": 8
         },
-       
         {
-            "id": 40,
+            "id": 53,
             "name": "Kangaroo Mother Care (KMC)",
             "typeId": 9
         },
         {
-            "id": 41,
+            "id": 54,
             "name": "Non-nutritive sucking (at the breast) (NNS)",
             "typeId": 9
         },
         {
-            "id": 42,
+            "id": 55,
             "name": "Oral care (oral therapy/colostrum painting)",
             "typeId": 9
         },
         {
-            "id": 43,
+            "id": 56,
             "name": "Mother",
             "typeId": 10
         },
         {
-            "id": 44,
+            "id": 57,
             "name": "Father",
             "typeId": 10
         },
         {
-            "id": 45,
+            "id": 58,
             "name": "Grandparent",
             "typeId": 10
         },
         {
-            "id": 46,
+            "id": 59,
             "name": "Nurse",
             "typeId": 10
         },
         {
-            "id": 47,
+            "id": 60,
             "name": "Other",
             "typeId": 10
         },
         {
-            "id": 48,
+            "id": 61,
             "name": "Parenteral (no volume data required)",
             "typeId": 11
         },
         {
-            "id": 49,
+            "id": 62,
             "name": "Parenteral + Enteral (enteral volume entered)",
             "typeId": 11
         },
         {
-            "id": 50,
+            "id": 63,
             "name": "Enteral only",
             "typeId": 11
         },
         {
-            "id": 51,
+            "id": 64,
             "name": "Enteral + Oral",
             "typeId": 11
         },
         {
-            "id": 52,
+            "id": 65,
             "name": "Oral (cup/spoon/bottle/other)",
             "typeId": 11
         },
         {
-            "id": 53,
-            "name": "Breastfeed (no volume input required)",
+            "id": 66,
+            "name": "Breastfeed (no volumne input required)",
             "typeId": 11
         },
         {
-            "id": 54,
+            "id": 67,
             "name": "2 weeks post discharge",
             "typeId": 12
         },
         {
-            "id": 55,
-            "name": "1 month post dishcarge",
+            "id": 68,
+            "name": "1 month post discharge",
             "typeId": 12
         },
         {
-            "id": 56,
-            "name": "3 months post discharge",
+            "id": 69,
+            "name": "3 months of life",
             "typeId": 12
         },
         {
-            "id": 57,
-            "name": "6 months post discharge",
+            "id": 70,
+            "name": "6 months of life",
             "typeId": 12
         },
         {
-            "id": 58,
+            "id": 71,
             "name": "Exclusive",
             "typeId": 13
         },
         {
-            "id": 59,
+            "id": 72,
             "name": "Partial",
             "typeId": 13
         },
         {
-            "id": 60,
+            "id": 73,
             "name": "None",
             "typeId": 13
-        },
-        {
-            "id": 61,
-            "name": "Level 3 NICU / High Dependency",
-            "typeId": 14
-        },
-        {
-            "id": 62,
-            "name": "Level 2 SNCU / Low Dependency",
-            "typeId": 14
-        },
-        {
-            "id": 63,
-            "name": "Level 1 NICU",
-            "typeId": 14
-        },
-        {
-            "id": 64,
-            "name": "Step-down unit",
-            "typeId": 14
-        },
-        {
-            "id": 65,
-            "name": "KMC unit",
-            "typeId": 14
-        },
-        {
-            "id": 66,
-            "name": "Maternity ward",
-            "typeId": 14
         }
     ],
     "areaDetails": [

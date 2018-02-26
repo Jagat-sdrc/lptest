@@ -37,7 +37,8 @@ export class BabyDashboardPage {
 
     this.paramToExpressionPage = {
       babyCode: this.navParams.get("babyCode"),
-      babyCodeByHospital: this.navParams.get("babyCodeByHospital")
+      babyCodeByHospital: this.navParams.get("babyCodeByHospital"),
+      deliveryDate: this.navParams.get('deliveryDate')
     }
   }
 

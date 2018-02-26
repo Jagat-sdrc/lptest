@@ -25,7 +25,7 @@
   <ion-list>
       <ion-item wrap-text no-lines *ngFor="let item of patientList | sortPatient:sortBy; let i = index">
         <ion-card class="card-outside">
-          <ion-row class="card-inside" (press)="deletePatient(item.babyCode)" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital)">
+          <ion-row class="card-inside" (press)="deletePatient(item.babyCode)" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital,item.deliveryDate)">
             <ion-col md-6>
               <div class="form-group">Baby of: {{item.babyOf}}</div>
               <div>Baby Id: {{item.babyCode}}</div>

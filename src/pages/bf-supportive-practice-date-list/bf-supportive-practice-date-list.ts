@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
-import { DatePipe } from '@angular/common';
 import { BfspDateListServiceProvider } from '../../providers/bfsp-date-list-service/bfsp-date-list-service';
 
 /**
@@ -23,7 +22,7 @@ export class BfSupportivePracticeDateListPage {
   items: any;
   bfspDateListData: string[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private datePipe: DatePipe,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
     private bfspDateListService: BfspDateListServiceProvider, private messageService: MessageProvider) {
       this.babyCode = this.navParams.data.babyCode;
       this.babyCodeHospital = this.navParams.data.babyCodeByHospital;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Events, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { MessageProvider } from '../../providers/message/message';
@@ -18,7 +18,7 @@ export class LoginPage {
   appVersionNumber: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private userService: UserServiceProvider, private alertCtrl: AlertController,
+  private userService: UserServiceProvider,
   private messageService: MessageProvider, private events: Events,
   private appVersion: AppVersion, private platform: Platform) {
     this.platform.ready().then((readySource) => {
@@ -34,10 +34,10 @@ export class LoginPage {
 
   ngOnInit(){
     this.loginData = {
-      username: 'naseem@sdrc.co.in',
-      password: 'na@123#!'
-      // username: '',
-      // password: ''
+      // username: 'naseem@sdrc.co.in',
+      // password: 'na@123#!'
+      username: '',
+      password: ''
     }
   }
 
