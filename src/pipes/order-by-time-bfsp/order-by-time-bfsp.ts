@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
 
 /**
  * This pipe will deal with ordering the entries with respect to time in bfsp forms
@@ -10,7 +9,7 @@ import { DatePipe } from '@angular/common';
   name: 'orderByTimeBfsp'
 })
 export class OrderByTimeBfspPipe implements PipeTransform {
-  constructor(private datePipe: DatePipe){}
+  constructor(){}
 
   transform(bfsp: IBFSP[], ...args): IBFSP[] {
 

@@ -42,7 +42,8 @@
   
               <ion-item>
                 <ion-label stacked>Method of expression</ion-label>
-                <ion-select [(ngModel)]="item.methodOfExpression" [ngModelOptions]="{standalone: true}">
+                <ion-select [(ngModel)]="item.methodOfExpression" [ngModelOptions]="{standalone: true}" 
+                  (ionChange)="checkVolumeOfMilkExpressed(item)">
                   <ion-option *ngFor="let bfExpMethod of bfExpressionMethods" text-wrap [value]="bfExpMethod.id">{{bfExpMethod.name}}</ion-option>               
                 </ion-select>
               </ion-item>
@@ -53,7 +54,7 @@
                   <ion-option *ngFor="let locOfExpMethod of locationOfexpressionMethods" text-wrap [value]="locOfExpMethod.id">{{locOfExpMethod.name}}</ion-option>               
                 </ion-select>
               </ion-item>
-              <ion-item>
+              <ion-item *ngIf="item.methodOfExpression != 43">
                 <ion-label stacked>Volume of milk expressed from left and right breast (in ml,range 0-300)</ion-label>
                 <ion-input type="number" [value]="item.volOfMilkExpressedFromLR" [(ngModel)]="item.volOfMilkExpressedFromLR"></ion-input>
               </ion-item>

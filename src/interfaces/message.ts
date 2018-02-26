@@ -10,8 +10,7 @@ interface IMessage{
     enterTimeOfExpression: string;
     enterTypeOfExpression: string;
     enterLocOfExpression: string;
-    enterVolumeOfMilkFromLeft: string;
-    enterVolumeOfMilkFromRight: string;
+    enterVolumeOfMilkFromLeftAndRight: string;
     enterValidVolumeOfMilk: string;
     forgotPasswordMessage: string;
     registrationSuccessful: string;

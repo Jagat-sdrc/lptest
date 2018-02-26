@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
 
 /**
  * This pipe will deal with ordering the entries with respect to time
@@ -11,7 +10,7 @@ import { DatePipe } from '@angular/common';
 })
 export class OrderByTimePipe implements PipeTransform {
   
-  constructor(private datePipe: DatePipe){}
+  constructor(){}
 
   transform(feedExpressions: IFeed[], ...args): IFeed[] {
 

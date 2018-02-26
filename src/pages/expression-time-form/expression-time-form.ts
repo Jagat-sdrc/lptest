@@ -92,15 +92,15 @@ export class ExpressionTimeFormPage {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfExpression);
     }else if(bfExpression.timeOfExpression === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfExpression);
-    }else if (bfExpression.methodOfExpression == null) {
+    }else if(bfExpression.methodOfExpression == null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTypeOfBFExpression);
-    } else if (bfExpression.locationOfExpression == null) {
+    }else if(bfExpression.locationOfExpression == null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterLocOfExpression);
-    } else if (bfExpression.volOfMilkExpressedFromLR == null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromLeft);
-    } else if (!this.validateVolumeOfMilk(bfExpression.volOfMilkExpressedFromLR)) {
-      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromRight);
-    } else {
+    }else if(bfExpression.methodOfExpression != 43 && bfExpression.volOfMilkExpressedFromLR == null) {
+      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromLeftAndRight);
+    }else if(bfExpression.methodOfExpression != 43 && !this.validateVolumeOfMilk(bfExpression.volOfMilkExpressedFromLR)) {
+      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromLeftAndRight);
+    }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
         this.messageService.showSuccessToast("save successful!")
@@ -228,5 +228,17 @@ export class ExpressionTimeFormPage {
     },
     err => console.log('Error occurred while getting time: ', err)
     );
+  }
+
+  /**
+   * This method will be called on change in selection of method of expression.
+   * If the method of expression is Breastfeed, then volume of milk expressed will be hidden.
+   * @author - Naseem Akhtar
+   * @param bfExpform - the form which user is editing
+   */
+  checkVolumeOfMilkExpressed(bfExpform: IBFExpression){
+    if(bfExpform.methodOfExpression != 43){
+      bfExpform.volOfMilkExpressedFromLR = null;
+    }
   }
 }

@@ -1,16 +1,7 @@
-import {
-  HttpClient
-} from '@angular/common/http';
-import {
-  Injectable
-} from '@angular/core';
-import {
-  Storage
-} from '@ionic/storage';
-import {
-  ConstantProvider
-} from '../constant/constant';
-import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
+import { ConstantProvider } from '../constant/constant';
 
 /**
  * 
@@ -22,8 +13,7 @@ import { DatePipe } from '@angular/common';
 @Injectable()
 export class SaveExpressionBfProvider {
 
-  constructor(public http: HttpClient, private storage: Storage,
-  private datePipe: DatePipe) {
+  constructor(public http: HttpClient, private storage: Storage) {
   }
   /**
    * This method will give us all the save the BF expression in local storage.
