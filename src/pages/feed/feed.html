@@ -19,7 +19,7 @@
 
   <ion-list>
     
-    <ion-item class="item-stable" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
+    <ion-item class="item-stable timeList" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
         <div>
           <div class="acordion-title" (click)="toggleGroup(feedExpression)" [ngClass]="{active: isGroupShown(feedExpression)}">
             <div>
@@ -34,7 +34,7 @@
             <!-- Date of feed -->
             <ion-item>
                 <ion-label color="black" stacked >Date of feed</ion-label>
-                <ion-input [readonly]="true" [(ngModel)]="feedExpression.dateOfFeed" (focus)="datePickerDialog(feedExpression)" 
+                <ion-input [readonly]="true" [(ngModel)]="feedExpression.dateOfFeed" (ionFocus)="datePickerDialog(feedExpression)" 
                   [ngModelOptions]="{standalone: true}"></ion-input>
                 <ion-icon padding-top name="calendar" item-right></ion-icon>
             </ion-item>
@@ -43,7 +43,7 @@
             <!-- Time of feed -->
             <ion-item>
                 <ion-label color="black" stacked >Time of feed</ion-label>
-                <ion-input [readonly]="true" [(ngModel)] = "feedExpression.timeOfFeed" (focus)="timePickerDialog(feedExpression)" 
+                <ion-input [readonly]="true" [(ngModel)] = "feedExpression.timeOfFeed" (ionFocus)="timePickerDialog(feedExpression)" 
                   [ngModelOptions]="{standalone: true}"></ion-input>
                 <ion-icon padding-top name="time" item-right></ion-icon>
             </ion-item>

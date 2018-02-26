@@ -26,6 +26,8 @@ export class FeedPage {
   shownGroup: any;
   locationOfFeedings: ITypeDetails[];
   onlyNumberRegex: RegExp = /^[0-9]*$/;
+  existingDate: string;
+  existingTime: string;
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
   private messageService: MessageProvider, private navParams: NavParams, private datePicker: DatePicker,
@@ -91,7 +93,7 @@ export class FeedPage {
     }else if(feedExpression.babyWeight === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.babyWeight)
     }else{
-      this.feedExpressionService.saveFeedExpression(feedExpression)
+      this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
         this.findExpressionsByBabyCodeAndDate();
@@ -104,7 +106,9 @@ export class FeedPage {
   }
   
 
-  toggleGroup(group) {
+  toggleGroup(group: IFeed) {
+    this.existingDate = group.dateOfFeed;
+    this.existingTime = group.timeOfFeed;
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {
@@ -177,7 +181,7 @@ export class FeedPage {
   datePickerDialog(feedExp: IFeed){
     this.datePicker.show({
     date: new Date(),
-    maxDate: new Date(),
+    maxDate: new Date().valueOf(),
     allowFutureDates: false,
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
@@ -192,8 +196,8 @@ export class FeedPage {
   timePickerDialog(feedExp: IFeed){
     this.datePicker.show({
     date: new Date(),
-    maxDate: new Date().valueOf(),
     mode: 'time',
+    is24Hour: true,
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
   }).then(
     time => {

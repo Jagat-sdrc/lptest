@@ -32,6 +32,8 @@ export class BfSupportivePracticePage {
   dataForBfspPage: IDataForBfspPage;
   onlyNumberRegex: RegExp = /^[0-9]*$/;
   shownGroup: any;
+  existingDate:string;
+  existingTime:string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider,
@@ -69,7 +71,9 @@ export class BfSupportivePracticePage {
       });
   };
 
-  toggleGroup(group, i) {    
+  toggleGroup(group: IBFSP) {
+    this.existingDate = group.dateOfBFSP === null ? null : group.dateOfBFSP;
+    this.existingTime = group.timeOfBFSP === null ? null : group.timeOfBFSP;
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {
@@ -87,7 +91,7 @@ export class BfSupportivePracticePage {
   newBFSPForm() {
     this.bfspList = this.bfspService.appendNewRecordAndReturn(this.bfspList, this.dataForBfspPage.babyCode,
       null);
-    setTimeout( data => this.toggleGroup(this.bfspList[0], 0), 100);
+    setTimeout( data => this.toggleGroup(this.bfspList[0]), 100);
   };
 
   
@@ -104,7 +108,7 @@ export class BfSupportivePracticePage {
     }
   };
 
-  save(bfsp: IBFSP){
+  save(bfsp: IBFSP, index){
     if(bfsp.dateOfBFSP === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
     }else if(bfsp.timeOfBFSP === null){
@@ -117,7 +121,7 @@ export class BfSupportivePracticePage {
       bfsp.bfspDuration.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.durationOfBfsp);
     }else{
-      this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp)
+      this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp, this.existingDate, this.existingTime)
       .then(data => {
         this.messageService.showSuccessToast("save successful!")
       })
@@ -181,8 +185,8 @@ export class BfSupportivePracticePage {
    * @since - 0.0.1
    */
   setPersonWhoPerformed(bfsp: IBFSP){
-    if(bfsp.bfspPerformed === 41){
-      bfsp.personWhoPerformedBFSP = 43;
+    if(bfsp.bfspPerformed === 54){
+      bfsp.personWhoPerformedBFSP = 56;
     }
   }
 
@@ -196,8 +200,7 @@ export class BfSupportivePracticePage {
   datePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
     date: new Date(),
-    maxDate: new Date(),
-    allowFutureDates: false,
+    maxDate: new Date().valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(
@@ -211,8 +214,8 @@ export class BfSupportivePracticePage {
   timePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
     date: new Date(),
-    maxDate: new Date().valueOf(),
     mode: 'time',
+    is24Hour: true,
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
   }).then(
     time => {

@@ -120,9 +120,9 @@ export class BfPostDischargePage {
    */
 
   datePickerDialog(bfpd: IBFPD){
-    let day = this.minDate[0];
-    let month = this.minDate[1];
-    let year = this.minDate[2];
+    // let day = this.minDate[0];
+    // let month = this.minDate[1];
+    // let year = this.minDate[2];
     this.datePicker.show({
     date: new Date(),
     maxDate: new Date().valueOf(),

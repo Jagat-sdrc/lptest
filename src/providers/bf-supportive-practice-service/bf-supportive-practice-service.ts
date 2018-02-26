@@ -7,7 +7,6 @@ import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
-import * as moment from 'moment';
 
 /*
   Generated class for the BfSupportivePracticeServiceProvider provider.
@@ -44,27 +43,37 @@ export class BfSupportivePracticeServiceProvider {
       .catch(this.handleError);
   };
 
-  saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP): Promise <any> {
+  saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP, existingDate: string, existingTime: string): Promise <any> {
     let promise = new Promise((resolve, reject) => {
       bfspForm.isSynced = false;
-      bfspForm.dateOfBFSP = this.datePipe.transform(new Date(bfspForm.dateOfBFSP), 'dd-MM-yyyy')
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then((val) => {
           let bfspForms: IBFSP[] = [];
           if (val != null) {
             bfspForms = val
-            let index = bfspForms.findIndex(d=>d.dateOfBFSP === bfspForm.dateOfBFSP && d.timeOfBFSP === bfspForm.timeOfBFSP)
-            if(index < 0) {
-              bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)
-              this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
-              .then(data => {
-                resolve()
-              })
-              .catch(err => {
-                reject(err.message);
-              })
+            if(bfspForm.dateOfBFSP === existingDate &&  bfspForm.timeOfBFSP === existingTime) {
+                bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)
+                this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
+                  .then(data => {
+                    resolve()
+                  })
+                  .catch(err => {
+                    reject(err.message);
+                  })
             }else{
-              reject(ConstantProvider.messages.duplicateTime);
+              let index = bfspForms.findIndex(d=>d.dateOfBFSP === bfspForm.dateOfBFSP && d.timeOfBFSP === bfspForm.timeOfBFSP)
+              if(index < 0) {
+                bfspForms = this.validateNewEntryAndUpdate(bfspForms, bfspForm)
+                this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfspForms)
+                  .then(data => {
+                    resolve()
+                  })
+                  .catch(err => {
+                    reject(err.message);
+                  })
+              }else{
+                reject(ConstantProvider.messages.duplicateTime);
+              }
             }
           } else {
             bfspForms.push(bfspForm)
@@ -93,31 +102,12 @@ export class BfSupportivePracticeServiceProvider {
             data = (data as IBFSP[]).filter(d => d.babyCode === babyCode && d.dateOfBFSP === date);
 
             if ((data as IBFSP[]).length > 0) {
-              (data as IBFSP[]).forEach(d => {
-                let day = parseInt(d.dateOfBFSP.split('-')[0]);
-                let month = parseInt(d.dateOfBFSP.split('-')[1]);
-                let year = parseInt(d.dateOfBFSP.split('-')[2]);
-                d.dateOfBFSP = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
-              });
-
-              // if (isNewExpression) {
-              //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
-              // } else {
-                resolve(data)
-              // }
+              resolve(data)
             } else {
-              // if (isNewExpression) {
-              //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
-              // } else {
-                resolve([])
-              // }
+              resolve([])
             }
           } else {
-            // if (isNewExpression) {
-            //   resolve(this.appendNewRecordAndReturn(data, babyCode, null))
-            // } else {
-              resolve([])
-            // }
+            resolve([])
           }
         })
         .catch(err => {
@@ -236,7 +226,7 @@ export class BfSupportivePracticeServiceProvider {
    * @param feedExpression incoming feed expression
    * @returns IFeed[] modified feed expressions
    */
-  private validateNewEntryAndUpdate(bfsps: IBFSP[], bfsp: IBFSP): IBFSP[]{
+  private validateNewEntryAndUpdate(bfsps: IBFSP[], bfsp: IBFSP): IBFSP[] {
     for(let i = 0; i < bfsps.length;i++){
       if(bfsps[i].id === bfsp.id){
         //record found, need to splice and enter new

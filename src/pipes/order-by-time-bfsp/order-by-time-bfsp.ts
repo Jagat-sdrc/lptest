@@ -17,13 +17,12 @@ export class OrderByTimeBfspPipe implements PipeTransform {
 
     if(bfsp != undefined && bfsp != null && bfsp.length > 0){
 
-      let date = new Date(bfsp[0].dateOfBFSP) 
+      let date = bfsp[0].dateOfBFSP;
       bfsp.sort((a: IBFSP, b: IBFSP) => {
 
-        let dateString = this.datePipe.transform(date, 'dd-MM-yyyy');
-        let day = parseInt(dateString.split('-')[0])
-        let month = parseInt(dateString.split('-')[1])
-        let year = parseInt(dateString.split('-')[2])
+        let day = parseInt(date.split('-')[0])
+        let month = parseInt(date.split('-')[1])
+        let year = parseInt(date.split('-')[2])
 
         let hourOfA = parseInt(a.timeOfBFSP.split(':')[0])
         let minuteOfA = parseInt(a.timeOfBFSP.split(':')[1])

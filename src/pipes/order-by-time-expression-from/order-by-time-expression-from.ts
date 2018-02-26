@@ -17,13 +17,12 @@ export class OrderByTimeExpressionFromPipe implements PipeTransform {
 
     if(expressionForm != undefined && expressionForm != null && expressionForm.length > 0){
 
-      let date = new Date(expressionForm[0].dateOfExpression) 
+      let date = expressionForm[0].dateOfExpression
       expressionForm.sort((a: IBFExpression, b: IBFExpression) => {
 
-        let dateString = this.datePipe.transform(date, 'dd-MM-yyyy');
-        let day = parseInt(dateString.split('-')[0])
-        let month = parseInt(dateString.split('-')[1])
-        let year = parseInt(dateString.split('-')[2])
+        let day = parseInt(date.split('-')[0])
+        let month = parseInt(date.split('-')[1])
+        let year = parseInt(date.split('-')[2])
 
         let hourOfA = parseInt(a.timeOfExpression.split(':')[0])
         let minuteOfA = parseInt(a.timeOfExpression.split(':')[1])

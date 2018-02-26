@@ -18,13 +18,12 @@ export class OrderByTimePipe implements PipeTransform {
 
     if(feedExpressions != undefined && feedExpressions != null && feedExpressions.length > 0){
 
-      let date = new Date(feedExpressions[0].dateOfFeed) 
+      let date = feedExpressions[0].dateOfFeed
       feedExpressions.sort((a: IFeed, b: IFeed) => {
 
-        let dateString = this.datePipe.transform(date, 'dd-MM-yyyy');
-        let day = parseInt(dateString.split('-')[0])
-        let month = parseInt(dateString.split('-')[1])
-        let year = parseInt(dateString.split('-')[2])
+        let day = parseInt(date.split('-')[0])
+        let month = parseInt(date.split('-')[1])
+        let year = parseInt(date.split('-')[2])
 
         let hourOfA = parseInt(a.timeOfFeed.split(':')[0])
         let minuteOfA = parseInt(a.timeOfFeed.split(':')[1])

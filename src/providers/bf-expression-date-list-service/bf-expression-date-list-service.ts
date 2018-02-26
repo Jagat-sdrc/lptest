@@ -4,7 +4,6 @@ import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
-import * as moment from 'moment';
 /*
   Generated class for the ExpressionBfDateProvider provider.
 
@@ -72,38 +71,12 @@ export class BFExpressionDateListProvider {
           if(data != null){
             data = (data as IBFExpression[]).filter(d => d.babyCode === babyCode && d.dateOfExpression === date);
             if((data as IBFExpression[]).length > 0){
-              (data as IBFExpression[]).forEach(d => {
-                let day = parseInt(d.dateOfExpression.split('-')[0]);
-                let month = parseInt(d.dateOfExpression.split('-')[1]);
-                let year = parseInt(d.dateOfExpression.split('-')[2]);
-                d.dateOfExpression = moment.utc(year+ "-"+ month+"-"+ day).toISOString()  
-              });
-
               resolve(data)
             }else{
               resolve([]);
             }
-            // if((data as IBFExpression[]).length > 0){
-            //   if(isNewExpression){
-            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            //   }else{
-            //     resolve(data)
-            //   }
-              
-            // }else{
-            //   if(isNewExpression){
-            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            //   }else{
-            //     resolve([])  
-            //   }
-              
-            // }
           }else{
-            // if(isNewExpression){
-            //   resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            // }else{
-              resolve([])
-            // }
+            resolve([])
           }
         })
         .catch(err=>{
