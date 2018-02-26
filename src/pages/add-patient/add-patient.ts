@@ -277,7 +277,7 @@ export class AddPatientPage implements OnInit{
 
      validateMotherAge(){
        if(!this.hasError){
-        if (this.patientForm.controls.mother_age.value != ""){
+        if (this.patientForm.controls.mother_age.value != "" || this.patientForm.controls.mother_age.value != null){
           if (this.patientForm.controls.mother_age.value < 15 ||
             this.patientForm.controls.mother_age.value > 49) {
             this.hasError = true;
@@ -295,7 +295,7 @@ export class AddPatientPage implements OnInit{
 
      validateBabyWeight() {
       if(!this.hasError){
-        if(this.patientForm.controls.baby_weight.value != ""){
+        if(this.patientForm.controls.baby_weight.value != "" || this.patientForm.controls.baby_weight.value != null){
           if (this.patientForm.controls.baby_weight.value < 500 ||
             this.patientForm.controls.baby_weight.value > 4000) {
               this.hasError = true;
@@ -313,7 +313,7 @@ export class AddPatientPage implements OnInit{
 
      validateGestational() {
       if(!this.hasError){
-        if (this.patientForm.controls.gestational_age.value != ""){
+        if (this.patientForm.controls.gestational_age.value != "" || this.patientForm.controls.gestational_age.value != null){
           if (this.patientForm.controls.gestational_age.value < 28 ||
             this.patientForm.controls.gestational_age.value > 32) {
               this.hasError = true;
@@ -338,9 +338,10 @@ export class AddPatientPage implements OnInit{
       */
      submit(){
       this.outpatientAdmission();
-      // this.validateMotherAge();
-      // this.validateBabyWeight();
-      // this.validateGestational();
+      this.validateMotherAge();
+      this.validateBabyWeight();
+      this.validateGestational();
+      this.validateDischargeDate();
       if(!this.patientForm.valid){
         this.resetStatus = true;
         Object.keys(this.patientForm.controls).forEach(field => {
@@ -458,7 +459,7 @@ export class AddPatientPage implements OnInit{
     }
 
     /**
-     * This method is used to restrict the special character in the input field
+     * This method is used to validate the discharge field that it should not the greater than the delivery date
      * 
      * @author Jagat Bandhu
      * @since 0.0.1
