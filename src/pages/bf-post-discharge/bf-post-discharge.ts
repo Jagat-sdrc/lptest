@@ -79,8 +79,6 @@ export class BfPostDischargePage {
   save() {
     if(this.bfpd.dateOfBreastFeeding === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.dateOfBfpd)
-    }else if(this.bfpd.breastFeedingStatus === null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.bfStatusPd)
     }else{
       this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
       .then(data=> {

@@ -117,7 +117,7 @@ export class ConstantProvider {
     enterTimeOfExpression :'Please enter time of expression',
     enterTypeOfExpression:'Please enter method of expression',
     enterLocOfExpression:'Please enter location of expression',
-    enterVolumeOfMilkFromLeftAndRight:'Please enter volume of milk expressed from left and right breast',
+    volumeOfMilkExpressedFromBreast:'Please enter volume of milk expressed from left and right breast (in ml)',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
     invalidCredentials: 'Invalid credentials!',
     forgotPasswordMessage: 'Send an email to <u>vijaya.lakshmi@accessh.org</u> from your email requesting for your password.',

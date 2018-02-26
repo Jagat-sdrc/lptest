@@ -71,27 +71,16 @@ export class FeedPage {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
     }else if(feedExpression.timeOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
-    }else if(feedExpression.methodOfFeed === null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.methodOfFeed)  
-    }else if(feedExpression.ommVolume === undefined || feedExpression.ommVolume === null 
-      || feedExpression.ommVolume.toString() === "") {
+    }else if(feedExpression.ommVolume === undefined || feedExpression.ommVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
-    }else if(feedExpression.dhmVolume === undefined || feedExpression.dhmVolume === null 
-      || feedExpression.dhmVolume.toString() === "") {
+    }else if(feedExpression.dhmVolume === undefined || feedExpression.dhmVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
-    }else if(feedExpression.formulaVolume === undefined || feedExpression.formulaVolume === null
-      || feedExpression.formulaVolume.toString() === "") {
+    }else if(feedExpression.formulaVolume === undefined || feedExpression.formulaVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
-    }else if(feedExpression.animalMilkVolume === undefined || feedExpression.animalMilkVolume === null 
-      || feedExpression.animalMilkVolume.toString() === "") {
+    }else if(feedExpression.animalMilkVolume === undefined || feedExpression.animalMilkVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
-    }else if(feedExpression.otherVolume === undefined || feedExpression.otherVolume === null 
-      || feedExpression.otherVolume.toString() === "") {
+    }else if(feedExpression.otherVolume === undefined || feedExpression.otherVolume.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
-    }else if(feedExpression.locationOfFeeding === null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.locationWhereFeedOccured)
-    }else if(feedExpression.babyWeight === null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.babyWeight)
     }else{
       this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {

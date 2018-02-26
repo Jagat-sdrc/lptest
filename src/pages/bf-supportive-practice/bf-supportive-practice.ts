@@ -109,16 +109,11 @@ export class BfSupportivePracticePage {
   };
 
   save(bfsp: IBFSP, index){
-    if(bfsp.dateOfBFSP === null){
+    if(bfsp.dateOfBFSP === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
-    }else if(bfsp.timeOfBFSP === null){
+    }else if(bfsp.timeOfBFSP === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfBfsp);
-    }else if(bfsp.bfspPerformed === null){
-      this.messageService.showErrorToast(ConstantProvider.messages.supportivePracticeBfsp);
-    }else if(bfsp.personWhoPerformedBFSP === null){
-      this.messageService.showErrorToast(ConstantProvider.messages.personWhoPerformedBfsp);
-    }else if(bfsp.bfspDuration === undefined || bfsp.bfspDuration === null || 
-      bfsp.bfspDuration.toString() === "") {
+    }else if(bfsp.bfspDuration === undefined || bfsp.bfspDuration.toString() === "") {
       this.messageService.showErrorToast(ConstantProvider.messages.durationOfBfsp);
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp, this.existingDate, this.existingTime)

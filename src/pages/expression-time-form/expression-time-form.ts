@@ -92,14 +92,8 @@ export class ExpressionTimeFormPage {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfExpression);
     }else if(bfExpression.timeOfExpression === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfExpression);
-    }else if(bfExpression.methodOfExpression == null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.enterTypeOfBFExpression);
-    }else if(bfExpression.locationOfExpression == null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.enterLocOfExpression);
-    }else if(bfExpression.methodOfExpression != 43 && bfExpression.volOfMilkExpressedFromLR == null) {
-      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromLeftAndRight);
-    }else if(bfExpression.methodOfExpression != 43 && !this.validateVolumeOfMilk(bfExpression.volOfMilkExpressedFromLR)) {
-      this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromLeftAndRight);
+    }else if(!this.validateDurationOfExpression(bfExpression.volOfMilkExpressedFromLR)){
+      this.messageService.showErrorToast(ConstantProvider.messages.volumeOfMilkExpressedFromBreast);
     }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
@@ -127,18 +121,17 @@ export class ExpressionTimeFormPage {
  * @memberof ExpressionTimeFormPage
  */
   validateDurationOfExpression(value) {
-    if (value == null) {
-      return false;
-    } else {
+    debugger;
+    if(value == null) {
+      return true;
+    }else {
       let rx = /^\d+(?:\.\d{0,2})?$/
-
       if (rx.test(value)) {
         return true;
-      } else {
+      }else {
         return false;
       }
     }
-
   }
    /**
  * This method is going to validate the volume of milk ranges from 0 to 300 or not.
