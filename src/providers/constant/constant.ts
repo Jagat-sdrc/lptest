@@ -121,7 +121,7 @@ export class ConstantProvider {
     enterVolumeOfMilkFromRight:'Please enter volume of milk expressed from right',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
     invalidCredentials: 'Invalid credentials!',
-    forgotPasswordMessage: 'Send an email to abc@ahi.com from your email requesting for your password.',
+    forgotPasswordMessage: 'Send an email to vijaya.lakshmi@accessh.org from your email requesting for your password.',
     registrationSuccessful: 'Registration successful',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',

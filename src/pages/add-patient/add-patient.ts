@@ -8,7 +8,6 @@ import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-se
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { DatePicker } from '@ionic-native/date-picker';
-import * as moment from 'moment';
 
 
 /**
@@ -53,8 +52,8 @@ export class AddPatientPage implements OnInit{
   outPatientAdmissionStatus: boolean = false;
   paramToExpressionPage: IParamToExpresssionPage;
   forEdit: boolean;
+  babyIdHospital: RegExp = /^[a-zA-Z0-9_.-]*$/;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
-  babyIdPattern: RegExp = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
   hasError: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -220,9 +219,9 @@ export class AddPatientPage implements OnInit{
 
     this.patientForm = new FormGroup({
       baby_id: new FormControl(''),
-      hospital_baby_id: new FormControl('',Validators.pattern(this.babyIdPattern)),
+      hospital_baby_id: new FormControl('',[Validators.pattern(this.babyIdHospital)]),
       mother_name: new FormControl('', [Validators.required, Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
-      mother_age: new FormControl('', [Validators.required]),
+      mother_age: new FormControl('', [Validators.required,Validators.maxLength(2)]),
       delivery_date: new FormControl('', [Validators.required]),
       delivery_time: new FormControl('', [Validators.required]),
       delivery_method: new FormControl('', [Validators.required]),
@@ -279,7 +278,7 @@ export class AddPatientPage implements OnInit{
 
      validateMotherAge(){
        if(!this.hasError){
-        if (this.patientForm.controls.mother_age.value != ""){
+        if (this.patientForm.controls.mother_age.value != "" || this.patientForm.controls.mother_age.value != null){
           if (this.patientForm.controls.mother_age.value < 15 ||
             this.patientForm.controls.mother_age.value > 49) {
             this.hasError = true;
@@ -297,7 +296,7 @@ export class AddPatientPage implements OnInit{
 
      validateBabyWeight() {
       if(!this.hasError){
-        if(this.patientForm.controls.baby_weight.value != ""){
+        if(this.patientForm.controls.baby_weight.value != "" || this.patientForm.controls.baby_weight.value != null){
           if (this.patientForm.controls.baby_weight.value < 500 ||
             this.patientForm.controls.baby_weight.value > 4000) {
               this.hasError = true;
@@ -315,7 +314,7 @@ export class AddPatientPage implements OnInit{
 
      validateGestational() {
       if(!this.hasError){
-        if (this.patientForm.controls.gestational_age.value != ""){
+        if (this.patientForm.controls.gestational_age.value != "" || this.patientForm.controls.gestational_age.value != null){
           if (this.patientForm.controls.gestational_age.value < 28 ||
             this.patientForm.controls.gestational_age.value > 32) {
               this.hasError = true;
@@ -340,9 +339,10 @@ export class AddPatientPage implements OnInit{
       */
      submit(){
       this.outpatientAdmission();
-      // this.validateMotherAge();
-      // this.validateBabyWeight();
-      // this.validateGestational();
+      this.validateMotherAge();
+      this.validateBabyWeight();
+      this.validateGestational();
+      this.validateDischargeDate();
       if(!this.patientForm.valid){
         this.resetStatus = true;
         Object.keys(this.patientForm.controls).forEach(field => {
@@ -351,24 +351,6 @@ export class AddPatientPage implements OnInit{
         });
       } else {
         this.resetStatus = false;
-        let deliveryDate: string = this.patientForm.controls.delivery_date.value;
-        if(this.forEdit){
-          deliveryDate = this.datePipe.transform(new Date(deliveryDate), 'dd-MM-yyyy');
-        }else{
-          deliveryDate = deliveryDate.split('-')[2] + "-" + deliveryDate.split('-')[1] + "-" + deliveryDate.split('-')[0];
-        }
-        
-        let admissionDateOfOutdoorPatient: string = this.patientForm.controls.admission_date.value;        
-        if(admissionDateOfOutdoorPatient != null && admissionDateOfOutdoorPatient != undefined){
-
-          if(this.forEdit){
-            admissionDateOfOutdoorPatient = this.datePipe.transform(new Date(admissionDateOfOutdoorPatient), 'dd-MM-yyyy');
-          }else{            
-            admissionDateOfOutdoorPatient = admissionDateOfOutdoorPatient.split('-')[2] + "-" + admissionDateOfOutdoorPatient.split('-')[1] + "-" + admissionDateOfOutdoorPatient.split('-')[0];
-          }
-          
-        }
-
 
         //Initialize the add new patient object
         this.patient = {
@@ -385,7 +367,7 @@ export class AddPatientPage implements OnInit{
           parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value.id,
           timeTillFirstExpression: this.patientForm.controls.first_exp_time.value,
           inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.id,
-          admissionDateForOutdoorPatients: admissionDateOfOutdoorPatient,
+          admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
           babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
           nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
           dischargeDate: this.patientForm.controls.discharge_date.value,
@@ -415,22 +397,11 @@ export class AddPatientPage implements OnInit{
      */   
     setFetchedDataToUi(){
 
-      let day = parseInt(this.patient.deliveryDate.split('-')[0]);
-      let month = parseInt(this.patient.deliveryDate.split('-')[1]);
-      let year = parseInt(this.patient.deliveryDate.split('-')[2]);
-
-      let admissionDateForOutdoorPatients: string= null;
-      if(this.patient.admissionDateForOutdoorPatients != null){
-        day = parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[0]);
-        month = parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[1]);
-        year = parseInt(this.patient.admissionDateForOutdoorPatients.split('-')[2]);
-        admissionDateForOutdoorPatients = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
-      }
       this.patientForm = new FormGroup({
         baby_id: new FormControl(this.patient.babyCode),
-        hospital_baby_id: new FormControl(this.patient.babyCodeHospital,Validators.pattern(this.babyIdPattern)),
+        hospital_baby_id: new FormControl(this.patient.babyCodeHospital,[Validators.pattern(this.babyIdHospital)]),
         mother_name: new FormControl(this.patient.babyOf, [Validators.required,Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
-        mother_age: new FormControl(this.patient.mothersAge, [Validators.required]),
+        mother_age: new FormControl(this.patient.mothersAge, [Validators.required,Validators.maxLength(2)]),
         delivery_date: new FormControl(this.patient.deliveryDate,[Validators.required]),
         delivery_time: new FormControl(this.patient.deliveryTime, [Validators.required]),
         delivery_method: new FormControl(this.deliveryMethods.filter(d=>(d.id===this.patient.deliveryMethod))[0], [Validators.required]),
@@ -440,7 +411,7 @@ export class AddPatientPage implements OnInit{
         hm_lactation: new FormControl(this.hmLactation.filter(d=>(d.id===this.patient.parentsKnowledgeOnHmAndLactation))[0], [Validators.required]),
         first_exp_time: new FormControl(this.patient.timeTillFirstExpression, [Validators.required]),
         inpatient_outpatient: new FormControl(this.inpatientOutpatient.filter(d=>(d.id===this.patient.inpatientOrOutPatient))[0], [Validators.required]),
-        admission_date: new FormControl(admissionDateForOutdoorPatients == null?null: admissionDateForOutdoorPatients, [Validators.required]),
+        admission_date: new FormControl(this.patient.admissionDateForOutdoorPatients == null?null: this.patient.admissionDateForOutdoorPatients, [Validators.required]),
         baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0], [Validators.required]),
         nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0], [Validators.required]),
         discharge_date: new FormControl(this.patient.dischargeDate),
@@ -450,16 +421,18 @@ export class AddPatientPage implements OnInit{
 
     datePickerDialog(type: string){
         this.datePicker.show({
-        date: new Date(),
-        maxDate: new Date(),
-        allowFutureDates: false,
         mode: 'date',
+        date: new Date(),
+        allowOldDates: false,
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
       }).then(
         date => {
           switch(type){
             case ConstantProvider.datePickerType.deliveryDate:
-              this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
+              this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"));
+              if(this.patientForm.controls.discharge_date.value != ""){
+                this.patientForm.controls.discharge_date.setValue(null);
+              }
             break;
             case ConstantProvider.datePickerType.addmissionDate:
               this.patientForm.controls.admission_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
@@ -487,16 +460,18 @@ export class AddPatientPage implements OnInit{
     }
 
     /**
-     * This method is used to restrict the special character in the input field
+     * This method is used to validate the discharge field that it should not the greater than the delivery date
      * 
      * @author Jagat Bandhu
      * @since 0.0.1
      * @param event 
      */
-    omit_special_char(event){   
-      var k;  
-      k = event.charCode;  //         k = event.keyCode;  (Both can be used)
-      return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+    validateDischargeDate(){
+      if(this.patientForm.controls.delivery_date.value != ""){
+        if(this.patientForm.controls.discharge_date.value > this.patientForm.controls.delivery_date.value){
+          this.patientForm.controls.discharge_date.setValue(null);
+        }
+      }
     }
 
 }
