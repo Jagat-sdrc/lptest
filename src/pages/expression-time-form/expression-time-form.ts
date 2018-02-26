@@ -6,6 +6,7 @@ import { SaveExpressionBfProvider } from '../../providers/save-expression-bf/sav
 import { DatePipe } from '@angular/common';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { BFExpressionDateListProvider } from '../../providers/bf-expression-date-list-service/bf-expression-date-list-service';
+import { DatePicker } from '@ionic-native/date-picker';
 /**
  * Generated class for the ExpressionTimeFormPage page.
  *
@@ -28,12 +29,15 @@ export class ExpressionTimeFormPage {
   methodOfBfExpObject: any;
   locOfExpressionObject: any;
   maxDate:any;
+  existingDate: string;
+  existingTime: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
     private messageService: MessageProvider,
     private bfExpressionTimeService: SaveExpressionBfProvider,
     private expressionBFdateService: BFExpressionDateListProvider,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe, private datePicker: DatePicker) {
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
   }
 
@@ -59,13 +63,16 @@ export class ExpressionTimeFormPage {
   }
 
 
-  toggleGroup(group, i) {
+  toggleGroup(group: IBFExpression) {
+    this.existingDate = group.dateOfExpression;
+    this.existingTime = group.timeOfExpression;
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {
       this.shownGroup = group;
     }
   };
+
   isGroupShown(group) {
     return this.shownGroup === group;
   };
@@ -94,7 +101,7 @@ export class ExpressionTimeFormPage {
     } else if (!this.validateVolumeOfMilk(bfExpression.volOfMilkExpressedFromLR)) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterVolumeOfMilkFromRight);
     } else {
-      this.bfExpressionTimeService.saveBfExpression(bfExpression)
+      this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
         this.messageService.showSuccessToast("save successful!")
       })
@@ -111,7 +118,7 @@ export class ExpressionTimeFormPage {
   newExpression(){
     this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions,
       this.dataForBFEntryPage.babyCode, null);
-    setTimeout(d => this.toggleGroup(this.bFExpressions[0], 0),200);
+    setTimeout(d => this.toggleGroup(this.bFExpressions[0]),200);
   }
 
   /**
@@ -186,6 +193,40 @@ export class ExpressionTimeFormPage {
       this.messageService.showErrorToast(err)
       this.bFExpressions = []
     })
+  }
 
+  /**
+   * This following two methods i.e datepicker dialog and timepicker dialog will
+   * help in opening the native date and time picker respectively.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   */
+  
+  datePickerDialog(bfExpForm: IBFExpression){
+    this.datePicker.show({
+    date: new Date(),
+    maxDate: new Date().valueOf(),
+    mode: 'date',
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+    }).then(
+      date => {
+        bfExpForm.dateOfExpression = this.datePipe.transform(date,"dd-MM-yyyy")
+      },
+      err => console.log('Error occurred while getting date: ', err)
+    );
+  }
+
+  timePickerDialog(bfExpForm: IBFExpression){
+    this.datePicker.show({
+    date: new Date(),
+    mode: 'time',
+    is24Hour: true,
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+  }).then(
+    time => {
+      bfExpForm.timeOfExpression = this.datePipe.transform(time,"HH:mm")
+    },
+    err => console.log('Error occurred while getting time: ', err)
+    );
   }
 }

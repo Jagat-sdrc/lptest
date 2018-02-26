@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
 import { ConstantProvider } from '../../providers/constant/constant';
+import { DatePicker } from '@ionic-native/date-picker';
+import { DatePipe } from '@angular/common';
 
 
 /**
@@ -24,9 +26,12 @@ export class FeedPage {
   shownGroup: any;
   locationOfFeedings: ITypeDetails[];
   onlyNumberRegex: RegExp = /^[0-9]*$/;
+  existingDate: string;
+  existingTime: string;
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
-  private messageService: MessageProvider, private navParams: NavParams) {}
+  private messageService: MessageProvider, private navParams: NavParams, private datePicker: DatePicker,
+    private datePipe: DatePipe) {}
 
   ngOnInit(){
 
@@ -88,7 +93,7 @@ export class FeedPage {
     }else if(feedExpression.babyWeight === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.babyWeight)
     }else{
-      this.feedExpressionService.saveFeedExpression(feedExpression)
+      this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
         this.findExpressionsByBabyCodeAndDate();
@@ -101,7 +106,9 @@ export class FeedPage {
   }
   
 
-  toggleGroup(group) {
+  toggleGroup(group: IFeed) {
+    this.existingDate = group.dateOfFeed;
+    this.existingTime = group.timeOfFeed;
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {
@@ -162,6 +169,42 @@ export class FeedPage {
     .catch(err=>{
       this.messageService.showErrorToast(err)
     })
+  }
+
+  /**
+   * This following two methods i.e datepicker dialog and timepicker dialog will
+   * help in opening the native date and time picker respectively.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   */
+  
+  datePickerDialog(feedExp: IFeed){
+    this.datePicker.show({
+    date: new Date(),
+    maxDate: new Date().valueOf(),
+    allowFutureDates: false,
+    mode: 'date',
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+    }).then(
+      date => {
+        feedExp.dateOfFeed = this.datePipe.transform(date,"dd-MM-yyyy")
+      },
+      err => console.log('Error occurred while getting date: ', err)
+    );
+  }
+
+  timePickerDialog(feedExp: IFeed){
+    this.datePicker.show({
+    date: new Date(),
+    mode: 'time',
+    is24Hour: true,
+    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+  }).then(
+    time => {
+      feedExp.timeOfFeed = this.datePipe.transform(time,"HH:mm")
+    },
+    err => console.log('Error occurred while getting time: ', err)
+    );
   }
 
 }

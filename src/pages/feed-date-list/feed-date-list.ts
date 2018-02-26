@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FeedDateListServiceProvider } from '../../providers/feed-date-list-service/feed-date-list-service';
 import { MessageProvider } from '../../providers/message/message';
-import { DatePipe } from '@angular/common';
 
 /**
  * This page/component will have entries of feed expression by date
@@ -24,14 +23,15 @@ export class FeedDateListPage {
 
   constructor(private feedDateListService: FeedDateListServiceProvider,
     private messageService: MessageProvider, private navCtrl: NavController,   
-private datePipe: DatePipe,private navParams: NavParams) {}
+    private navParams: NavParams) {}
 
   
   ionViewWillEnter(){
 
     this.paramToExpressionPage = {
       babyCode: this.navParams.get("babyCode"),
-      babyCodeByHospital: this.navParams.get("babyCodeByHospital")
+      babyCodeByHospital: this.navParams.get("babyCodeByHospital"),
+      deliveryDate: this.navParams.get('deliveryDate')
     }
 
     this.babyCode = this.paramToExpressionPage.babyCode;

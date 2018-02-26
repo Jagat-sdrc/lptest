@@ -32,20 +32,16 @@ export class SaveExpressionBfProvider {
    * @returns Promise<string[]> string array of dates
    * @param babyid the patient id for which we are saving data
    */
-  saveBfExpression(bfExpression: IBFExpression): Promise<any>{
+  saveBfExpression(bfExpression: IBFExpression, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
       bfExpression.isSynced = false;
-      bfExpression.dateOfExpression = this.datePipe.transform(new Date(bfExpression.dateOfExpression), 'dd-MM-yyyy')
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
         let bfExpressions: IBFExpression[] = [];
         if(val != null){
           bfExpressions = val;
-          let index = bfExpressions.findIndex(d=>d.dateOfExpression === bfExpression.dateOfExpression 
-            && d.timeOfExpression === bfExpression.timeOfExpression);
-          
-          if(index < 0){
+          if(bfExpression.dateOfExpression === existingDate &&  bfExpression.timeOfExpression === existingTime) {
             bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
             this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
               .then(data=>{
@@ -55,7 +51,20 @@ export class SaveExpressionBfProvider {
                 reject(err.message);    
               })
           }else{
-            reject(ConstantProvider.messages.duplicateTime);
+            let index = bfExpressions.findIndex(d=>d.dateOfExpression === bfExpression.dateOfExpression 
+              && d.timeOfExpression === bfExpression.timeOfExpression);
+            if(index < 0){
+              bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
+              this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
+              .then(data=>{
+                resolve()
+              })
+              .catch(err=>{
+                reject(err.message);    
+              })
+            }else{
+              reject(ConstantProvider.messages.duplicateTime);
+            }
           }
         }else{
           bfExpressions.push(bfExpression)

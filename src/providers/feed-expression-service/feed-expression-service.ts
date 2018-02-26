@@ -8,7 +8,6 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
-import * as moment from 'moment';
 
 /**
  * This service will only provide service to Feed component
@@ -77,21 +76,16 @@ export class FeedExpressionServiceProvider {
    * 
    */
 
-  saveFeedExpression(feedExpression: IFeed): Promise<any>{
+  saveFeedExpression(feedExpression: IFeed, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
-
       feedExpression.isSynced = false;
-      feedExpression.dateOfFeed = this.datePipe.transform(new Date(feedExpression.dateOfFeed), 'dd-MM-yyyy')
-
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
-
         let feedExpressions: IFeed[] = [];
         if(val != null){
           feedExpressions = val
-          let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
-          if(index < 0){
+          if(feedExpression.dateOfFeed === existingDate &&  feedExpression.timeOfFeed === existingTime) {
             feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
             this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
               .then(data=>{
@@ -101,7 +95,19 @@ export class FeedExpressionServiceProvider {
                 reject(err.message);
               })
           }else{
-            reject(ConstantProvider.messages.duplicateTime);
+            let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
+            if(index < 0){
+              feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
+              this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
+                .then(data=>{
+                  resolve()
+                })
+                .catch(err=>{
+                  reject(err.message);
+                })
+            }else{
+              reject(ConstantProvider.messages.duplicateTime);
+            }
           }
         }else{
           feedExpressions.push(feedExpression)
@@ -169,41 +175,12 @@ export class FeedExpressionServiceProvider {
             data = (data as IFeed[]).filter(d => (d.babyCode === babyCode && d.dateOfFeed === date));
 
             if ((data as IFeed[]).length > 0) {
-              (data as IFeed[]).forEach(d => {
-                let day = parseInt(d.dateOfFeed.split('-')[0]);
-                let month = parseInt(d.dateOfFeed.split('-')[1]);
-                let year = parseInt(d.dateOfFeed.split('-')[2]);
-                d.dateOfFeed = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
-              });
               resolve(data)
             }else{
               resolve([])
             }
-
-            // if((data as IFeed[]).length > 0){
-            //   if(isNewExpression){
-            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            //   }else{
-            //     resolve(data)
-            //   }
-              
-            // }else{
-            //   if(isNewExpression){
-            //     resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            //   }else{
-            //     data = [];
-            //     resolve(data)
-            //   }
-              
-            // }
           }else{
             resolve([])
-            // if(isNewExpression){
-            //   resolve(this.appendNewRecordAndReturn(data, babyCode, new Date()))
-            // }else{
-            //   data = [];
-            //   resolve(data)  
-            // }
           }
         })
         .catch(err=>{

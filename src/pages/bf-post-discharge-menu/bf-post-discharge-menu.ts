@@ -40,7 +40,8 @@ export class BfPostDischargeMenuPage {
   goToPostDischargeForm(menuId: number){
     let dataForPostDischarge: IDataForPostDischargePage = {
       babyCode: this.babyCode,
-      menuItemId: menuId
+      menuItemId: menuId,
+      deliveryDate: this.navParams.data.deliveryDate
     };
     this.navCtrl.push('BfPostDischargePage', dataForPostDischarge);
   }

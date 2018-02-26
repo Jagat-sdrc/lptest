@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
-import { DatePipe } from '@angular/common';
 import { BFExpressionDateListProvider } from '../../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 /**
  * Generated class for the ExpressoinFormPage page.
@@ -24,7 +23,6 @@ export class BFExpressionDateListPage {
   
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private datePipe: DatePipe,
     private bfExpressionDateListService: BFExpressionDateListProvider,
     private messageService: MessageProvider) {
   }

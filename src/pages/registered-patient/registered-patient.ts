@@ -56,11 +56,12 @@ export class RegisteredPatientPage {
 
 
 
-  goToBabyDashBoard(babyCode: string,babyCodeHospital: string){
+  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string){
 
     this.navCtrl.push('BabyDashboardPage',{
       babyCode: babyCode,
-      babyCodeByHospital: babyCodeHospital
+      babyCodeByHospital: babyCodeHospital,
+      deliveryDate: deliveryDate
     });
   }
 

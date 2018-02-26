@@ -6,4 +6,5 @@
 interface IDataForPostDischargePage{
     babyCode: string;
     menuItemId: number;
+    deliveryDate: string;
 }
