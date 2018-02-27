@@ -56,7 +56,7 @@ export class ConstantProvider {
 
   static FeedingTypeIds: IFeedingMethods = {
     feedingMethodTypeId: 11,
-    locationOfFeeding: 14
+    locationOfFeeding: 5
   }
 
   static TimeOfBreastFeedingPostDischargeTypeId: ITimeOfBreastFeedingPostDischarge = {
@@ -142,7 +142,7 @@ export class ConstantProvider {
     stateAlert: 'Please select the country before selecting state',
     districtAlert: 'Please select the state before selecting district',
     institutionAlert: 'Please select the district before selecting insitution',
-    saveSuccessfull: 'Save Successfully',
+    saveSuccessfull: 'Saved successfully',
     info: 'Info',
     warning: 'Warning',
     deletePatient: 'Do you want to delete the selected Patient record?',

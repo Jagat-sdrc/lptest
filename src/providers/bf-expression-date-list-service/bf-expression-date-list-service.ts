@@ -109,15 +109,13 @@ export class BFExpressionDateListProvider {
  * @returns {IBFExpression[]} The final appended list
  * @memberof ExpressionBfDateProvider
  */
-  appendNewRecordAndReturn(data: IBFExpression[], babyCode: string, date: Date): IBFExpression[]{
+  appendNewRecordAndReturn(data: IBFExpression[], babyCode: string, date?: string): IBFExpression[]{
     //The blank feed object
     let bf: IBFExpression = {
       id: this.getNewBfExpressionId(babyCode),
       babyCode: babyCode,     
       userId: this.userService.getUser().email,
-      // dateOfExpression: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
-      // timeOfExpression: this.datePipe.transform(new Date(), 'HH:mm'),
-      dateOfExpression: null,
+      dateOfExpression: date,
       timeOfExpression: null,
       methodOfExpression: null,
       locationOfExpression: null,
