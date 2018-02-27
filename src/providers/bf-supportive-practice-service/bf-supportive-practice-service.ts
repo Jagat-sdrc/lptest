@@ -141,12 +141,12 @@ export class BfSupportivePracticeServiceProvider {
    * @returns {IBFSP[]} The final appended list
    * @memberof ExpressionBfDateProvider
    */
-  appendNewRecordAndReturn(data: IBFSP[], babyCode: string, date: Date): IBFSP[] {
+  appendNewRecordAndReturn(data: IBFSP[], babyCode: string, date?: string): IBFSP[] {
     //The blank feed object
     let bf: IBFSP = {
       id: this.getNewBfspId(babyCode),
       babyCode: babyCode,
-      dateOfBFSP: null,
+      dateOfBFSP: date,
       // dateOfBFSP: date === null ? null : moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
       // timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
       timeOfBFSP: null,
