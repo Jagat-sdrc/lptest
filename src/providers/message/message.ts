@@ -9,7 +9,7 @@ import { ToastController, LoadingController, AlertController } from 'ionic-angul
  */
 @Injectable()
 export class MessageProvider {
-  loading;  
+  loading;
 
   constructor(private toastCtrl: ToastController, private loadingCtrl: LoadingController,
   private alertCtrl: AlertController) {}
@@ -23,7 +23,7 @@ export class MessageProvider {
   showSuccessToast(message: string){
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3000      
+      duration: 3000
     });
     toast.present();
   }
@@ -38,7 +38,7 @@ export class MessageProvider {
     let toast = this.toastCtrl.create({
       message: message,
       showCloseButton: true,
-      duration: 5000    
+      duration: 5000
     });
     toast.present();
   }
@@ -55,7 +55,7 @@ export class MessageProvider {
       spinner: 'crescent',
       content: message,
     });
-    
+
     this.loading.present();
   }
 
@@ -71,13 +71,13 @@ export class MessageProvider {
         message: message,
         buttons: [
           {
-            text: 'Cancel',
+            text: 'No',
             handler: () => {
               resolve(false)
             }
           },
           {
-            text: 'Ok',
+            text: 'Yes',
             handler: () => {
               resolve(true)
             }

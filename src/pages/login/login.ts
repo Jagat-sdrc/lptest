@@ -34,8 +34,8 @@ export class LoginPage {
 
   ngOnInit(){
     this.loginData = {
-      username: 'naseem@sdrc.co.in',
-      password: 'na@123#!'
+      username: 'jagat@sdrc.co.in',
+      password: 'ja@123#!'
       // username: '',
       // password: ''
     }
@@ -43,9 +43,9 @@ export class LoginPage {
 
   login(){
     if(this.loginData.username == ""){
-      this.messageService.showErrorToast("Please enter valid username")
+      this.messageService.showErrorToast("Please enter the email")
     }else if(this.loginData.password == ""){
-      this.messageService.showErrorToast("Please enter valid password")
+      this.messageService.showErrorToast("Please enter the password")
     }else{
       this.userService.getUserValidation(this.loginData.username)
         .then(data=> {

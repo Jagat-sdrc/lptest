@@ -187,6 +187,7 @@ export class CreateNewAccountPage {
 
       this.createNewAccountService.saveNewUser(this.user)
         .then(data => {
+          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
           this.showConfirmAlert();
         })
         .catch(err => {
@@ -291,7 +292,7 @@ export class CreateNewAccountPage {
   showConfirmAlert(){
     let confirm = this.alertCtrl.create({
       enableBackdropDismiss: false,
-      title: ConstantProvider.messages.saveSuccessfull,
+      title: ConstantProvider.messages.important,
       message: ConstantProvider.messages.forgotPasswordMessage,
       inputs: [
         {

@@ -116,7 +116,7 @@ export class AddPatientPage implements OnInit{
       this.autoBabyId = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.autoBabyId = this.institutionName.toUpperCase()+this.datePipe.transform(new Date(),"ddMMyyyyHHmm");
+      this.getBabyId();
       this.patientForm.controls.baby_id.setValue(this.autoBabyId);
     }
   }
@@ -152,13 +152,7 @@ export class AddPatientPage implements OnInit{
       })
 
     } else {
-      this.headerTitle = "Add New Patient";
-      this.addNewPatientService.getInsitutionName(this.userService.getUser().institution)
-      .subscribe(data =>{
-         this.institutionName = data[0].shortName;
-      }, err => {
-        this.messageService.showErrorToast(err)
-      });
+      this.headerTitle = "Add Patient";
     }
 
 
@@ -220,42 +214,22 @@ export class AddPatientPage implements OnInit{
     this.patientForm = new FormGroup({
       baby_id: new FormControl(''),
       hospital_baby_id: new FormControl('',[Validators.pattern(this.babyIdHospital)]),
-      mother_name: new FormControl('', [Validators.required, Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
-      mother_age: new FormControl('', [Validators.required,Validators.maxLength(2)]),
-      delivery_date: new FormControl('', [Validators.required]),
-      delivery_time: new FormControl('', [Validators.required]),
-      delivery_method: new FormControl('', [Validators.required]),
-      baby_weight: new FormControl('', [Validators.required]),
-      gestational_age: new FormControl('', [Validators.required]),
-      intent_provide_milk: new FormControl('', [Validators.required]),
-      hm_lactation: new FormControl('', [Validators.required]),
-      first_exp_time: new FormControl('', [Validators.required]),
-      inpatient_outpatient: new FormControl('', [Validators.required]),
-      admission_date: new FormControl('', [Validators.required]),
-      baby_admitted: new FormControl('', [Validators.required]),
-      nicu_admission: new FormControl('', [Validators.required]),
+      mother_name: new FormControl('', [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
+      mother_age: new FormControl('', [Validators.maxLength(2)]),
+      delivery_date: new FormControl('',[Validators.required]),
+      delivery_time: new FormControl('',[Validators.required]),
+      delivery_method: new FormControl('',),
+      baby_weight: new FormControl('',),
+      gestational_age: new FormControl('',),
+      intent_provide_milk: new FormControl('',),
+      hm_lactation: new FormControl('',),
+      first_exp_time: new FormControl('',),
+      inpatient_outpatient: new FormControl('',),
+      admission_date: new FormControl('',),
+      baby_admitted: new FormControl('',),
+      nicu_admission: new FormControl('',),
       discharge_date: new FormControl(''),
       });
-    }
-
-    /**
-     * This method will used to update the current time
-     *
-     * @author Jagat Bandhu
-     * @since 0.0.1
-     */
-    updateTime(){
-      this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
-    }
-
-    /**
-     * This method will used to update the current time
-     *
-     * @author Jagat Bandhu
-     * @since 0.0.1
-     */
-    updateDate(){
-      this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
     }
 
     _numberKeyPress(e,no) {
@@ -345,6 +319,7 @@ export class AddPatientPage implements OnInit{
             const control = this.patientForm.get(field);
             control.markAsTouched({ onlySelf: true });
           });
+          this.messageService.showErrorToast(ConstantProvider.messages.allFieldMandatory)
         } else {
           this.resetStatus = false;
 
@@ -395,20 +370,20 @@ export class AddPatientPage implements OnInit{
       this.patientForm = new FormGroup({
         baby_id: new FormControl(this.patient.babyCode),
         hospital_baby_id: new FormControl(this.patient.babyCodeHospital,[Validators.pattern(this.babyIdHospital)]),
-        mother_name: new FormControl(this.patient.babyOf, [Validators.required,Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
-        mother_age: new FormControl(this.patient.mothersAge, [Validators.required,Validators.maxLength(2)]),
+        mother_name: new FormControl(this.patient.babyOf, [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
+        mother_age: new FormControl(this.patient.mothersAge, [Validators.maxLength(2)]),
         delivery_date: new FormControl(this.patient.deliveryDate,[Validators.required]),
-        delivery_time: new FormControl(this.patient.deliveryTime, [Validators.required]),
-        delivery_method: new FormControl(this.deliveryMethods.filter(d=>(d.id===this.patient.deliveryMethod))[0], [Validators.required]),
-        baby_weight: new FormControl(this.patient.babyWeight, [Validators.required]),
-        gestational_age: new FormControl(this.patient.gestationalAgeInWeek, [Validators.required]),
-        intent_provide_milk: new FormControl(this.motherPrenatalMilk.filter(d=>(d.id===this.patient.mothersPrenatalIntent))[0], [Validators.required]),
-        hm_lactation: new FormControl(this.hmLactation.filter(d=>(d.id===this.patient.parentsKnowledgeOnHmAndLactation))[0], [Validators.required]),
-        first_exp_time: new FormControl(this.patient.timeTillFirstExpression, [Validators.required]),
-        inpatient_outpatient: new FormControl(this.inpatientOutpatient.filter(d=>(d.id===this.patient.inpatientOrOutPatient))[0], [Validators.required]),
-        admission_date: new FormControl(this.patient.admissionDateForOutdoorPatients == null?null: this.patient.admissionDateForOutdoorPatients, [Validators.required]),
-        baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0], [Validators.required]),
-        nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0], [Validators.required]),
+        delivery_time: new FormControl(this.patient.deliveryTime,[Validators.required]),
+        delivery_method: new FormControl(this.deliveryMethods.filter(d=>(d.id===this.patient.deliveryMethod))[0]),
+        baby_weight: new FormControl(this.patient.babyWeight),
+        gestational_age: new FormControl(this.patient.gestationalAgeInWeek),
+        intent_provide_milk: new FormControl(this.motherPrenatalMilk.filter(d=>(d.id===this.patient.mothersPrenatalIntent))[0]),
+        hm_lactation: new FormControl(this.hmLactation.filter(d=>(d.id===this.patient.parentsKnowledgeOnHmAndLactation))[0]),
+        first_exp_time: new FormControl(this.patient.timeTillFirstExpression),
+        inpatient_outpatient: new FormControl(this.inpatientOutpatient.filter(d=>(d.id===this.patient.inpatientOrOutPatient))[0]),
+        admission_date: new FormControl(this.patient.admissionDateForOutdoorPatients == null?null: this.patient.admissionDateForOutdoorPatients),
+        baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0]),
+        nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0]),
         discharge_date: new FormControl(this.patient.dischargeDate),
       });
       this.outpatientAdmission();
@@ -484,6 +459,17 @@ export class AddPatientPage implements OnInit{
           this.patientForm.controls.discharge_date.setValue(null);
         }
       }
+    }
+
+    /**
+     * This method will generate baby id
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+    */
+    async getBabyId(){
+      this.autoBabyId = await this.addNewPatientService.getBabyId();
+      this.patientForm.controls.baby_id.setValue(this.autoBabyId);
     }
 
 }

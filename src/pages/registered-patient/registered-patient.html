@@ -22,7 +22,7 @@
   <div *ngIf="searching" class="spinner-container">
       <ion-spinner></ion-spinner>
   </div>
-  <p padding-left *ngIf="patientList != undefined && patientList.length > 0">Number of records: {{patientList === undefined?0:patientList.length}} </p>
+  <h6 padding-right text-right *ngIf="patientList != undefined && patientList.length > 0">Number of records: {{patientList === undefined?0:patientList.length}} </h6>
   <ion-list>
       <ion-item wrap-text no-lines *ngFor="let item of patientList; let i = index">
         <ion-card class="card-outside">

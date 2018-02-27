@@ -73,7 +73,8 @@ export class ConstantProvider {
     bfExpressions:"bfExpressions",
     feedExpressions: "feedExpressions",
     bfsps: "bfsps",
-    bfpds: 'bfpds'
+    bfpds: 'bfpds',
+    latestPatientId: 'latestPatientId'
   }
 
   static patientSortBy: IPatientSortBy = {
@@ -120,7 +121,7 @@ export class ConstantProvider {
     volumeOfMilkExpressedFromBreast:'Please enter volume of milk expressed from left and right breast (in ml)',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
     invalidCredentials: 'Invalid credentials!',
-    forgotPasswordMessage: 'Send an email to <a href="#">vijaya.lakshmi@accessh.org</a> from your email requesting for your password.',
+    forgotPasswordMessage: 'Please send an email to <a href="#">vijaya.lakshmi@accessh.org</a> requesting your password. ',
     registrationSuccessful: 'Registration successful',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',
@@ -128,7 +129,7 @@ export class ConstantProvider {
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyOverWeight: "Baby's weight is less/more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyGestational: "A normal pregnancy ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
-    motherAge: "Reproductive age group for women lies in the range between 15-49 years. Do you want to proceed with the entry?",
+    motherAge: "Reproductive age of women lies in the range between 15-49 years. Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
@@ -142,7 +143,7 @@ export class ConstantProvider {
     stateAlert: 'Please select the country before selecting state',
     districtAlert: 'Please select the state before selecting district',
     institutionAlert: 'Please select the district before selecting insitution',
-    saveSuccessfull: 'Saved Successfully!',
+    saveSuccessfull: 'Submit Successfully!',
     info: 'Info',
     warning: 'Warning',
     deletePatient: 'Do you want to delete the selected Patient record?',
@@ -165,7 +166,9 @@ export class ConstantProvider {
     selectDistrict: 'Select District',
     selectInstitute: 'Select Institute',
     emailNoted: 'Yes, I understand the process that would help me to receive my password via email.',
-    selectCheckBox: 'Please select the checkbox'
+    selectCheckBox: 'Please select the checkbox',
+    important: 'IMPORTANT',
+    allFieldMandatory: 'Please fill all the mandatory fields.'
   };
 
 /**
