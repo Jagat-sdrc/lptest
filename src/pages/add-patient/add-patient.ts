@@ -116,8 +116,7 @@ export class AddPatientPage implements OnInit{
       this.autoBabyId = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.autoBabyId = this.institutionName.toUpperCase()+this.datePipe.transform(new Date(),"ddMMyyyy")+
-      new Date().getMilliseconds();
+      this.autoBabyId = this.institutionName.toUpperCase()+this.datePipe.transform(new Date(),"ddMMyyyyHHmm");
       this.patientForm.controls.baby_id.setValue(this.autoBabyId);
     }
   }
@@ -377,7 +376,7 @@ export class AddPatientPage implements OnInit{
 
           this.addNewPatientService.saveNewPatient(this.patient)
             .then(data=> {
-            this.messageService.showSuccessToast("save successful!");
+            this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
             this.navCtrl.pop();
           })
             .catch(err =>{
