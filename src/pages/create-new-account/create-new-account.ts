@@ -5,7 +5,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  MenuController
+  MenuController,
+  AlertController
 } from 'ionic-angular';
 import {
   FormControl,
@@ -27,7 +28,7 @@ import {
  * @author Ratikanta
  * @author Jagat
  * @since 0.0.1
- * 
+ *
  * @export
  * @class CreateNewAccountPage
  */
@@ -69,7 +70,8 @@ export class CreateNewAccountPage {
   selectInstituteOptions: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public menuCtrl: MenuController,
-    private messageService: MessageProvider, public createNewAccountService: NewAccountServiceProvider) {}
+    private messageService: MessageProvider, public createNewAccountService: NewAccountServiceProvider,
+    private alertCtrl: AlertController) {}
 
 
   ionViewDidEnter() {
@@ -79,9 +81,8 @@ export class CreateNewAccountPage {
   ionViewWillLeave() {
     this.menuCtrl.swipeEnable(true);
   }
-  
+
   ngOnInit() {
-    
     //Getting all areas
     this.createNewAccountService.getAllAreas()
       .subscribe(data => {
@@ -122,7 +123,7 @@ export class CreateNewAccountPage {
 
   /**
    * This method will show the error message if user will select the state wihtout selecting the country
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    */
@@ -134,7 +135,7 @@ export class CreateNewAccountPage {
 
   /**
    * This method will show the error message if user will select the district wihtout selecting the state
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    */
@@ -146,7 +147,7 @@ export class CreateNewAccountPage {
 
   /**
    * This method will show the error message if user will select the institution wihtout selecting the district
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    */
@@ -158,51 +159,47 @@ export class CreateNewAccountPage {
 
   /**
    * This method will save the deo data to the database
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    */
   submit() {
-    if(this.validateEmailId()){
-      if (!this.userForm.valid) {
-        Object.keys(this.userForm.controls).forEach(field => {
-          const control = this.userForm.get(field);
-          control.markAsTouched({
-            onlySelf: true
-          });
+    if (!this.userForm.valid) {
+      Object.keys(this.userForm.controls).forEach(field => {
+        const control = this.userForm.get(field);
+        control.markAsTouched({
+          onlySelf: true
         });
-      } else {
-        //Initialize the add new patient object
-        this.user = {
-          firstName: this.userForm.controls.first_name.value,
-          lastName: this.userForm.controls.last_name.value,
-          email: this.userForm.controls.email.value,
-          institution: this.user.institution,
-          country: this.user.country,
-          state: this.user.state,
-          district: this.user.district,
-          isSynced: false,
-          syncFailureMessage: null
-        }
-  
-        this.createNewAccountService.saveNewUser(this.user)
-          .then(data => {
-            this.messageService.showOkAlert(ConstantProvider.messages.saveSuccessfull,ConstantProvider.messages.forgotPasswordMessage)
-            .then(()=>{
-              this.navCtrl.pop();
-            })
-          })
-          .catch(err => {
-            this.messageService.showErrorToast(err)
-          })
+      });
+    } else {
+      //Initialize the add new patient object
+      this.user = {
+        firstName: this.userForm.controls.first_name.value,
+        lastName: this.userForm.controls.last_name.value,
+        email: this.userForm.controls.email.value,
+        institution: this.user.institution,
+        country: this.user.country,
+        state: this.user.state,
+        district: this.user.district,
+        isSynced: false,
+        syncFailureMessage: null
       }
+
+      this.createNewAccountService.saveNewUser(this.user)
+        .then(data => {
+          this.showConfirmAlert();
+        })
+        .catch(err => {
+          this.messageService.showErrorToast(err)
+        })
     }
   }
+
   /**
    * This method is going to get executed when country is selected
    * @author Ratikanta
-   * @since 0.0.1 
-   * @param {IArea} country 
+   * @since 0.0.1
+   * @param {IArea} country
    * @memberof CreateNewAccountPage
    */
   countrySelected(country: IArea) {
@@ -217,7 +214,7 @@ export class CreateNewAccountPage {
   /**
    * This method is going to get executed when state is selected
    * @author Ratikanta
-   * @since 0.0.1 
+   * @since 0.0.1
    * @param {IArea} state
    * @memberof CreateNewAccountPage
    */
@@ -233,7 +230,7 @@ export class CreateNewAccountPage {
   /**
    * This method is going to get executed when district is selected
    * @author Ratikanta
-   * @since 0.0.1 
+   * @since 0.0.1
    * @param {IArea} district
    * @memberof CreateNewAccountPage
    */
@@ -247,30 +244,30 @@ export class CreateNewAccountPage {
   /**
    * This method is going to get executed when institution is selected
    * @author Ratikanta
-   * @since 0.0.1 
+   * @since 0.0.1
    * @param {IArea} institution
    * @memberof CreateNewAccountPage
    */
   instituteSelected(institution: IArea) {
     this.user.institution = institution.id;
   }
-  
+
   /**
    * This method is used to restrict the special character in the input field
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
-   * @param event 
+   * @param event
    */
-  omit_special_char(event){   
-    var k;  
+  omit_special_char(event){
+    var k;
     k = event.charCode;  //         k = event.keyCode;  (Both can be used)
-    return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+    return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
   }
 
   /**
    * This method is used to find the duplicate email id.
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    */
@@ -282,6 +279,47 @@ export class CreateNewAccountPage {
         this.messageService.showErrorToast(ConstantProvider.messages.emailIdExists)
       }
     })
+  }
+
+  /**
+   * This method will show a success alert with some pre-define message with checkbox for confirmation
+   * that user has noted the email id to get the password.
+   *
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
+  showConfirmAlert(){
+    let confirm = this.alertCtrl.create({
+      enableBackdropDismiss: false,
+      title: ConstantProvider.messages.saveSuccessfull,
+      message: ConstantProvider.messages.forgotPasswordMessage,
+      inputs: [
+        {
+          type: 'checkbox',
+          label: ConstantProvider.messages.emailNoted,
+          checked: false,
+          value: 'unchecked',
+          handler: (data)=>{
+            if(data.checked === true)
+              data.value = 'checked';
+          }
+        },
+      ],
+      buttons: [
+        {
+          text: 'Ok',
+          handler: (data) => {
+            if(data.length === 0){
+            this.messageService.showErrorToast(ConstantProvider.messages.selectCheckBox)
+              return false;
+              }
+              else
+              this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 }

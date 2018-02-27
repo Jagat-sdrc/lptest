@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 
 /**
  * This component will keep all the constant values
- * @author Ratikanta 
- * @since 0.0.1 
+ * @author Ratikanta
+ * @since 0.0.1
  */
 @Injectable()
 export class ConstantProvider {
@@ -13,7 +13,7 @@ export class ConstantProvider {
   validation messages
   @author:subhadarshani@sdrc.co.in
 */
-  
+
   static DeliveryMethodTypeIds: IDeliveryMethods = {
     deliveryMethodTypeId: 1
   }
@@ -71,7 +71,7 @@ export class ConstantProvider {
     users: "users",
     patients: "patients",
     bfExpressions:"bfExpressions",
-    feedExpressions: "feedExpressions",    
+    feedExpressions: "feedExpressions",
     bfsps: "bfsps",
     bfpds: 'bfpds'
   }
@@ -86,7 +86,7 @@ export class ConstantProvider {
     csection: "csection",
     other: "other",
     unknown: "unknown",
-  } 
+  }
 
   static passwordFormat = "@123#!"
 
@@ -164,13 +164,14 @@ export class ConstantProvider {
     selectState: 'Select State',
     selectDistrict: 'Select District',
     selectInstitute: 'Select Institute',
-    emailNoted: 'Yes, I understand the process that would help me to receive my password via email.'
+    emailNoted: 'Yes, I understand the process that would help me to receive my password via email.',
+    selectCheckBox: 'Please select the checkbox'
   };
-  
+
 /**
  * Area levels
  * @author Ratikanta
- * @since 0.0.1 
+ * @since 0.0.1
  * @static
  * @type {IAreaLevel}
  * @memberof ConstantProvider
@@ -187,7 +188,7 @@ static areaLevels: IAreaLevel ={
     dischargeDate: "dischargeDate",
     addmissionDate: "addmissionDate"
   }
-  
+
   constructor(public http: HttpClient) {
   }
 

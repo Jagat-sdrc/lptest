@@ -1,7 +1,7 @@
 /**
  * This interface will help use show messages to user when needed
  * @author Ratikanta
- * @since 0.0.1 
+ * @since 0.0.1
  * @interface IMessage
  */
 interface IMessage{
@@ -57,4 +57,5 @@ interface IMessage{
     selectDistrict: string;
     selectInstitute: string;
     emailNoted: string;
+    selectCheckBox: string;
 }
