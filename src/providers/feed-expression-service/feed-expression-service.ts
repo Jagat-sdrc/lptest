@@ -80,6 +80,9 @@ export class FeedExpressionServiceProvider {
 
     let promise = new Promise((resolve, reject) => {
       feedExpression.isSynced = false;
+      feedExpression.createdDate = feedExpression.createdDate === null ? 
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : feedExpression.createdDate;
+      feedExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
         let feedExpressions: IFeed[] = [];
@@ -215,26 +218,26 @@ export class FeedExpressionServiceProvider {
  * @returns {IFeed[]} The final appended list
  * @memberof FeedExpressionServiceProvider
  */
-appendNewRecordAndReturn(data: IFeed[], babyCode: string, date: Date): IFeed[]{
+appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[]{
     //The blank feed object
     let feed: IFeed = {
       id: this.getNewFeedExpressionId(babyCode),
       babyCode: babyCode,     
       userId: this.userService.getUser().email,
       babyWeight: null,
-      // dateOfFeed: moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
-      dateOfFeed: null,
+      dateOfFeed: date,
       dhmVolume: null,
       formulaVolume: null,
       animalMilkVolume: null,
       methodOfFeed: null,
       ommVolume: null,
       otherVolume: null,
-      // timeOfFeed: this.datePipe.transform(new Date(), 'HH:mm'),
       timeOfFeed: null,
       isSynced: false,
       locationOfFeeding: null,
-      syncFailureMessage: null
+      syncFailureMessage: null,
+      createdDate: null,
+      updatedDate: null
     }
 
 

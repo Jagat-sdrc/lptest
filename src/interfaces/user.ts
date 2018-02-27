@@ -13,4 +13,6 @@ interface IUser{
     district: number;
     syncFailureMessage: string;
     isSynced: boolean;
+    createdDate: string;
+    updatedDate: string;
 }

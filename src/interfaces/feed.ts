@@ -20,4 +20,6 @@ interface IFeed{
     babyWeight: number;
     syncFailureMessage: string;
     isSynced: boolean;
+    createdDate: string;
+    updatedDate: string;
 }

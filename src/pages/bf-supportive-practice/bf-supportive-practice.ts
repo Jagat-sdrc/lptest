@@ -90,7 +90,7 @@ export class BfSupportivePracticePage {
    */
   newBFSPForm() {
     this.bfspList = this.bfspService.appendNewRecordAndReturn(this.bfspList, this.dataForBfspPage.babyCode,
-      null);
+      this.dataForBfspPage.selectedDate);
     setTimeout( data => this.toggleGroup(this.bfspList[0]), 100);
   };
 
@@ -113,15 +113,17 @@ export class BfSupportivePracticePage {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
     }else if(bfsp.timeOfBFSP === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfBfsp);
-    }else if(bfsp.bfspDuration === undefined || bfsp.bfspDuration.toString() === "") {
+    }else if(bfsp.bfspDuration === undefined || !this.checkForOnlyNumber(bfsp.bfspDuration)) {
       this.messageService.showErrorToast(ConstantProvider.messages.durationOfBfsp);
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp, this.existingDate, this.existingTime)
       .then(data => {
-        this.messageService.showSuccessToast("save successful!")
+        this.toggleGroup(bfsp);
+        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
       })
       .catch(err => {
-        this.messageService.showErrorToast(err)
+        bfsp.createdDate = null
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   }
@@ -218,6 +220,17 @@ export class BfSupportivePracticePage {
     },
     err => console.log('Error occurred while getting time: ', err)
     );
+  }
+
+  checkForOnlyNumber(forValidation){
+    if(forValidation === null)
+      return true;
+    else{
+      if(this.onlyNumberRegex.test(forValidation))
+        return true;
+      else
+        return false;
+    }
   }
 
 }

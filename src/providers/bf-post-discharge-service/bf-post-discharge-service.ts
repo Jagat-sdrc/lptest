@@ -5,7 +5,6 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { ConstantProvider } from '../constant/constant';
 import { DatePipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
-import * as moment from 'moment';
 import { UserServiceProvider } from '../user-service/user-service';
 
 /*
@@ -64,11 +63,12 @@ export class BfPostDischargeServiceProvider {
     let promise = new Promise((resolve, reject) => {     
       bfPdForm.id = this.getNewBfPdId(bfPdForm.babyCode);
       bfPdForm.isSynced = false;
-      bfPdForm.dateOfBreastFeeding = this.datePipe.transform(new Date(bfPdForm.dateOfBreastFeeding), 'dd-MM-yyyy')
+      bfPdForm.createdDate = bfPdForm.createdDate === null ? 
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfPdForm.createdDate;
+      bfPdForm.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then((val) => {
-
           let bfPdForms: IBFPD[] = [];
           if (val != null) {
             bfPdForms = val;
@@ -105,10 +105,10 @@ export class BfPostDischargeServiceProvider {
           if (data != null) {
             data = (data as IBFPD[]).filter(d => d.babyCode === babyCode && d.timeOfBreastFeeding === timeOfBf);
             if(data.length === 1){
-              let day = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[0]);
-              let month = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[1]);
-              let year = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[2]);
-              (data as IBFPD[])[0].dateOfBreastFeeding = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
+              // let day = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[0]);
+              // let month = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[1]);
+              // let year = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[2]);
+              // (data as IBFPD[])[0].dateOfBreastFeeding = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
               resolve(data[0]);
             }else{              
               resolve(this.getBfPd(babyCode, timeOfBf));
@@ -206,8 +206,9 @@ export class BfPostDischargeServiceProvider {
       breastFeedingStatus: null,
       syncFailureMessage: null,
       timeOfBreastFeeding: timeOfBf,
-      userId: this.userService.getUser().email
-
+      userId: this.userService.getUser().email,
+      createdDate: null,
+      updatedDate: null
     }
     return bfpd;
   }

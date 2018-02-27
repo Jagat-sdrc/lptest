@@ -1,10 +1,10 @@
-<!-- <ion-header>
+<ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Login</ion-title>
+    <ion-title>Lactation</ion-title>
   </ion-navbar>
 
-</ion-header> -->
+</ion-header>
 
 
 <ion-content padding>
@@ -17,7 +17,7 @@
 
   <ion-item>
     <ion-label floating>Email</ion-label>
-    <ion-input type="text" [(ngModel)]="loginData.username"></ion-input>
+    <ion-input type="email" [(ngModel)]="loginData.username"></ion-input>
   </ion-item>
 
   <ion-item>
@@ -33,6 +33,6 @@
   <br/>
 
   <div text-center *ngIf="!(appVersionNumber === undefined || appVersionNumber === null)">Version {{appVersionNumber}}</div>
-  
+
 
 </ion-content>

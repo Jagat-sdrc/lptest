@@ -71,25 +71,26 @@ export class FeedPage {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
     }else if(feedExpression.timeOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
-    }else if(feedExpression.ommVolume === undefined || feedExpression.ommVolume.toString() === "") {
+    }else if(feedExpression.ommVolume === undefined || !this.checkForOnlyNumber(feedExpression.ommVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
-    }else if(feedExpression.dhmVolume === undefined || feedExpression.dhmVolume.toString() === "") {
+    }else if(feedExpression.dhmVolume === undefined || !this.checkForOnlyNumber(feedExpression.dhmVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
-    }else if(feedExpression.formulaVolume === undefined || feedExpression.formulaVolume.toString() === "") {
+    }else if(feedExpression.formulaVolume === undefined || !this.checkForOnlyNumber(feedExpression.formulaVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
-    }else if(feedExpression.animalMilkVolume === undefined || feedExpression.animalMilkVolume.toString() === "") {
+    }else if(feedExpression.animalMilkVolume === undefined || !this.checkForOnlyNumber(feedExpression.animalMilkVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
-    }else if(feedExpression.otherVolume === undefined || feedExpression.otherVolume.toString() === "") {
+    }else if(feedExpression.otherVolume === undefined || !this.checkForOnlyNumber(feedExpression.otherVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
     }else{
       this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
-        this.findExpressionsByBabyCodeAndDate();
-        this.messageService.showSuccessToast("save successful!")
+        this.toggleGroup(feedExpression);
+        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
       })
       .catch(err =>{
-        this.messageService.showErrorToast(err)
+        feedExpression.createdDate = null;
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   }
@@ -116,7 +117,7 @@ export class FeedPage {
  */
   newExpression(){
     this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
-    null);
+    this.dataForFeedEntryPage.selectedDate);
     setTimeout( data => this.toggleGroup(this.feedExpressions[0]), 100);
   };
 
@@ -194,6 +195,38 @@ export class FeedPage {
     },
     err => console.log('Error occurred while getting time: ', err)
     );
+  }
+
+  /**
+   * This method will validate whether the given input was number or not
+   * @author - Naseem Akhtar
+   * @param forValidation - the number entered by the user
+   */
+  checkForOnlyNumber(forValidation){
+    if(forValidation === null)
+      return true;
+    else{
+      if(this.onlyNumberRegex.test(forValidation))
+        return true;
+      else
+        return false;
+    }
+  }
+
+  /**
+   * This function will be called on ion change of method of expression question/
+   * Only breastfeeding and Parenteral + Enteral option will be required to fill up the volume questions.
+   * @author - Naseem Akhtar
+   * @param feedExpression - this is the form that the user is entering
+   */
+  validateVolumeFields(feedExpression: IFeed){
+    if(feedExpression.methodOfFeed === 61 || feedExpression.methodOfFeed === 66) {
+      feedExpression.animalMilkVolume = null
+      feedExpression.dhmVolume = null
+      feedExpression.formulaVolume = null
+      feedExpression.ommVolume = null
+      feedExpression.otherVolume = null
+    }
   }
 
 }

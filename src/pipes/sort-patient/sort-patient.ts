@@ -11,7 +11,7 @@ import { ConstantProvider } from '../../providers/constant/constant';
   name: 'sortPatient',
 })
 export class SortPatientPipe implements PipeTransform {
- 
+
 
   transform(patients: IPatient[], ...args): IPatient[] {
 
@@ -67,7 +67,7 @@ export class SortPatientPipe implements PipeTransform {
               return -1;
             } else {
               return 1;
-            } 
+            }
           });
         }else{
           patients = [];
@@ -80,7 +80,7 @@ export class SortPatientPipe implements PipeTransform {
               return -1;
             } else {
               return 1;
-            } 
+            }
           });
         }else{
           patients = [];
@@ -93,7 +93,7 @@ export class SortPatientPipe implements PipeTransform {
               return -1;
             } else {
               return 1;
-            } 
+            }
           });
         }else{
           patients = [];
@@ -106,7 +106,7 @@ export class SortPatientPipe implements PipeTransform {
               return -1;
             } else {
               return 1;
-            } 
+            }
           });
         }else{
           patients = [];
@@ -119,19 +119,20 @@ export class SortPatientPipe implements PipeTransform {
               return -1;
             } else {
               return 1;
-            } 
+            }
           });
         }else{
           patients = [];
         }
+        break;
         case ConstantProvider.patientSortBy.unknown:
-        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.unknown)).length > 0){        
+        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.unknown)).length > 0){
           patients.sort((a: IPatient, b: IPatient) => {
             if (a.deliveryMethod === ConstantProvider.typeDetailsIds.unknown) {
               return -1;
             } else {
               return 1;
-            } 
+            }
           });
         }else{
           patients = [];

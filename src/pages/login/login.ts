@@ -43,9 +43,9 @@ export class LoginPage {
 
   login(){
     if(this.loginData.username == ""){
-      this.messageService.showErrorToast("Please enter valid username")
+      this.messageService.showErrorToast("Please enter the email")
     }else if(this.loginData.password == ""){
-      this.messageService.showErrorToast("Please enter valid password")
+      this.messageService.showErrorToast("Please enter the password")
     }else{
       this.userService.getUserValidation(this.loginData.username)
         .then(data=> {
@@ -75,6 +75,4 @@ export class LoginPage {
     }
     this.navCtrl.push('CreateNewAccountPage');
   }
-
-
 }

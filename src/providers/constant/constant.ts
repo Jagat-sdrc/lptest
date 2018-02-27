@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 
 /**
  * This component will keep all the constant values
- * @author Ratikanta 
- * @since 0.0.1 
+ * @author Ratikanta
+ * @since 0.0.1
  */
 @Injectable()
 export class ConstantProvider {
@@ -13,7 +13,7 @@ export class ConstantProvider {
   validation messages
   @author:subhadarshani@sdrc.co.in
 */
-  
+
   static DeliveryMethodTypeIds: IDeliveryMethods = {
     deliveryMethodTypeId: 1
   }
@@ -56,7 +56,7 @@ export class ConstantProvider {
 
   static FeedingTypeIds: IFeedingMethods = {
     feedingMethodTypeId: 11,
-    locationOfFeeding: 14
+    locationOfFeeding: 5
   }
 
   static TimeOfBreastFeedingPostDischargeTypeId: ITimeOfBreastFeedingPostDischarge = {
@@ -71,9 +71,10 @@ export class ConstantProvider {
     users: "users",
     patients: "patients",
     bfExpressions:"bfExpressions",
-    feedExpressions: "feedExpressions",    
+    feedExpressions: "feedExpressions",
     bfsps: "bfsps",
-    bfpds: 'bfpds'
+    bfpds: 'bfpds',
+    latestPatientId: 'latestPatientId'
   }
 
   static patientSortBy: IPatientSortBy = {
@@ -86,7 +87,7 @@ export class ConstantProvider {
     csection: "csection",
     other: "other",
     unknown: "unknown",
-  } 
+  }
 
   static passwordFormat = "@123#!"
 
@@ -107,7 +108,8 @@ export class ConstantProvider {
   static serverUrls:any = {
     SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
     SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
-    // SYNCHRONIZE: 'http://localhost:8081/lactation/sync'
+    // SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
+    // SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
 
   static postDischargeMenu: number = 12;
@@ -117,10 +119,10 @@ export class ConstantProvider {
     enterTimeOfExpression :'Please enter time of expression',
     enterTypeOfExpression:'Please enter method of expression',
     enterLocOfExpression:'Please enter location of expression',
-    volumeOfMilkExpressedFromBreast:'Please enter volume of milk expressed from left and right breast (in ml)',
+    volumeOfMilkExpressedFromBreast:'Please enter valid volume of milk expressed from left and right breast (in ml)',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
     invalidCredentials: 'Invalid credentials!',
-    forgotPasswordMessage: 'Send an email to <u>vijaya.lakshmi@accessh.org</u> from your email requesting for your password.',
+    forgotPasswordMessage: 'Please send an email to <a href="#">vijaya.lakshmi@accessh.org</a> requesting your password. ',
     registrationSuccessful: 'Registration successful',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',
@@ -128,7 +130,7 @@ export class ConstantProvider {
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyOverWeight: "Baby's weight is less/more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyGestational: "A normal pregnancy ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
-    motherAge: "Reproductive age group for women lies in the range between 15-49 years. Do you want to proceed with the entry?",
+    motherAge: "Reproductive age of women lies in the range between 15-49 years. Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
@@ -142,11 +144,11 @@ export class ConstantProvider {
     stateAlert: 'Please select the country before selecting state',
     districtAlert: 'Please select the state before selecting district',
     institutionAlert: 'Please select the district before selecting insitution',
-    saveSuccessfull: 'Save Successfully',
+    saveSuccessfull: 'Saved successfully!',
     info: 'Info',
     warning: 'Warning',
     deletePatient: 'Do you want to delete the selected Patient record?',
-    duplicateTime: 'Duplicate time',
+    duplicateTime: 'Record for this particular time exists. Please visit the record created for this time to edit.',
     enterDateOfFeed: 'Please enter date of feed',
     enterTimeOfFeed :'Please enter time of feed',
     methodOfFeed: 'Please enter method of feed',
@@ -164,13 +166,16 @@ export class ConstantProvider {
     selectState: 'Select State',
     selectDistrict: 'Select District',
     selectInstitute: 'Select Institute',
-    emailNoted: 'Yes, I understand the process that would help me to receive my password via email.'
+    emailNoted: 'Yes, I understand the process that would help me to receive my password via email.',
+    selectCheckBox: 'Please select the checkbox',
+    important: 'IMPORTANT',
+    allFieldMandatory: 'Please fill all the mandatory fields.'
   };
-  
+
 /**
  * Area levels
  * @author Ratikanta
- * @since 0.0.1 
+ * @since 0.0.1
  * @static
  * @type {IAreaLevel}
  * @memberof ConstantProvider
@@ -187,7 +192,7 @@ static areaLevels: IAreaLevel ={
     dischargeDate: "dischargeDate",
     addmissionDate: "addmissionDate"
   }
-  
+
   constructor(public http: HttpClient) {
   }
 

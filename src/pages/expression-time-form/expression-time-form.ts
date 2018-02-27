@@ -97,10 +97,12 @@ export class ExpressionTimeFormPage {
     }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
-        this.messageService.showSuccessToast("save successful!")
+        this.toggleGroup(bfExpression);
+        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
       })
       .catch(err => {
-        this.messageService.showErrorToast(err)
+        bfExpression.createdDate = null;
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   }
@@ -111,7 +113,7 @@ export class ExpressionTimeFormPage {
  */
   newExpression(){
     this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions,
-      this.dataForBFEntryPage.babyCode, null);
+      this.dataForBFEntryPage.babyCode, this.dataForBFEntryPage.selectedDate);
     setTimeout(d => this.toggleGroup(this.bFExpressions[0]),200);
   }
 
@@ -121,7 +123,6 @@ export class ExpressionTimeFormPage {
  * @memberof ExpressionTimeFormPage
  */
   validateDurationOfExpression(value) {
-    debugger;
     if(value == null) {
       return true;
     }else {

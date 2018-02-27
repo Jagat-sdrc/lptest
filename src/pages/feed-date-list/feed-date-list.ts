@@ -73,7 +73,6 @@ export class FeedDateListPage {
     let dataForFeedEntryPage: IDataForFeedEntryPage = {
       babyCode: this.babyCode,
       selectedDate: null,
-      // selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
       isNewExpression: true
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})

@@ -7,7 +7,8 @@ interface IDBKeyNames {
     users: string;
     patients: string;
     bfExpressions: string,
-    feedExpressions: string,    
+    feedExpressions: string,
     bfsps: string;
-    bfpds: string
+    bfpds: string;
+    latestPatientId: string;
 }

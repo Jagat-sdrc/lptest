@@ -34,7 +34,9 @@ export class BfPostDischargePage {
     breastFeedingStatus: null,
     syncFailureMessage: null,
     timeOfBreastFeeding: null,
-    userId: null
+    userId: null,
+    createdDate: null,
+    updatedDate: null
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -82,11 +84,12 @@ export class BfPostDischargePage {
     }else{
       this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
       .then(data=> {
-        this.messageService.showSuccessToast("save successful!");
+        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
         this.navCtrl.pop();
       })
       .catch(err =>{
-        this.messageService.showErrorToast(err)
+        this.bfpd.createdDate = null
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   };

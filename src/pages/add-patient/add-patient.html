@@ -19,10 +19,11 @@
 
 
 <ion-content padding>
+  <p class="text-color">All * fields are mandatory</p>
   <form [formGroup]="patientForm">
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>Baby ID</ion-label>
+        <ion-label color="black" stacked>Baby ID<span class="text-color"> *</span></ion-label>
         <ion-input type="text" disabled formControlName="baby_id"></ion-input>
       </ion-item>
     </div>
@@ -31,32 +32,23 @@
         <ion-label color="black" stacked>Baby ID provided by hospital</ion-label>
         <ion-input type="text" formControlName="hospital_baby_id" (keypress)="_numberKeyPress($event,5)"></ion-input>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.hospital_baby_id.invalid  && (patientForm.controls.hospital_baby_id.dirty || patientForm.controls.hospital_baby_id.touched) && resetStatus">
-        Please enter valid Baby ID provided by hospital
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Baby of (mother's name)</ion-label>
         <ion-input type="text" formControlName="mother_name"></ion-input>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.mother_name.invalid  && (patientForm.controls.mother_name.dirty || patientForm.controls.mother_name.touched) && resetStatus">
-        Please enter the name
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Mother's Age</ion-label>
         <ion-input type="number" (focusout)="validateMotherAge()" formControlName="mother_age" (keypress)="_numberKeyPress($event,1)"></ion-input>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.mother_age.invalid  && (patientForm.controls.mother_age.dirty || patientForm.controls.mother_age.touched) && resetStatus">
-        Please enter the mother's age
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>Delivery date</ion-label>
-        <ion-input formControlName="delivery_date" (ionFocus)="datePickerDialog('deliveryDate')" [readonly]="true"></ion-input>
+        <ion-label color="black" stacked>Delivery date<span class="text-color"> *</span></ion-label>
+        <ion-input formControlName="delivery_date" (click)="datePickerDialog('deliveryDate')" (ionFocus)="datePickerDialog('deliveryDate')" [readonly]="true"></ion-input>
         <ion-icon padding-top name="calendar" item-right></ion-icon>
       </ion-item>
       <p class="error" *ngIf="patientForm.controls.delivery_date.invalid  && (patientForm.controls.delivery_date.dirty || patientForm.controls.delivery_date.touched) && resetStatus">
@@ -65,8 +57,8 @@
     </div>
     <div class="form-group">
       <ion-item (click)="timePickerDialog()">
-        <ion-label color="black" stacked>Delivery time</ion-label>
-        <ion-input formControlName="delivery_time" (ionFocus)="timePickerDialog()" [readonly]="true"></ion-input>
+        <ion-label color="black" stacked>Delivery time<span class="text-color"> *</span></ion-label>
+        <ion-input formControlName="delivery_time" (click)="timePickerDialog()" (ionFocus)="timePickerDialog()" [readonly]="true"></ion-input>
         <ion-icon padding-top name="time" item-right></ion-icon>
       </ion-item>
       <p class="error" *ngIf="patientForm.controls.delivery_time.invalid  && (patientForm.controls.delivery_time.dirty || patientForm.controls.delivery_time.touched) && resetStatus">
@@ -80,27 +72,18 @@
           <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.delivery_method.invalid && (patientForm.controls.delivery_method.dirty || patientForm.controls.delivery_method.touched) && resetStatus">
-        Please enter delivery method
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Baby's weight in grams</ion-label>
         <ion-input type="number" (focusout)="validateBabyWeight()" formControlName="baby_weight"></ion-input>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.baby_weight.invalid && (patientForm.controls.baby_weight.dirty || patientForm.controls.baby_weight.touched) && resetStatus">
-        Please enter the baby weight
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Gestational age in weeks</ion-label>
         <ion-input type="number" (focusout)="validateGestational()" formControlName="gestational_age"></ion-input>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.gestational_age.invalid  && (patientForm.controls.gestational_age.dirty || patientForm.controls.gestational_age.touched) && resetStatus">
-        Please enter Gestational age in weeks
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
@@ -109,9 +92,6 @@
           <ion-option *ngFor="let item of motherPrenatalMilk" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.intent_provide_milk.invalid  && (patientForm.controls.intent_provide_milk.dirty || patientForm.controls.intent_provide_milk.touched) && resetStatus">
-        Please enter Mother's prenatal intent to provide milk
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
@@ -120,9 +100,6 @@
           <ion-option *ngFor="let item of hmLactation" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.hm_lactation.invalid  && (patientForm.controls.hm_lactation.dirty || patientForm.controls.hm_lactation.touched) && resetStatus">
-        Please enter Parent's knowledge on HM and lactation
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
@@ -130,9 +107,6 @@
         <ion-datetime displayFormat="HH:mm" formControlName="first_exp_time"></ion-datetime>
         <ion-icon padding-top name="time" item-right></ion-icon>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.first_exp_time.invalid  && (patientForm.controls.first_exp_time.dirty || patientForm.controls.first_exp_time.touched) && resetStatus">
-        Please enter Time till first expression in hours
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
@@ -141,19 +115,13 @@
           <ion-option *ngFor="let item of inpatientOutpatient" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.inpatient_outpatient.invalid  && (patientForm.controls.inpatient_outpatient.dirty || patientForm.controls.inpatient_outpatient.touched) && resetStatus">
-        Please enter Inpatient/Outpatient
-      </p>
     </div>
     <div class="form-group" *ngIf="outPatientAdmissionStatus">
       <ion-item>
         <ion-label color="black" stacked>Admission date (Outpatients)</ion-label>
-        <ion-input formControlName="admission_date" (ionFocus)="datePickerDialog('addmissionDate')" [readonly]="true"></ion-input>
+        <ion-input formControlName="admission_date" (click)="datePickerDialog('addmissionDate')" (ionFocus)="datePickerDialog('addmissionDate')" [readonly]="true"></ion-input>
         <ion-icon name="calendar" item-right></ion-icon>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.admission_date.invalid  && (patientForm.controls.admission_date.dirty || patientForm.controls.admission_date.touched) && resetStatus">
-        Please enter Admission date (Outpatients)
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
@@ -162,9 +130,6 @@
           <ion-option *ngFor="let item of babyAdmittedTo" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.baby_admitted.invalid  && (patientForm.controls.baby_admitted.dirty || patientForm.controls.baby_admitted.touched) && resetStatus">
-        Please enter Baby is admitted to
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
@@ -173,19 +138,13 @@
           <ion-option *ngFor="let item of nicuAdmission" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.nicu_admission.invalid  && (patientForm.controls.nicu_admission.dirty || patientForm.controls.nicu_admission.touched) && resetStatus">
-        Please enter Reason for admission
-      </p>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Discharge date</ion-label>
-        <ion-input formControlName="discharge_date" (ionFocus)="datePickerDialog('dischargeDate')" (focusout)="validateDischargeDate()" [readonly]="true"></ion-input>
+        <ion-input formControlName="discharge_date" (click)="datePickerDialog('dischargeDate')" (ionFocus)="datePickerDialog('dischargeDate')" (focusout)="validateDischargeDate()" [readonly]="true"></ion-input>
         <ion-icon padding-top name="calendar" item-right></ion-icon>
       </ion-item>
-      <p class="error" *ngIf="patientForm.controls.discharge_date.invalid  && (patientForm.controls.discharge_date.dirty || patientForm.controls.discharge_date.touched) && resetStatus">
-        Please enter the delivery date
-      </p>
     </div>
   </form>
 

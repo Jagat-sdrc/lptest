@@ -356,12 +356,12 @@
         },
         {
             "id": 61,
-            "name": "Parenteral (no volume data required)",
+            "name": "Parenteral",
             "typeId": 11
         },
         {
             "id": 62,
-            "name": "Parenteral + Enteral (enteral volume entered)",
+            "name": "Parenteral + Enteral (Enter volume data for Enteral feed)",
             "typeId": 11
         },
         {
@@ -381,7 +381,7 @@
         },
         {
             "id": 66,
-            "name": "Breastfeed (no volumne input required)",
+            "name": "Breastfeed",
             "typeId": 11
         },
         {

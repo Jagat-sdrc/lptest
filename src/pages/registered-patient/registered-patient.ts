@@ -23,7 +23,8 @@ export class RegisteredPatientPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
-    private messageService: MessageProvider, private menuCtrl: MenuController, private sortPatient: SortPatientPipe) {
+    private messageService: MessageProvider, private menuCtrl: MenuController, 
+    private sortPatient: SortPatientPipe) {
   }
 
   ionViewWillEnter(){
@@ -57,7 +58,6 @@ export class RegisteredPatientPage {
 
 
   goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string){
-
     this.navCtrl.push('BabyDashboardPage',{
       babyCode: babyCode,
       babyCodeByHospital: babyCodeHospital,
