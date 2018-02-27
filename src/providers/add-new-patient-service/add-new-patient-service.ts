@@ -11,6 +11,7 @@ import { UserServiceProvider } from '../user-service/user-service';
 /**
  * This service will only provide service to Feed component
  * @author Jagat Bandhu
+ * @author Ratikanta
  * @since 0.0.1
  */
 @Injectable()
@@ -159,37 +160,39 @@ export class AddNewPatientServiceProvider {
    * @since 0.0.1
    * @param IPatient the patient which we need to save in the database.
    */
-  saveNewPatient(patient: IPatient): Promise < any > {
+  saveNewPatient(patient: IPatient, uniquePatientIdToUpdate: number): Promise < any > {
     let promise = new Promise((resolve, reject) => {
       patient.createdDate = patient.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : patient.createdDate;
       patient.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+      let patients: IPatient[] = [];
       this.storage.get(ConstantProvider.dbKeyNames.patients)
-      .then((val) => {
-        let patients: IPatient[] = [];
+      .then((val) => {        
         if(val != null){
           patients = val
-          patients = this.validateNewEntryAndUpdate(patients, patient)          
-          this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
-          .then(data=>{
+          patients = this.validateNewEntryAndUpdate(patients, patient)                    
+        }else{
+          patients.push(patient)          
+        }                
+      })
+      .then(()=>{
+        this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
+        .catch(err=>{
+          patient.createdDate = null
+          reject(err.message);    
+        })
+      })
+      .then(()=>{
+        if(uniquePatientIdToUpdate){
+          this.storage.set(ConstantProvider.dbKeyNames.latestPatientId, uniquePatientIdToUpdate)
+          .then(()=>{
             resolve()
-          })
-          .catch(err=>{
-            patient.createdDate = null
-            reject(err.message);    
           })
         }else{
-          patients.push(patient)
-          this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
-          .then(data=>{
-            resolve()
-          })
-          .catch(err=>{
-            patient.createdDate = null
-            reject(err.message);    
-          })
-        }                
-      }).catch(err=>{
+          resolve()
+        }
+      })
+      .catch(err=>{
         patient.createdDate = null
         reject(err.message);
       })
@@ -267,55 +270,57 @@ export class AddNewPatientServiceProvider {
    * This method will return promise of string
    *
    * @author Jagat Bandhu Sahoo
+   * @author Ratikanta
    * @since 1.0.0
    */
-  getBabyId(): Promise < string > {
-    return new Promise < string > ((resolve, reject) => {
+  getBabyId(): Promise < IUniquePatientId > {
+    return new Promise < IUniquePatientId > ((resolve, reject) => {
+      reject("Error test123")
       let babyId = "";
       this.getInsitutionName().subscribe(institutionName => {
         babyId =
           (institutionName[0] as IArea).shortName.toUpperCase() +
-          this.datePipe.transform(new Date(), "ddMMyyyyHHmm");
+          this.datePipe.transform(new Date(), "ddMMyyHHmm");
         this.storage
           .get(ConstantProvider.dbKeyNames.latestPatientId)
           .then(dbBabyId => {
             if (dbBabyId != null) {
-              dbBabyId++
-              this.storage
-                .set(ConstantProvider.dbKeyNames.latestPatientId, dbBabyId)
-                .then(data => {
-                  let stringBabyId = dbBabyId + "";
-                  switch (stringBabyId.length) {
-                    case 1:
-                      resolve(babyId +"00" + stringBabyId);
-                      break;
-                    case 2:
-                      resolve(babyId +"0" + stringBabyId);
-                      break;
-                    default:
-                      resolve(babyId + stringBabyId);
-                      break;
-                  }
-                  resolve();
-                });
-            } else {
-              this.storage
-                .set(ConstantProvider.dbKeyNames.latestPatientId, 1)
-                .then(data => {
-                  let stringBabyId = 1 + "";
-                  switch (stringBabyId.length) {
-                    case 1:
-                      resolve(babyId +"00" + stringBabyId);
-                      break;
-                    case 2:
-                      resolve(babyId +"0" + stringBabyId);
-                      break;
-                    default:
-                      resolve(babyId + stringBabyId);
-                      break;
-                  }
-                  resolve();
-                });
+              let stringBabyId = ++dbBabyId + "";
+              let uniquePatientId: IUniquePatientId = {
+                id: null,
+                idNumber: dbBabyId
+              }
+              switch (stringBabyId.length) {
+                case 1:
+                  uniquePatientId.id = babyId +"00" + stringBabyId;                  
+                  break;
+                case 2:
+                uniquePatientId.id = babyId +"0" + stringBabyId;
+                  break;
+                default:
+                uniquePatientId.id = babyId + stringBabyId;
+                  break;
+              }
+              resolve(uniquePatientId);
+              
+            } else {              
+              let stringBabyId = 1 + "";
+              let uniquePatientId: IUniquePatientId = {
+                id: null,
+                idNumber: 1
+              }
+              switch (stringBabyId.length) {
+                case 1:
+                  uniquePatientId.id = babyId +"00" + stringBabyId;                  
+                  break;
+                case 2:
+                uniquePatientId.id = babyId +"0" + stringBabyId;
+                  break;
+                default:
+                uniquePatientId.id = babyId + stringBabyId;
+                  break;
+              }
+              resolve(uniquePatientId);
             }
           });
       });

@@ -43,7 +43,6 @@ export class AddPatientPage implements OnInit{
   babyId: any;
   resetStatus: boolean = true;
   patient: IPatient;
-  autoBabyId: any;
   countryName: string;
   stateName: string;
   institutionName: string;
@@ -55,6 +54,10 @@ export class AddPatientPage implements OnInit{
   babyIdHospital: RegExp = /^[a-zA-Z0-9_.-]*$/;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   hasError: boolean = false;
+  private uniquePatientId : IUniquePatientId = {
+    id: null,
+    idNumber: null
+  }
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
@@ -113,11 +116,10 @@ export class AddPatientPage implements OnInit{
     this.menuCtrl.swipeEnable(false);
     if(!(this.navParams.get('babyCode') == undefined)){
       this.forEdit = true;
-      this.autoBabyId = this.patient.babyCode;
+      this.uniquePatientId.id = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.getBabyId();
-      this.patientForm.controls.baby_id.setValue(this.autoBabyId);
+      this.getUniquePatientId();      
     }
   }
 
@@ -325,7 +327,7 @@ export class AddPatientPage implements OnInit{
 
           //Initialize the add new patient object
           this.patient = {
-            babyCode: this.autoBabyId,
+            babyCode: this.uniquePatientId.id,
             babyCodeHospital: this.patientForm.controls.hospital_baby_id.value,
             babyOf: this.patientForm.controls.mother_name.value,
             mothersAge: parseInt(this.patientForm.controls.mother_age.value),
@@ -349,7 +351,7 @@ export class AddPatientPage implements OnInit{
             updatedDate: null
           }
 
-          this.addNewPatientService.saveNewPatient(this.patient)
+          this.addNewPatientService.saveNewPatient(this.patient, this.uniquePatientId.idNumber)
             .then(data=> {
             this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
             this.navCtrl.pop();
@@ -466,11 +468,16 @@ export class AddPatientPage implements OnInit{
      * This method will generate baby id
      *
      * @author Jagat Bandhu
+     * @author Ratikanta
      * @since 1.0.0
     */
-    async getBabyId(){
-      this.autoBabyId = await this.addNewPatientService.getBabyId();
-      this.patientForm.controls.baby_id.setValue(this.autoBabyId);
+    async getUniquePatientId(){
+      try{
+        this.uniquePatientId = await this.addNewPatientService.getBabyId()
+        this.patientForm.controls.baby_id.setValue(this.uniquePatientId.id);
+      }catch(err){
+        this.messageService.showErrorToast(err)
+      }
     }
 
 }
