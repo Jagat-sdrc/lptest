@@ -58,4 +58,6 @@ interface IMessage{
     selectInstitute: string;
     emailNoted: string;
     selectCheckBox: string;
+    important: string;
+    allFieldMandatory: string;
 }
