@@ -28,16 +28,16 @@ export class LoginPage {
           this.appVersionNumber = data
         })
       }
-      
+
     });
-  }  
+  }
 
   ngOnInit(){
     this.loginData = {
-      username: 'naseem@sdrc.co.in',
-      password: 'na@123#!'
-      // username: '',
-      // password: ''
+      // username: 'jagat@sdrc.co.in',
+      // password: 'ja@123#!'
+      username: '',
+      password: ''
     }
   }
 
@@ -75,6 +75,6 @@ export class LoginPage {
     }
     this.navCtrl.push('CreateNewAccountPage');
   }
-  
+
 
 }

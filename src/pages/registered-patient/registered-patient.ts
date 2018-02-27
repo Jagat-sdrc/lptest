@@ -21,9 +21,9 @@ export class RegisteredPatientPage {
   sortBy: string;
   searching: any = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
+  constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
-    private messageService: MessageProvider, private menuCtrl: MenuController, private sortPatient: SortPatientPipe) {    
+    private messageService: MessageProvider, private menuCtrl: MenuController, private sortPatient: SortPatientPipe) {
   }
 
   ionViewWillEnter(){
@@ -44,7 +44,7 @@ export class RegisteredPatientPage {
   }
 
 
-  ionViewDidLoad() { 
+  ionViewDidLoad() {
     this.setSearchedPatients();
     this.searchControl.valueChanges.debounceTime(700)
     .subscribe(search => {
@@ -76,9 +76,9 @@ export class RegisteredPatientPage {
     this.findAllPatients();
   }
 
-  /** 
+  /**
    * This method will sort the data based on the sort by type.
-   * 
+   *
    * @author Jagat Bandhu Sahoo
    * @since 0.0.1
   */
@@ -129,7 +129,7 @@ export class RegisteredPatientPage {
     alert.addButton('Cancel');
     alert.addButton({
       text: 'OK',
-      handler: data => { 
+      handler: data => {
            switch(data){
              case "Delivery Date":
              this.sortBy = ConstantProvider.patientSortBy.deliveryDate
@@ -163,14 +163,13 @@ export class RegisteredPatientPage {
     alert.present();
   }
 
-  /** 
+  /**
    * This method will call to get the patient data from the database
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
   */
   findAllPatients(){
-    debugger;
     this.registeredPatientService.findAllPatients()
     .then(data=>{
       this.patientList = data;
@@ -181,7 +180,7 @@ export class RegisteredPatientPage {
     })
   }
 
-  /** 
+  /**
    * This method will help us getting searched patients
    * @author Ratikanta
    * @since 0.0.1
@@ -190,7 +189,7 @@ export class RegisteredPatientPage {
     this.patientList = this.registeredPatientService.getSearchedPatients(this.searchTerm)
   }
 
-  /** 
+  /**
    * This will make the search sprinner visible
    * @author Ratikanta
    * @since 0.0.1

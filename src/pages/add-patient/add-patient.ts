@@ -11,8 +11,8 @@ import { DatePicker } from '@ionic-native/date-picker';
 
 
 /**
- * 
- * 
+ *
+ *
  * @export
  * @class AddPatientPage
  * @implements {OnInit}
@@ -60,12 +60,12 @@ export class AddPatientPage implements OnInit{
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,private datePicker: DatePicker,
   private userService: UserServiceProvider, private menuCtrl: MenuController) {
-    
+
   }
 
   /**
    * This method will used for handle the custom back button
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    */
@@ -75,7 +75,7 @@ export class AddPatientPage implements OnInit{
 
   /**
    * This method will used for cancel the current page and redirect to previous page
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    */
@@ -84,7 +84,7 @@ export class AddPatientPage implements OnInit{
      * This iteration will be used to untouch all the fields, because the user wants a new form.
      * @author - Naseem Akhtar
      */
-    
+
     Object.keys(this.patientForm.controls).forEach(field => {
       this.resetStatus = false;
       const control = this.patientForm.get(field);
@@ -108,7 +108,7 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.nicu_admission.setValue(null),
     this.patientForm.controls.discharge_date.setValue(null)
   }
-  
+
   ionViewDidEnter(){
     this.menuCtrl.swipeEnable(false);
     if(!(this.navParams.get('babyCode') == undefined)){
@@ -116,7 +116,7 @@ export class AddPatientPage implements OnInit{
       this.autoBabyId = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.autoBabyId = this.institutionName.substring(0,3).toUpperCase()+this.datePipe.transform(new Date(),"ddMMyyyy")+
+      this.autoBabyId = this.institutionName.toUpperCase()+this.datePipe.transform(new Date(),"ddMMyyyy")+
       new Date().getMilliseconds();
       this.patientForm.controls.baby_id.setValue(this.autoBabyId);
     }
@@ -131,7 +131,7 @@ export class AddPatientPage implements OnInit{
    * date will be initialize
    * get all the options for all the dropdowns.
    * form control validation
-   * 
+   *
    * @author Jagat Bandhu
   */
   ngOnInit() {
@@ -146,7 +146,7 @@ export class AddPatientPage implements OnInit{
       }
       this.addNewPatientService.findByBabyCode(this.paramToExpressionPage.babyCode)
       .then(data=>{
-        this.patient = data      
+        this.patient = data
       })
       .catch(err=>{
         this.messageService.showErrorToast(err)
@@ -156,7 +156,7 @@ export class AddPatientPage implements OnInit{
       this.headerTitle = "Add New Patient";
       this.addNewPatientService.getInsitutionName(this.userService.getUser().institution)
       .subscribe(data =>{
-         this.institutionName = data[0].name;
+         this.institutionName = data[0].shortName;
       }, err => {
         this.messageService.showErrorToast(err)
       });
@@ -241,7 +241,7 @@ export class AddPatientPage implements OnInit{
 
     /**
      * This method will used to update the current time
-     * 
+     *
      * @author Jagat Bandhu
      * @since 0.0.1
      */
@@ -251,7 +251,7 @@ export class AddPatientPage implements OnInit{
 
     /**
      * This method will used to update the current time
-     * 
+     *
      * @author Jagat Bandhu
      * @since 0.0.1
      */
@@ -309,7 +309,7 @@ export class AddPatientPage implements OnInit{
              this.hasError = false;
            })
           }
-         } 
+         }
         }
       }
 
@@ -348,7 +348,7 @@ export class AddPatientPage implements OnInit{
           });
         } else {
           this.resetStatus = false;
-  
+
           //Initialize the add new patient object
           this.patient = {
             babyCode: this.autoBabyId,
@@ -371,9 +371,9 @@ export class AddPatientPage implements OnInit{
             isSynced: false,
             syncFailureMessage: null,
             userId: this.userService.getUser().email
-  
+
           }
-  
+
           this.addNewPatientService.saveNewPatient(this.patient)
             .then(data=> {
             this.messageService.showSuccessToast("save successful!");
@@ -387,10 +387,10 @@ export class AddPatientPage implements OnInit{
 
     /**
      * This method will set the value taken from the db to ui component.
-     * 
+     *
      * @author Jagat Bandhu Sahoo
      * @since 0.0.1
-     */   
+     */
     setFetchedDataToUi(){
 
       this.patientForm = new FormGroup({
@@ -460,10 +460,10 @@ export class AddPatientPage implements OnInit{
 
     /**
      * This method is used to validate the discharge field that it should not the greater than the delivery date
-     * 
+     *
      * @author Jagat Bandhu
      * @since 0.0.1
-     * @param event 
+     * @param event
      */
     validateDischargeDate(){
       if(this.patientForm.controls.delivery_date.value != ""){
