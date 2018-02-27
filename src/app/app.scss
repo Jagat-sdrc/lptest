@@ -18,7 +18,7 @@
 .smenu-custom {
     background: color($colors, primary, base) !important;
     height: 150px;
-    padding-left: 30px; 
+    padding-left: 30px;
     font-size: 18px;
     color: white;
     margin-bottom: 10px;
@@ -32,7 +32,7 @@
 .error{
     color:red;
     margin-left: 15px;
-} 
+}
 .item-md h2{
     color: white;
 }
@@ -60,3 +60,8 @@ ion-label, ion-option, ion-datetime, ion-item, ion-select, ion-input, .alert-rad
     border: thin solid;
     margin-bottom: 1rem;
 }
+
+.alert-md .alert-checkbox-label{
+  white-space: initial;
+}
+
