@@ -118,11 +118,12 @@ export class BfSupportivePracticePage {
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp, this.existingDate, this.existingTime)
       .then(data => {
+        this.toggleGroup(bfsp);
         this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
       })
       .catch(err => {
         bfsp.createdDate = null
-        this.messageService.showErrorToast(err)
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   }

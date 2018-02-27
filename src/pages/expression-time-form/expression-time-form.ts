@@ -97,11 +97,12 @@ export class ExpressionTimeFormPage {
     }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
-        this.messageService.showSuccessToast("save successful!")
+        this.toggleGroup(bfExpression);
+        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
       })
       .catch(err => {
         bfExpression.createdDate = null;
-        this.messageService.showErrorToast(err)
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   }

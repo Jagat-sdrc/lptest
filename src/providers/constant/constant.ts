@@ -105,8 +105,10 @@ export class ConstantProvider {
    * @since 0.0.1
    */
   static serverUrls:any = {
-    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
-    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
+    // SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
+    // SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
+    SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
+    SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
 
   static postDischargeMenu: number = 12;
@@ -116,7 +118,7 @@ export class ConstantProvider {
     enterTimeOfExpression :'Please enter time of expression',
     enterTypeOfExpression:'Please enter method of expression',
     enterLocOfExpression:'Please enter location of expression',
-    volumeOfMilkExpressedFromBreast:'Please enter volume of milk expressed from left and right breast (in ml)',
+    volumeOfMilkExpressedFromBreast:'Please enter valid volume of milk expressed from left and right breast (in ml)',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
     invalidCredentials: 'Invalid credentials!',
     forgotPasswordMessage: 'Send an email to <a href="#">vijaya.lakshmi@accessh.org</a> from your email requesting for your password.',
@@ -141,11 +143,11 @@ export class ConstantProvider {
     stateAlert: 'Please select the country before selecting state',
     districtAlert: 'Please select the state before selecting district',
     institutionAlert: 'Please select the district before selecting insitution',
-    saveSuccessfull: 'Saved Successfully!',
+    saveSuccessfull: 'Saved successfully!',
     info: 'Info',
     warning: 'Warning',
     deletePatient: 'Do you want to delete the selected Patient record?',
-    duplicateTime: 'Duplicate time',
+    duplicateTime: 'Record for this particular time exists. Please visit the record created for this time to edit.',
     enterDateOfFeed: 'Please enter date of feed',
     enterTimeOfFeed :'Please enter time of feed',
     methodOfFeed: 'Please enter method of feed',

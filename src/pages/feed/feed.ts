@@ -85,12 +85,12 @@ export class FeedPage {
       this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
-        // this.findExpressionsByBabyCodeAndDate();
-        this.messageService.showSuccessToast("save successful!")
+        this.toggleGroup(feedExpression);
+        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
       })
       .catch(err =>{
         feedExpression.createdDate = null;
-        this.messageService.showErrorToast(err)
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   }
@@ -210,6 +210,22 @@ export class FeedPage {
         return true;
       else
         return false;
+    }
+  }
+
+  /**
+   * This function will be called on ion change of method of expression question/
+   * Only breastfeeding and Parenteral + Enteral option will be required to fill up the volume questions.
+   * @author - Naseem Akhtar
+   * @param feedExpression - this is the form that the user is entering
+   */
+  validateVolumeFields(feedExpression: IFeed){
+    if(feedExpression.methodOfFeed === 61 || feedExpression.methodOfFeed === 66) {
+      feedExpression.animalMilkVolume = null
+      feedExpression.dhmVolume = null
+      feedExpression.formulaVolume = null
+      feedExpression.ommVolume = null
+      feedExpression.otherVolume = null
     }
   }
 

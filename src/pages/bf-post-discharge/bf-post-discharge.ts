@@ -84,12 +84,12 @@ export class BfPostDischargePage {
     }else{
       this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
       .then(data=> {
-        this.messageService.showSuccessToast("save successful!");
+        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
         this.navCtrl.pop();
       })
       .catch(err =>{
         this.bfpd.createdDate = null
-        this.messageService.showErrorToast(err)
+        this.messageService.showOkAlert('Warning', err);
       })
     }
   };
