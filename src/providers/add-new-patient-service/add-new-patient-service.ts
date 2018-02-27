@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
+import { DatePipe } from '@angular/common';
 
 /**
  * This service will only provide service to Feed component
@@ -14,7 +15,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class AddNewPatientServiceProvider {
 
-  constructor(public http: HttpClient,private storage: Storage) {
+  constructor(public http: HttpClient,private storage: Storage, private datePipe: DatePipe) {
   }
 
   /**
@@ -128,10 +129,11 @@ export class AddNewPatientServiceProvider {
    */
   saveNewPatient(patient: IPatient) : Promise<any>{
     let promise = new Promise((resolve, reject) => {
-      
+      patient.createdDate = patient.createdDate === null ? 
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : patient.createdDate;
+      patient.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then((val) => {
-
         let patients: IPatient[] = [];
         if(val != null){
           patients = val
@@ -140,11 +142,10 @@ export class AddNewPatientServiceProvider {
           .then(data=>{
             resolve()
           })
-          .catch(err=>{            
+          .catch(err=>{
+            patient.createdDate = null
             reject(err.message);    
           })
-
-
         }else{
           patients.push(patient)
           this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
@@ -152,11 +153,12 @@ export class AddNewPatientServiceProvider {
             resolve()
           })
           .catch(err=>{
+            patient.createdDate = null
             reject(err.message);    
           })
-          
         }                
       }).catch(err=>{
+        patient.createdDate = null
         reject(err.message);
       })
     

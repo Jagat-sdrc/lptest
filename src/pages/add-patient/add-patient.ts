@@ -370,8 +370,9 @@ export class AddPatientPage implements OnInit{
             dischargeDate: this.patientForm.controls.discharge_date.value,
             isSynced: false,
             syncFailureMessage: null,
-            userId: this.userService.getUser().email
-
+            userId: this.userService.getUser().email,
+            createdDate: null,
+            updatedDate: null
           }
 
           this.addNewPatientService.saveNewPatient(this.patient)

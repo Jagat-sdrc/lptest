@@ -46,6 +46,9 @@ export class BfSupportivePracticeServiceProvider {
   saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP, existingDate: string, existingTime: string): Promise <any> {
     let promise = new Promise((resolve, reject) => {
       bfspForm.isSynced = false;
+      bfspForm.createdDate = bfspForm.createdDate === null ? 
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfspForm.createdDate;
+      bfspForm.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then((val) => {
           let bfspForms: IBFSP[] = [];
@@ -155,7 +158,9 @@ export class BfSupportivePracticeServiceProvider {
       bfspDuration: null,
       isSynced: false,
       userId: this.userService.getUser().email,
-      syncFailureMessage: null
+      syncFailureMessage: null,
+      createdDate: null,
+      updatedDate: null
     }
 
     if (data != null) {

@@ -121,8 +121,9 @@ export class BFExpressionDateListProvider {
       locationOfExpression: null,
       volOfMilkExpressedFromLR: null,
       isSynced: false,
-      syncFailureMessage: null
-
+      syncFailureMessage: null,
+      createdDate: null,
+      updatedDate: null
     }
 
 

@@ -21,7 +21,9 @@ export class MyApp {
     lastName: null,
     state: null,
     isSynced: false,
-    syncFailureMessage: null
+    syncFailureMessage: null,
+    createdDate: null,
+    updatedDate: null
   }
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,

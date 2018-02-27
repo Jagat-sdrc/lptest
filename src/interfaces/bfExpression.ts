@@ -15,5 +15,7 @@ interface IBFExpression{
     locationOfExpression: number;
     volOfMilkExpressedFromLR: number;//0-300ml
     syncFailureMessage: string;
-    isSynced: boolean;  
+    isSynced: boolean;
+    createdDate: string;
+    updatedDate: string;
 }

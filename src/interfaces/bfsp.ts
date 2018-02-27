@@ -17,4 +17,6 @@ interface IBFSP{
     userId: string;
     syncFailureMessage: string;
     isSynced: boolean;
+    createdDate: string;
+    updatedDate: string;
 }

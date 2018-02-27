@@ -100,6 +100,7 @@ export class ExpressionTimeFormPage {
         this.messageService.showSuccessToast("save successful!")
       })
       .catch(err => {
+        bfExpression.createdDate = null;
         this.messageService.showErrorToast(err)
       })
     }
@@ -121,7 +122,6 @@ export class ExpressionTimeFormPage {
  * @memberof ExpressionTimeFormPage
  */
   validateDurationOfExpression(value) {
-    debugger;
     if(value == null) {
       return true;
     }else {

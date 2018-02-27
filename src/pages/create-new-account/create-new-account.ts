@@ -49,7 +49,9 @@ export class CreateNewAccountPage {
     state: null,
     district: null,
     isSynced: false,
-    syncFailureMessage: null
+    syncFailureMessage: null,
+    createdDate: null,
+    updatedDate: null
   }
   firstNamePattern: RegExp = /^[a-zA-Z][a-zA-Z\.]+$/;
   lastNamePattern: RegExp = /^[a-zA-Z]{0,25}$/;
@@ -182,7 +184,9 @@ export class CreateNewAccountPage {
         state: this.user.state,
         district: this.user.district,
         isSynced: false,
-        syncFailureMessage: null
+        syncFailureMessage: null,
+        createdDate: null,
+        updatedDate: null
       }
 
       this.createNewAccountService.saveNewUser(this.user)
