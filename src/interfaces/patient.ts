@@ -24,4 +24,6 @@ interface IPatient{
     isSynced: boolean;
     syncFailureMessage: string;
     userId: string;
+    createdDate: string;
+    updatedDate: string;
 }

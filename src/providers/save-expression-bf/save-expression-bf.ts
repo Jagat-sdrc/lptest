@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
+import { DatePipe } from '@angular/common';
 
 /**
  * 
@@ -13,7 +14,7 @@ import { ConstantProvider } from '../constant/constant';
 @Injectable()
 export class SaveExpressionBfProvider {
 
-  constructor(public http: HttpClient, private storage: Storage) {
+  constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe) {
   }
   /**
    * This method will give us all the save the BF expression in local storage.
@@ -26,6 +27,9 @@ export class SaveExpressionBfProvider {
 
     let promise = new Promise((resolve, reject) => {
       bfExpression.isSynced = false;
+      bfExpression.createdDate = bfExpression.createdDate === null ? 
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfExpression.createdDate;
+      bfExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
         let bfExpressions: IBFExpression[] = [];

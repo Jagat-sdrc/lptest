@@ -121,6 +121,7 @@ export class BfSupportivePracticePage {
         this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
       })
       .catch(err => {
+        bfsp.createdDate = null
         this.messageService.showErrorToast(err)
       })
     }

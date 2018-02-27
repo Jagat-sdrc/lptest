@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   HttpClient
 } from "@angular/common/http";
@@ -25,6 +26,16 @@ import {
 import {
   DatePipe
 } from "@angular/common";
+=======
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { HttpErrorResponse } from '@angular/common/http/src/response';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { ConstantProvider } from '../constant/constant';
+import { Storage } from '@ionic/storage';
+import { DatePipe } from '@angular/common';
+>>>>>>> 2e7b549d219e247231865b132f9e56a8e631d3f8
 
 /**
  * This service will only provide service to Feed component
@@ -33,12 +44,18 @@ import {
  */
 @Injectable()
 export class AddNewPatientServiceProvider {
+<<<<<<< HEAD
   constructor(
     public http: HttpClient,
     private storage: Storage,
     private userService: UserServiceProvider,
     private datePipe: DatePipe
   ) {}
+=======
+
+  constructor(public http: HttpClient,private storage: Storage, private datePipe: DatePipe) {
+  }
+>>>>>>> 2e7b549d219e247231865b132f9e56a8e631d3f8
 
   /**
    * This method should return delivery method lists
@@ -179,6 +196,7 @@ export class AddNewPatientServiceProvider {
    */
   saveNewPatient(patient: IPatient): Promise < any > {
     let promise = new Promise((resolve, reject) => {
+<<<<<<< HEAD
       this.storage
         .get(ConstantProvider.dbKeyNames.patients)
         .then(val => {
@@ -209,6 +227,41 @@ export class AddNewPatientServiceProvider {
         .catch(err => {
           reject(err.message);
         });
+=======
+      patient.createdDate = patient.createdDate === null ? 
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : patient.createdDate;
+      patient.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+      this.storage.get(ConstantProvider.dbKeyNames.patients)
+      .then((val) => {
+        let patients: IPatient[] = [];
+        if(val != null){
+          patients = val
+          patients = this.validateNewEntryAndUpdate(patients, patient)          
+          this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
+          .then(data=>{
+            resolve()
+          })
+          .catch(err=>{
+            patient.createdDate = null
+            reject(err.message);    
+          })
+        }else{
+          patients.push(patient)
+          this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
+          .then(data=>{
+            resolve()
+          })
+          .catch(err=>{
+            patient.createdDate = null
+            reject(err.message);    
+          })
+        }                
+      }).catch(err=>{
+        patient.createdDate = null
+        reject(err.message);
+      })
+    
+>>>>>>> 2e7b549d219e247231865b132f9e56a8e631d3f8
     });
     return promise;
   }

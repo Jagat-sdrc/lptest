@@ -34,7 +34,9 @@ export class BfPostDischargePage {
     breastFeedingStatus: null,
     syncFailureMessage: null,
     timeOfBreastFeeding: null,
-    userId: null
+    userId: null,
+    createdDate: null,
+    updatedDate: null
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -86,6 +88,7 @@ export class BfPostDischargePage {
         this.navCtrl.pop();
       })
       .catch(err =>{
+        this.bfpd.createdDate = null
         this.messageService.showErrorToast(err)
       })
     }

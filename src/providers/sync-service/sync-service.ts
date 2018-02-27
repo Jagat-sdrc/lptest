@@ -69,6 +69,7 @@ export class SyncServiceProvider {
    * can be send for synchronization.
    */
   fetchDataFromDbAndValidateForSync() {
+    debugger;
     this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((users) => {
         if (users != null) {

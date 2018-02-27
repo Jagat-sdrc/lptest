@@ -85,10 +85,11 @@ export class FeedPage {
       this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
-        this.findExpressionsByBabyCodeAndDate();
+        // this.findExpressionsByBabyCodeAndDate();
         this.messageService.showSuccessToast("save successful!")
       })
       .catch(err =>{
+        feedExpression.createdDate = null;
         this.messageService.showErrorToast(err)
       })
     }

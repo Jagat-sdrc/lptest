@@ -80,6 +80,9 @@ export class FeedExpressionServiceProvider {
 
     let promise = new Promise((resolve, reject) => {
       feedExpression.isSynced = false;
+      feedExpression.createdDate = feedExpression.createdDate === null ? 
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : feedExpression.createdDate;
+      feedExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
         let feedExpressions: IFeed[] = [];
@@ -232,7 +235,9 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
       timeOfFeed: null,
       isSynced: false,
       locationOfFeeding: null,
-      syncFailureMessage: null
+      syncFailureMessage: null,
+      createdDate: null,
+      updatedDate: null
     }
 
 

@@ -14,4 +14,6 @@ interface IBFPD{
     dateOfBreastFeeding: string;
     timeOfBreastFeeding: number;
     breastFeedingStatus: number;
+    createdDate: string;
+    updatedDate: string;
 }
