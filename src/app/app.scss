@@ -72,4 +72,7 @@ ion-label, ion-option, ion-datetime, ion-item, ion-select, ion-input, .alert-rad
   margin-top: -5px;
   text-align: right;
 }
+.alert-md .alert-button .button-inner{
+  color: color($colors, lok, base) !important;
+}
 

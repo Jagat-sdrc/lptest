@@ -55,6 +55,7 @@ export class AddPatientPage implements OnInit{
   babyIdHospital: RegExp = /^[a-zA-Z0-9_.-]*$/;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   numberRegex: RegExp = /^[0-9]+(\.[0-9]*){0,1}$/;
+  minuteRegex: RegExp = /^(?:[1-9]|[1-4][0-9]|59)$/;
   hasError: boolean = false;
   private uniquePatientId : IUniquePatientId = {
     id: null,
@@ -106,7 +107,8 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.gestational_age.setValue(null),
     this.patientForm.controls.intent_provide_milk.setValue(null),
     this.patientForm.controls.hm_lactation.setValue(null),
-    this.patientForm.controls.first_exp_time.setValue(null),
+    this.patientForm.controls.first_exp_time_in_hour.setValue(null),
+    this.patientForm.controls.first_exp_time_in_minute.setValue(null),
     this.patientForm.controls.inpatient_outpatient.setValue(""),
     this.patientForm.controls.admission_date.setValue(null),
     this.patientForm.controls.baby_admitted.setValue(null),
@@ -227,7 +229,7 @@ export class AddPatientPage implements OnInit{
       intent_provide_milk: new FormControl('',),
       hm_lactation: new FormControl('',),
       first_exp_time_in_hour: new FormControl('',[Validators.pattern(this.numberRegex)]),
-      first_exp_time_in_minute: new FormControl(''),
+      first_exp_time_in_minute: new FormControl('',[Validators.max(59)]),
       inpatient_outpatient: new FormControl('',),
       admission_date: new FormControl('',),
       baby_admitted: new FormControl('',),
@@ -368,15 +370,13 @@ export class AddPatientPage implements OnInit{
 
           this.addNewPatientService.saveNewPatient(this.patient, this.uniquePatientId.idNumber)
             .then(data=> {
-            this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+            this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
             this.navCtrl.pop();
           })
             .catch(err =>{
             this.messageService.showErrorToast(err)
           })
         }
-      }else{
-        this.messageService.showErrorToast(ConstantProvider.messages.dischargeDateValidation)
       }
     }
 
@@ -400,8 +400,8 @@ export class AddPatientPage implements OnInit{
         gestational_age: new FormControl(this.patient.gestationalAgeInWeek),
         intent_provide_milk: new FormControl(this.patient.mothersPrenatalIntent),
         hm_lactation: new FormControl(this.patient.parentsKnowledgeOnHmAndLactation),
-        first_exp_time_in_hour: new FormControl(this.patient.timeTillFirstExpressionInHour),
-        first_exp_time_in_minute: new FormControl(this.patient.timeTillFirstExpressionInMinute),
+        first_exp_time_in_hour: new FormControl(this.patient.timeTillFirstExpressionInHour,[Validators.pattern(this.numberRegex)]),
+        first_exp_time_in_minute: new FormControl(this.patient.timeTillFirstExpressionInMinute,[Validators.max(59)]),
         inpatient_outpatient: new FormControl(this.patient.inpatientOrOutPatient),
         admission_date: new FormControl(this.patient.admissionDateForOutdoorPatients == null?null: this.patient.admissionDateForOutdoorPatients),
         baby_admitted: new FormControl(this.patient.babyAdmittedTo),
@@ -454,17 +454,19 @@ export class AddPatientPage implements OnInit{
      * @since 1.0.0
      */
     timePickerDialog(){
-      this.datePicker.show({
-      date: new Date(),
-      mode: 'time',
-      is24Hour: true,
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-    }).then(
-      time => {
-        this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
-      },
-      err => console.log('Error occurred while getting time: ', err)
-      );
+      if(!this.hasError){
+        this.datePicker.show({
+        date: new Date(),
+        mode: 'time',
+        is24Hour: true,
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+      }).then(
+        time => {
+          this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
+        },
+        err => console.log('Error occurred while getting time: ', err)
+        );
+      }
     }
 
     /**
@@ -475,30 +477,34 @@ export class AddPatientPage implements OnInit{
      * @param event
      */
     validateDischargeDate(): boolean{
-      if(this.patientForm.controls.delivery_date.value != ""){
+      if(this.patientForm.controls.discharge_date.value != "" && this.patientForm.controls.discharge_date.value != null){
+        if(this.patientForm.controls.delivery_date.value != "" && this.patientForm.controls.delivery_date.value != null){
 
-        let dateA = this.patientForm.controls.discharge_date.value;
-        let dayA = parseInt(dateA.split('-')[0])
-        let monthA = parseInt(dateA.split('-')[1])
-        let yearA = parseInt(dateA.split('-')[2])
+          let dateA = this.patientForm.controls.discharge_date.value;
+          let dayA = parseInt(dateA.split('-')[0])
+          let monthA = parseInt(dateA.split('-')[1])
+          let yearA = parseInt(dateA.split('-')[2])
 
-        let dateB = this.patientForm.controls.delivery_date.value;
-        let dayB = parseInt(dateB.split('-')[0])
-        let monthB = parseInt(dateB.split('-')[1])
-        let yearB = parseInt(dateB.split('-')[2])
+          let dateB = this.patientForm.controls.delivery_date.value;
+          let dayB = parseInt(dateB.split('-')[0])
+          let monthB = parseInt(dateB.split('-')[1])
+          let yearB = parseInt(dateB.split('-')[2])
 
-        let dateOfA: Date = new Date(yearA, monthA, dayA)
-        let dateOfB: Date = new Date(yearB, monthB, dayB)
+          let dateOfA: Date = new Date(yearA, monthA, dayA)
+          let dateOfB: Date = new Date(yearB, monthB, dayB)
 
-        if(dateOfA < dateOfB){
-          this.patientForm.controls.discharge_date.setValue("");
-          return false;
+          if(dateOfA < dateOfB){
+            this.patientForm.controls.discharge_date.setValue("");
+            this.messageService.showErrorToast(ConstantProvider.messages.dischargeDateValidation)
+            return false;
+          }else{
+            return true;
+          }
         }else{
           return true;
         }
-      }else{
-        return true;
       }
+      return true;
     }
 
     /**

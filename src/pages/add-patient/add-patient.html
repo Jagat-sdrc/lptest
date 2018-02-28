@@ -32,7 +32,7 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Baby ID provided by hospital</ion-label>
-        <ion-input type="text" formControlName="hospital_baby_id" (keypress)="_numberKeyPress($event,5)"></ion-input>
+        <ion-input type="text" formControlName="hospital_baby_id"></ion-input>
       </ion-item>
     </div>
     <div class="form-group">
@@ -44,7 +44,7 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Mother's Age</ion-label>
-        <ion-input type="number" (focusout)="validateMotherAge()" formControlName="mother_age" (keypress)="_numberKeyPress($event,1)"></ion-input>
+        <ion-input type="number" (focusout)="validateMotherAge()" formControlName="mother_age" (keypress)="_numberKeyPress($event,2)"></ion-input>
       </ion-item>
     </div>
     <div class="form-group">
@@ -61,7 +61,7 @@
       </p>
     </div>
     <div class="form-group">
-      <ion-item (click)="timePickerDialog()">
+      <ion-item>
         <ion-label color="black" stacked>Delivery time
           <span class="text-color"> *</span>
         </ion-label>
@@ -121,8 +121,11 @@
           <ion-col width-50>
             <ion-item>
               <ion-label>mm:</ion-label>
-              <ion-input type="tel" (keypress)="onlyNumberKey($event)" placeholder="mm" maxlength="2" formControlName="first_exp_time_in_minute"></ion-input>
+              <ion-input type="number" (keypress)="onlyNumberKey($event)" placeholder="mm" maxlength="2" formControlName="first_exp_time_in_minute"></ion-input>
             </ion-item>
+            <p class="error" *ngIf="patientForm.controls.first_exp_time_in_minute.invalid  && (patientForm.controls.first_exp_time_in_minute.dirty || patientForm.controls.first_exp_time_in_minute.touched)">
+                Please enter minute below 59
+              </p>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -154,7 +157,7 @@
     <div class="form-group" *ngIf="babyAdmittedToStatus">
       <ion-item>
         <ion-label color="black" stacked>Reason for NICU admission</ion-label>
-        <ion-select formControlName="nicu_admission">
+        <ion-select formControlName="nicu_admission" multiple="true">
           <ion-option *ngFor="let item of nicuAdmission" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
