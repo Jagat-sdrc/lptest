@@ -69,7 +69,6 @@ export class SyncServiceProvider {
    * can be send for synchronization.
    */
   fetchDataFromDbAndValidateForSync() {
-    debugger;
     this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((users) => {
         if (users != null) {
@@ -449,21 +448,24 @@ export class SyncServiceProvider {
   }
 
   private handleError(error: HttpErrorResponse) {
-
     let messageToUser;
     if (error.error instanceof ErrorEvent) {
       messageToUser = `An error occurred: ${error.error.message}`;
     } else {
       switch(error.status){
+        case 0:
+          if(error.name === 'HttpErrorResponse')
+            messageToUser = ConstantProvider.messages.checkInternetConnection;
+          else
+            messageToUser = `Backend error, code ${error.status}, ` + `message: ${error.message}`;
+        break;
         case 500:
-        messageToUser = ConstantProvider.messages.serverErrorContactAdmin;
+          messageToUser = ConstantProvider.messages.serverErrorContactAdmin;
         break;
         default:
-        messageToUser = `Backend error, code ${error.status}, ` +
-        `message: ${error.message}`;
+          messageToUser = `Backend error, code ${error.status}, ` + `message: ${error.message}`;
         break;
       }
-      
     }
     return new ErrorObservable(messageToUser);
   };

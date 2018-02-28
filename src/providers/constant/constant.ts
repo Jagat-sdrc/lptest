@@ -174,7 +174,8 @@ export class ConstantProvider {
     important: 'IMPORTANT',
     allFieldMandatory: 'Please fill all the mandatory fields.',
     exitApp: 'Are you sure want to exit the app?',
-    dischargeDateValidation: "Discharge date cann't be less than Delivery date"
+    dischargeDateValidation: 'Discharge date cann\'t be less than Delivery date',
+    checkInternetConnection: 'No internet connection. Please check your internet connectivity and try again'
   };
 
 /**
