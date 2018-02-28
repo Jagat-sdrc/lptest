@@ -67,4 +67,12 @@ ion-label, ion-option, ion-datetime, ion-item, ion-select, ion-input, .alert-rad
 .forgot{
   color: blue
 }
+.text-color{
+  color: red;
+  margin-top: -5px;
+  text-align: right;
+}
+.alert-md .alert-button .button-inner{
+  color: color($colors, lok, base) !important;
+}
 

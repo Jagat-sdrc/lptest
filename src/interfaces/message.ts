@@ -63,4 +63,5 @@ interface IMessage{
     exitApp: string;
     dischargeDateValidation: string;
     checkInternetConnection: string;
+    submitSuccessfull: string;
 }

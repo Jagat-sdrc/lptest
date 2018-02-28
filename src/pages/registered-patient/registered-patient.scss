@@ -9,7 +9,7 @@ page-registered-patient {
     }
     .card-outside{
         margin-top: 0px;
-        background: rgb(241, 241, 241);
+        background: color($colors, llist, base);
     }
     .card-inside{
         padding: 7px;

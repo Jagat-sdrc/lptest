@@ -131,7 +131,7 @@ export class ConstantProvider {
     noUserFound: 'No user found, please register!',
     userConstruction: "Under construction!",
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
-    babyOverWeight: "Baby's weight is less/more than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
+    babyOverWeight: "The entered baby weight lies outside 500-4000 gms range. Do you want to proceed with the entry? ",
     babyGestational: "A normal pregnancy ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
     motherAge: "Reproductive age of women lies in the range between 15-49 years. Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
@@ -175,7 +175,8 @@ export class ConstantProvider {
     allFieldMandatory: 'Please fill all the mandatory fields.',
     exitApp: 'Are you sure want to exit the app?',
     dischargeDateValidation: 'Discharge date cann\'t be less than Delivery date',
-    checkInternetConnection: 'No internet connection. Please check your internet connectivity and try again'
+    checkInternetConnection: 'No internet connection. Please check your internet connectivity and try again',
+    submitSuccessfull: 'Submitted successfully!'
   };
 
 /**

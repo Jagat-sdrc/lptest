@@ -191,7 +191,7 @@ export class CreateNewAccountPage {
 
       this.createNewAccountService.saveNewUser(this.user)
         .then(data => {
-          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+          this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
           this.showConfirmAlert();
         })
         .catch(err => {
