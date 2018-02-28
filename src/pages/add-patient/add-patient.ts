@@ -49,10 +49,12 @@ export class AddPatientPage implements OnInit{
   maxDate: any;
   maxTime: any;
   outPatientAdmissionStatus: boolean = false;
+  babyAdmittedToStatus: boolean = false;
   paramToExpressionPage: IParamToExpresssionPage;
   forEdit: boolean;
   babyIdHospital: RegExp = /^[a-zA-Z0-9_.-]*$/;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
+  numberRegex: RegExp = /^[0-9]+(\.[0-9]*){0,1}$/;
   hasError: boolean = false;
   private uniquePatientId : IUniquePatientId = {
     id: null,
@@ -119,7 +121,7 @@ export class AddPatientPage implements OnInit{
       this.uniquePatientId.id = this.patient.babyCode;
       this.setFetchedDataToUi();
     }else{
-      this.getUniquePatientId();      
+      this.getUniquePatientId();
     }
   }
 
@@ -161,7 +163,6 @@ export class AddPatientPage implements OnInit{
 
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
     this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
-    this.first_exp_time = new Date().toISOString();
     this.delivery_date = new Date().toISOString();
     this.delivery_time = new Date().toISOString();
 
@@ -225,7 +226,8 @@ export class AddPatientPage implements OnInit{
       gestational_age: new FormControl('',),
       intent_provide_milk: new FormControl('',),
       hm_lactation: new FormControl('',),
-      first_exp_time: new FormControl('',),
+      first_exp_time_in_hour: new FormControl('',[Validators.pattern(this.numberRegex)]),
+      first_exp_time_in_minute: new FormControl(''),
       inpatient_outpatient: new FormControl('',),
       admission_date: new FormControl('',),
       baby_admitted: new FormControl('',),
@@ -240,9 +242,19 @@ export class AddPatientPage implements OnInit{
       }
      }
 
+     onlyNumberKey(event) {
+       return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57;
+      }
+
+     /**
+     * This method will make visible the Admission Date field based on the input of inpatient outpatient.
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
      outpatientAdmission(){
-       if(this.patientForm.controls.inpatient_outpatient.value.id != undefined || this.patientForm.controls.inpatient_outpatient.value.id != null){
-        if(this.patientForm.controls.inpatient_outpatient.value.id==ConstantProvider.typeDetailsIds.outPatient){
+       if(this.patientForm.controls.inpatient_outpatient.value != undefined && this.patientForm.controls.inpatient_outpatient.value != null){
+        if(this.patientForm.controls.inpatient_outpatient.value==ConstantProvider.typeDetailsIds.outPatient){
           this.outPatientAdmissionStatus = true;
          } else {
           this.outPatientAdmissionStatus = false;
@@ -254,7 +266,7 @@ export class AddPatientPage implements OnInit{
 
      validateMotherAge(){
        if(!this.hasError){
-        if (this.patientForm.controls.mother_age.value != "" || this.patientForm.controls.mother_age.value != null){
+        if (this.patientForm.controls.mother_age.value != "" && this.patientForm.controls.mother_age.value != null){
           if (this.patientForm.controls.mother_age.value < 15 ||
             this.patientForm.controls.mother_age.value > 49) {
             this.hasError = true;
@@ -272,7 +284,7 @@ export class AddPatientPage implements OnInit{
 
      validateBabyWeight() {
       if(!this.hasError){
-        if(this.patientForm.controls.baby_weight.value != "" || this.patientForm.controls.baby_weight.value != null){
+        if(this.patientForm.controls.baby_weight.value != "" && this.patientForm.controls.baby_weight.value != null){
           if (this.patientForm.controls.baby_weight.value < 500 ||
             this.patientForm.controls.baby_weight.value > 4000) {
               this.hasError = true;
@@ -290,7 +302,7 @@ export class AddPatientPage implements OnInit{
 
      validateGestational() {
       if(!this.hasError){
-        if (this.patientForm.controls.gestational_age.value != "" || this.patientForm.controls.gestational_age.value != null){
+        if (this.patientForm.controls.gestational_age.value != "" && this.patientForm.controls.gestational_age.value != null){
           if (this.patientForm.controls.gestational_age.value < 38 ||
             this.patientForm.controls.gestational_age.value > 42) {
               this.hasError = true;
@@ -308,13 +320,15 @@ export class AddPatientPage implements OnInit{
 
 
 
-     /**
-      * This method will save the patient data to the database
-      * @author Jagat Bandhu
-      * @since 0.0.1
-      */
-     submit(){
-        this.outpatientAdmission();
+    /**
+    * This method will save the patient data to the database
+    * @author Jagat Bandhu
+    * @since 0.0.1
+    */
+    submit(){
+      this.outpatientAdmission();
+      this.babyAdmitedTo();
+      if(this.validateDischargeDate()){
         if(!this.patientForm.valid){
           this.resetStatus = true;
           Object.keys(this.patientForm.controls).forEach(field => {
@@ -333,16 +347,17 @@ export class AddPatientPage implements OnInit{
             mothersAge: parseInt(this.patientForm.controls.mother_age.value),
             deliveryDate: this.patientForm.controls.delivery_date.value,
             deliveryTime: this.patientForm.controls.delivery_time.value,
-            deliveryMethod: this.patientForm.controls.delivery_method.value.id,
+            deliveryMethod: this.patientForm.controls.delivery_method.value,
             babyWeight: parseFloat(this.patientForm.controls.baby_weight.value),
             gestationalAgeInWeek: parseInt(this.patientForm.controls.gestational_age.value),
-            mothersPrenatalIntent: this.patientForm.controls.intent_provide_milk.value.id,
-            parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value.id,
-            timeTillFirstExpression: this.patientForm.controls.first_exp_time.value,
-            inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value.id,
+            mothersPrenatalIntent: this.patientForm.controls.intent_provide_milk.value,
+            parentsKnowledgeOnHmAndLactation: this.patientForm.controls.hm_lactation.value,
+            timeTillFirstExpressionInHour: this.patientForm.controls.first_exp_time_in_hour.value,
+            timeTillFirstExpressionInMinute: this.patientForm.controls.first_exp_time_in_minute.value,
+            inpatientOrOutPatient: this.patientForm.controls.inpatient_outpatient.value,
             admissionDateForOutdoorPatients: this.patientForm.controls.admission_date.value,
-            babyAdmittedTo: this.patientForm.controls.baby_admitted.value.id,
-            nicuAdmissionReason: this.patientForm.controls.nicu_admission.value.id,
+            babyAdmittedTo: this.patientForm.controls.baby_admitted.value,
+            nicuAdmissionReason: this.patientForm.controls.nicu_admission.value,
             dischargeDate: this.patientForm.controls.discharge_date.value,
             isSynced: false,
             syncFailureMessage: null,
@@ -360,7 +375,10 @@ export class AddPatientPage implements OnInit{
             this.messageService.showErrorToast(err)
           })
         }
+      }else{
+        this.messageService.showErrorToast(ConstantProvider.messages.dischargeDateValidation)
       }
+    }
 
     /**
      * This method will set the value taken from the db to ui component.
@@ -377,21 +395,29 @@ export class AddPatientPage implements OnInit{
         mother_age: new FormControl(this.patient.mothersAge, [Validators.maxLength(2)]),
         delivery_date: new FormControl(this.patient.deliveryDate,[Validators.required]),
         delivery_time: new FormControl(this.patient.deliveryTime,[Validators.required]),
-        delivery_method: new FormControl(this.deliveryMethods.filter(d=>(d.id===this.patient.deliveryMethod))[0]),
+        delivery_method: new FormControl(this.patient.deliveryMethod),
         baby_weight: new FormControl(this.patient.babyWeight),
         gestational_age: new FormControl(this.patient.gestationalAgeInWeek),
-        intent_provide_milk: new FormControl(this.motherPrenatalMilk.filter(d=>(d.id===this.patient.mothersPrenatalIntent))[0]),
-        hm_lactation: new FormControl(this.hmLactation.filter(d=>(d.id===this.patient.parentsKnowledgeOnHmAndLactation))[0]),
-        first_exp_time: new FormControl(this.patient.timeTillFirstExpression),
-        inpatient_outpatient: new FormControl(this.inpatientOutpatient.filter(d=>(d.id===this.patient.inpatientOrOutPatient))[0]),
+        intent_provide_milk: new FormControl(this.patient.mothersPrenatalIntent),
+        hm_lactation: new FormControl(this.patient.parentsKnowledgeOnHmAndLactation),
+        first_exp_time_in_hour: new FormControl(this.patient.timeTillFirstExpressionInHour),
+        first_exp_time_in_minute: new FormControl(this.patient.timeTillFirstExpressionInMinute),
+        inpatient_outpatient: new FormControl(this.patient.inpatientOrOutPatient),
         admission_date: new FormControl(this.patient.admissionDateForOutdoorPatients == null?null: this.patient.admissionDateForOutdoorPatients),
-        baby_admitted: new FormControl(this.babyAdmittedTo.filter(d=>(d.id===this.patient.babyAdmittedTo))[0]),
-        nicu_admission: new FormControl(this.nicuAdmission.filter(d=>(d.id===this.patient.nicuAdmissionReason))[0]),
+        baby_admitted: new FormControl(this.patient.babyAdmittedTo),
+        nicu_admission: new FormControl(this.patient.nicuAdmissionReason),
         discharge_date: new FormControl(this.patient.dischargeDate),
       });
       this.outpatientAdmission();
+      this.babyAdmitedTo();
     }
 
+    /**
+     * This method will show a native date picker to select date
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
     datePickerDialog(type: string){
       if(!this.hasError){
         this.datePicker.show({
@@ -421,6 +447,12 @@ export class AddPatientPage implements OnInit{
       }
     }
 
+    /**
+     * This method will show a native time picker to select time
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
     timePickerDialog(){
       this.datePicker.show({
       date: new Date(),
@@ -442,7 +474,7 @@ export class AddPatientPage implements OnInit{
      * @since 0.0.1
      * @param event
      */
-    validateDischargeDate(){
+    validateDischargeDate(): boolean{
       if(this.patientForm.controls.delivery_date.value != ""){
 
         let dateA = this.patientForm.controls.discharge_date.value;
@@ -459,8 +491,13 @@ export class AddPatientPage implements OnInit{
         let dateOfB: Date = new Date(yearB, monthB, dayB)
 
         if(dateOfA < dateOfB){
-          this.patientForm.controls.discharge_date.setValue(null);
+          this.patientForm.controls.discharge_date.setValue("");
+          return false;
+        }else{
+          return true;
         }
+      }else{
+        return true;
       }
     }
 
@@ -478,6 +515,26 @@ export class AddPatientPage implements OnInit{
       }catch(err){
         this.messageService.showErrorToast(err)
       }
+    }
+
+    /**
+     * This method will make visible the Reason for NICU admission field based on the input field of baby admitted to.
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
+    babyAdmitedTo(){
+      if(this.patientForm.controls.baby_admitted.value != undefined || this.patientForm.controls.baby_admitted.value != null){
+        if(this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level3NICU ||
+          this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level2SNCU ||
+          this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level1NICU){
+          this.babyAdmittedToStatus = true;
+         } else {
+          this.babyAdmittedToStatus = false;
+          this.patientForm.controls.nicu_admission.setValue(null);
+          this.patientForm.controls["nicu_admission"].setErrors(null);
+         }
+       }
     }
 
 }

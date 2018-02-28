@@ -1,7 +1,7 @@
 /**
  * This interface is going to keep all the attributes of a patient
  * @author Jagat Bandhu
- * @since 0.0.1 
+ * @since 0.0.1
  */
 interface IPatient{
     babyCode: string;
@@ -15,7 +15,8 @@ interface IPatient{
     gestationalAgeInWeek: number;
     mothersPrenatalIntent: number;
     parentsKnowledgeOnHmAndLactation: number;
-    timeTillFirstExpression: string;
+    timeTillFirstExpressionInHour: string;
+    timeTillFirstExpressionInMinute: string;
     inpatientOrOutPatient: number;
     admissionDateForOutdoorPatients: string;
     babyAdmittedTo: number;
