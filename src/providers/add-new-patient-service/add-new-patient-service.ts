@@ -275,7 +275,6 @@ export class AddNewPatientServiceProvider {
    */
   getBabyId(): Promise < IUniquePatientId > {
     return new Promise < IUniquePatientId > ((resolve, reject) => {
-      reject("Error test123")
       let babyId = "";
       this.getInsitutionName().subscribe(institutionName => {
         babyId =

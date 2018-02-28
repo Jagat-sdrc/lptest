@@ -56,7 +56,7 @@ export class ConstantProvider {
 
   static FeedingTypeIds: IFeedingMethods = {
     feedingMethodTypeId: 11,
-    locationOfFeeding: 5
+    locationOfFeeding: 14
   }
 
   static TimeOfBreastFeedingPostDischargeTypeId: ITimeOfBreastFeedingPostDischarge = {
