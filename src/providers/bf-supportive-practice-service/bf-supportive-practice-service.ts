@@ -45,6 +45,7 @@ export class BfSupportivePracticeServiceProvider {
 
   saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP, existingDate: string, existingTime: string): Promise <any> {
     let promise = new Promise((resolve, reject) => {
+      bfspForm.id = this.getNewBfspId(bfspForm.babyCode);
       bfspForm.isSynced = false;
       bfspForm.createdDate = bfspForm.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfspForm.createdDate;
@@ -147,11 +148,9 @@ export class BfSupportivePracticeServiceProvider {
   appendNewRecordAndReturn(data: IBFSP[], babyCode: string, date?: string): IBFSP[] {
     //The blank feed object
     let bf: IBFSP = {
-      id: this.getNewBfspId(babyCode),
+      id: null,
       babyCode: babyCode,
       dateOfBFSP: date,
-      // dateOfBFSP: date === null ? null : moment.utc(this.datePipe.transform(new Date(), 'yyyy-M-d')).toISOString(),
-      // timeOfBFSP: this.datePipe.transform(new Date(), 'HH:mm'),
       timeOfBFSP: null,
       bfspPerformed: null,
       personWhoPerformedBFSP: null,
@@ -194,25 +193,29 @@ export class BfSupportivePracticeServiceProvider {
    */
   delete(id: string): Promise<any>{
     let promise =  new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.bfsps)
-      .then(data=>{
-        let index = (data as IBFSP[]).findIndex(d=>d.id === id);
-        if(index >= 0){
-          (data as IBFSP[]).splice(index, 1)
-          this.storage.set(ConstantProvider.dbKeyNames.bfsps, data)
-          .then(()=>{
-            resolve()
-          })
-          .catch(err=>{
-            reject(err.message)
-          })
-        }else{
-          reject(ConstantProvider.messages.recordNotFound)  
-        }
-      })
-      .catch(err=>{
-        reject(err.message)
-      })
+      if(id != undefined && id != null){
+        this.storage.get(ConstantProvider.dbKeyNames.bfsps)
+        .then(data=>{
+          let index = (data as IBFSP[]).findIndex(d=>d.id === id);
+          if(index >= 0){
+            (data as IBFSP[]).splice(index, 1)
+            this.storage.set(ConstantProvider.dbKeyNames.bfsps, data)
+            .then(()=>{
+              resolve()
+            })
+            .catch(err=>{
+              reject(err.message)
+            })
+          }else{
+            reject(ConstantProvider.messages.recordNotFound)
+          }
+        })
+        .catch(err=>{
+          reject(err.message)
+        })
+      }else {
+        reject(ConstantProvider.messages.recordNotFound)
+      }
     });
     return promise;
   }

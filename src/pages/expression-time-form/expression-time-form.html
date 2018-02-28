@@ -5,13 +5,10 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>{{dataForBFEntryPage.selectedDate}}</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content padding>
   <ion-list>
@@ -41,7 +38,7 @@
               </ion-item>                   
   
               <ion-item>
-                <ion-label stacked>Method of expression</ion-label>
+                <ion-label color="black" stacked>Method of expression</ion-label>
                 <ion-select [(ngModel)]="item.methodOfExpression" [ngModelOptions]="{standalone: true}" 
                   (ionChange)="checkVolumeOfMilkExpressed(item)">
                   <ion-option *ngFor="let bfExpMethod of bfExpressionMethods" text-wrap [value]="bfExpMethod.id">{{bfExpMethod.name}}</ion-option>               
@@ -49,13 +46,13 @@
               </ion-item>
              
               <ion-item>
-                <ion-label stacked>Location where expression occurred</ion-label>
+                <ion-label color="black" stacked>Location where expression occurred</ion-label>
                 <ion-select [(ngModel)]="item.locationOfExpression" [ngModelOptions]="{standalone: true}">
                   <ion-option *ngFor="let locOfExpMethod of locationOfexpressionMethods" text-wrap [value]="locOfExpMethod.id">{{locOfExpMethod.name}}</ion-option>               
                 </ion-select>
               </ion-item>
               <ion-item *ngIf="item.methodOfExpression && item.methodOfExpression != 43">
-                <ion-label stacked>Volume of milk expressed from left and right breast (in ml,range 0-300)</ion-label>
+                <ion-label color="black" stacked>Volume of milk expressed from left and right breast (in ml,range 0-300)</ion-label>
                 <ion-input type="number" [value]="item.volOfMilkExpressedFromLR" [(ngModel)]="item.volOfMilkExpressedFromLR"></ion-input>
               </ion-item>
 

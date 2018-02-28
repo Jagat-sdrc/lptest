@@ -79,6 +79,7 @@ export class FeedExpressionServiceProvider {
   saveFeedExpression(feedExpression: IFeed, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
+      feedExpression.id = this.getNewFeedExpressionId(feedExpression.babyCode);
       feedExpression.isSynced = false;
       feedExpression.createdDate = feedExpression.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : feedExpression.createdDate;
@@ -221,8 +222,8 @@ export class FeedExpressionServiceProvider {
 appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[]{
     //The blank feed object
     let feed: IFeed = {
-      id: this.getNewFeedExpressionId(babyCode),
-      babyCode: babyCode,     
+      id: null,
+      babyCode: babyCode,
       userId: this.userService.getUser().email,
       babyWeight: null,
       dateOfFeed: date,
@@ -260,25 +261,29 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
    */
   delete(id: string): Promise<any>{
     let promise =  new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
-      .then(data=>{
-        let index = (data as IFeed[]).findIndex(d=>d.id === id);
-        if(index >= 0){
-          (data as IFeed[]).splice(index, 1)
-          this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, data)
-          .then(()=>{
-            resolve()
-          })
-          .catch(err=>{
-            reject(err.message)
-          })
-        }else{
-          reject(ConstantProvider.messages.recordNotFound)  
-        }
-      })
-      .catch(err=>{
-        reject(err.message)
-      })
+      if(id != undefined && id != null){
+        this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+        .then(data=>{
+          let index = (data as IFeed[]).findIndex(d=>d.id === id);
+          if(index >= 0){
+            (data as IFeed[]).splice(index, 1)
+            this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, data)
+            .then(()=>{
+              resolve()
+            })
+            .catch(err=>{
+              reject(err.message)
+            })
+          }else{
+            reject(ConstantProvider.messages.recordNotFound)
+          }
+        })
+        .catch(err=>{
+          reject(err.message)
+        })
+      }else {
+        reject(ConstantProvider.messages.recordNotFound)
+      }
     });
     return promise;
   }

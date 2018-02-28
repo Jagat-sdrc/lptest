@@ -104,13 +104,9 @@ export class BfPostDischargeServiceProvider {
         .then(data => {
           if (data != null) {
             data = (data as IBFPD[]).filter(d => d.babyCode === babyCode && d.timeOfBreastFeeding === timeOfBf);
-            if(data.length === 1){
-              // let day = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[0]);
-              // let month = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[1]);
-              // let year = parseInt((data as IBFPD[])[0].dateOfBreastFeeding.split('-')[2]);
-              // (data as IBFPD[])[0].dateOfBreastFeeding = moment.utc(year+ "-"+ month+"-"+ day).toISOString()
+            if(data.length === 1) {
               resolve(data[0]);
-            }else{              
+            }else {
               resolve(this.getBfPd(babyCode, timeOfBf));
             }
           } else {
@@ -170,7 +166,7 @@ export class BfPostDischargeServiceProvider {
    */
   delete(id: string): Promise<any>{
     let promise =  new Promise((resolve, reject)=>{
-      if(id != null && id != undefined){       
+      if(id != undefined && id != null){       
         this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then(data=>{
           let index = (data as IBFPD[]).findIndex(d=>d.id === id);

@@ -16,6 +16,20 @@ export class SaveExpressionBfProvider {
 
   constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe) {
   }
+
+  /**
+   * This method is going to give us a new BF expression id
+   * 
+   * @param {string} babyCode This is the baby code for which we are creating the bf expression id
+   * @returns {string} The new bf expression id
+   * @memberof ExpressionBfDateProvider
+   * @author Subhadarshani
+   * @since 0.0.1
+   */
+  getNewBfExpressionId(babyCode: string): string{
+    return babyCode + "bfid" + this.datePipe.transform(new Date(), 'ddMMyyyyHHmmssSSS');
+  }
+
   /**
    * This method will give us all the save the BF expression in local storage.
    * @author Subhadarshani
@@ -26,6 +40,7 @@ export class SaveExpressionBfProvider {
   saveBfExpression(bfExpression: IBFExpression, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
+      bfExpression.id = this.getNewBfExpressionId(bfExpression.babyCode)
       bfExpression.isSynced = false;
       bfExpression.createdDate = bfExpression.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfExpression.createdDate;
@@ -117,25 +132,29 @@ export class SaveExpressionBfProvider {
    */
   delete(id: string): Promise<any>{
     let promise =  new Promise((resolve, reject)=>{
-      this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
-      .then(data=>{
-        let index = (data as IBFExpression[]).findIndex(d=>d.id === id);
-        if(index >= 0){
-          (data as IBFExpression[]).splice(index, 1)
-          this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, data)
-          .then(()=>{
-            resolve()
-          })
-          .catch(err=>{
-            reject(err.message)
-          })
-        }else{
-          reject(ConstantProvider.messages.recordNotFound)  
-        }
-      })
-      .catch(err=>{
-        reject(err.message)
-      })
+      if(id != undefined && id != null) {
+        this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
+        .then(data=>{
+          let index = (data as IBFExpression[]).findIndex(d=>d.id === id);
+          if(index >= 0){
+            (data as IBFExpression[]).splice(index, 1)
+            this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, data)
+            .then(()=>{
+              resolve()
+            })
+            .catch(err=>{
+              reject(err.message)
+            })
+          }else{
+            reject(ConstantProvider.messages.recordNotFound)
+          }
+        })
+        .catch(err=>{
+          reject(err.message)
+        })
+      }else {
+        reject(ConstantProvider.messages.recordNotFound)
+      }
     });
     return promise;
   }
