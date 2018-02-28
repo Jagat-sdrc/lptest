@@ -147,7 +147,7 @@ export class ConstantProvider {
     stateAlert: 'Please select the country before selecting state',
     districtAlert: 'Please select the state before selecting district',
     institutionAlert: 'Please select the district before selecting insitution',
-    saveSuccessfull: 'Saved successfully!',
+    saveSuccessfull: 'Submit successfully!',
     info: 'Info',
     warning: 'Warning',
     deletePatient: 'Do you want to delete the selected Patient record?',
