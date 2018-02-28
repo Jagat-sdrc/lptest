@@ -1,13 +1,13 @@
 page-login {
     ::-webkit-input-placeholder {
-        color: black !important; 
+        color: black !important;
       }
       :-moz-placeholder {
-        color: black !important; 
+        color: black !important;
       }
       :-ms-input-placeholder {
         /* IE10+ */
-        color: black !important; 
+        color: black !important;
       }
       .icon-style{
         width:100%;
@@ -29,7 +29,7 @@ page-login {
           margin-top:80px;
       }
       .username-item {
-        padding:0px !important; 
+        padding:0px !important;
         font-size: 20px;
         margin-top:10px;
         background:none;
@@ -65,8 +65,5 @@ page-login {
       .logo{
         margin-top: 35px;
         background-color: white;
-      }
-      .u{
-        color: blue
       }
 }

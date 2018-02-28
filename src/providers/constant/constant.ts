@@ -98,6 +98,9 @@ export class ConstantProvider {
     csection: 2,
     other: 3,
     unknown: 4,
+    level3NICU: 14,
+    level2SNCU: 15,
+    level1NICU: 16
   }
 
   /**
@@ -122,7 +125,7 @@ export class ConstantProvider {
     volumeOfMilkExpressedFromBreast:'Please enter valid volume of milk expressed from left and right breast (in ml)',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
     invalidCredentials: 'Invalid credentials!',
-    forgotPasswordMessage: 'Please send an email to <a href="#">vijaya.lakshmi@accessh.org</a> requesting your password. ',
+    forgotPasswordMessage: 'Please send an email to <u class="forgot">vijaya.lakshmi@accessh.org</u> requesting your password. ',
     registrationSuccessful: 'Registration successful',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register!',
@@ -169,7 +172,9 @@ export class ConstantProvider {
     emailNoted: 'Yes, I understand the process that would help me to receive my password via email.',
     selectCheckBox: 'Please select the checkbox',
     important: 'IMPORTANT',
-    allFieldMandatory: 'Please fill all the mandatory fields.'
+    allFieldMandatory: 'Please fill all the mandatory fields.',
+    exitApp: 'Are you sure want to exit the app?',
+    dischargeDateValidation: "Discharge date cann't be less than Delivery date"
   };
 
 /**

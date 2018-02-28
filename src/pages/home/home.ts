@@ -1,10 +1,10 @@
 import { MessageProvider } from './../../providers/message/message';
 import { Component } from '@angular/core';
-import { NavController, MenuController, IonicPage } from 'ionic-angular';
+import { NavController, MenuController, IonicPage, Platform } from 'ionic-angular';
 import { ConstantProvider } from '../../providers/constant/constant';
 /**
- * 
- * 
+ *
+ *
  * @export
  * @class HomePage
  * @author Ratikanta
@@ -22,8 +22,9 @@ export class HomePage {
   registeredPatientPage : any;
   singlePatientSummary : any;
   vurnerableBabies : any;
+  public unregisterBackButtonAction: any;
   constructor(public navCtrl: NavController, public menuCtrl: MenuController,
-  private messageService: MessageProvider) {
+  private messageService: MessageProvider,private platform: Platform) {
 
   }
 
@@ -42,11 +43,38 @@ export class HomePage {
 
   /**
    * This method will just show the action under construction message
-   * 
+   *
    * @memberof HomePage
    */
   underConstruction(){
     this.messageService.showErrorToast(ConstantProvider.messages.userConstruction)
+  }
+
+
+  ionViewDidEnter() {
+    this.initializeBackButtonCustomHandler();
+  }
+
+  ionViewWillLeave() {
+      // Unregister the custom back button action for this page
+      this.unregisterBackButtonAction && this.unregisterBackButtonAction();
+  }
+
+  public initializeBackButtonCustomHandler(): void {
+      this.unregisterBackButtonAction = this.platform.registerBackButtonAction(() => {
+          this.customHandleBackButton();
+      }, 10);
+  }
+
+  private customHandleBackButton(): void {
+      this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.exitApp)
+      .then((data)=>{
+        if(data){
+          this.platform.exitApp();
+        }else{
+          this.navCtrl.setRoot(HomePage);
+        }
+      });
   }
 
 }

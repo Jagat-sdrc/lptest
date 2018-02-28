@@ -162,24 +162,24 @@ export class AddNewPatientServiceProvider {
    */
   saveNewPatient(patient: IPatient, uniquePatientIdToUpdate: number): Promise < any > {
     let promise = new Promise((resolve, reject) => {
-      patient.createdDate = patient.createdDate === null ? 
+      patient.createdDate = patient.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : patient.createdDate;
       patient.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       let patients: IPatient[] = [];
       this.storage.get(ConstantProvider.dbKeyNames.patients)
-      .then((val) => {        
+      .then((val) => {
         if(val != null){
           patients = val
-          patients = this.validateNewEntryAndUpdate(patients, patient)                    
+          patients = this.validateNewEntryAndUpdate(patients, patient)
         }else{
-          patients.push(patient)          
-        }                
+          patients.push(patient)
+        }
       })
       .then(()=>{
         this.storage.set(ConstantProvider.dbKeyNames.patients, patients)
         .catch(err=>{
           patient.createdDate = null
-          reject(err.message);    
+          reject(err.message);
         })
       })
       .then(()=>{
@@ -196,7 +196,7 @@ export class AddNewPatientServiceProvider {
         patient.createdDate = null
         reject(err.message);
       })
-    
+
     });
     return promise;
   }
@@ -275,7 +275,6 @@ export class AddNewPatientServiceProvider {
    */
   getBabyId(): Promise < IUniquePatientId > {
     return new Promise < IUniquePatientId > ((resolve, reject) => {
-      reject("Error test123")
       let babyId = "";
       this.getInsitutionName().subscribe(institutionName => {
         babyId =
@@ -292,7 +291,7 @@ export class AddNewPatientServiceProvider {
               }
               switch (stringBabyId.length) {
                 case 1:
-                  uniquePatientId.id = babyId +"00" + stringBabyId;                  
+                  uniquePatientId.id = babyId +"00" + stringBabyId;
                   break;
                 case 2:
                 uniquePatientId.id = babyId +"0" + stringBabyId;
@@ -302,8 +301,8 @@ export class AddNewPatientServiceProvider {
                   break;
               }
               resolve(uniquePatientId);
-              
-            } else {              
+
+            } else {
               let stringBabyId = 1 + "";
               let uniquePatientId: IUniquePatientId = {
                 id: null,
@@ -311,7 +310,7 @@ export class AddNewPatientServiceProvider {
               }
               switch (stringBabyId.length) {
                 case 1:
-                  uniquePatientId.id = babyId +"00" + stringBabyId;                  
+                  uniquePatientId.id = babyId +"00" + stringBabyId;
                   break;
                 case 2:
                 uniquePatientId.id = babyId +"0" + stringBabyId;

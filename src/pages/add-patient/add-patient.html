@@ -23,7 +23,9 @@
   <form [formGroup]="patientForm">
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>Baby ID<span class="text-color"> *</span></ion-label>
+        <ion-label color="black" stacked>Baby ID
+          <span class="text-color"> *</span>
+        </ion-label>
         <ion-input type="text" disabled formControlName="baby_id"></ion-input>
       </ion-item>
     </div>
@@ -47,8 +49,11 @@
     </div>
     <div class="form-group">
       <ion-item>
-        <ion-label color="black" stacked>Delivery date<span class="text-color"> *</span></ion-label>
-        <ion-input formControlName="delivery_date" (click)="datePickerDialog('deliveryDate')" (ionFocus)="datePickerDialog('deliveryDate')" [readonly]="true"></ion-input>
+        <ion-label color="black" stacked>Delivery date
+          <span class="text-color"> *</span>
+        </ion-label>
+        <ion-input formControlName="delivery_date" (click)="datePickerDialog('deliveryDate')" (ionFocus)="datePickerDialog('deliveryDate')"
+          [readonly]="true"></ion-input>
         <ion-icon padding-top name="calendar" item-right></ion-icon>
       </ion-item>
       <p class="error" *ngIf="patientForm.controls.delivery_date.invalid  && (patientForm.controls.delivery_date.dirty || patientForm.controls.delivery_date.touched) && resetStatus">
@@ -57,7 +62,9 @@
     </div>
     <div class="form-group">
       <ion-item (click)="timePickerDialog()">
-        <ion-label color="black" stacked>Delivery time<span class="text-color"> *</span></ion-label>
+        <ion-label color="black" stacked>Delivery time
+          <span class="text-color"> *</span>
+        </ion-label>
         <ion-input formControlName="delivery_time" (click)="timePickerDialog()" (ionFocus)="timePickerDialog()" [readonly]="true"></ion-input>
         <ion-icon padding-top name="time" item-right></ion-icon>
       </ion-item>
@@ -69,7 +76,7 @@
       <ion-item>
         <ion-label color="black" stacked>Delivery Method</ion-label>
         <ion-select formControlName="delivery_method">
-          <ion-option *ngFor="let item of deliveryMethods" [value]="item">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of deliveryMethods" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </div>
@@ -89,7 +96,7 @@
       <ion-item>
         <ion-label color="black" stacked>Mother's prenatal intent to provide milk</ion-label>
         <ion-select formControlName="intent_provide_milk">
-          <ion-option *ngFor="let item of motherPrenatalMilk" [value]="item">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of motherPrenatalMilk" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </div>
@@ -97,52 +104,66 @@
       <ion-item>
         <ion-label color="black" stacked>Parent's knowledge on HM and lactation</ion-label>
         <ion-select formControlName="hm_lactation">
-          <ion-option *ngFor="let item of hmLactation" [value]="item">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of hmLactation" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </div>
     <div class="form-group">
-      <ion-item>
-        <ion-label color="black" stacked>Time till first expression in hours</ion-label>
-        <ion-datetime displayFormat="HH:mm" formControlName="first_exp_time"></ion-datetime>
-        <ion-icon padding-top name="time" item-right></ion-icon>
-      </ion-item>
+      <ion-label color="black" stacked padding-left>Time till first expression in hours</ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col width-50>
+            <ion-item>
+              <ion-label>HH:</ion-label>
+              <ion-input type="tel" (keypress)="onlyNumberKey($event)" placeholder="hh" maxlength="2" formControlName="first_exp_time_in_hour"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col width-50>
+            <ion-item>
+              <ion-label>mm:</ion-label>
+              <ion-input type="tel" (keypress)="onlyNumberKey($event)" placeholder="mm" maxlength="2" formControlName="first_exp_time_in_minute"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Inpatient/Outpatient</ion-label>
         <ion-select formControlName="inpatient_outpatient" (ionChange)="outpatientAdmission()">
-          <ion-option *ngFor="let item of inpatientOutpatient" [value]="item">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of inpatientOutpatient" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </div>
     <div class="form-group" *ngIf="outPatientAdmissionStatus">
       <ion-item>
         <ion-label color="black" stacked>Admission date (Outpatients)</ion-label>
-        <ion-input formControlName="admission_date" (click)="datePickerDialog('addmissionDate')" (ionFocus)="datePickerDialog('addmissionDate')" [readonly]="true"></ion-input>
+        <ion-input formControlName="admission_date" (click)="datePickerDialog('addmissionDate')" (ionFocus)="datePickerDialog('addmissionDate')"
+          [readonly]="true"></ion-input>
         <ion-icon name="calendar" item-right></ion-icon>
       </ion-item>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Baby is admitted to</ion-label>
-        <ion-select formControlName="baby_admitted">
-          <ion-option *ngFor="let item of babyAdmittedTo" [value]="item">{{item.name}}</ion-option>
+        <ion-select formControlName="baby_admitted" (ionChange)="babyAdmitedTo()">
+          <ion-option *ngFor="let item of babyAdmittedTo" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="babyAdmittedToStatus">
       <ion-item>
-        <ion-label color="black" stacked>Reason for admission</ion-label>
+        <ion-label color="black" stacked>Reason for NICU admission</ion-label>
         <ion-select formControlName="nicu_admission">
-          <ion-option *ngFor="let item of nicuAdmission" [value]="item">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of nicuAdmission" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Discharge date</ion-label>
-        <ion-input formControlName="discharge_date" (click)="datePickerDialog('dischargeDate')" (ionFocus)="datePickerDialog('dischargeDate')" (focusout)="validateDischargeDate()" [readonly]="true"></ion-input>
+        <ion-input formControlName="discharge_date" (click)="datePickerDialog('dischargeDate')" (ionFocus)="datePickerDialog('dischargeDate')"
+          [readonly]="true"></ion-input>
         <ion-icon padding-top name="calendar" item-right></ion-icon>
       </ion-item>
     </div>

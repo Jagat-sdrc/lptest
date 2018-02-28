@@ -60,4 +60,6 @@ interface IMessage{
     selectCheckBox: string;
     important: string;
     allFieldMandatory: string;
+    exitApp: string;
+    dischargeDateValidation: string;
 }
