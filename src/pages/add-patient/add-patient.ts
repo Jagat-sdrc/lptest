@@ -528,8 +528,6 @@ export class AddPatientPage implements OnInit{
         if(this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level3NICU ||
           this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level2SNCU ||
           this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level1NICU){
-          this.patientForm.controls.nicu_admission.setValue(null);
-          this.patientForm.controls["nicu_admission"].setErrors(null);
           this.babyAdmittedToStatus = true;
          } else {
           this.babyAdmittedToStatus = false;

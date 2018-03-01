@@ -31,7 +31,7 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Email<span class="text-color"> *</span></ion-label>
-        <ion-input type="email" value="" formControlName="email"></ion-input>
+        <ion-input type="email" (focusout)="validateEmailId()" value="" formControlName="email"></ion-input>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.email.invalid  && (userForm.controls.email.dirty || userForm.controls.email.touched)">
         Please enter valid email address
