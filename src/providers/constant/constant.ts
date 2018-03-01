@@ -82,7 +82,7 @@ export class ConstantProvider {
     weight: "weight",
   }
 
-  static passwordFormat = "@123#"
+  static passwordFormat = "@123#!"
 
   static typeDetailsIds = {
     inPatient: 12,

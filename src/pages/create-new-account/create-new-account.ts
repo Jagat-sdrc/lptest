@@ -166,37 +166,39 @@ export class CreateNewAccountPage {
    * @since 0.0.1
    */
   submit() {
-    if (!this.userForm.valid) {
-      Object.keys(this.userForm.controls).forEach(field => {
-        const control = this.userForm.get(field);
-        control.markAsTouched({
-          onlySelf: true
+    if(this.validateEmailId()){
+      if (!this.userForm.valid) {
+        Object.keys(this.userForm.controls).forEach(field => {
+          const control = this.userForm.get(field);
+          control.markAsTouched({
+            onlySelf: true
+          });
         });
-      });
-    } else {
-      //Initialize the add new patient object
-      this.user = {
-        firstName: this.userForm.controls.first_name.value,
-        lastName: this.userForm.controls.last_name.value,
-        email: this.userForm.controls.email.value,
-        institution: this.user.institution,
-        country: this.user.country,
-        state: this.user.state,
-        district: this.user.district,
-        isSynced: false,
-        syncFailureMessage: null,
-        createdDate: null,
-        updatedDate: null
-      }
+      } else {
+        //Initialize the add new patient object
+        this.user = {
+          firstName: this.userForm.controls.first_name.value,
+          lastName: this.userForm.controls.last_name.value,
+          email: this.userForm.controls.email.value,
+          institution: this.user.institution,
+          country: this.user.country,
+          state: this.user.state,
+          district: this.user.district,
+          isSynced: false,
+          syncFailureMessage: null,
+          createdDate: null,
+          updatedDate: null
+        }
 
-      this.createNewAccountService.saveNewUser(this.user)
-        .then(data => {
-          this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
-          this.showConfirmAlert();
-        })
-        .catch(err => {
-          this.messageService.showErrorToast(err)
-        })
+        this.createNewAccountService.saveNewUser(this.user)
+          .then(data => {
+            this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
+            this.showConfirmAlert();
+          })
+          .catch(err => {
+            this.messageService.showErrorToast(err)
+          })
+      }
     }
   }
 
@@ -282,6 +284,9 @@ export class CreateNewAccountPage {
       if(!data){
         this.userForm.controls.email.setValue(null);
         this.messageService.showErrorToast(ConstantProvider.messages.emailIdExists)
+        return false;
+      }else{
+        return true;
       }
     })
   }
