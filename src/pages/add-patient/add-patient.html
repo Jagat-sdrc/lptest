@@ -124,7 +124,7 @@
               <ion-input type="number" (keypress)="onlyNumberKey($event)" placeholder="mm" maxlength="2" formControlName="first_exp_time_in_minute"></ion-input>
             </ion-item>
             <p class="error" *ngIf="patientForm.controls.first_exp_time_in_minute.invalid  && (patientForm.controls.first_exp_time_in_minute.dirty || patientForm.controls.first_exp_time_in_minute.touched)">
-                Please enter minute below 59
+                Please enter minute below 60
               </p>
           </ion-col>
         </ion-row>

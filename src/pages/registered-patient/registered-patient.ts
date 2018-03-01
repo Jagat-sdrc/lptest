@@ -23,7 +23,7 @@ export class RegisteredPatientPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
-    private messageService: MessageProvider, private menuCtrl: MenuController, 
+    private messageService: MessageProvider, private menuCtrl: MenuController,
     private sortPatient: SortPatientPipe) {
   }
 
@@ -95,37 +95,6 @@ export class RegisteredPatientPage {
       label: 'Weight',
       value: 'Weight'
     });
-    alert.addInput({
-      type: 'radio',
-      label: 'Inpatient',
-      value: 'Inpatient'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Outpatient',
-      value: 'Outpatient'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Vaginal',
-      value: 'Vaginal'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'C-section',
-      value: 'C-section'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Other',
-      value: 'Other'
-    });
-    alert.addInput({
-      type: 'radio',
-      label: 'Unknown',
-      value: 'Unknown'
-    });
-
     alert.addButton('Cancel');
     alert.addButton({
       text: 'OK',
@@ -136,25 +105,6 @@ export class RegisteredPatientPage {
              break;
              case "Weight":
              this.sortBy = ConstantProvider.patientSortBy.weight
-             break;
-             case "Inpatient":
-             this.sortBy = ConstantProvider.patientSortBy.inPatient
-             break;
-             case "Outpatient":
-             this.sortBy = ConstantProvider.patientSortBy.outPatient
-             break;
-             case "Vaginal":
-             debugger;
-             this.sortBy = ConstantProvider.patientSortBy.vaginal
-             break;
-             case "C-section":
-             this.sortBy = ConstantProvider.patientSortBy.csection
-             break;
-             case "Other":
-             this.sortBy = ConstantProvider.patientSortBy.other
-             break;
-             case "Unknown":
-             this.sortBy = ConstantProvider.patientSortBy.unknown
              break;
            }
            this.patientList = this.sortPatient.transform(this.patientList,this.sortBy);

@@ -17,19 +17,23 @@ export class SearchPipe implements PipeTransform {
     let searchText = args[0];
     if (patients != undefined && patients != null && searchText != undefined && searchText != null) {
 
-
-      // sortPatient:sortBy
-
-
       return patients.filter(patient => {
         let count = 0;
         if (patient.babyCode.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
           count++;
         }
-        if (patient.babyOf != null && patient.babyOf != "" && patient.babyOf.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
+        if(patient.babyOf != null && patient.babyOf != undefined && patient.babyOf != ""){
+          if (patient.babyOf.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
+            count++;
+          }
+        }else{
           count++;
         }
-        if (patient.babyCodeHospital != null && patient.babyCodeHospital != "" && patient.babyCodeHospital.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
+        if(patient.babyCodeHospital != null && patient.babyCodeHospital != undefined && patient.babyCodeHospital != ""){
+          if (patient.babyCodeHospital.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
+            count++;
+          }
+        }else{
           count++;
         }
         if(count === 3){

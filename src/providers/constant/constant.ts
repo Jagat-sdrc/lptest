@@ -79,17 +79,10 @@ export class ConstantProvider {
 
   static patientSortBy: IPatientSortBy = {
     deliveryDate: "deliveryDate",
-    deliveryTime: "deliveryTime",
     weight: "weight",
-    inPatient: "inPatient",
-    outPatient: "outPatient",
-    vaginal: "vaginal",
-    csection: "csection",
-    other: "other",
-    unknown: "unknown",
   }
 
-  static passwordFormat = "@123#!"
+  static passwordFormat = "@123#"
 
   static typeDetailsIds = {
     inPatient: 12,
@@ -124,31 +117,31 @@ export class ConstantProvider {
     enterLocOfExpression:'Please enter location of expression',
     volumeOfMilkExpressedFromBreast:'Please enter valid volume of milk expressed from left and right breast (in ml)',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
-    invalidCredentials: 'Invalid credentials!',
-    forgotPasswordMessage: 'Please send an email to <u class="forgot">vijaya.lakshmi@accessh.org</u> requesting your password. ',
+    invalidCredentials: 'Invalid credentials',
+    forgotPasswordMessage: 'Please send an email to <span class="forgot">vijaya.lakshmi@accessh.org</span> requesting your password. ',
     registrationSuccessful: 'Registration successful',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
-    noUserFound: 'No user found, please register!',
-    userConstruction: "Under construction!",
+    noUserFound: 'No user found, please register',
+    userConstruction: "Under construction",
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyOverWeight: "The entered baby weight lies outside 500-4000 gms range. Do you want to proceed with the entry? ",
-    babyGestational: "A normal pregnancy ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
+    babyGestational: "A normal gestational period ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
     motherAge: "Reproductive age of women lies in the range between 15-49 years. Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
-    deleted: 'Deleted successfully!',
-    recordNotFound: 'Record not found!',
-    noDataFound: 'No data found!',
-    serverErrorContactAdmin: 'Server error, please contact admin!',
-    noDataToSync: 'No data to sync!',
+    deleted: 'Deleted successfully',
+    recordNotFound: 'Record not found',
+    noDataFound: 'No data found',
+    serverErrorContactAdmin: 'Server error, please contact admin',
+    noDataToSync: 'No data to sync',
     enterDateOfBfsp: 'Please enter date of BFSP',
     enterTimeOfBfsp :'Please enter time of BFSP',
     stateAlert: 'Please select the country before selecting state',
     districtAlert: 'Please select the state before selecting district',
     institutionAlert: 'Please select the district before selecting insitution',
-    saveSuccessfull: 'Saved successfully!',
-    info: 'Info',
+    saveSuccessfull: 'Saved successfully',
+    info: 'Infomation',
     warning: 'Warning',
     deletePatient: 'Do you want to delete the selected Patient record?',
     duplicateTime: 'Record for this particular time exists. Please visit the record created for this time to edit.',
@@ -162,7 +155,7 @@ export class ConstantProvider {
     otherVolume: 'Please enter other voulme',
     locationWhereFeedOccured: 'Please enter location where feed occured',
     babyWeight: 'Please enter weight of the baby',
-    emailIdExists: 'Email id exists!',
+    emailIdExists: 'Email id exists',
     dateOfBfpd: 'Please enter date of breastfeeding post discharge',
     bfStatusPd: 'Please enter breastfeeding status post discharge',
     selectCountry: 'Select Country',
@@ -173,10 +166,10 @@ export class ConstantProvider {
     selectCheckBox: 'Please select the checkbox',
     important: 'IMPORTANT',
     allFieldMandatory: 'Please fill all the mandatory fields.',
-    exitApp: 'Are you sure want to exit the app?',
-    dischargeDateValidation: 'Discharge date cann\'t be less than Delivery date',
+    exitApp: 'Are you sure you want to exit the app?',
+    dischargeDateValidation: 'Discharge date cannot be less than Delivery date',
     checkInternetConnection: 'No internet connection. Please check your internet connectivity and try again',
-    submitSuccessfull: 'Submitted successfully!'
+    submitSuccessfull: 'Submitted successfully'
   };
 
 /**

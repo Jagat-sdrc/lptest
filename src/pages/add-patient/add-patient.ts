@@ -46,13 +46,10 @@ export class AddPatientPage implements OnInit{
   countryName: string;
   stateName: string;
   institutionName: string;
-  maxDate: any;
-  maxTime: any;
   outPatientAdmissionStatus: boolean = false;
   babyAdmittedToStatus: boolean = false;
   paramToExpressionPage: IParamToExpresssionPage;
   forEdit: boolean;
-  babyIdHospital: RegExp = /^[a-zA-Z0-9_.-]*$/;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   numberRegex: RegExp = /^[0-9]+(\.[0-9]*){0,1}$/;
   minuteRegex: RegExp = /^(?:[1-9]|[1-4][0-9]|59)$/;
@@ -112,6 +109,7 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.inpatient_outpatient.setValue(""),
     this.patientForm.controls.admission_date.setValue(null),
     this.patientForm.controls.baby_admitted.setValue(null),
+    this.babyAdmittedToStatus = false;
     this.patientForm.controls.nicu_admission.setValue(null),
     this.patientForm.controls.discharge_date.setValue(null)
   }
@@ -161,10 +159,6 @@ export class AddPatientPage implements OnInit{
       this.headerTitle = "Add Patient";
     }
 
-
-
-    this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
-    this.maxTime = this.datePipe.transform(new Date(),"HH:mm");
     this.delivery_date = new Date().toISOString();
     this.delivery_time = new Date().toISOString();
 
@@ -218,7 +212,7 @@ export class AddPatientPage implements OnInit{
 
     this.patientForm = new FormGroup({
       baby_id: new FormControl(''),
-      hospital_baby_id: new FormControl('',[Validators.pattern(this.babyIdHospital)]),
+      hospital_baby_id: new FormControl(''),
       mother_name: new FormControl('', [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
       mother_age: new FormControl('', [Validators.maxLength(2)]),
       delivery_date: new FormControl('',[Validators.required]),
@@ -390,7 +384,7 @@ export class AddPatientPage implements OnInit{
 
       this.patientForm = new FormGroup({
         baby_id: new FormControl(this.patient.babyCode),
-        hospital_baby_id: new FormControl(this.patient.babyCodeHospital,[Validators.pattern(this.babyIdHospital)]),
+        hospital_baby_id: new FormControl(this.patient.babyCodeHospital),
         mother_name: new FormControl(this.patient.babyOf, [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
         mother_age: new FormControl(this.patient.mothersAge, [Validators.maxLength(2)]),
         delivery_date: new FormControl(this.patient.deliveryDate,[Validators.required]),
@@ -534,6 +528,8 @@ export class AddPatientPage implements OnInit{
         if(this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level3NICU ||
           this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level2SNCU ||
           this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level1NICU){
+          this.patientForm.controls.nicu_admission.setValue(null);
+          this.patientForm.controls["nicu_admission"].setErrors(null);
           this.babyAdmittedToStatus = true;
          } else {
           this.babyAdmittedToStatus = false;
@@ -542,5 +538,4 @@ export class AddPatientPage implements OnInit{
          }
        }
     }
-
 }

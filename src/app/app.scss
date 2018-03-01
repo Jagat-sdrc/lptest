@@ -46,9 +46,6 @@ ion-label, ion-option, ion-datetime, ion-item, ion-select, ion-input, .alert-rad
     font-size: 18px !important;
     color:black !important;
 }
-.alert-md .alert-message{
-    overflow-y: auto;
-}
 
 .noRecords{
     text-align: center;
@@ -74,5 +71,12 @@ ion-label, ion-option, ion-datetime, ion-item, ion-select, ion-input, .alert-rad
 }
 .alert-md .alert-button .button-inner{
   color: color($colors, lok, base) !important;
+}
+.login-button{
+  margin-top: 25px;
+  height: 45px;
+  font-size: 20px;
+  background: color($colors, lbutton, base);
+  text-transform: none;
 }
 

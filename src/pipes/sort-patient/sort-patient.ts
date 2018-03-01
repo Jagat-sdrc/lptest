@@ -17,15 +17,15 @@ export class SortPatientPipe implements PipeTransform {
 
     if(patients != undefined && patients != null && patients.length > 0){
       switch(args[0]){
-        case (ConstantProvider.patientSortBy.deliveryDate || ConstantProvider.patientSortBy.deliveryTime):
+        case ConstantProvider.patientSortBy.deliveryDate:
         patients.sort((a: IPatient, b: IPatient) => {
-          let dayOfA = parseInt(a.deliveryDate.split('-')[2])
+          let dayOfA = parseInt(a.deliveryDate.split('-')[0])
           let monthOfA = parseInt(a.deliveryDate.split('-')[1])
-          let yearOfA = parseInt(a.deliveryDate.split('-')[0])
+          let yearOfA = parseInt(a.deliveryDate.split('-')[2])
 
-          let dayOfB = parseInt(b.deliveryDate.split('-')[2])
+          let dayOfB = parseInt(b.deliveryDate.split('-')[0])
           let monthOfB = parseInt(b.deliveryDate.split('-')[1])
-          let yearOfB = parseInt(b.deliveryDate.split('-')[0])
+          let yearOfB = parseInt(b.deliveryDate.split('-')[2])
 
           let hourOfA = parseInt(a.deliveryTime.split(':')[0])
           let minuteOfA = parseInt(a.deliveryTime.split(':')[1])
@@ -59,84 +59,6 @@ export class SortPatientPipe implements PipeTransform {
               return 0;
             }
           });
-        break;
-        case ConstantProvider.patientSortBy.inPatient:
-        if((patients.filter(d => d.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.inPatient)).length > 0){
-          patients.sort((a: IPatient, b: IPatient) => {
-            if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.inPatient) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-        }else{
-          patients = [];
-        }
-        break;
-        case ConstantProvider.patientSortBy.outPatient:
-        if((patients.filter(d => d.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.outPatient)).length > 0){
-          patients.sort((a: IPatient, b: IPatient) => {
-            if (a.inpatientOrOutPatient === ConstantProvider.typeDetailsIds.outPatient) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-        }else{
-          patients = [];
-        }
-        break;
-        case ConstantProvider.patientSortBy.vaginal:
-        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.vaginal)).length > 0){
-          patients.sort((a: IPatient, b: IPatient) => {
-            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.vaginal) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-        }else{
-          patients = [];
-        }
-        break;
-        case ConstantProvider.patientSortBy.csection:
-        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.csection)).length > 0){
-          patients.sort((a: IPatient, b: IPatient) => {
-            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.csection) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-        }else{
-          patients = [];
-        }
-        break;
-        case ConstantProvider.patientSortBy.other:
-        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.other)).length > 0){
-          patients.sort((a: IPatient, b: IPatient) => {
-            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.other) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-        }else{
-          patients = [];
-        }
-        break;
-        case ConstantProvider.patientSortBy.unknown:
-        if((patients.filter(d => d.deliveryMethod === ConstantProvider.typeDetailsIds.unknown)).length > 0){
-          patients.sort((a: IPatient, b: IPatient) => {
-            if (a.deliveryMethod === ConstantProvider.typeDetailsIds.unknown) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-        }else{
-          patients = [];
-        }
         break;
       }
       return patients;

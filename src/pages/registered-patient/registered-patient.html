@@ -18,7 +18,7 @@
 
 
 <ion-content>
-  <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+  <ion-searchbar placeholder="Search by Baby of, Baby ID, Hospital Baby ID" [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
   <div *ngIf="searching" class="spinner-container">
       <ion-spinner></ion-spinner>
   </div>
@@ -28,12 +28,12 @@
         <ion-card class="card-outside">
           <ion-row class="card-inside" (press)="deletePatient(item.babyCode)" (click)="goToBabyDashBoard(item.babyCode,item.babyCodeHospital,item.deliveryDate)">
             <ion-col md-6>
-              <div class="form-group">Baby of: {{item.babyOf}}</div>
+              <div class="form-group">Baby of: {{(item.babyOf != null && item.babyOf != "")?item.babyOf:"N/A"}}</div>
               <div>Baby ID: {{item.babyCode}}</div>
             </ion-col>
             <ion-col md-6 text-right>
               <div class="form-group">{{item.deliveryDate}} {{item.deliveryTime}}</div>
-              <div>Hospital Baby ID: {{item.babyCodeHospital}}</div>
+              <div>Hospital Baby ID: {{(item.babyCodeHospital != null && item.babyCodeHospital != "")?item.babyCodeHospital:"N/A"}}</div>
             </ion-col>
           </ion-row>
         </ion-card>
