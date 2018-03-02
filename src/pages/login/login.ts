@@ -32,6 +32,9 @@ export class LoginPage {
     });
   }
 
+  /**
+    * @author - Naseem Akhtar
+   */
   ngOnInit(){
     this.loginData = {
       // username: 'jagat@sdrc.co.in',
