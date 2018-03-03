@@ -456,7 +456,7 @@ export class AddPatientPage implements OnInit{
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
       }).then(
         time => {
-          this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
+          this.validateTime(time)
         },
         err => console.log('Error occurred while getting time: ', err)
         );
@@ -535,5 +535,36 @@ export class AddPatientPage implements OnInit{
           this.patientForm.controls["nicu_admission"].setErrors(null);
          }
        }
+    }
+
+    babyAdmitedToCheck(){
+      if(this.patientForm.controls.baby_admitted.value != undefined || this.patientForm.controls.baby_admitted.value != null){
+        if(this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level3NICU ||
+          this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level2SNCU ||
+          this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level1NICU){
+          this.babyAdmittedToStatus = true;
+         } else {
+          this.babyAdmittedToStatus = false;
+          this.patientForm.controls.nicu_admission.setValue(null);
+          this.patientForm.controls["nicu_admission"].setErrors(null);
+         }
+       }
+    }
+
+	validateTime(time){
+      if(this.patientForm.controls.delivery_date.value != "" && this.patientForm.controls.delivery_date.value != null){
+        if(this.patientForm.controls.delivery_date.value === this.datePipe.transform(new Date(),"dd-MM-yyyy") ){
+          if(this.datePipe.transform(time,"HH:mm") > this.datePipe.transform(new Date(),"HH:mm")){
+            this.patientForm.controls.delivery_time.setValue("")
+            this.messageService.showErrorToast("Future time not allowed")
+          }else{
+            this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
+          }
+        }else{
+          this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
+        }
+      }else{
+        this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
+      }
     }
 }
