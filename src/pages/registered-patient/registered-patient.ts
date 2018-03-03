@@ -87,7 +87,7 @@ export class RegisteredPatientPage {
     alert.setTitle('Sort By');
     alert.addInput({
       type: 'radio',
-      label: 'Delivery Date',
+      label: 'Delivery Date (Ascending)',
       value: 'Delivery Date'
     });
     alert.addButton('Cancel');

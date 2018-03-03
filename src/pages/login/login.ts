@@ -16,6 +16,8 @@ export class LoginPage {
 
   loginData: ILoginData;
   appVersionNumber: string;
+  type:string = 'password';
+  showPass:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
   private userService: UserServiceProvider,
@@ -77,5 +79,15 @@ export class LoginPage {
       password: ''
     }
     this.navCtrl.push('CreateNewAccountPage');
+  }
+
+  showPassword() {
+    this.showPass = !this.showPass;
+
+    if(this.showPass){
+      this.type = 'text';
+    } else {
+      this.type = 'password';
+    }
   }
 }

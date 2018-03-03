@@ -52,7 +52,6 @@ export class AddPatientPage implements OnInit{
   forEdit: boolean;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   numberRegex: RegExp = /^[0-9]+(\.[0-9]*){0,1}$/;
-  minuteRegex: RegExp = /^(?:[1-9]|[1-4][0-9]|59)$/;
   hasError: boolean = false;
   private uniquePatientId : IUniquePatientId = {
     id: null,
