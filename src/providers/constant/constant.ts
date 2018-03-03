@@ -78,8 +78,8 @@ export class ConstantProvider {
   }
 
   static patientSortBy: IPatientSortBy = {
-    deliveryDate: "deliveryDate",
-    weight: "weight",
+    deliveryDateAscending: "deliveryDateAscending",
+    deliveryDateDescending: "deliveryDateDescending"
   }
 
   static passwordFormat = "@123#!"
@@ -102,8 +102,8 @@ export class ConstantProvider {
    * @since 0.0.1
    */
   static serverUrls:any = {
-    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
-    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
+    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation-test/serverStatus',
+    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation-test/sync'
     // SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
     // SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
@@ -117,12 +117,12 @@ export class ConstantProvider {
     enterLocOfExpression:'Please enter location of expression',
     volumeOfMilkExpressedFromBreast:'Please enter valid volume of milk expressed from left and right breast (in ml)',
     enterValidVolumeOfMilk:'Please enter the volume of milk expressed from left breast (in ml, range 0-300)',
-    invalidCredentials: 'Invalid credentials',
+    invalidCredentials: 'Invalid credentials.',
     forgotPasswordMessage: 'Please send an email to <span class="forgot">vijaya.lakshmi@accessh.org</span> requesting your password. ',
-    registrationSuccessful: 'Registration successful',
+    registrationSuccessful: 'Registration successful.',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
-    noUserFound: 'No user found, please register',
-    userConstruction: "Under construction",
+    noUserFound: 'No user found, please register.',
+    userConstruction: "Under construction.",
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyOverWeight: "The entered baby weight lies outside 500-4000 gms range. Do you want to proceed with the entry? ",
     babyGestational: "A normal gestational period ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
@@ -130,17 +130,17 @@ export class ConstantProvider {
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
-    deleted: 'Deleted successfully',
-    recordNotFound: 'Record not found',
-    noDataFound: 'No data found',
+    deleted: 'Deleted successfully.',
+    recordNotFound: 'Record not found.',
+    noDataFound: 'No data found.',
     serverErrorContactAdmin: 'Server error, please contact admin',
-    noDataToSync: 'No data to sync',
+    noDataToSync: 'No data to sync.',
     enterDateOfBfsp: 'Please enter date of BFSP',
     enterTimeOfBfsp :'Please enter time of BFSP',
     stateAlert: 'Please select the country before selecting state',
     districtAlert: 'Please select the state before selecting district',
     institutionAlert: 'Please select the district before selecting insitution',
-    saveSuccessfull: 'Saved successfully',
+    saveSuccessfull: 'Saved successfully.',
     info: 'Infomation',
     warning: 'Warning',
     deletePatient: 'Do you want to delete the selected Patient record?',
@@ -155,7 +155,7 @@ export class ConstantProvider {
     otherVolume: 'Please enter other voulme',
     locationWhereFeedOccured: 'Please enter location where feed occured',
     babyWeight: 'Please enter weight of the baby',
-    emailIdExists: 'Email id exists',
+    emailIdExists: 'Email id exists.',
     dateOfBfpd: 'Please enter date of breastfeeding post discharge',
     bfStatusPd: 'Please enter breastfeeding status post discharge',
     selectCountry: 'Select Country',

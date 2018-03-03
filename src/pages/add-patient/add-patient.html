@@ -40,12 +40,18 @@
         <ion-label color="black" stacked>Baby of (mother's name)</ion-label>
         <ion-input type="text" formControlName="mother_name"></ion-input>
       </ion-item>
+      <p class="error" *ngIf="patientForm.controls.mother_name.invalid  && (patientForm.controls.mother_name.dirty || patientForm.controls.mother_name.touched) && resetStatus">
+          Please enter a valid name
+      </p>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Mother's Age</ion-label>
         <ion-input type="number" (focusout)="validateMotherAge()" formControlName="mother_age" (keypress)="_numberKeyPress($event,2)"></ion-input>
       </ion-item>
+      <p class="error" *ngIf="patientForm.controls.mother_age.invalid  && (patientForm.controls.mother_age.dirty || patientForm.controls.mother_age.touched) && resetStatus">
+          Please enter a valid age
+      </p>
     </div>
     <div class="form-group">
       <ion-item>
