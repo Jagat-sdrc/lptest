@@ -32,6 +32,7 @@ export class RegisteredPatientPage {
   }
 
   ionViewDidEnter() {
+    this.searchTerm = "";
     this.menuCtrl.swipeEnable(false);
   }
 
@@ -41,6 +42,7 @@ export class RegisteredPatientPage {
 
   ngOnInit(){
     this.sortBy = ConstantProvider.patientSortBy.deliveryDateDescending;
+    this.searchTerm = "";
     this.searchControl = new FormControl();
   }
 
@@ -73,6 +75,7 @@ export class RegisteredPatientPage {
 
   refresh(){
     this.sortBy = ConstantProvider.patientSortBy.deliveryDateDescending;
+    this.searchTerm = "";
     this.findAllPatients();
   }
 
