@@ -28,6 +28,7 @@ export class FeedPage {
   onlyNumberRegex: RegExp = /^[0-9]*$/;
   existingDate: string;
   existingTime: string;
+  deliveryDate: Date;
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
   private messageService: MessageProvider, private navParams: NavParams, private datePicker: DatePicker,
@@ -36,6 +37,8 @@ export class FeedPage {
   ngOnInit(){
 
     this.dataForFeedEntryPage = this.navParams.get('dataForFeedEntryPage');
+    let x = this.dataForFeedEntryPage.deliveryDate.split('-');
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
     
     this.findExpressionsByBabyCodeAndDate();    
 
@@ -66,7 +69,7 @@ export class FeedPage {
  * @author Ratikanta
  * @since 0.0.1
  */
-  saveExpression(feedExpression: IFeed) {
+  validateExpression(feedExpression: IFeed) {
     if(feedExpression.dateOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
     }else if(feedExpression.timeOfFeed === null) {
@@ -81,18 +84,31 @@ export class FeedPage {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
     }else if(feedExpression.otherVolume === undefined || !this.checkForOnlyNumber(feedExpression.otherVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
+    }else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
+      && (feedExpression.babyWeight < 500 || feedExpression.babyWeight > 4000)){
+      this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
+        .then((data)=>{
+          if(data){
+            this.saveExpression(feedExpression);
+          }
+        })
     }else{
-      this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
+      this.saveExpression(feedExpression);
+    }
+  }
+
+  saveExpression(feedExpression: IFeed){
+    this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
-        this.toggleGroup(feedExpression);
+        // this.toggleGroup(feedExpression);
+        this.findExpressionsByBabyCodeAndDate();
         this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
       })
       .catch(err =>{
         feedExpression.createdDate = null;
         this.messageService.showOkAlert('Warning', err);
       })
-    }
   }
   
 
@@ -150,14 +166,19 @@ export class FeedPage {
    * @memberof ExpressionTimeFormPage
    */
   delete(feedExpression: IFeed){
-    this.feedExpressionService.delete(feedExpression.id)
-    .then(()=>{
-      //refreshing the list 
-      this.findExpressionsByBabyCodeAndDate();
-      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err)
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deleteForm).
+    then((data)=>{
+      if(data){
+        this.feedExpressionService.delete(feedExpression.id)
+        .then(()=>{
+          //refreshing the list 
+          this.findExpressionsByBabyCodeAndDate();
+          this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+        })
+        .catch(err=>{
+          this.messageService.showErrorToast(err)
+        })
+      }
     })
   }
 
@@ -171,6 +192,7 @@ export class FeedPage {
   datePickerDialog(feedExp: IFeed){
     this.datePicker.show({
     date: new Date(),
+    minDate: this.deliveryDate.valueOf(),
     maxDate: new Date().valueOf(),
     allowFutureDates: false,
     mode: 'date',
