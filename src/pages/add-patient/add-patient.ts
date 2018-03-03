@@ -323,7 +323,7 @@ export class AddPatientPage implements OnInit{
     */
     submit(){
       this.outpatientAdmission();
-      this.babyAdmitedTo();
+      this.babyAdmitedToCheck();
       if(this.validateDischargeDate()){
         if(!this.patientForm.valid){
           this.resetStatus = true;
@@ -403,7 +403,7 @@ export class AddPatientPage implements OnInit{
         discharge_date: new FormControl(this.patient.dischargeDate),
       });
       this.outpatientAdmission();
-      this.babyAdmitedTo();
+      this.babyAdmitedToCheck();
     }
 
     /**
@@ -426,6 +426,9 @@ export class AddPatientPage implements OnInit{
                 this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"));
                 if(this.patientForm.controls.discharge_date.value != ""){
                   this.patientForm.controls.discharge_date.setValue(null);
+                }
+                if(this.patientForm.controls.delivery_time.value != ""){
+                  this.patientForm.controls.delivery_time.setValue(null);
                 }
               break;
               case ConstantProvider.datePickerType.addmissionDate:
@@ -528,6 +531,7 @@ export class AddPatientPage implements OnInit{
         if(this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level3NICU ||
           this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level2SNCU ||
           this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level1NICU){
+          this.patientForm.controls.nicu_admission.setValue(null);
           this.babyAdmittedToStatus = true;
          } else {
           this.babyAdmittedToStatus = false;

@@ -40,7 +40,7 @@ export class RegisteredPatientPage {
   }
 
   ngOnInit(){
-    this.sortBy = ConstantProvider.patientSortBy.deliveryDate;
+    this.sortBy = ConstantProvider.patientSortBy.deliveryDateDescending;
     this.searchControl = new FormControl();
   }
 
@@ -72,7 +72,7 @@ export class RegisteredPatientPage {
   }
 
   refresh(){
-    this.sortBy = ConstantProvider.patientSortBy.deliveryDate;
+    this.sortBy = ConstantProvider.patientSortBy.deliveryDateDescending;
     this.findAllPatients();
   }
 
@@ -90,21 +90,13 @@ export class RegisteredPatientPage {
       label: 'Delivery Date',
       value: 'Delivery Date'
     });
-    alert.addInput({
-      type: 'radio',
-      label: 'Weight',
-      value: 'Weight'
-    });
     alert.addButton('Cancel');
     alert.addButton({
       text: 'OK',
       handler: data => {
            switch(data){
              case "Delivery Date":
-             this.sortBy = ConstantProvider.patientSortBy.deliveryDate
-             break;
-             case "Weight":
-             this.sortBy = ConstantProvider.patientSortBy.weight
+             this.sortBy = ConstantProvider.patientSortBy.deliveryDateAscending
              break;
            }
            this.patientList = this.sortPatient.transform(this.patientList,this.sortBy);
