@@ -18,7 +18,7 @@
         },
         {
             "id": 5,
-            "name": "baby admitted to"
+            "name": "Baby admitted to / Location of feeding"
         },
         {
             "id": 6,
@@ -51,10 +51,6 @@
         {
             "id":13,
             "name":"BF status post discharge"
-        },
-        {
-            "id":14,
-            "name":"Location of feeding"
         }
     ],
     "typeDetails": [
@@ -422,31 +418,6 @@
             "id": 73,
             "name": "None",
             "typeId": 13
-        },
-        {
-            "id": 74,
-            "name": "Level 3 NICU/High Dependency",
-            "typeId": 14
-        },
-        {
-            "id": 75,
-            "name": "Level 2 SNCU/Low Dependency",
-            "typeId": 14
-        },
-        {
-            "id": 76,
-            "name": "Level 1 NICU",
-            "typeId": 14
-        },
-        {
-            "id": 77,
-            "name": "Step-down unit",
-            "typeId": 14
-        },
-        {
-            "id": 78,
-            "name": "KMC unit",
-            "typeId": 14
         }
     ],
     "areaDetails": [

@@ -31,6 +31,7 @@ export class ExpressionTimeFormPage {
   maxDate:any;
   existingDate: string;
   existingTime: string;
+  deliveryDate: Date;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
@@ -43,6 +44,8 @@ export class ExpressionTimeFormPage {
 
   ngOnInit() {
     this.dataForBFEntryPage = this.navParams.get('dataForBFEntryPage');
+    let x = this.dataForBFEntryPage.deliveryDate.split('-');
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
 
     this.findExpressionsByBabyCodeAndDate();    
     //Getting method of expressionbf type details
@@ -97,7 +100,8 @@ export class ExpressionTimeFormPage {
     }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
-        this.toggleGroup(bfExpression);
+        // this.toggleGroup(bfExpression);
+        this.findExpressionsByBabyCodeAndDate();
         this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
       })
       .catch(err => {
@@ -156,14 +160,19 @@ export class ExpressionTimeFormPage {
    * @memberof ExpressionTimeFormPage
    */
   delete(bfExpression: IBFExpression){
-    this.bfExpressionTimeService.delete(bfExpression.id)
-    .then(()=>{
-      //refreshing the list 
-      this.findExpressionsByBabyCodeAndDate();
-      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err)
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deleteForm).
+    then((data)=>{
+      if(data){
+        this.bfExpressionTimeService.delete(bfExpression.id)
+          .then(()=>{
+            //refreshing the list 
+            this.findExpressionsByBabyCodeAndDate();
+            this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+          })
+          .catch(err=>{
+            this.messageService.showErrorToast(err)
+          })
+      }
     })
   }
 
@@ -199,6 +208,7 @@ export class ExpressionTimeFormPage {
   datePickerDialog(bfExpForm: IBFExpression){
     this.datePicker.show({
     date: new Date(),
+    minDate: this.deliveryDate.valueOf(),
     maxDate: new Date().valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT

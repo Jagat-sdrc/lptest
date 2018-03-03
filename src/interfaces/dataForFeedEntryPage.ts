@@ -7,4 +7,5 @@ interface IDataForFeedEntryPage{
     babyCode: string;
     selectedDate: string;
     isNewExpression: boolean;
+    deliveryDate: string;
 }

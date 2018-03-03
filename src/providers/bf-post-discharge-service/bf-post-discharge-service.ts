@@ -61,7 +61,7 @@ export class BfPostDischargeServiceProvider {
   saveNewBfPostDischargeForm(bfPdForm: IBFPD): Promise <any> {
     
     let promise = new Promise((resolve, reject) => {     
-      bfPdForm.id = this.getNewBfPdId(bfPdForm.babyCode);
+      bfPdForm.id = bfPdForm.id === null ? this.getNewBfPdId(bfPdForm.babyCode) : bfPdForm.id;
       bfPdForm.isSynced = false;
       bfPdForm.createdDate = bfPdForm.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfPdForm.createdDate;

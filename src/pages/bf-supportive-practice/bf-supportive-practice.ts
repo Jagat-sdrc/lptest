@@ -34,6 +34,7 @@ export class BfSupportivePracticePage {
   shownGroup: any;
   existingDate:string;
   existingTime:string;
+  deliveryDate: Date;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider,
@@ -53,6 +54,9 @@ export class BfSupportivePracticePage {
    */
   ngOnInit() {
     this.dataForBfspPage = this.navParams.get('dataForBfspPage');
+    //splitting delivery date to use it new date for min date of datepicker
+    let x = this.dataForBfspPage.deliveryDate.split('-');
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
 
     this.findExpressionsByBabyCodeAndDate();
 
@@ -118,7 +122,8 @@ export class BfSupportivePracticePage {
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp, this.existingDate, this.existingTime)
       .then(data => {
-        this.toggleGroup(bfsp);
+        this.findExpressionsByBabyCodeAndDate();
+        // this.toggleGroup(bfsp);
         this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
       })
       .catch(err => {
@@ -163,14 +168,19 @@ export class BfSupportivePracticePage {
    * @memberof ExpressionTimeFormPage
    */
   delete(bfsp: IBFSP){
-    this.bfspService.delete(bfsp.id)
-    .then(()=>{
-      //refreshing the list 
-      this.findExpressionsByBabyCodeAndDate();
-      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err)
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deleteForm).
+    then((data)=>{
+      if(data){
+        this.bfspService.delete(bfsp.id)
+          .then(()=>{
+            //refreshing the list 
+            this.findExpressionsByBabyCodeAndDate();
+            this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+          })
+          .catch(err=>{
+            this.messageService.showErrorToast(err)
+          })
+      }
     })
   }
 
@@ -182,8 +192,10 @@ export class BfSupportivePracticePage {
    * @since - 0.0.1
    */
   setPersonWhoPerformed(bfsp: IBFSP){
-    if(bfsp.bfspPerformed === 54){
+    if(bfsp.bfspPerformed === 54) {
       bfsp.personWhoPerformedBFSP = 56;
+    }else{
+      bfsp.personWhoPerformedBFSP = null;
     }
   }
 
@@ -197,6 +209,7 @@ export class BfSupportivePracticePage {
   datePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
     date: new Date(),
+    minDate: this.deliveryDate.valueOf(),
     maxDate: new Date().valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT

@@ -23,7 +23,7 @@ export class BfPostDischargePage {
   babyCode: string;
   timeOfFeedList: ITypeDetails[];
   bfStatusPostDischargeList: ITypeDetails[];
-  minDate: any;
+  deliveryDate: Date;
   maxDate:any;
   formHeading: string;
   bfpd: IBFPD = {
@@ -50,7 +50,9 @@ export class BfPostDischargePage {
   ngOnInit() {
     this.maxDate = this.bfPostDischargeService.getMaxTime();
     this.babyCode = this.navParams.data.babyCode;
-    this.minDate = this.navParams.data.deliveryDate.split('-');
+    //splitting delivery date to use it new date for min date of datepicker
+    let x = this.navParams.data.deliveryDate.split('-');
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
 
     this.bfPostDischargeService.findByBabyCodeAndTimeOfBreastFeedingId(this.babyCode, this.navParams.data.menuItemId)
       .then(data => {
@@ -104,13 +106,18 @@ export class BfPostDischargePage {
    * @memberof ExpressionTimeFormPage
    */
   delete(){
-    this.bfPostDischargeService.delete(this.bfpd.id)
-    .then(()=>{
-      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
-      this.navCtrl.pop();      
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err)
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deleteForm).
+    then((data)=>{
+      if(data){
+        this.bfPostDischargeService.delete(this.bfpd.id)
+          .then(()=>{
+            this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+            this.navCtrl.pop();      
+          })
+          .catch(err=>{
+            this.messageService.showErrorToast(err)
+          })
+      }
     })
   }
 
@@ -121,11 +128,9 @@ export class BfPostDischargePage {
    */
 
   datePickerDialog(bfpd: IBFPD){
-    // let day = this.minDate[0];
-    // let month = this.minDate[1];
-    // let year = this.minDate[2];
     this.datePicker.show({
     date: new Date(),
+    minDate: this.deliveryDate.valueOf(),
     maxDate: new Date().valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT

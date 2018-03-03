@@ -36,11 +36,11 @@ export class SaveExpressionBfProvider {
    * @since 0.0.1
    * @returns Promise<string[]> string array of dates
    * @param babyid the patient id for which we are saving data
+   * @author - Naseem Akhtar
    */
   saveBfExpression(bfExpression: IBFExpression, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
-      bfExpression.id = this.getNewBfExpressionId(bfExpression.babyCode)
       bfExpression.isSynced = false;
       bfExpression.createdDate = bfExpression.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfExpression.createdDate;
@@ -48,22 +48,23 @@ export class SaveExpressionBfProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
         let bfExpressions: IBFExpression[] = [];
-        if(val != null){
+        if(val != null) {
           bfExpressions = val;
-          if(bfExpression.dateOfExpression === existingDate &&  bfExpression.timeOfExpression === existingTime) {
-            bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
+          let index = bfExpressions.findIndex(d=>d.dateOfExpression === bfExpression.dateOfExpression 
+              && d.timeOfExpression === bfExpression.timeOfExpression);
+          if(index < 0) {
+            index = bfExpressions.findIndex(d=>d.dateOfExpression === existingDate && d.timeOfExpression === existingTime);
+            bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression, index)          
             this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
-              .then(data=>{
+              .then(data=> {
                 resolve()
               })
-              .catch(err=>{
+              .catch(err=> {
                 reject(err.message);    
               })
-          }else{
-            let index = bfExpressions.findIndex(d=>d.dateOfExpression === bfExpression.dateOfExpression 
-              && d.timeOfExpression === bfExpression.timeOfExpression);
-            if(index < 0){
-              bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression)          
+          }else {
+            if(bfExpression.dateOfExpression === existingDate &&  bfExpression.timeOfExpression === existingTime){
+              bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression, index)          
               this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
               .then(data=>{
                 resolve()
@@ -71,11 +72,11 @@ export class SaveExpressionBfProvider {
               .catch(err=>{
                 reject(err.message);    
               })
-            }else{
+            }else
               reject(ConstantProvider.messages.duplicateTime);
-            }
           }
         }else{
+          bfExpression.id = this.getNewBfExpressionId(bfExpression.babyCode)
           bfExpressions.push(bfExpression)
           this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
           .then(data=>{
@@ -106,17 +107,16 @@ export class SaveExpressionBfProvider {
    * @param bfExpressions All the existing bf expressions
    * @param bfExpression incoming bf expression
    * @returns IBFExpression[] modified bf expressions
+   * @author - Naseem Akhtar
    */
-  private validateNewEntryAndUpdate(bfExpressions: IBFExpression[], bfExpression: IBFExpression): IBFExpression[]{
+  private validateNewEntryAndUpdate(bfExpressions: IBFExpression[], bfExpression: IBFExpression, index: number): IBFExpression[]{
 
-    
-    for(let i = 0; i < bfExpressions.length;i++){
-      if(bfExpressions[i].id === bfExpression.id){
-        //record found, need to splice and enter new
-        bfExpressions.splice(i,1)
-        break;
-      }
+    if(index < 0) {
+      bfExpression.id = this.getNewBfExpressionId(bfExpression.babyCode);
+    }else {
+      bfExpressions.splice(index, 1);
     }
+    
     bfExpressions.push(bfExpression)    
     return bfExpressions;
 

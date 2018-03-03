@@ -7,4 +7,5 @@ interface IDataForBfspPage{
     babyCode: string;
     selectedDate: string;
     isNewBfsp: boolean;
+    deliveryDate: string;
 }

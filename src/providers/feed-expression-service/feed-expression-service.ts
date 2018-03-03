@@ -79,7 +79,6 @@ export class FeedExpressionServiceProvider {
   saveFeedExpression(feedExpression: IFeed, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
-      feedExpression.id = this.getNewFeedExpressionId(feedExpression.babyCode);
       feedExpression.isSynced = false;
       feedExpression.createdDate = feedExpression.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : feedExpression.createdDate;
@@ -87,10 +86,12 @@ export class FeedExpressionServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
         let feedExpressions: IFeed[] = [];
-        if(val != null){
+        if(val != null) {
           feedExpressions = val
-          if(feedExpression.dateOfFeed === existingDate &&  feedExpression.timeOfFeed === existingTime) {
-            feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
+          let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
+          if(index < 0) {
+            index = feedExpressions.findIndex(d=>d.dateOfFeed === existingDate && d.timeOfFeed === existingTime)
+            feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)          
             this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
               .then(data=>{
                 resolve()
@@ -99,9 +100,8 @@ export class FeedExpressionServiceProvider {
                 reject(err.message);
               })
           }else{
-            let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
-            if(index < 0){
-              feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression)          
+            if(feedExpression.dateOfFeed === existingDate && feedExpression.timeOfFeed === existingTime) {
+              feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)
               this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
                 .then(data=>{
                   resolve()
@@ -109,11 +109,11 @@ export class FeedExpressionServiceProvider {
                 .catch(err=>{
                   reject(err.message);
                 })
-            }else{
+            }else
               reject(ConstantProvider.messages.duplicateTime);
-            }
           }
-        }else{
+        }else {
+          feedExpression.id = this.getNewFeedExpressionId(feedExpression.babyCode)
           feedExpressions.push(feedExpression)
           this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
           .then(data=>{
@@ -145,17 +145,16 @@ export class FeedExpressionServiceProvider {
    * @param feedExpressions All the existing feed expressions
    * @param feedExpression incoming feed expression
    * @returns IFeed[] modified feed expressions
+   * @author - Naseem Akhtar
    */
-  private validateNewEntryAndUpdate(feedExpressions: IFeed[], feedExpression: IFeed): IFeed[]{
+  private validateNewEntryAndUpdate(feedExpressions: IFeed[], feedExpression: IFeed, index: number): IFeed[]{
 
-    
-    for(let i = 0; i < feedExpressions.length;i++){
-      if(feedExpressions[i].id === feedExpression.id){
-        //record found, need to splice and enter new
-        feedExpressions.splice(i,1)
-        break;
-      }
+    if(index < 0) {
+      feedExpression.id = this.getNewFeedExpressionId(feedExpression.babyCode);
+    }else {
+      feedExpressions.splice(index, 1);
     }
+
     feedExpressions.push(feedExpression)    
     return feedExpressions;
 

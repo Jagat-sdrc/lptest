@@ -57,7 +57,8 @@ export class FeedDateListPage {
     let dataForFeedEntryPage: IDataForFeedEntryPage = {
       babyCode: this.babyCode,
       selectedDate: date,
-      isNewExpression: false
+      isNewExpression: false,
+      deliveryDate: this.navParams.data.deliveryDate
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }
@@ -73,7 +74,8 @@ export class FeedDateListPage {
     let dataForFeedEntryPage: IDataForFeedEntryPage = {
       babyCode: this.babyCode,
       selectedDate: null,
-      isNewExpression: true
+      isNewExpression: true,
+      deliveryDate: this.navParams.data.deliveryDate
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }
