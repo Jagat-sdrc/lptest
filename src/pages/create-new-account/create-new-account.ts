@@ -53,8 +53,7 @@ export class CreateNewAccountPage {
     createdDate: null,
     updatedDate: null
   }
-  firstNamePattern: RegExp = /^[a-zA-Z][a-zA-Z\.]+$/;
-  lastNamePattern: RegExp = /^[a-zA-Z]{0,25}$/;
+  namePattern: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   emailPattern: RegExp = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   // emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
   areas: IArea[];
@@ -113,8 +112,8 @@ export class CreateNewAccountPage {
       }
 
     this.userForm = new FormGroup({
-      first_name: new FormControl('', [Validators.required, Validators.pattern(this.firstNamePattern)]),
-      last_name: new FormControl('', [Validators.required, Validators.pattern(this.lastNamePattern)]),
+      first_name: new FormControl('', [Validators.required, Validators.pattern(this.namePattern)]),
+      last_name: new FormControl('', [Validators.required, Validators.pattern(this.namePattern)]),
       email: new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]),
       country: new FormControl('', [Validators.required]),
       state: new FormControl('', [Validators.required]),
