@@ -3,7 +3,7 @@
     <name>Lactation</name>
     <description>Lactation app.</description>
     <author email="harekrishna@sdrc.co.in" href="sdrc.co.in">SDRC India</author>
-    <content original-src="index.html" src="http://192.168.1.121:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

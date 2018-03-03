@@ -48,7 +48,7 @@ export class SaveExpressionBfProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
         let bfExpressions: IBFExpression[] = [];
-        if(val != null) {
+        if(val != null && val.length > 0) {
           bfExpressions = val;
           let index = bfExpressions.findIndex(d=>d.dateOfExpression === bfExpression.dateOfExpression 
               && d.timeOfExpression === bfExpression.timeOfExpression);

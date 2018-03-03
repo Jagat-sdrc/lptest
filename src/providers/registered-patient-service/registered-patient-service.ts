@@ -17,7 +17,7 @@ export class RegisteredPatientServiceProvider {
   constructor(private storage: Storage, private searchPipe: SearchPipe){}
 
   /**
-   *
+   * @author - Naseem Akhtar
    * @param babyCode The baby code of the patient to which we are going to delete
    */
   deletePatient(babyCode: string): Promise<any>{
@@ -30,11 +30,9 @@ export class RegisteredPatientServiceProvider {
           //delete from breastfeed expression
           this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
           .then(data=>{
-            if(data != null){
-              let index = (data as IBFExpression[]).findIndex(d=> d.babyCode === babyCode);
-              if(index >= 0){
-                (data as IBFExpression[]).splice(index, 1)
-              }
+            if(data != null && data.length > 0){
+              data = (data as IBFExpression[]).filter(d => d.babyCode != babyCode)
+              this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, data)
             }
           })
         })
@@ -42,11 +40,9 @@ export class RegisteredPatientServiceProvider {
           //delete from breastfeed supportive practise expression
           this.storage.get(ConstantProvider.dbKeyNames.bfsps)
           .then(data=>{
-            if(data != null){
-              let index = (data as IBFSP[]).findIndex(d=> d.babyCode === babyCode);
-              if(index >= 0){
-                (data as IBFSP[]).splice(index, 1)
-              }
+            if(data != null && data.length > 0){
+              data = (data as IBFSP[]).filter(d=> d.babyCode != babyCode);
+              this.storage.set(ConstantProvider.dbKeyNames.bfsps, data)
             }
           })
         })
@@ -54,11 +50,8 @@ export class RegisteredPatientServiceProvider {
           //delete from feed expression
           this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
           .then(data=>{
-            if(data != null){
-              let index = (data as IFeed[]).findIndex(d=> d.babyCode === babyCode);
-              if(index >= 0){
-                (data as IFeed[]).splice(index, 1)
-              }
+            if(data != null && data.length > 0){
+              data = (data as IFeed[]).filter(d=> d.babyCode != babyCode);
             }
           })
         })
@@ -66,11 +59,12 @@ export class RegisteredPatientServiceProvider {
           //delete from breastfeed post-discharge expression
           this.storage.get(ConstantProvider.dbKeyNames.bfpds)
           .then(data=>{
-            if(data != null){
-              let index = (data as IBFPD[]).findIndex(d=> d.babyCode === babyCode);
-              if(index >= 0){
-                (data as IBFPD[]).splice(index, 1)
-              }
+            if(data != null && data.length > 0){
+              data = (data as IBFPD[]).findIndex(d=> d.babyCode != babyCode);
+              this.storage.set(ConstantProvider.dbKeyNames.bfpds, data)
+              // if(index >= 0){
+              //   (data as IBFPD[]).splice(index, 1)
+              // }
             }
           })
         })
