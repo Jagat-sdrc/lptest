@@ -216,20 +216,22 @@ export class BfSupportivePracticePage {
     }).then(
       date => {
         bfsp.dateOfBFSP = this.datePipe.transform(date,"dd-MM-yyyy")
+        this.validateTime(bfsp.timeOfBFSP, bfsp)
       },
       err => console.log('Error occurred while getting date: ', err)
     );
   }
 
   timePickerDialog(bfsp: IBFSP){
+    debugger
     this.datePicker.show({
     date: new Date(),
     mode: 'time',
     is24Hour: true,
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-  }).then(
-    time => {
-      bfsp.timeOfBFSP = this.datePipe.transform(time,"HH:mm")
+    })
+    .then(time => {
+      this.validateTime(this.datePipe.transform(time, 'HH:mm'), bfsp)
     },
     err => console.log('Error occurred while getting time: ', err)
     );
@@ -243,6 +245,22 @@ export class BfSupportivePracticePage {
         return true;
       else
         return false;
+    }
+  }
+
+  /** 
+   * This method will validate time selected by the user, if it is current date,
+   * then future time will not be allowed.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+  */
+  validateTime(time: string, bfsp: IBFSP){
+    if(bfsp.dateOfBFSP === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
+      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+        this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
+        bfsp.timeOfBFSP = null;
+    }else{
+      bfsp.timeOfBFSP = this.datePipe.transform(time,"HH:mm")
     }
   }
 

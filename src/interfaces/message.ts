@@ -65,4 +65,5 @@ interface IMessage{
     checkInternetConnection: string;
     submitSuccessfull: string;
     deleteForm: string;
+    futureTime: string;
 }
