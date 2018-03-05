@@ -57,7 +57,8 @@ export class BfSupportivePracticeDateListPage {
     let dataForBfspPage: IDataForBfspPage = {
       babyCode: this.babyCode,
       selectedDate: date,
-      isNewBfsp: false
+      isNewBfsp: false,
+      deliveryDate: this.navParams.data.deliveryDate
     }
     this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: dataForBfspPage});
   };
@@ -72,9 +73,9 @@ export class BfSupportivePracticeDateListPage {
   newBFSP() {
     let dataForBfspPage: IDataForBfspPage = {
       babyCode: this.babyCode,
-      // selectedDate: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
       selectedDate: null,
-      isNewBfsp: true
+      isNewBfsp: true,
+      deliveryDate: this.navParams.data.deliveryDate
     }
     this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: dataForBfspPage})
   };

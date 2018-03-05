@@ -24,14 +24,14 @@
     
             <div style="margin-top:15px" *ngIf="isGroupShown(item)">
                 <ion-item>
-                    <ion-label color="black" stacked>Date of Expression</ion-label>
+                    <ion-label color="black" stacked>Date of Expression<span class="text-color"> *</span></ion-label>
                     <ion-input [readonly]="true" [(ngModel)]="item.dateOfExpression" (ionFocus)="datePickerDialog(item)" 
                       [ngModelOptions]="{standalone: true}"></ion-input>
                     <ion-icon padding-top name="calendar" item-right></ion-icon>
                   </ion-item>
 
               <ion-item>
-                <ion-label color="black" stacked>Time of expression </ion-label>
+                <ion-label color="black" stacked>Time of expression<span class="text-color"> *</span></ion-label>
                 <ion-input [readonly]="true" [(ngModel)] = "item.timeOfExpression" (ionFocus)="timePickerDialog(item)" 
                   [ngModelOptions]="{standalone: true}"></ion-input>
                 <ion-icon padding-top name="time" item-right></ion-icon>
@@ -58,10 +58,10 @@
 
               <ion-row padding>
                 <ion-col>
-                  <button class="login-button" ion-button block (click)="delete(item)">Delete</button>                  
+                  <button class="login-button" [disabled]="item.id === null" ion-button block (click)="delete(item)">Delete</button>                  
                 </ion-col>
                 <ion-col>
-                    <button class="login-button" ion-button block (click)="saveExpression(item)">Save</button>
+                    <button class="login-button" ion-button block (click)="saveExpression(item)">{{item.id === null ? 'Save' : 'Update'}}</button>
                 </ion-col>
               </ion-row>
             </div>
@@ -71,5 +71,5 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-  <button class="login-button" ion-button block (click)="newExpression()">New Expression</button>
+  <button ion-button block (click)="newExpression()">New Expression</button>
 </ion-footer>

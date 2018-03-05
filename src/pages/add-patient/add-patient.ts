@@ -52,7 +52,6 @@ export class AddPatientPage implements OnInit{
   forEdit: boolean;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   numberRegex: RegExp = /^[0-9]+(\.[0-9]*){0,1}$/;
-  minuteRegex: RegExp = /^(?:[1-9]|[1-4][0-9]|59)$/;
   hasError: boolean = false;
   private uniquePatientId : IUniquePatientId = {
     id: null,
@@ -214,7 +213,7 @@ export class AddPatientPage implements OnInit{
       baby_id: new FormControl(''),
       hospital_baby_id: new FormControl(''),
       mother_name: new FormControl('', [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
-      mother_age: new FormControl('', [Validators.maxLength(2)]),
+      mother_age: new FormControl(''),
       delivery_date: new FormControl('',[Validators.required]),
       delivery_time: new FormControl('',[Validators.required]),
       delivery_method: new FormControl('',),
@@ -386,7 +385,7 @@ export class AddPatientPage implements OnInit{
         baby_id: new FormControl(this.patient.babyCode),
         hospital_baby_id: new FormControl(this.patient.babyCodeHospital),
         mother_name: new FormControl(this.patient.babyOf, [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
-        mother_age: new FormControl(this.patient.mothersAge, [Validators.maxLength(2)]),
+        mother_age: new FormControl(this.patient.mothersAge),
         delivery_date: new FormControl(this.patient.deliveryDate,[Validators.required]),
         delivery_time: new FormControl(this.patient.deliveryTime,[Validators.required]),
         delivery_method: new FormControl(this.patient.deliveryMethod),
@@ -459,7 +458,10 @@ export class AddPatientPage implements OnInit{
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
       }).then(
         time => {
+<<<<<<< HEAD
           // this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
+=======
+>>>>>>> e091ab4ef0e620b0e14ad7e2da9421a1da27f773
           this.validateTime(time)
         },
         err => console.log('Error occurred while getting time: ', err)
@@ -556,12 +558,20 @@ export class AddPatientPage implements OnInit{
        }
     }
 
+<<<<<<< HEAD
     validateTime(time){
+=======
+	validateTime(time){
+>>>>>>> e091ab4ef0e620b0e14ad7e2da9421a1da27f773
       if(this.patientForm.controls.delivery_date.value != "" && this.patientForm.controls.delivery_date.value != null){
         if(this.patientForm.controls.delivery_date.value === this.datePipe.transform(new Date(),"dd-MM-yyyy") ){
           if(this.datePipe.transform(time,"HH:mm") > this.datePipe.transform(new Date(),"HH:mm")){
             this.patientForm.controls.delivery_time.setValue("")
+<<<<<<< HEAD
             this.messageService.showErrorToast("Future time not allowed")
+=======
+            this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
+>>>>>>> e091ab4ef0e620b0e14ad7e2da9421a1da27f773
           }else{
             this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
           }

@@ -31,6 +31,7 @@ export class ExpressionTimeFormPage {
   maxDate:any;
   existingDate: string;
   existingTime: string;
+  deliveryDate: Date;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
@@ -43,6 +44,8 @@ export class ExpressionTimeFormPage {
 
   ngOnInit() {
     this.dataForBFEntryPage = this.navParams.get('dataForBFEntryPage');
+    let x = this.dataForBFEntryPage.deliveryDate.split('-');
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
 
     this.findExpressionsByBabyCodeAndDate();    
     //Getting method of expressionbf type details
@@ -97,7 +100,8 @@ export class ExpressionTimeFormPage {
     }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
-        this.toggleGroup(bfExpression);
+        // this.toggleGroup(bfExpression);
+        this.findExpressionsByBabyCodeAndDate();
         this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
       })
       .catch(err => {
@@ -156,14 +160,19 @@ export class ExpressionTimeFormPage {
    * @memberof ExpressionTimeFormPage
    */
   delete(bfExpression: IBFExpression){
-    this.bfExpressionTimeService.delete(bfExpression.id)
-    .then(()=>{
-      //refreshing the list 
-      this.findExpressionsByBabyCodeAndDate();
-      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err)
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deleteForm).
+    then((data)=>{
+      if(data){
+        this.bfExpressionTimeService.delete(bfExpression.id)
+          .then(()=>{
+            //refreshing the list 
+            this.findExpressionsByBabyCodeAndDate();
+            this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+          })
+          .catch(err=>{
+            this.messageService.showErrorToast(err)
+          })
+      }
     })
   }
 
@@ -199,12 +208,14 @@ export class ExpressionTimeFormPage {
   datePickerDialog(bfExpForm: IBFExpression){
     this.datePicker.show({
     date: new Date(),
+    minDate: this.deliveryDate.valueOf(),
     maxDate: new Date().valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(
       date => {
         bfExpForm.dateOfExpression = this.datePipe.transform(date,"dd-MM-yyyy")
+        this.validateTime(bfExpForm.timeOfExpression, bfExpForm)
       },
       err => console.log('Error occurred while getting date: ', err)
     );
@@ -218,7 +229,7 @@ export class ExpressionTimeFormPage {
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
   }).then(
     time => {
-      bfExpForm.timeOfExpression = this.datePipe.transform(time,"HH:mm")
+      this.validateTime(this.datePipe.transform(time, 'HH:mm'), bfExpForm)
     },
     err => console.log('Error occurred while getting time: ', err)
     );
@@ -233,6 +244,22 @@ export class ExpressionTimeFormPage {
   checkVolumeOfMilkExpressed(bfExpform: IBFExpression){
     if(bfExpform.methodOfExpression != 43){
       bfExpform.volOfMilkExpressedFromLR = null;
+    }
+  }
+
+  /** 
+   * This method will validate time selected by the user, if it is current date,
+   * then future time will not be allowed.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+  */
+ validateTime(time: string, bfExpForm: IBFExpression){
+    if(bfExpForm.dateOfExpression === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
+      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+        this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
+        bfExpForm.timeOfExpression = null;
+    }else{
+      bfExpForm.timeOfExpression = time
     }
   }
 }

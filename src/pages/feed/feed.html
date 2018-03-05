@@ -26,7 +26,7 @@
 
             <!-- Date of feed -->
             <ion-item>
-                <ion-label color="black" stacked >Date of feed</ion-label>
+                <ion-label color="black" stacked >Date of feed<span class="text-color"> *</span></ion-label>
                 <ion-input [readonly]="true" [(ngModel)]="feedExpression.dateOfFeed" (ionFocus)="datePickerDialog(feedExpression)" 
                   [ngModelOptions]="{standalone: true}"></ion-input>
                 <ion-icon padding-top name="calendar" item-right></ion-icon>
@@ -35,7 +35,7 @@
 
             <!-- Time of feed -->
             <ion-item>
-                <ion-label color="black" stacked >Time of feed</ion-label>
+                <ion-label color="black" stacked >Time of feed<span class="text-color"> *</span></ion-label>
                 <ion-input [readonly]="true" [(ngModel)] = "feedExpression.timeOfFeed" (ionFocus)="timePickerDialog(feedExpression)" 
                   [ngModelOptions]="{standalone: true}"></ion-input>
                 <ion-icon padding-top name="time" item-right></ion-icon>
@@ -101,10 +101,10 @@
             </ion-item>  
             <ion-row padding>
                 <ion-col>
-                  <button class="login-button" ion-button block (click)="delete(feedExpression)">Delete</button>                  
+                  <button class="login-button" [disabled]="feedExpression.id === null" ion-button block (click)="delete(feedExpression)">Delete</button>                  
                 </ion-col>
                 <ion-col>
-                    <button class="login-button" ion-button block (click)="saveExpression(feedExpression)">Save</button>
+                    <button class="login-button" ion-button block (click)="validateExpression(feedExpression)">{{feedExpression.id === null ? 'Save' : 'Update'}}</button>
                 </ion-col>
             </ion-row>                              
           </div>

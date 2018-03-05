@@ -53,8 +53,7 @@ export class CreateNewAccountPage {
     createdDate: null,
     updatedDate: null
   }
-  firstNamePattern: RegExp = /^[a-zA-Z][a-zA-Z\.]+$/;
-  lastNamePattern: RegExp = /^[a-zA-Z]{0,25}$/;
+  namePattern: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   emailPattern: RegExp = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   // emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
   areas: IArea[];
@@ -62,7 +61,8 @@ export class CreateNewAccountPage {
   states: IArea[];
   districts: IArea[];
   institutes: IArea[];
-  countryStatus: boolean = true;
+  countryStatus: boolean = false;
+  stateStatus: boolean = true;
   districtStatus: boolean = true;
   institutionStatus: boolean = true;
 
@@ -112,9 +112,30 @@ export class CreateNewAccountPage {
         title: ConstantProvider.messages.selectInstitute
       }
 
+      this.createNewAccountService.getFirstUser()
+      .then(data=>{
+        if(data != null){
+          console.log(data)
+          this.countrySelected((data as IUser).country);
+          this.stateSelected((data as IUser).state);
+          this.districtSelected((data as IUser).district);
+          this.instituteSelected((data as IUser).institution);
+          this.userForm.controls.country.setValue((data as IUser).country);
+          this.userForm.controls.state.setValue((data as IUser).state);
+          this.userForm.controls.district.setValue((data as IUser).district);
+          this.userForm.controls.institution.setValue((data as IUser).institution);
+          this.countryStatus = true;
+          this.stateStatus = true;
+          this.districtStatus = true;
+          this.institutionStatus = true;
+        }else{
+          console.log("no data")
+        }
+      })
+
     this.userForm = new FormGroup({
-      first_name: new FormControl('', [Validators.required, Validators.pattern(this.firstNamePattern)]),
-      last_name: new FormControl('', [Validators.required, Validators.pattern(this.lastNamePattern)]),
+      first_name: new FormControl('', [Validators.required, Validators.pattern(this.namePattern)]),
+      last_name: new FormControl('', [Validators.required, Validators.pattern(this.namePattern)]),
       email: new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]),
       country: new FormControl('', [Validators.required]),
       state: new FormControl('', [Validators.required]),
@@ -173,30 +194,8 @@ export class CreateNewAccountPage {
           onlySelf: true
         });
       });
-    } else {
-      //Initialize the add new patient object
-      this.user = {
-        firstName: this.userForm.controls.first_name.value,
-        lastName: this.userForm.controls.last_name.value,
-        email: this.userForm.controls.email.value,
-        institution: this.user.institution,
-        country: this.user.country,
-        state: this.user.state,
-        district: this.user.district,
-        isSynced: false,
-        syncFailureMessage: null,
-        createdDate: null,
-        updatedDate: null
-      }
-
-      this.createNewAccountService.saveNewUser(this.user)
-        .then(data => {
-          this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
-          this.showConfirmAlert();
-        })
-        .catch(err => {
-          this.messageService.showErrorToast(err)
-        })
+    }else{
+      this.validateEmailId();
     }
   }
 
@@ -204,13 +203,16 @@ export class CreateNewAccountPage {
    * This method is going to get executed when country is selected
    * @author Ratikanta
    * @since 0.0.1
-   * @param {IArea} country
    * @memberof CreateNewAccountPage
    */
-  countrySelected(country: IArea) {
-    this.user.country = country.id;
-    this.states = this.areas.filter(d => d.parentAreaId === country.id)
-    this.countryStatus = false;
+  countrySelected(id?:any) {
+    if(id != undefined && id != null){
+      this.user.country = id;
+    }else{
+      this.user.country = this.userForm.controls.country.value;
+    }
+    this.states = this.areas.filter(d => d.parentAreaId === this.user.country)
+    this.stateStatus = false;
     this.userForm.controls.state.setValue(null);
     this.userForm.controls.district.setValue(null);
     this.userForm.controls.institution.setValue(null);
@@ -223,9 +225,13 @@ export class CreateNewAccountPage {
    * @param {IArea} state
    * @memberof CreateNewAccountPage
    */
-  stateSelected(state: IArea) {
-    this.user.state = state.id;
-    this.districts = this.areas.filter(d => d.parentAreaId === state.id)
+  stateSelected(id?:any) {
+    if(id != undefined && id != null){
+      this.user.state = id;
+    }else{
+      this.user.state = this.userForm.controls.state.value;
+    }
+    this.districts = this.areas.filter(d => d.parentAreaId === this.user.state)
     this.districtStatus  = false;
     this.userForm.controls.district.setValue(null);
     this.userForm.controls.institution.setValue(null);
@@ -239,9 +245,13 @@ export class CreateNewAccountPage {
    * @param {IArea} district
    * @memberof CreateNewAccountPage
    */
-  districtSelected(district: IArea) {
-    this.user.district = district.id;
-    this.institutes = this.areas.filter(d => d.parentAreaId === district.id)
+  districtSelected(id?:any) {
+    if(id != undefined && id != null){
+      this.user.district = id;
+    }else{
+      this.user.district = this.userForm.controls.district.value;
+    }
+    this.institutes = this.areas.filter(d => d.parentAreaId === this.user.district)
     this.institutionStatus = false;
     this.userForm.controls.institution.setValue(null);
   }
@@ -253,8 +263,12 @@ export class CreateNewAccountPage {
    * @param {IArea} institution
    * @memberof CreateNewAccountPage
    */
-  instituteSelected(institution: IArea) {
-    this.user.institution = institution.id;
+  instituteSelected(id?:any) {
+    if(id != undefined && id != null){
+      this.user.institution = id;
+    }else{
+      this.user.institution = this.userForm.controls.institution.value;
+    }
   }
 
   /**
@@ -281,7 +295,30 @@ export class CreateNewAccountPage {
     .then((data)=>{
       if(!data){
         this.userForm.controls.email.setValue(null);
-        this.messageService.showErrorToast(ConstantProvider.messages.emailIdExists)
+        this.messageService.showSuccessToast(ConstantProvider.messages.emailIdExists);
+      }else{
+          //Initialize the add new patient object
+        this.user = {
+          firstName: this.userForm.controls.first_name.value,
+          lastName: this.userForm.controls.last_name.value,
+          email: this.userForm.controls.email.value,
+          country: this.userForm.controls.country.value,
+          state: this.userForm.controls.state.value,
+          district: this.userForm.controls.district.value,
+          institution:  this.userForm.controls.institution.value,
+          isSynced: false,
+          syncFailureMessage: null,
+          createdDate: null,
+          updatedDate: null
+        }
+        this.createNewAccountService.saveNewUser(this.user)
+          .then(data => {
+            this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
+            this.showConfirmAlert();
+          })
+          .catch(err => {
+            this.messageService.showErrorToast(err)
+          })
       }
     })
   }

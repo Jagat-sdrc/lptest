@@ -40,6 +40,9 @@
         <ion-label color="black" stacked>Baby of (mother's name)</ion-label>
         <ion-input type="text" formControlName="mother_name"></ion-input>
       </ion-item>
+      <p class="error" *ngIf="patientForm.controls.mother_name.invalid  && (patientForm.controls.mother_name.dirty || patientForm.controls.mother_name.touched) && resetStatus">
+          Please enter a valid name
+      </p>
     </div>
     <div class="form-group">
       <ion-item>
@@ -114,7 +117,7 @@
         <ion-row>
           <ion-col width-50>
             <ion-item>
-              <ion-label>HH:</ion-label>
+              <ion-label>hh:</ion-label>
               <ion-input type="tel" (keypress)="onlyNumberKey($event)" placeholder="hh" maxlength="2" formControlName="first_exp_time_in_hour"></ion-input>
             </ion-item>
           </ion-col>
@@ -177,7 +180,7 @@
       <button class="login-button" ion-button block (click)="reset()">Reset</button>
     </ion-col>
     <ion-col col-6>
-      <button class="login-button" ion-button block (click)="submit()">Submit</button>
+      <button class="login-button" ion-button block (click)="submit()">{{!forEdit ? 'Submit' : 'Update'}}</button>
     </ion-col>
   </ion-row>
 

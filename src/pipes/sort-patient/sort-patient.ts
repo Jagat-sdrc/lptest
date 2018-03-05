@@ -17,7 +17,7 @@ export class SortPatientPipe implements PipeTransform {
 
     if(patients != undefined && patients != null && patients.length > 0){
       switch(args[0]){
-        case ConstantProvider.patientSortBy.deliveryDate:
+        case ConstantProvider.patientSortBy.deliveryDateDescending:
         patients.sort((a: IPatient, b: IPatient) => {
           let dayOfA = parseInt(a.deliveryDate.split('-')[0])
           let monthOfA = parseInt(a.deliveryDate.split('-')[1])
@@ -45,20 +45,33 @@ export class SortPatientPipe implements PipeTransform {
           }
         });
         break;
-        case ConstantProvider.patientSortBy.weight:
-          patients.sort((a: IPatient, b: IPatient) => {
-            let weightOfA: number = a.babyWeight;
-            let weightOfB: number = b.babyWeight;
-            weightOfA = parseInt(weightOfA+"");
-            weightOfB = parseInt(weightOfB+"");
-            if (weightOfA < weightOfB) {
-              return 1;
-            } else if (weightOfA > weightOfB) {
-              return -1;
-            } else {
-              return 0;
-            }
-          });
+        case ConstantProvider.patientSortBy.deliveryDateAscending:
+        patients.sort((a: IPatient, b: IPatient) => {
+          let dayOfA = parseInt(a.deliveryDate.split('-')[0])
+          let monthOfA = parseInt(a.deliveryDate.split('-')[1])
+          let yearOfA = parseInt(a.deliveryDate.split('-')[2])
+
+          let dayOfB = parseInt(b.deliveryDate.split('-')[0])
+          let monthOfB = parseInt(b.deliveryDate.split('-')[1])
+          let yearOfB = parseInt(b.deliveryDate.split('-')[2])
+
+          let hourOfA = parseInt(a.deliveryTime.split(':')[0])
+          let minuteOfA = parseInt(a.deliveryTime.split(':')[1])
+
+          let hourOfB = parseInt(b.deliveryTime.split(':')[0])
+          let minuteOfB = parseInt(b.deliveryTime.split(':')[1])
+
+          let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA, hourOfA, minuteOfA)
+          let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB, hourOfB, minuteOfB)
+
+          if (dateOfA > dateOfB) {
+            return 1;
+          } else if (dateOfA < dateOfB) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
         break;
       }
       return patients;

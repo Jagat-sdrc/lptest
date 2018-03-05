@@ -34,6 +34,7 @@ export class BfSupportivePracticePage {
   shownGroup: any;
   existingDate:string;
   existingTime:string;
+  deliveryDate: Date;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider,
@@ -53,6 +54,9 @@ export class BfSupportivePracticePage {
    */
   ngOnInit() {
     this.dataForBfspPage = this.navParams.get('dataForBfspPage');
+    //splitting delivery date to use it new date for min date of datepicker
+    let x = this.dataForBfspPage.deliveryDate.split('-');
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
 
     this.findExpressionsByBabyCodeAndDate();
 
@@ -118,7 +122,8 @@ export class BfSupportivePracticePage {
     }else{
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp, this.existingDate, this.existingTime)
       .then(data => {
-        this.toggleGroup(bfsp);
+        this.findExpressionsByBabyCodeAndDate();
+        // this.toggleGroup(bfsp);
         this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
       })
       .catch(err => {
@@ -163,14 +168,19 @@ export class BfSupportivePracticePage {
    * @memberof ExpressionTimeFormPage
    */
   delete(bfsp: IBFSP){
-    this.bfspService.delete(bfsp.id)
-    .then(()=>{
-      //refreshing the list 
-      this.findExpressionsByBabyCodeAndDate();
-      this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err)
+    this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deleteForm).
+    then((data)=>{
+      if(data){
+        this.bfspService.delete(bfsp.id)
+          .then(()=>{
+            //refreshing the list 
+            this.findExpressionsByBabyCodeAndDate();
+            this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
+          })
+          .catch(err=>{
+            this.messageService.showErrorToast(err)
+          })
+      }
     })
   }
 
@@ -182,8 +192,10 @@ export class BfSupportivePracticePage {
    * @since - 0.0.1
    */
   setPersonWhoPerformed(bfsp: IBFSP){
-    if(bfsp.bfspPerformed === 54){
+    if(bfsp.bfspPerformed === 54) {
       bfsp.personWhoPerformedBFSP = 56;
+    }else{
+      bfsp.personWhoPerformedBFSP = null;
     }
   }
 
@@ -197,12 +209,14 @@ export class BfSupportivePracticePage {
   datePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
     date: new Date(),
+    minDate: this.deliveryDate.valueOf(),
     maxDate: new Date().valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(
       date => {
         bfsp.dateOfBFSP = this.datePipe.transform(date,"dd-MM-yyyy")
+        this.validateTime(bfsp.timeOfBFSP, bfsp)
       },
       err => console.log('Error occurred while getting date: ', err)
     );
@@ -214,9 +228,9 @@ export class BfSupportivePracticePage {
     mode: 'time',
     is24Hour: true,
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-  }).then(
-    time => {
-      bfsp.timeOfBFSP = this.datePipe.transform(time,"HH:mm")
+    })
+    .then(time => {
+      this.validateTime(this.datePipe.transform(time, 'HH:mm'), bfsp)
     },
     err => console.log('Error occurred while getting time: ', err)
     );
@@ -230,6 +244,22 @@ export class BfSupportivePracticePage {
         return true;
       else
         return false;
+    }
+  }
+
+  /** 
+   * This method will validate time selected by the user, if it is current date,
+   * then future time will not be allowed.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+  */
+  validateTime(time: string, bfsp: IBFSP){
+    if(bfsp.dateOfBFSP === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
+      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+        this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
+        bfsp.timeOfBFSP = null;
+    }else{
+      bfsp.timeOfBFSP = time
     }
   }
 

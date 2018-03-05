@@ -1,4 +1,4 @@
 interface IPatientSortBy {
-    deliveryDate: string;
-    weight: string;
+    deliveryDateAscending: string;
+    deliveryDateDescending: string;
 }

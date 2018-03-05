@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 
 /**
  * This service will only provide service to new user component
- * 
+ *
  * @author Jagat Bandhu
  * @author Ratikanta
  * @since 0.0.1
@@ -27,7 +27,7 @@ export class NewAccountServiceProvider {
    */
   saveNewUser(user: IUser) : Promise<any>{
     let promise = new Promise((resolve, reject) => {
-      user.createdDate = user.createdDate === null ? 
+      user.createdDate = user.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : user.createdDate;
       user.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.users)
@@ -36,13 +36,13 @@ export class NewAccountServiceProvider {
         let users: IUser[] = [];
         if(val != null){
           users = val
-          users = this.validateNewEntryAndUpdate(users, user)          
+          users = this.validateNewEntryAndUpdate(users, user)
           this.storage.set(ConstantProvider.dbKeyNames.users, users)
           .then(data=>{
             resolve()
           })
           .catch(err=>{
-            reject(err.message);    
+            reject(err.message);
           })
 
         }else{
@@ -52,14 +52,14 @@ export class NewAccountServiceProvider {
             resolve()
           })
           .catch(err=>{
-            reject(err.message);    
+            reject(err.message);
           })
-          
-        }                
+
+        }
       }).catch(err=>{
         reject(err.message);
       })
-    
+
     });
     return promise;
   }
@@ -68,9 +68,9 @@ export class NewAccountServiceProvider {
    * This method will check whether we have the record with given user id, date and time.
    * If all the attribute value will match, this will splice that record and append incoming record.
    * Because it has come for an update.
-   * 
+   *
    * If record does not match, this will just push the input record with existing once
-   * 
+   *
    * @author Jagat Bandhu
    * @since 0.0.1
    * @param users All the existing users
@@ -84,7 +84,7 @@ export class NewAccountServiceProvider {
       //record found, need to splice and enter new
       users.splice(index,1);
     }
-    users.push(user)    
+    users.push(user)
     return users;
 
   }
@@ -116,11 +116,11 @@ getAllAreas(): Observable <IArea[]>{
 
 /**
  * This method will validate the email id
- * 
- * 
+ *
+ *
  * @author Jagat Bandhu
  * @since 0.0.1
- * @param email 
+ * @param email
  */
   validateEmailId(email: string): Promise<boolean>{
     return new Promise<boolean>((resolve,reject)=>{
@@ -133,9 +133,31 @@ getAllAreas(): Observable <IArea[]>{
          }else{
            resolve(false)
          }
+        }else{
+          resolve(true)
         }
       })
     })
+  }
+
+  /**
+   * This method will return the user list from the db.
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
+  getFirstUser(): Promise<IUser>{
+    let promise: Promise<IUser> = new Promise((resolve, reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.users)
+      .then(data=>{
+        if(data != null && data.length > 0){
+          resolve(data[0])
+        }else{
+          resolve(null)
+        }
+      })
+    })
+    return promise;
   }
 
 }
