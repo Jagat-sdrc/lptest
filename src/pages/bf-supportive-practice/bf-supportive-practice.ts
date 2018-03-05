@@ -223,7 +223,6 @@ export class BfSupportivePracticePage {
   }
 
   timePickerDialog(bfsp: IBFSP){
-    debugger
     this.datePicker.show({
     date: new Date(),
     mode: 'time',

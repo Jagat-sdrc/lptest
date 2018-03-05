@@ -215,6 +215,7 @@ export class ExpressionTimeFormPage {
     }).then(
       date => {
         bfExpForm.dateOfExpression = this.datePipe.transform(date,"dd-MM-yyyy")
+        this.validateTime(bfExpForm.timeOfExpression, bfExpForm)
       },
       err => console.log('Error occurred while getting date: ', err)
     );
@@ -228,7 +229,7 @@ export class ExpressionTimeFormPage {
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
   }).then(
     time => {
-      bfExpForm.timeOfExpression = this.datePipe.transform(time,"HH:mm")
+      this.validateTime(this.datePipe.transform(time, 'HH:mm'), bfExpForm)
     },
     err => console.log('Error occurred while getting time: ', err)
     );
@@ -243,6 +244,22 @@ export class ExpressionTimeFormPage {
   checkVolumeOfMilkExpressed(bfExpform: IBFExpression){
     if(bfExpform.methodOfExpression != 43){
       bfExpform.volOfMilkExpressedFromLR = null;
+    }
+  }
+
+  /** 
+   * This method will validate time selected by the user, if it is current date,
+   * then future time will not be allowed.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+  */
+ validateTime(time: string, bfExpForm: IBFExpression){
+    if(bfExpForm.dateOfExpression === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
+      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+        this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
+        bfExpForm.timeOfExpression = null;
+    }else{
+      bfExpForm.timeOfExpression = this.datePipe.transform(time,"HH:mm")
     }
   }
 }

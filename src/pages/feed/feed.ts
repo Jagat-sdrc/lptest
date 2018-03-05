@@ -200,6 +200,7 @@ export class FeedPage {
     }).then(
       date => {
         feedExp.dateOfFeed = this.datePipe.transform(date,"dd-MM-yyyy")
+        this.validateTime(feedExp.timeOfFeed, feedExp)
       },
       err => console.log('Error occurred while getting date: ', err)
     );
@@ -213,7 +214,7 @@ export class FeedPage {
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
   }).then(
     time => {
-      feedExp.timeOfFeed = this.datePipe.transform(time,"HH:mm")
+      this.validateTime(this.datePipe.transform(time, 'HH:mm'), feedExp)
     },
     err => console.log('Error occurred while getting time: ', err)
     );
@@ -248,6 +249,22 @@ export class FeedPage {
       feedExpression.formulaVolume = null
       feedExpression.ommVolume = null
       feedExpression.otherVolume = null
+    }
+  }
+
+  /** 
+   * This method will validate time selected by the user, if it is current date,
+   * then future time will not be allowed.
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+  */
+ validateTime(time: string, feedExp: IFeed){
+    if(feedExp.dateOfFeed === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
+      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+        this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
+        feedExp.timeOfFeed = null;
+    }else{
+      feedExp.timeOfFeed = this.datePipe.transform(time,"HH:mm")
     }
   }
 
