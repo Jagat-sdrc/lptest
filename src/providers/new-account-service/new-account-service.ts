@@ -133,6 +133,8 @@ getAllAreas(): Observable <IArea[]>{
          }else{
            resolve(false)
          }
+        }else{
+          resolve(true)
         }
       })
     })

@@ -559,7 +559,7 @@ export class AddPatientPage implements OnInit{
         if(this.patientForm.controls.delivery_date.value === this.datePipe.transform(new Date(),"dd-MM-yyyy") ){
           if(this.datePipe.transform(time,"HH:mm") > this.datePipe.transform(new Date(),"HH:mm")){
             this.patientForm.controls.delivery_time.setValue("")
-            this.messageService.showErrorToast("Future time not allowed")
+            this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
           }else{
             this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
           }

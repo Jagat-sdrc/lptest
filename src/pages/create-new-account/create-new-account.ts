@@ -194,30 +194,8 @@ export class CreateNewAccountPage {
           onlySelf: true
         });
       });
-    } else {
-      //Initialize the add new patient object
-      this.user = {
-        firstName: this.userForm.controls.first_name.value,
-        lastName: this.userForm.controls.last_name.value,
-        email: this.userForm.controls.email.value,
-        country: this.userForm.controls.country.value,
-        state: this.userForm.controls.state.value,
-        district: this.userForm.controls.district.value,
-        institution:  this.userForm.controls.institution.value,
-        isSynced: false,
-        syncFailureMessage: null,
-        createdDate: null,
-        updatedDate: null
-      }
-
-      this.createNewAccountService.saveNewUser(this.user)
-        .then(data => {
-          this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
-          this.showConfirmAlert();
-        })
-        .catch(err => {
-          this.messageService.showErrorToast(err)
-        })
+    }else{
+      this.validateEmailId();
     }
   }
 
@@ -317,7 +295,30 @@ export class CreateNewAccountPage {
     .then((data)=>{
       if(!data){
         this.userForm.controls.email.setValue(null);
-        this.messageService.showErrorToast(ConstantProvider.messages.emailIdExists)
+        this.messageService.showSuccessToast(ConstantProvider.messages.emailIdExists);
+      }else{
+          //Initialize the add new patient object
+        this.user = {
+          firstName: this.userForm.controls.first_name.value,
+          lastName: this.userForm.controls.last_name.value,
+          email: this.userForm.controls.email.value,
+          country: this.userForm.controls.country.value,
+          state: this.userForm.controls.state.value,
+          district: this.userForm.controls.district.value,
+          institution:  this.userForm.controls.institution.value,
+          isSynced: false,
+          syncFailureMessage: null,
+          createdDate: null,
+          updatedDate: null
+        }
+        this.createNewAccountService.saveNewUser(this.user)
+          .then(data => {
+            this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
+            this.showConfirmAlert();
+          })
+          .catch(err => {
+            this.messageService.showErrorToast(err)
+          })
       }
     })
   }
