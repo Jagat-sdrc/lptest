@@ -458,10 +458,6 @@ export class AddPatientPage implements OnInit{
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
       }).then(
         time => {
-<<<<<<< HEAD
-          // this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
-=======
->>>>>>> e091ab4ef0e620b0e14ad7e2da9421a1da27f773
           this.validateTime(time)
         },
         err => console.log('Error occurred while getting time: ', err)
@@ -558,20 +554,12 @@ export class AddPatientPage implements OnInit{
        }
     }
 
-<<<<<<< HEAD
-    validateTime(time){
-=======
 	validateTime(time){
->>>>>>> e091ab4ef0e620b0e14ad7e2da9421a1da27f773
       if(this.patientForm.controls.delivery_date.value != "" && this.patientForm.controls.delivery_date.value != null){
         if(this.patientForm.controls.delivery_date.value === this.datePipe.transform(new Date(),"dd-MM-yyyy") ){
           if(this.datePipe.transform(time,"HH:mm") > this.datePipe.transform(new Date(),"HH:mm")){
             this.patientForm.controls.delivery_time.setValue("")
-<<<<<<< HEAD
-            this.messageService.showErrorToast("Future time not allowed")
-=======
             this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
->>>>>>> e091ab4ef0e620b0e14ad7e2da9421a1da27f773
           }else{
             this.patientForm.controls.delivery_time.setValue(this.datePipe.transform(time,"HH:mm"))
           }
