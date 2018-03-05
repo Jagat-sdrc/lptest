@@ -401,20 +401,21 @@ export class SyncServiceProvider {
       let alert = this.alertController.create({
         title: 'Sync Report',
         cssClass: 'syncModal',
-        message: '<div class="reportBody">' +
-          '<h5>Users synced : ' + this.syncReport.userSyncSuccess + '</h5><br>' +
-          '<h5>Users rejected : ' + this.syncReport.userSyncFailed + '</h5><br>' +
-          '<h5>Patients synced : ' + this.syncReport.patientSyncSuccess + '</h5><br>' +
-          '<h5>Patients rejected : ' + this.syncReport.patientSyncFailed + '</h5><br>' +
-          '<h5>Bf exp synced : ' + this.syncReport.bfExpressionSyncSuccess + '</h5><br>' +
-          '<h5>Bf exp failed : ' + this.syncReport.bfExpressionSyncFailed + '</h5><br>' +
-          '<h5>Feed synced : ' + this.syncReport.feedSyncSuccess + '</h5><br>' +
-          '<h5>Feed failed : ' + this.syncReport.feedSyncFailed + '</h5><br>' +
-          '<h5>Bf supp. practice synced : ' + this.syncReport.bfspSyncSuccess + '</h5><br>' +
-          '<h5>Bf supp. practice failed : ' + this.syncReport.bfspSyncFailed + '</h5><br>' +
-          '<h5>Bf post discharge synced : ' + this.syncReport.bfpdSyncSuccess + '</h5><br>' +
-          '<h5>Bf post discharge failed : ' + this.syncReport.bfpdSyncFailed + '</h5><br>' +
-          '</div>',
+        message: 'Sync successfull',
+        // message: '<div class="reportBody">' +
+        //   '<h5>Users synced : ' + this.syncReport.userSyncSuccess + '</h5><br>' +
+        //   '<h5>Users rejected : ' + this.syncReport.userSyncFailed + '</h5><br>' +
+        //   '<h5>Patients synced : ' + this.syncReport.patientSyncSuccess + '</h5><br>' +
+        //   '<h5>Patients rejected : ' + this.syncReport.patientSyncFailed + '</h5><br>' +
+        //   '<h5>Bf exp synced : ' + this.syncReport.bfExpressionSyncSuccess + '</h5><br>' +
+        //   '<h5>Bf exp failed : ' + this.syncReport.bfExpressionSyncFailed + '</h5><br>' +
+        //   '<h5>Feed synced : ' + this.syncReport.feedSyncSuccess + '</h5><br>' +
+        //   '<h5>Feed failed : ' + this.syncReport.feedSyncFailed + '</h5><br>' +
+        //   '<h5>Bf supp. practice synced : ' + this.syncReport.bfspSyncSuccess + '</h5><br>' +
+        //   '<h5>Bf supp. practice failed : ' + this.syncReport.bfspSyncFailed + '</h5><br>' +
+        //   '<h5>Bf post discharge synced : ' + this.syncReport.bfpdSyncSuccess + '</h5><br>' +
+        //   '<h5>Bf post discharge failed : ' + this.syncReport.bfpdSyncFailed + '</h5><br>' +
+        //   '</div>',
         buttons: [{
           text: 'OK',
           handler: () => {
