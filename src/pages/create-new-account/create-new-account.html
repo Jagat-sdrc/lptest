@@ -41,8 +41,8 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Country<span class="text-color"> *</span></ion-label>
-        <ion-select formControlName="country" (ionChange)="countrySelected($event)" [selectOptions]="selectCountryOptions">
-          <ion-option *ngFor="let country of countries" [value]="country">{{country.name}}</ion-option>
+        <ion-select [disabled]="countryStatus" formControlName="country" (ionChange)="countrySelected()" [selectOptions]="selectCountryOptions">
+          <ion-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</ion-option>
         </ion-select>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.country.invalid && (userForm.controls.country.dirty || userForm.controls.country.touched)">
@@ -53,8 +53,8 @@
     <div class="form-group">
       <ion-item (click)="onClickState()">
         <ion-label color="black" stacked>State<span class="text-color"> *</span></ion-label>
-        <ion-select [disabled]="countryStatus" formControlName="state" (ionChange)="stateSelected($event)" [selectOptions]="selectStateOptions">
-          <ion-option *ngFor="let state of states" [value]="state">{{state.name}}</ion-option>
+        <ion-select [disabled]="stateStatus" formControlName="state" (ionChange)="stateSelected()" [selectOptions]="selectStateOptions">
+          <ion-option *ngFor="let state of states" [value]="state.id">{{state.name}}</ion-option>
         </ion-select>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.state.invalid && (userForm.controls.state.dirty || userForm.controls.state.touched)">
@@ -65,8 +65,8 @@
     <div class="form-group">
       <ion-item (click)="onClickDistrict()">
         <ion-label color="black" stacked>District<span class="text-color"> *</span></ion-label>
-        <ion-select [disabled]="districtStatus" formControlName="district" (ionChange)="districtSelected($event)" [selectOptions]="selectDistrictOptions">
-          <ion-option *ngFor="let district of districts" [value]="district">{{district.name}}</ion-option>
+        <ion-select [disabled]="districtStatus" formControlName="district" (ionChange)="districtSelected()" [selectOptions]="selectDistrictOptions">
+          <ion-option *ngFor="let district of districts" [value]="district.id">{{district.name}}</ion-option>
         </ion-select>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.district.invalid && (userForm.controls.district.dirty || userForm.controls.district.touched)">
@@ -77,8 +77,8 @@
     <div class="form-group">
       <ion-item (click)="onClickInstitution()">
         <ion-label color="black" stacked>Institution<span class="text-color"> *</span></ion-label>
-        <ion-select [disabled]="institutionStatus" formControlName="institution" (ionChange)="instituteSelected($event)" [selectOptions]="selectInstituteOptions">
-          <ion-option *ngFor="let institute of institutes" [value]="institute">{{institute.name}}</ion-option>
+        <ion-select [disabled]="institutionStatus" formControlName="institution" (ionChange)="instituteSelected()" [selectOptions]="selectInstituteOptions">
+          <ion-option *ngFor="let institute of institutes" [value]="institute.id">{{institute.name}}</ion-option>
         </ion-select>
       </ion-item>
       <p class="error" *ngIf="userForm.controls.institution.invalid && (userForm.controls.institution.dirty || userForm.controls.institution.touched)">
