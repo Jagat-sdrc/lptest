@@ -259,7 +259,7 @@ export class ExpressionTimeFormPage {
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         bfExpForm.timeOfExpression = null;
     }else{
-      bfExpForm.timeOfExpression = this.datePipe.transform(time,"HH:mm")
+      bfExpForm.timeOfExpression = time
     }
   }
 }

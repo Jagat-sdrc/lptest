@@ -264,7 +264,7 @@ export class FeedPage {
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         feedExp.timeOfFeed = null;
     }else{
-      feedExp.timeOfFeed = this.datePipe.transform(time,"HH:mm")
+      feedExp.timeOfFeed = time
     }
   }
 

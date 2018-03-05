@@ -259,7 +259,7 @@ export class BfSupportivePracticePage {
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         bfsp.timeOfBFSP = null;
     }else{
-      bfsp.timeOfBFSP = this.datePipe.transform(time,"HH:mm")
+      bfsp.timeOfBFSP = time
     }
   }
 
