@@ -70,7 +70,7 @@ export class BfPostDischargeServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then((val) => {
           let bfPdForms: IBFPD[] = [];
-          if (val != null) {
+          if (val != null && val.length > 0) {
             bfPdForms = val;
             bfPdForms = this.validateNewEntryAndUpdate(bfPdForms, bfPdForm)
             this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfPdForms)

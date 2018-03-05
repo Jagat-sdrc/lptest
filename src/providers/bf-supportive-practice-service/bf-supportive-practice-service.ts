@@ -52,7 +52,7 @@ export class BfSupportivePracticeServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfsps)
         .then((val) => {
           let bfspForms: IBFSP[] = [];
-          if (val != null) {
+          if (val != null && val.length > 0) {
             bfspForms = val;
             let index = bfspForms.findIndex(d=>d.dateOfBFSP === bfspForm.dateOfBFSP && d.timeOfBFSP === bfspForm.timeOfBFSP)
             if(index < 0) {
