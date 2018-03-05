@@ -49,7 +49,7 @@ export class AddPatientPage implements OnInit{
   outPatientAdmissionStatus: boolean = false;
   babyAdmittedToStatus: boolean = false;
   paramToExpressionPage: IParamToExpresssionPage;
-  forEdit: boolean;
+  forEdit: boolean = false;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   numberRegex: RegExp = /^[0-9]+(\.[0-9]*){0,1}$/;
   hasError: boolean = false;
@@ -363,7 +363,11 @@ export class AddPatientPage implements OnInit{
 
           this.addNewPatientService.saveNewPatient(this.patient, this.uniquePatientId.idNumber)
             .then(data=> {
-            this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
+              if(this.forEdit){
+                this.messageService.showSuccessToast(ConstantProvider.messages.updateSuccessfull);
+              }else{
+                this.messageService.showSuccessToast(ConstantProvider.messages.submitSuccessfull);
+              }
             this.navCtrl.pop();
           })
             .catch(err =>{
