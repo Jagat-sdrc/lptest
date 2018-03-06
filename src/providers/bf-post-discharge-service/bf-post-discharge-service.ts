@@ -209,4 +209,24 @@ export class BfPostDischargeServiceProvider {
     return bfpd;
   }
 
+  /** 
+   * @author - Naseem Akhtar
+   * This method will be used to sanitize data which do not have a valid
+   * baby code
+  */
+  sanitizeData(){
+    this.storage.get(ConstantProvider.dbKeyNames.bfpds)
+      .then(data=>{
+        if(data != null && data.length > 0){
+          data = (data as IBFPD[]).filter(d => d.babyCode != null)
+          this.storage.set(ConstantProvider.dbKeyNames.bfpds, data)
+          .then(()=>{})
+          .catch(err=>{})
+        }
+      })
+      .catch(err=>{
+        console.log(err.message)
+      })
+  }
+
 }

@@ -72,19 +72,31 @@ export class FeedPage {
   validateExpression(feedExpression: IFeed) {
     if(feedExpression.dateOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
-    }else if(feedExpression.timeOfFeed === null) {
+    }
+    else if(feedExpression.timeOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
-    }else if(feedExpression.ommVolume === undefined || !this.checkForOnlyNumber(feedExpression.ommVolume)) {
+    }
+    else if((feedExpression.ommVolume === undefined && feedExpression.ommVolume != null) 
+      || feedExpression.ommVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.ommVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
-    }else if(feedExpression.dhmVolume === undefined || !this.checkForOnlyNumber(feedExpression.dhmVolume)) {
+    }
+    else if((feedExpression.dhmVolume === undefined && feedExpression.dhmVolume != null) ||
+      feedExpression.dhmVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.dhmVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
-    }else if(feedExpression.formulaVolume === undefined || !this.checkForOnlyNumber(feedExpression.formulaVolume)) {
+    }
+    else if((feedExpression.formulaVolume === undefined && feedExpression.formulaVolume != null) ||
+      feedExpression.formulaVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.formulaVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
-    }else if(feedExpression.animalMilkVolume === undefined || !this.checkForOnlyNumber(feedExpression.animalMilkVolume)) {
+    }
+    else if((feedExpression.animalMilkVolume === undefined && feedExpression.animalMilkVolume != null) || 
+      feedExpression.animalMilkVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.animalMilkVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
-    }else if(feedExpression.otherVolume === undefined || !this.checkForOnlyNumber(feedExpression.otherVolume)) {
+    }
+    else if((feedExpression.otherVolume === undefined && feedExpression.otherVolume != null) || 
+      feedExpression.otherVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.otherVolume)) {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
-    }else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
+    }
+    else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
       && (feedExpression.babyWeight < 500 || feedExpression.babyWeight > 4000)){
       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
         .then((data)=>{

@@ -147,4 +147,15 @@ export class BfPostDischargePage {
     );
   }
 
+  /** 
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   * This method will delete all the bfsp records whose baby id is not present.
+   * This method is written for preventive measrues as this issue was did not happen
+   * again
+  */
+  ionViewWillLeave(){
+    this.bfPostDischargeService.sanitizeData()
+  }
+
 }

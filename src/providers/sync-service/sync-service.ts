@@ -71,7 +71,7 @@ export class SyncServiceProvider {
   fetchDataFromDbAndValidateForSync() {
     this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((users) => {
-        if (users != null) {
+        if (users != null && users.length > 0) {
           users = (users as IUser[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.users = users
         }
@@ -79,7 +79,7 @@ export class SyncServiceProvider {
       });
     this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then((patients) => {
-        if (patients != null) {
+        if (patients != null && patients.length > 0) {
           patients = (patients as IPatient[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.patients = patients
         }
@@ -87,7 +87,7 @@ export class SyncServiceProvider {
       });
     this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((bfExpressions) => {
-        if (bfExpressions != null) {
+        if (bfExpressions != null && bfExpressions.length > 0) {
           bfExpressions = (bfExpressions as IBFExpression[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.bfExpressions = bfExpressions
         }
@@ -96,7 +96,7 @@ export class SyncServiceProvider {
 
     this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((feedExpressions) => {
-        if (feedExpressions != null) {
+        if (feedExpressions != null && feedExpressions.length > 0) {
           feedExpressions = (feedExpressions as IFeed[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.feedExpressions = feedExpressions
         }
@@ -104,7 +104,7 @@ export class SyncServiceProvider {
       });
     this.storage.get(ConstantProvider.dbKeyNames.bfsps)
       .then((bfsps) => {
-        if (bfsps != null) {
+        if (bfsps != null && bfsps.length > 0) {
           bfsps = (bfsps as IBFSP[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.bfsps = bfsps
         }
@@ -112,7 +112,7 @@ export class SyncServiceProvider {
       });
     this.storage.get(ConstantProvider.dbKeyNames.bfpds)
       .then((bfpds) => {
-        if (bfpds != null) {
+        if (bfpds != null && bfpds.length > 0) {
           bfpds = (bfpds as IBFPD[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.bfpds = bfpds
         }
