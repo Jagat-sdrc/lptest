@@ -98,12 +98,15 @@ export class FeedPage {
   }
 
   saveExpression(feedExpression: IFeed){
+    let newData: boolean = feedExpression.id === null ? true : false
     this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
-        // this.toggleGroup(feedExpression);
         this.findExpressionsByBabyCodeAndDate();
-        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
+        if(newData)
+          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
+        else
+          this.messageService.showSuccessToast(ConstantProvider.messages.updateSuccessfull);
       })
       .catch(err =>{
         feedExpression.createdDate = null;
@@ -259,10 +262,14 @@ export class FeedPage {
    * @since - 0.0.1
   */
  validateTime(time: string, feedExp: IFeed){
-    if(feedExp.dateOfFeed === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
-      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+    if(feedExp.dateOfFeed === this.datePipe.transform(new Date(),'dd-MM-yyyy')
+      && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         feedExp.timeOfFeed = null;
+    }else if(feedExp.dateOfFeed === this.dataForFeedEntryPage.deliveryDate && time != null 
+      && time < this.dataForFeedEntryPage.deliveryTime){
+      this.messageService.showErrorToast(ConstantProvider.messages.pastTime)
+      feedExp.timeOfFeed = null;
     }else{
       feedExp.timeOfFeed = time
     }

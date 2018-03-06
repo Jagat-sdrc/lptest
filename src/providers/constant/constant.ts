@@ -122,7 +122,7 @@ export class ConstantProvider {
     registrationSuccessful: 'Registration successful.',
     enterTypeOfBFExpression: 'Please enter method of BF expression',
     noUserFound: 'No user found, please register.',
-    userConstruction: "Under construction.",
+    userConstruction: 'Under construction.',
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
     babyOverWeight: "The entered baby weight lies outside 500-4000 gms range. Do you want to proceed with the entry? ",
     babyGestational: "A normal gestational period ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
@@ -173,6 +173,7 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
+    pastTime: 'Time before delivery time is not allowed'
   };
 
 /**

@@ -90,6 +90,7 @@ export class ExpressionTimeFormPage {
    * @since 0.0.1
    */
   saveExpression(bfExpression: IBFExpression) {
+    let newData = bfExpression.id === null ? true : false
     //set validations for all the fields
     if(bfExpression.dateOfExpression === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfExpression);
@@ -100,9 +101,11 @@ export class ExpressionTimeFormPage {
     }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
       .then(data => {
-        // this.toggleGroup(bfExpression);
         this.findExpressionsByBabyCodeAndDate();
-        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
+        if(newData)
+          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
+        else
+          this.messageService.showSuccessToast(ConstantProvider.messages.updateSuccessfull);
       })
       .catch(err => {
         bfExpression.createdDate = null;
@@ -255,9 +258,12 @@ export class ExpressionTimeFormPage {
   */
  validateTime(time: string, bfExpForm: IBFExpression){
     if(bfExpForm.dateOfExpression === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
-      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+      && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         bfExpForm.timeOfExpression = null;
+    }else if(bfExpForm.dateOfExpression === this.dataForBFEntryPage.deliveryDate && time != null
+      && time < this.dataForBFEntryPage.deliveryTime){
+        this.messageService.showErrorToast(ConstantProvider.messages.pastTime)
     }else{
       bfExpForm.timeOfExpression = time
     }

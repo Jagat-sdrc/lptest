@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
 import { ConstantProvider } from '../../providers/constant/constant';
+import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 
 /**
  * Generated class for the BabyDashboardPage page.
@@ -25,7 +26,16 @@ export class BabyDashboardPage {
 
   paramToExpressionPage: IParamToExpresssionPage;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private messageService: MessageProvider) {    
+  private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {    
+  }
+
+  ionViewWillEnter(){
+    this.patientService.findByBabyCode(this.navParams.get("babyCode"))
+      .then(data => {
+        this.paramToExpressionPage.deliveryDate = data.deliveryDate
+        this.paramToExpressionPage.deliveryTime = data.deliveryTime
+      })
+      .catch(error => this.messageService.showErrorToast(error))
   }
 
   ngOnInit(){
@@ -38,7 +48,8 @@ export class BabyDashboardPage {
     this.paramToExpressionPage = {
       babyCode: this.navParams.get("babyCode"),
       babyCodeByHospital: this.navParams.get("babyCodeByHospital"),
-      deliveryDate: this.navParams.get('deliveryDate')
+      deliveryDate: this.navParams.get('deliveryDate'),
+      deliveryTime: null
     }
   }
 

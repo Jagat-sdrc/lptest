@@ -67,4 +67,5 @@ interface IMessage{
     deleteForm: string;
     futureTime: string;
     updateSuccessfull: string;
+    pastTime: string;
 }

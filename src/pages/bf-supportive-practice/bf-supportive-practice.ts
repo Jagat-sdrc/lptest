@@ -113,6 +113,7 @@ export class BfSupportivePracticePage {
   };
 
   save(bfsp: IBFSP, index){
+    let newData = bfsp.id === null ? true : false
     if(bfsp.dateOfBFSP === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
     }else if(bfsp.timeOfBFSP === null) {
@@ -123,8 +124,10 @@ export class BfSupportivePracticePage {
       this.bfspService.saveNewBreastFeedingSupportivePracticeForm(bfsp, this.existingDate, this.existingTime)
       .then(data => {
         this.findExpressionsByBabyCodeAndDate();
-        // this.toggleGroup(bfsp);
-        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+        if(newData)
+          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+        else
+          this.messageService.showSuccessToast(ConstantProvider.messages.updateSuccessfull);
       })
       .catch(err => {
         bfsp.createdDate = null
@@ -192,10 +195,9 @@ export class BfSupportivePracticePage {
    * @since - 0.0.1
    */
   setPersonWhoPerformed(bfsp: IBFSP){
+    bfsp.personWhoPerformedBFSP = null;
     if(bfsp.bfspPerformed === 54) {
       bfsp.personWhoPerformedBFSP = 56;
-    }else{
-      bfsp.personWhoPerformedBFSP = null;
     }
   }
 
@@ -254,9 +256,13 @@ export class BfSupportivePracticePage {
    * @since - 0.0.1
   */
   validateTime(time: string, bfsp: IBFSP){
-    if(bfsp.dateOfBFSP === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
-      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+    if(bfsp.dateOfBFSP === this.datePipe.transform(new Date(),'dd-MM-yyyy')
+      && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
+        bfsp.timeOfBFSP = null;
+    }else if (bfsp.dateOfBFSP === this.dataForBfspPage.deliveryDate && time != null && 
+      time < this.dataForBfspPage.deliveryTime){
+        this.messageService.showErrorToast(ConstantProvider.messages.pastTime)
         bfsp.timeOfBFSP = null;
     }else{
       bfsp.timeOfBFSP = time

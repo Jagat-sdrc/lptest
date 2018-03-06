@@ -81,12 +81,17 @@ export class BfPostDischargePage {
   };
 
   save() {
+    let newData: boolean = this.bfpd.id === null ? true : false
     if(this.bfpd.dateOfBreastFeeding === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.dateOfBfpd)
     }else{
       this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
       .then(data=> {
-        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+        if(newData)
+          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+        else
+          this.messageService.showSuccessToast(ConstantProvider.messages.updateSuccessfull);
+
         this.navCtrl.pop();
       })
       .catch(err =>{

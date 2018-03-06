@@ -31,7 +31,8 @@ export class FeedDateListPage {
     this.paramToExpressionPage = {
       babyCode: this.navParams.get("babyCode"),
       babyCodeByHospital: this.navParams.get("babyCodeByHospital"),
-      deliveryDate: this.navParams.get('deliveryDate')
+      deliveryDate: this.navParams.get('deliveryDate'),
+      deliveryTime: this.navParams.get('deiveryTime')
     }
 
     this.babyCode = this.paramToExpressionPage.babyCode;
@@ -58,7 +59,8 @@ export class FeedDateListPage {
       babyCode: this.babyCode,
       selectedDate: date,
       isNewExpression: false,
-      deliveryDate: this.navParams.data.deliveryDate
+      deliveryDate: this.navParams.data.deliveryDate,
+      deliveryTime: this.navParams.data.deliveryTime
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }
@@ -75,7 +77,8 @@ export class FeedDateListPage {
       babyCode: this.babyCode,
       selectedDate: null,
       isNewExpression: true,
-      deliveryDate: this.navParams.data.deliveryDate
+      deliveryDate: this.navParams.data.deliveryDate,
+      deliveryTime: this.navParams.data.deliveryTime
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }
