@@ -427,9 +427,6 @@ export class AddPatientPage implements OnInit{
             switch(type){
               case ConstantProvider.datePickerType.deliveryDate:
                 this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"));
-                if(this.patientForm.controls.discharge_date.value != ""){
-                  this.patientForm.controls.discharge_date.setValue(null);
-                }
                 if(this.patientForm.controls.delivery_time.value != ""){
                   this.patientForm.controls.delivery_time.setValue(null);
                 }
