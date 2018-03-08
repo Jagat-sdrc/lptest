@@ -56,7 +56,10 @@ export class BfPostDischargePage {
 
     this.bfPostDischargeService.findByBabyCodeAndTimeOfBreastFeedingId(this.babyCode, this.navParams.data.menuItemId)
       .then(data => {
-        this.bfpd = data          
+        if(data != null)
+          this.bfpd = data;
+        else
+          this.bfpd.babyCode = this.babyCode;
       }).catch(error => {
         this.messageService.showErrorToast(error)
       });

@@ -59,13 +59,13 @@ export class BfPostDischargeServiceProvider {
   };
 
   saveNewBfPostDischargeForm(bfPdForm: IBFPD): Promise <any> {
-    
     let promise = new Promise((resolve, reject) => {     
       bfPdForm.id = bfPdForm.id === null ? this.getNewBfPdId(bfPdForm.babyCode) : bfPdForm.id;
       bfPdForm.isSynced = false;
       bfPdForm.createdDate = bfPdForm.createdDate === null ? 
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfPdForm.createdDate;
       bfPdForm.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+      bfPdForm.userId = this.userService.getUser().email;
       
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then((val) => {
@@ -107,10 +107,10 @@ export class BfPostDischargeServiceProvider {
             if(data.length === 1) {
               resolve(data[0]);
             }else {
-              resolve(this.getBfPd(babyCode, timeOfBf));
+              resolve();
             }
           } else {
-            resolve(this.getBfPd(babyCode, timeOfBf));
+            resolve();
           }
         })
         .catch(err => {

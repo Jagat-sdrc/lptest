@@ -5,12 +5,13 @@
 
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{dataForBfspPage.selectedDate}}</ion-title>
+    <ion-title>Log breastfeeding supportive practice</ion-title>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
+  <h3 class="form-page-header">{{dataForBfspPage.selectedDate}}</h3>
   <ion-list>
       <ion-item class="item-stable timeList" *ngFor="let bfsp of bfspList | orderByTimeBfsp; let i=index" text-wrap>
         <div>

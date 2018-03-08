@@ -365,22 +365,24 @@ export class SyncServiceProvider {
     if (this.syncObject.bfpds.length > 0) {
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then(bfpds => {
-          this.syncResult.failureBFPDs.forEach(failureBFPD => {
-            this.syncReport.bfpdSyncFailed++;
-            //setting the failure message
-            (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === failureBFPD.id)].syncFailureMessage = failureBFPD.reasonOfFailure;
-            //removing from IBFPD which we had sent to sync
-            this.syncObject.bfpds.splice(this.syncObject.bfpds.findIndex(d => d.id === failureBFPD.id), 1)
-          })
-          this.syncObject.bfpds.forEach(bfpd => {
-            this.syncReport.bfpdSyncSuccess++;
-            // making the sync true
-            (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === bfpd.id)].isSynced = true;
-          })
-          //Again keeping the updated patients in db
-          this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfpds).then(() => {
-            this.showSyncReport()
-          })
+          // this.syncResult.failureBFPDs.forEach(failureBFPD => {
+          //   this.syncReport.bfpdSyncFailed++;
+          //   //setting the failure message
+          //   (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === failureBFPD.id)].syncFailureMessage = failureBFPD.reasonOfFailure;
+          //   //removing from IBFPD which we had sent to sync
+          //   this.syncObject.bfpds.splice(this.syncObject.bfpds.findIndex(d => d.id === failureBFPD.id), 1)
+          // })
+          // if(bfpds != null && bfpds.length > 0){
+            this.syncObject.bfpds.forEach(bfpd => {
+              this.syncReport.bfpdSyncSuccess++;
+              // making the sync true
+              (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === bfpd.id)].isSynced = true;
+            })
+            //Again keeping the updated patients in db
+            this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfpds).then(() => {
+              this.showSyncReport()
+            })
+          // }
         })
     } else {
       this.showSyncReport()

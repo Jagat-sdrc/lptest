@@ -52,6 +52,7 @@ export class RegisteredPatientServiceProvider {
           .then(data=>{
             if(data != null && data.length > 0){
               data = (data as IFeed[]).filter(d=> d.babyCode != babyCode);
+              this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, data)
             }
           })
         })
@@ -60,7 +61,7 @@ export class RegisteredPatientServiceProvider {
           this.storage.get(ConstantProvider.dbKeyNames.bfpds)
           .then(data=>{
             if(data != null && data.length > 0){
-              data = (data as IBFPD[]).findIndex(d=> d.babyCode != babyCode);
+              data = (data as IBFPD[]).filter(d=> d.babyCode != babyCode);
               this.storage.set(ConstantProvider.dbKeyNames.bfpds, data)
               // if(index >= 0){
               //   (data as IBFPD[]).splice(index, 1)

@@ -70,30 +70,31 @@ export class FeedPage {
  * @since 0.0.1
  */
   validateExpression(feedExpression: IFeed) {
+    debugger
     if(feedExpression.dateOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
     }
     else if(feedExpression.timeOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
     }
-    else if((feedExpression.ommVolume === undefined && feedExpression.ommVolume != null) 
-      || feedExpression.ommVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.ommVolume)) {
+    else if(feedExpression.ommVolume != null
+      && (feedExpression.ommVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.ommVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
     }
-    else if((feedExpression.dhmVolume === undefined && feedExpression.dhmVolume != null) ||
-      feedExpression.dhmVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.dhmVolume)) {
+    else if(feedExpression.dhmVolume != null &&
+      (feedExpression.dhmVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.dhmVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
     }
-    else if((feedExpression.formulaVolume === undefined && feedExpression.formulaVolume != null) ||
-      feedExpression.formulaVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.formulaVolume)) {
+    else if(feedExpression.formulaVolume != null &&
+      (feedExpression.formulaVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.formulaVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
     }
-    else if((feedExpression.animalMilkVolume === undefined && feedExpression.animalMilkVolume != null) || 
-      feedExpression.animalMilkVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.animalMilkVolume)) {
+    else if(feedExpression.animalMilkVolume != null &&
+      (feedExpression.animalMilkVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.animalMilkVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
     }
-    else if((feedExpression.otherVolume === undefined && feedExpression.otherVolume != null) || 
-      feedExpression.otherVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.otherVolume)) {
+    else if(feedExpression.otherVolume != null && 
+      (feedExpression.otherVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.otherVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
     }
     else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
