@@ -67,4 +67,6 @@ interface IMessage{
     deleteForm: string;
     futureTime: string;
     updateSuccessfull: string;
+    registeredPage: string;
+    singlePatientSummary: string;
 }

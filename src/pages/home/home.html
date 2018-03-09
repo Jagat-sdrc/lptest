@@ -13,14 +13,13 @@
     <ion-col (click)="goToAddNewPatient()" class="gap">
       <div class="bg-grey">Add Patient</div>
     </ion-col>
-    <ion-col [navPush]="registeredPatientPage" class="gap">
+    <ion-col (click)="registeredPatientPage()" class="gap">
       <div class="bg-grey">Registered Patient</div>
     </ion-col>
   </ion-row>
 
   <ion-row>
-    <!-- <ion-col [navPush]="singlePatientSummary" class="gap"> -->
-    <ion-col (click)="underConstruction()" class="gap">
+    <ion-col (click)="singlePatientSummaryPage()" class="gap">
       <div class="bg-grey">Single Patient Summary</div>
     </ion-col>
     <!-- <ion-col [navPush]="vurnerableBabies" class="gap"> -->

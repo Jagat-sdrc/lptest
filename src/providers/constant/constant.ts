@@ -173,6 +173,8 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
+    registeredPage: "registeredPage",
+    singlePatientSummary: "singlePageSummarty"
   };
 
 /**
