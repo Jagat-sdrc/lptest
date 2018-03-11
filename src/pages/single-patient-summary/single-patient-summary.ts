@@ -60,7 +60,7 @@ export class SinglePatientSummaryPage {
       this.messageService.showErrorToast(err)
     });
 
-    this.singlePatientSummaryServiceProvider.getAllDatesTillDate(this.babyAllDetails.deliveryDate);
+    this.singlePatientSummaryServiceProvider.getAllDatesTillDate(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate);
   }
 
 }
