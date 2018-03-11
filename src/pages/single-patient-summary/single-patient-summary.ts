@@ -44,18 +44,20 @@ export class SinglePatientSummaryPage {
       console.log(this.typeDetails);
       this.babyId = this.babyAllDetails.babyCode;
       this.gestationalAge = this.babyAllDetails.gestationalAgeInWeek;
-      this.deliveryMethod = this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.deliveryMethod)].name
-      this.inputOutputPatient = this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.inpatientOrOutPatient)].name;
-      this.parentsKnowledgeOnHmAndLactation  = this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.parentsKnowledgeOnHmAndLactation)].name;
+      this.deliveryMethod = (this.babyAllDetails.deliveryMethod.toString.length > 0)?this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.deliveryMethod)].name:"";
+      this.inputOutputPatient = (this.babyAllDetails.inpatientOrOutPatient.toString.length > 0)?this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.inpatientOrOutPatient)].name:"";
+      this.parentsKnowledgeOnHmAndLactation  = (this.babyAllDetails.parentsKnowledgeOnHmAndLactation.toString.length > 0)?this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.parentsKnowledgeOnHmAndLactation)].name:"";
       this.admissionDate = this.babyAllDetails.admissionDateForOutdoorPatients;
-      this.mothersPrenatalIntent  = this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.mothersPrenatalIntent)].name;
+      this.mothersPrenatalIntent  = (this.babyAllDetails.mothersPrenatalIntent.toString.length > 0)?this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.mothersPrenatalIntent)].name:"";
       this.tillTillFirstExpression = this.babyAllDetails.timeTillFirstExpressionInHour+":"+this.babyAllDetails.timeTillFirstExpressionInMinute;
-      this.babyAdmittedTo = this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.babyAdmittedTo)].name;
-      let x = this.babyAllDetails.nicuAdmissionReason.toString().split(',');
-      for (let index = 0; index < x.length; index++) {
-        this.nicuAdmissionReason += this.typeDetails[this.typeDetails.findIndex(d => d.id === +x[index])].name + ",";
+      this.babyAdmittedTo = (this.babyAllDetails.babyAdmittedTo.toString.length > 0)?this.typeDetails[this.typeDetails.findIndex(d => d.id === this.babyAllDetails.babyAdmittedTo)].name:"";
+      let x = (this.babyAllDetails.nicuAdmissionReason != null)?this.babyAllDetails.nicuAdmissionReason.toString().split(','):"";
+      if(this.babyAllDetails.nicuAdmissionReason != null){
+        for (let index = 0; index < x.length; index++) {
+          this.nicuAdmissionReason += this.typeDetails[this.typeDetails.findIndex(d => d.id === +x[index])].name + ",";
+        }
+        this.nicuAdmissionReason = this.nicuAdmissionReason.slice(0,this.nicuAdmissionReason.length - 1);
       }
-      this.nicuAdmissionReason = this.nicuAdmissionReason.slice(0,this.nicuAdmissionReason.length - 1);
     }, err => {
       this.messageService.showErrorToast(err)
     });

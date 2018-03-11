@@ -77,7 +77,7 @@ export class SinglePatientSummaryServiceProvider {
       noOfDay = dateOfB.getTime() - dateOfA.getTime()
     }
 
-      let noOfDays = ((noOfDay / (1000*60*60*24)) % 7)
+      let noOfDays = (noOfDay / (1000*60*60*24))
       noOfDays++;
       console.log(noOfDays)
       
