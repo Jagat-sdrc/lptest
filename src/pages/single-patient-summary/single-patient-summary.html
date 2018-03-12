@@ -29,6 +29,9 @@
 
       <p>Patient first admitted to : {{babyAdmittedTo}}</p>
       <p>Reason for admission : {{nicuAdmissionReason}}</p>
+      <ion-list>
+        <ion-item *ngFor="let items of dates">{{items}}</ion-item>
+      </ion-list>
 
 
   </div>

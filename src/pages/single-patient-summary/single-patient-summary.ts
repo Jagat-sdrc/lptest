@@ -29,6 +29,7 @@ export class SinglePatientSummaryPage {
   babyAdmittedTo: any;
   nicuAdmissionReason = '';
   typeDetails: ITypeDetails[];
+  dates : Date[] = [];
   constructor(public navCtrl: NavController, public navParams: NavParams,public messageService: MessageProvider,
     public singlePatientSummaryServiceProvider: SinglePatientSummaryServiceProvider) {
   }
@@ -62,7 +63,12 @@ export class SinglePatientSummaryPage {
       this.messageService.showErrorToast(err)
     });
 
-    this.singlePatientSummaryServiceProvider.getAllDatesTillDate(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate);
+    this.singlePatientSummaryServiceProvider.getAllDatesTillDate(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate)
+    .then(data =>{
+      if(data.length > 0){
+        this.dates = data;
+      }
+    })
   }
 
 }

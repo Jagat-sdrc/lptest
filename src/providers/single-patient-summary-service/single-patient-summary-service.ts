@@ -44,7 +44,16 @@ export class SinglePatientSummaryServiceProvider {
     return new ErrorObservable (messageToUser);
   };
 
-  getAllDatesTillDate(deliveryDate: any,dischargeDate: any){
+  /**
+   * This method is will return the list of dates calculated from the given parameters.
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param deliveryDate
+   * @param dischargeDate
+   */
+  getAllDatesTillDate(deliveryDate: any,dischargeDate: any): Promise<any>{
+    let promise: Promise<any> = new Promise((resolve, reject)=>{
     let dates = [];
     let noOfDay;
     let currentDate = this.datePipe.transform(new Date(),"dd-MM-yyyy");
@@ -53,34 +62,33 @@ export class SinglePatientSummaryServiceProvider {
     let monthOfA = parseInt(deliveryDate.split('-')[1])
     let yearOfA = parseInt(deliveryDate.split('-')[2])
 
-    if(dischargeDate != "" && dischargeDate != null){
+      if(dischargeDate != "" && dischargeDate != null){
 
-      let dayOfB = parseInt(dischargeDate.split('-')[0])
-      let monthOfB = parseInt(dischargeDate.split('-')[1])
-      let yearOfB = parseInt(dischargeDate.split('-')[2])
-  
-      let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA)
-      let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB)
-  
-      noOfDay = dateOfB.getTime() - dateOfA.getTime()
-      
+        let dayOfB = parseInt(dischargeDate.split('-')[0])
+        let monthOfB = parseInt(dischargeDate.split('-')[1])
+        let yearOfB = parseInt(dischargeDate.split('-')[2])
 
-    }else{
+        let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA)
+        let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB)
 
-      let dayOfB = parseInt(currentDate.split('-')[0])
-      let monthOfB = parseInt(currentDate.split('-')[1])
-      let yearOfB = parseInt(currentDate.split('-')[2])
-  
-      let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA)
-      let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB)
-  
-      noOfDay = dateOfB.getTime() - dateOfA.getTime()
-    }
+        noOfDay = dateOfB.getTime() - dateOfA.getTime()
+
+      }else{
+
+        let dayOfB = parseInt(currentDate.split('-')[0])
+        let monthOfB = parseInt(currentDate.split('-')[1])
+        let yearOfB = parseInt(currentDate.split('-')[2])
+
+        let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA)
+        let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB)
+
+        noOfDay = dateOfB.getTime() - dateOfA.getTime()
+      }
 
       let noOfDays = (noOfDay / (1000*60*60*24))
       noOfDays++;
       console.log(noOfDays)
-      
+
       for (let index = 0; index < noOfDays; index++) {
         dates.push(deliveryDate)
         deliveryDate = this.datePipe.transform(deliveryDate,"dd-MM-yyyy")
@@ -89,7 +97,9 @@ export class SinglePatientSummaryServiceProvider {
         deliveryDate = this.datePipe.transform(nextDay.setDate(myDates.getDate()+1),"dd-MM-yyyy")
       }
       console.log("dates: "+dates);
-      
+      resolve(dates)
+    })
+    return promise;
   }
 
 
