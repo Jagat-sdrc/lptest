@@ -22,7 +22,7 @@
 
       <p>Parent informed decision : {{parentsKnowledgeOnHmAndLactation}}</p>
       <p>Time till first expression : {{tillTillFirstExpression}}</p>
-
+      <p>Time till first enteral feed : {{tillTillFirstEnteralFeed}}</p>
       <p>Admission Date : {{admissionDate}}</p>
 
       <p>Prenatal intent to privide milk : {{mothersPrenatalIntent}}</p>
@@ -30,7 +30,9 @@
       <p>Patient first admitted to : {{babyAdmittedTo}}</p>
       <p>Reason for admission : {{nicuAdmissionReason}}</p>
       <ion-list>
-        <ion-item *ngFor="let items of dates">{{items}}</ion-item>
+        <ion-item *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">{{i+1}} , {{motherRelatedItem.date}},{{motherRelatedItem.expAndBfEpisodPerday}} ,
+          {{motherRelatedItem.ofWhichBf}} , {{motherRelatedItem.totalDailyVolumn}} , {{motherRelatedItem.nightExp}}
+        </ion-item>
       </ion-list>
 
 

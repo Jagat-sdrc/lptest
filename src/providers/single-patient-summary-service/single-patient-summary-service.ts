@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { DatePipe } from '@angular/common';
+import { Storage } from '@ionic/storage';
+import { ConstantProvider } from '../constant/constant';
 
 /*
   Generated class for the SinglePatientSummaryServiceProvider provider.
@@ -14,8 +16,7 @@ import { DatePipe } from '@angular/common';
 @Injectable()
 export class SinglePatientSummaryServiceProvider {
 
-  constructor(public http: HttpClient, private datePipe: DatePipe) {
-    console.log('Hello SinglePatientSummaryServiceProvider Provider');
+  constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage) {
   }
 
   /**
@@ -52,9 +53,8 @@ export class SinglePatientSummaryServiceProvider {
    * @param deliveryDate
    * @param dischargeDate
    */
-  getAllDatesTillDate(deliveryDate: any,dischargeDate: any): Promise<any>{
-    let promise: Promise<any> = new Promise((resolve, reject)=>{
-    let dates = [];
+  async getAllDatesTillDate(deliveryDate: any,dischargeDate: any){
+    let dates: string[] = [];
     let noOfDay;
     let currentDate = this.datePipe.transform(new Date(),"dd-MM-yyyy");
 
@@ -87,7 +87,6 @@ export class SinglePatientSummaryServiceProvider {
 
       let noOfDays = (noOfDay / (1000*60*60*24))
       noOfDays++;
-      console.log(noOfDays)
 
       for (let index = 0; index < noOfDays; index++) {
         dates.push(deliveryDate)
@@ -100,10 +99,59 @@ export class SinglePatientSummaryServiceProvider {
         var nextDay = new Date(myDates);
         deliveryDate = this.datePipe.transform(nextDay.setDate(myDates.getDate()+1),"dd-MM-yyyy")
       }
-      console.log("dates: "+dates);
-      resolve(dates)
-    })
-    return promise;
+      console.log(dates);
+     return dates;
+  }
+
+  /**
+   * This method will return all mother related data in promise
+   *
+   * @author Jagat Bandhu Sahoo
+   * @since 1.1.0
+   * @param deliveryDate
+   * @param dischargeDate
+   */
+  async getMotherRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
+      let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
+      let expressions = await this.storage.get(ConstantProvider.dbKeyNames.bfExpressions);
+      let motherRelatedDataList : IMotherRelatedData[] = [];
+
+      for (let index = 0; index < dates.length; index++) {
+        let motherRelatedData: IMotherRelatedData = {
+          date: "",
+          expAndBfEpisodPerday: 0,
+          ofWhichBf: 0,
+          totalDailyVolumn: 0,
+          nightExp: 0
+        }
+        motherRelatedData.date = dates[index];
+        motherRelatedData.expAndBfEpisodPerday = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index]).length
+        motherRelatedData.ofWhichBf = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index] &&
+        d.methodOfExpression == ConstantProvider.typeDetailsIds.breastfeed).length
+        let totalExpression = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index])
+        let totalVolumeMilk = 0;
+        let count = 0;
+        for (let index = 0; index < totalExpression.length; index++) {
+          if(totalExpression[index].volOfMilkExpressedFromLR != null){
+            totalVolumeMilk = parseInt(totalExpression[index].volOfMilkExpressedFromLR) + totalVolumeMilk;
+          }
+          console.log(totalExpression[index].timeOfExpression)
+          let startTime = '22:00';
+          let  endTime = '04:00';
+
+          let currentTime = totalExpression[index].timeOfExpression;
+
+          let hourCurrent = parseInt(currentTime.split(':')[0])
+          if(hourCurrent > 21 || hourCurrent < 5){
+            count++
+          }
+        }
+        motherRelatedData.totalDailyVolumn = totalVolumeMilk;
+        motherRelatedData.nightExp = count;
+        motherRelatedDataList.push(motherRelatedData)
+      }
+
+      return motherRelatedDataList;
   }
 
 

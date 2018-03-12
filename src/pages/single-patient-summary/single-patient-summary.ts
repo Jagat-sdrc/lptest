@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
 import { MessageProvider } from '../../providers/message/message';
+import { FeedExpressionServiceProvider } from '../../providers/feed-expression-service/feed-expression-service';
 
 /**
  * Generated class for the SinglePatientSummaryPage page.
@@ -24,14 +25,16 @@ export class SinglePatientSummaryPage {
   inputOutputPatient: any;
   parentsKnowledgeOnHmAndLactation: any;
   tillTillFirstExpression: any;
+  tillTillFirstEnteralFeed: any;
   admissionDate: any;
   mothersPrenatalIntent: any;
   babyAdmittedTo: any;
   nicuAdmissionReason = '';
   typeDetails: ITypeDetails[];
-  dates : Date[] = [];
+  motherRelatedDataList: IMotherRelatedData[];
   constructor(public navCtrl: NavController, public navParams: NavParams,public messageService: MessageProvider,
-    public singlePatientSummaryServiceProvider: SinglePatientSummaryServiceProvider) {
+    public spsService: SinglePatientSummaryServiceProvider,
+    private feedExpressionServiceProvider: FeedExpressionServiceProvider) {
   }
 
   ngOnInit(){
@@ -39,7 +42,7 @@ export class SinglePatientSummaryPage {
     this.babyAllDetails = (this.navParams.get('babyAllDetails'))
     console.log(this.babyAllDetails)
 
-    this.singlePatientSummaryServiceProvider.getTypeDetails()
+    this.spsService.getTypeDetails()
     .subscribe(data => {
       this.typeDetails = data
       console.log(this.typeDetails);
@@ -59,16 +62,23 @@ export class SinglePatientSummaryPage {
         }
         this.nicuAdmissionReason = this.nicuAdmissionReason.slice(0,this.nicuAdmissionReason.length - 1);
       }
+      this.feedExpressionServiceProvider.getTimeTillFirstEnteralFeed(this.babyAllDetails.babyCode,this.babyAllDetails.deliveryDate,
+      this.babyAllDetails.deliveryTime)
+      .then(data=>{
+        if(data != ""){
+          this.tillTillFirstEnteralFeed = data
+        }
+      })
     }, err => {
       this.messageService.showErrorToast(err)
     });
 
-    this.singlePatientSummaryServiceProvider.getAllDatesTillDate(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate)
-    .then(data =>{
-      if(data.length > 0){
-        this.dates = data;
-      }
-    })
+    this.getMotherRelatedDatalist();
+  }
+
+  async getMotherRelatedDatalist(){
+    this.motherRelatedDataList = await this.spsService.getMotherRelatedData(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate,this.babyAllDetails.babyCode);
+
   }
 
 }

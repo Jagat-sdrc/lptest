@@ -19,16 +19,16 @@ export class FeedExpressionServiceProvider {
 
   constructor(public http: HttpClient,
     private storage: Storage, private datePipe: DatePipe,
-  private userService: UserServiceProvider) {   
+  private userService: UserServiceProvider) {
   }
 
-  
+
 
   /**
    * This method should return feeding method lists
-   * 
+   *
    * @author Ratikanta
-   * @returns {Observable<ITypeDetails[]>} 
+   * @returns {Observable<ITypeDetails[]>}
    * @memberof FeedExpressionServiceProvider
    */
   getFeedingMethods(): Observable<ITypeDetails[]> {
@@ -41,9 +41,9 @@ export class FeedExpressionServiceProvider {
 
   /**
    * This method should return location of feeding lists
-   * 
+   *
    * @author Ratikanta
-   * @returns {Observable<ITypeDetails[]>} 
+   * @returns {Observable<ITypeDetails[]>}
    * @memberof FeedExpressionServiceProvider
    */
   getLocationOfFeedings(): Observable<ITypeDetails[]> {
@@ -73,14 +73,14 @@ export class FeedExpressionServiceProvider {
    * @since 0.0.1
    * @returns Promise<IDBOperationStatus>
    * @param feedExpression one feed expression entry
-   * 
+   *
    */
 
   saveFeedExpression(feedExpression: IFeed, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
       feedExpression.isSynced = false;
-      feedExpression.createdDate = feedExpression.createdDate === null ? 
+      feedExpression.createdDate = feedExpression.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : feedExpression.createdDate;
       feedExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
@@ -91,7 +91,7 @@ export class FeedExpressionServiceProvider {
           let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
           if(index < 0) {
             index = feedExpressions.findIndex(d=>d.dateOfFeed === existingDate && d.timeOfFeed === existingTime)
-            feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)          
+            feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)
             this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
               .then(data=>{
                 resolve()
@@ -120,26 +120,26 @@ export class FeedExpressionServiceProvider {
             resolve()
           })
           .catch(err=>{
-            reject(err.message);    
+            reject(err.message);
           })
-        }                
+        }
       }).catch(err=>{
         reject(err.message);
       })
-    
-      
+
+
     });
     return promise;
-    
+
   }
 
   /**
    * This method will check whether we have the record with given baby id, date and time.
    * If all the attribute value will match, this will splice that record and append incoming record.
    * Because it has come for an update.
-   * 
+   *
    * If record does not match, this will just push the input record with existing once
-   * 
+   *
    * @author Ratikanta
    * @since 0.0.1
    * @param feedExpressions All the existing feed expressions
@@ -155,7 +155,7 @@ export class FeedExpressionServiceProvider {
       feedExpressions.splice(index, 1);
     }
 
-    feedExpressions.push(feedExpression)    
+    feedExpressions.push(feedExpression)
     return feedExpressions;
 
   }
@@ -198,7 +198,7 @@ export class FeedExpressionServiceProvider {
 
   /**
    * This method is going to give us a new feed expression id
-   * 
+   *
    * @param {string} babyCode This is the baby code for which we are creating the feed expression id
    * @returns {string} The new feed expression id
    * @memberof FeedExpressionServiceProvider
@@ -211,7 +211,7 @@ export class FeedExpressionServiceProvider {
 
 /**
  * This method is going to append a new feed object to axisting list
- * 
+ *
  * @param {IFeed[]} data The existing list
  * @param {string} babyCode The unique baby code
  * @param {date} The date of feeding
@@ -254,8 +254,8 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
    * This method will delete a expression
    * @author Ratikanta
    * @since 0.0.1
-   * @param {string} id 
-   * @returns {Promise<any>} 
+   * @param {string} id
+   * @returns {Promise<any>}
    * @memberof SaveExpressionBfProvider
    */
   delete(id: string): Promise<any>{
@@ -285,5 +285,55 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
       }
     });
     return promise;
+  }
+
+  getTimeTillFirstEnteralFeed(babyCode: string,deliveryDate: string,deliveryTime: string): Promise<any>{
+    let promise = new Promise<any>((resolve,reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+      .then(data=>{
+        let feedData = (data as IFeed[]).filter(d=>d.babyCode === babyCode);
+        if(feedData.length > 0){
+          let dateOfFeed;
+          let timeOfFeed;
+            for (let index = 0; index < feedData.length; index++) {
+              if(feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.parenteralEnteral ||
+                feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOnly ||
+                feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOral){
+                dateOfFeed = feedData[index].dateOfFeed;
+                timeOfFeed = feedData[index].timeOfFeed;
+
+                let dayOfA = parseInt(deliveryDate.split('-')[0])
+                let monthOfA = parseInt(deliveryDate.split('-')[1])
+                let yearOfA = parseInt(deliveryDate.split('-')[2])
+
+                let dayOfB = parseInt(dateOfFeed.split('-')[0])
+                let monthOfB = parseInt(dateOfFeed.split('-')[1])
+                let yearOfB = parseInt(dateOfFeed.split('-')[2])
+
+                let hourOfA = parseInt(deliveryTime.split(':')[0])
+                let minuteOfA = parseInt(deliveryTime.split(':')[1])
+
+                let hourOfB = parseInt(timeOfFeed.split(':')[0])
+                let minuteOfB = parseInt(timeOfFeed.split(':')[1])
+
+                let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA, hourOfA, minuteOfA)
+                let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB, hourOfB, minuteOfB)
+
+                let noOfDay = dateOfB.getTime() - dateOfA.getTime()
+                let minutes = ((noOfDay / (1000*60)) % 60);
+                let hours   = parseInt((noOfDay / (1000*60*60)).toString());
+                console.log("feed Time difference : "+hours+":"+minutes);
+                resolve(hours+":"+minutes)
+                break;
+              }else{
+                resolve("")
+              }
+            }
+          }else{
+            resolve("")
+          }
+      })
+    })
+    return promise
   }
 }

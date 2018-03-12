@@ -93,7 +93,11 @@ export class ConstantProvider {
     unknown: 4,
     level3NICU: 14,
     level2SNCU: 15,
-    level1NICU: 16
+    level1NICU: 16,
+    parenteralEnteral: 62,
+    enteralOnly: 63,
+    enteralOral: 64,
+    breastfeed: 43
   }
 
   /**
