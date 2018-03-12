@@ -32,6 +32,8 @@ export class SinglePatientSummaryPage {
   nicuAdmissionReason = '';
   typeDetails: ITypeDetails[];
   motherRelatedDataList: IMotherRelatedData[];
+  togetherDataList: ITogetherData[];
+  infantRelatedDataList: IInfantRelated[];
   constructor(public navCtrl: NavController, public navParams: NavParams,public messageService: MessageProvider,
     public spsService: SinglePatientSummaryServiceProvider,
     private feedExpressionServiceProvider: FeedExpressionServiceProvider) {
@@ -73,12 +75,23 @@ export class SinglePatientSummaryPage {
       this.messageService.showErrorToast(err)
     });
 
-    this.getMotherRelatedDatalist();
+    this.getMotherRelatedDataList();
+    this.getTogetherDataList();
+    this.getInfantRelated();
   }
 
-  async getMotherRelatedDatalist(){
+  async getMotherRelatedDataList(){
     this.motherRelatedDataList = await this.spsService.getMotherRelatedData(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate,this.babyAllDetails.babyCode);
-
   }
+
+  async getTogetherDataList(){
+    this.togetherDataList = await this.spsService.getTogetherData(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate,this.babyAllDetails.babyCode);
+  }
+
+  async getInfantRelated(){
+    this.infantRelatedDataList = await this.spsService.getInfantRelatedData(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate,this.babyAllDetails.babyCode);
+  }
+
+
 
 }

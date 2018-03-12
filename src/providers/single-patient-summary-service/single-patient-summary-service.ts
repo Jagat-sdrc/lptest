@@ -104,7 +104,7 @@ export class SinglePatientSummaryServiceProvider {
   }
 
   /**
-   * This method will return all mother related data in promise
+   * This method will return all mother related data of sps
    *
    * @author Jagat Bandhu Sahoo
    * @since 1.1.0
@@ -133,9 +133,8 @@ export class SinglePatientSummaryServiceProvider {
         let count = 0;
         for (let index = 0; index < totalExpression.length; index++) {
           if(totalExpression[index].volOfMilkExpressedFromLR != null){
-            totalVolumeMilk = parseInt(totalExpression[index].volOfMilkExpressedFromLR) + totalVolumeMilk;
+            totalVolumeMilk = Number(totalExpression[index].volOfMilkExpressedFromLR) + totalVolumeMilk;
           }
-          console.log(totalExpression[index].timeOfExpression)
           let startTime = '22:00';
           let  endTime = '04:00';
 
@@ -154,5 +153,81 @@ export class SinglePatientSummaryServiceProvider {
       return motherRelatedDataList;
   }
 
+  /**
+   * This method will return all together data of sps
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param deliveryDate
+   * @param dischargeDate
+   * @param babyCode
+   */
+  async getTogetherData(deliveryDate: any,dischargeDate: any,babyCode: string){
+      let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
+      let bsfp = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
+      let togetherDataList : ITogetherData[] = [];
+
+      for (let index = 0; index < dates.length; index++) {
+        let togetherData: ITogetherData = {
+          date: "string",
+          dailyTotalTimeInKMC: 0,
+          dailyTotalQuantityInKMC: 0,
+          noOfOralCare: 0,
+          noOfNNS: 0
+        }
+        let countDailyTotalQuantityInKMC = 0;
+        togetherData.date = dates[index];
+        togetherData.dailyTotalTimeInKMC = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
+        && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc).length;
+
+        let dailyTotalTimeInKMC = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
+          && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc);
+        for (let index = 0; index < dailyTotalTimeInKMC.length; index++) {
+          if(dailyTotalTimeInKMC[index].bfspDuration != null){
+            countDailyTotalQuantityInKMC = Number(dailyTotalTimeInKMC[index].bfspDuration) + countDailyTotalQuantityInKMC;
+          }
+        }
+        togetherData.dailyTotalQuantityInKMC = countDailyTotalQuantityInKMC;
+
+        togetherData.noOfOralCare = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
+        && d.bfspPerformed == ConstantProvider.typeDetailsIds.oral).length;
+
+        togetherData.noOfNNS = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
+        && d.bfspPerformed == ConstantProvider.typeDetailsIds.nns).length;
+        togetherDataList.push(togetherData);
+      }
+
+      return togetherDataList;
+  }
+
+  /**
+   * This method will return all infant related data of sps
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param deliveryDate
+   * @param dischargeDate
+   * @param babyCode
+   */
+  async getInfantRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
+    let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
+    let bsfp = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
+    let infantRelatedDataList : IInfantRelated[] = [];
+
+    for (let index = 0; index < dates.length; index++) {
+      let infantRelatedData: IInfantRelated = {
+        date: "string",
+        dailyDoseOMM: 0,
+        percentageOMM: 0,
+        percentageDHM: 0,
+        percentageFormula: 0,
+        percentageAnimalMilk: 0,
+        percentageOther: 0,
+        percentageWeght: 0
+      }
+      infantRelatedDataList.push(infantRelatedData)
+    }
+    return infantRelatedDataList;
+  }
 
 }
