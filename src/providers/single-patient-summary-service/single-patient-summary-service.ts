@@ -59,13 +59,13 @@ export class SinglePatientSummaryServiceProvider {
     let currentDate = this.datePipe.transform(new Date(),"dd-MM-yyyy");
 
     let dayOfA = parseInt(deliveryDate.split('-')[0])
-    let monthOfA = parseInt(deliveryDate.split('-')[1])
+    let monthOfA = parseInt(deliveryDate.split('-')[1])-1
     let yearOfA = parseInt(deliveryDate.split('-')[2])
 
       if(dischargeDate != "" && dischargeDate != null){
 
         let dayOfB = parseInt(dischargeDate.split('-')[0])
-        let monthOfB = parseInt(dischargeDate.split('-')[1])
+        let monthOfB = parseInt(dischargeDate.split('-')[1])-1
         let yearOfB = parseInt(dischargeDate.split('-')[2])
 
         let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA)
@@ -76,7 +76,7 @@ export class SinglePatientSummaryServiceProvider {
       }else{
 
         let dayOfB = parseInt(currentDate.split('-')[0])
-        let monthOfB = parseInt(currentDate.split('-')[1])
+        let monthOfB = parseInt(currentDate.split('-')[1])-1
         let yearOfB = parseInt(currentDate.split('-')[2])
 
         let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA)
@@ -91,8 +91,12 @@ export class SinglePatientSummaryServiceProvider {
 
       for (let index = 0; index < noOfDays; index++) {
         dates.push(deliveryDate)
-        deliveryDate = this.datePipe.transform(deliveryDate,"dd-MM-yyyy")
-        var myDates = new Date(deliveryDate);
+
+        let dayOf = parseInt(deliveryDate.split('-')[0])
+        let monthOf = parseInt(deliveryDate.split('-')[1])-1
+        let yearOf= parseInt(deliveryDate.split('-')[2])
+
+        var myDates = new Date(yearOf,monthOf,dayOf);
         var nextDay = new Date(myDates);
         deliveryDate = this.datePipe.transform(nextDay.setDate(myDates.getDate()+1),"dd-MM-yyyy")
       }
