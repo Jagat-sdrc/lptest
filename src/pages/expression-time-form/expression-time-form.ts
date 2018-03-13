@@ -133,6 +133,8 @@ export class ExpressionTimeFormPage {
   validateDurationOfExpression(bfExpression: IBFExpression) {
     if(bfExpression.volOfMilkExpressedFromLR == null) {
       return true;
+    }else if(bfExpression.volOfMilkExpressedFromLR.toString() === ''){
+      return true;
     }else {
       let value = bfExpression.volOfMilkExpressedFromLR.toString()
       let rx = /^\d+(?:\.\d{0,2})?$/
