@@ -291,48 +291,51 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
     let promise = new Promise<any>((resolve,reject)=>{
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
-        let feedData = (data as IFeed[]).filter(d=>d.babyCode === babyCode);
-        if(feedData.length > 0){
-          let dateOfFeed;
-          let timeOfFeed;
-            for (let index = 0; index < feedData.length; index++) {
-              if(feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.parenteralEnteral ||
-                feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOnly ||
-                feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOral){
-                dateOfFeed = feedData[index].dateOfFeed;
-                timeOfFeed = feedData[index].timeOfFeed;
+        if(data !=null){
+          let feedData = (data as IFeed[]).filter(d=>(d.babyCode === babyCode));
+          if(feedData.length > 0){
+            let dateOfFeed;
+            let timeOfFeed;
+              for (let index = 0; index < feedData.length; index++) {
+                if(feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.parenteralEnteral ||
+                  feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOnly ||
+                  feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOral){
+                  dateOfFeed = feedData[index].dateOfFeed;
+                  timeOfFeed = feedData[index].timeOfFeed;
 
-                let dayOfA = parseInt(deliveryDate.split('-')[0])
-                let monthOfA = parseInt(deliveryDate.split('-')[1])
-                let yearOfA = parseInt(deliveryDate.split('-')[2])
+                  let dayOfA = parseInt(deliveryDate.split('-')[0])
+                  let monthOfA = parseInt(deliveryDate.split('-')[1])
+                  let yearOfA = parseInt(deliveryDate.split('-')[2])
 
-                let dayOfB = parseInt(dateOfFeed.split('-')[0])
-                let monthOfB = parseInt(dateOfFeed.split('-')[1])
-                let yearOfB = parseInt(dateOfFeed.split('-')[2])
+                  let dayOfB = parseInt(dateOfFeed.split('-')[0])
+                  let monthOfB = parseInt(dateOfFeed.split('-')[1])
+                  let yearOfB = parseInt(dateOfFeed.split('-')[2])
 
-                let hourOfA = parseInt(deliveryTime.split(':')[0])
-                let minuteOfA = parseInt(deliveryTime.split(':')[1])
+                  let hourOfA = parseInt(deliveryTime.split(':')[0])
+                  let minuteOfA = parseInt(deliveryTime.split(':')[1])
 
-                let hourOfB = parseInt(timeOfFeed.split(':')[0])
-                let minuteOfB = parseInt(timeOfFeed.split(':')[1])
+                  let hourOfB = parseInt(timeOfFeed.split(':')[0])
+                  let minuteOfB = parseInt(timeOfFeed.split(':')[1])
 
-                let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA, hourOfA, minuteOfA)
-                let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB, hourOfB, minuteOfB)
+                  let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA, hourOfA, minuteOfA)
+                  let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB, hourOfB, minuteOfB)
 
-                let noOfDay = dateOfB.getTime() - dateOfA.getTime()
-                let minutes = ((noOfDay / (1000*60)) % 60);
-                let hours   = parseInt((noOfDay / (1000*60*60)).toString());
-                console.log("feed Time difference : "+hours+":"+minutes);
-                resolve(hours+":"+minutes)
-                break;
-              }else{
-                resolve("")
+                  let noOfDay = dateOfB.getTime() - dateOfA.getTime()
+                  let minutes = ((noOfDay / (1000*60)) % 60);
+                  let hours   = parseInt((noOfDay / (1000*60*60)).toString());
+                  console.log("feed Time difference : "+hours+":"+minutes);
+                  resolve(hours+":"+minutes)
+                  break;
+                }else{
+                  resolve("")
+                }
               }
+            }else{
+              resolve("")
             }
-          }else{
-            resolve("")
-          }
+        }
       })
+
     })
     return promise
   }
