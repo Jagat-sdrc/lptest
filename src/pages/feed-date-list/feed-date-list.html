@@ -6,17 +6,15 @@
 -->
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>Baby ID - {{babyCode}}</ion-title>
+    <ion-title>Log feed</ion-title>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-
+  <h3 class="form-page-header">Baby ID - {{babyCode}}</h3>
   <ion-card *ngFor="let date of feedDateListData | orderByDate; let i = index">
-
     <ion-card-content (click)='dateSelected(date)'>
-
       <ion-row >
         <ion-col>
           <div>Sl No: {{i + 1}}</div>
@@ -25,10 +23,8 @@
         <ion-col text-right>
           <div>{{date}}</div>
         </ion-col>
-
       </ion-row>
     </ion-card-content>
-
   </ion-card>
 
   <h4 class="noRecords" *ngIf="feedDateListData.length === 0">No record found</h4>

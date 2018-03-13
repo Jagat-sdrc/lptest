@@ -8,4 +8,5 @@ interface IDataForBfspPage{
     selectedDate: string;
     isNewBfsp: boolean;
     deliveryDate: string;
+    deliveryTime: string;
 }

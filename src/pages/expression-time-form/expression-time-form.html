@@ -6,11 +6,12 @@
 -->
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{dataForBFEntryPage.selectedDate}}</ion-title>
+    <ion-title>Log expression / breastfeed</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <h3 class="form-page-header">{{dataForBFEntryPage.selectedDate}}</h3>
   <ion-list>
     
       <ion-item class="item-stable timeList" *ngFor="let item of bFExpressions | orderByTimeExpressionFrom; let i=index" text-wrap>

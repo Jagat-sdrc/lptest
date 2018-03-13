@@ -56,7 +56,10 @@ export class BfPostDischargePage {
 
     this.bfPostDischargeService.findByBabyCodeAndTimeOfBreastFeedingId(this.babyCode, this.navParams.data.menuItemId)
       .then(data => {
-        this.bfpd = data          
+        if(data != null)
+          this.bfpd = data;
+        else
+          this.bfpd.babyCode = this.babyCode;
       }).catch(error => {
         this.messageService.showErrorToast(error)
       });
@@ -81,12 +84,17 @@ export class BfPostDischargePage {
   };
 
   save() {
+    let newData: boolean = this.bfpd.id === null ? true : false
     if(this.bfpd.dateOfBreastFeeding === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.dateOfBfpd)
     }else{
       this.bfPostDischargeService.saveNewBfPostDischargeForm(this.bfpd)
       .then(data=> {
-        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+        if(newData)
+          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull);
+        else
+          this.messageService.showSuccessToast(ConstantProvider.messages.updateSuccessfull);
+
         this.navCtrl.pop();
       })
       .catch(err =>{
@@ -140,6 +148,17 @@ export class BfPostDischargePage {
       },
       err => console.log('Error occurred while getting date: ', err)
     );
+  }
+
+  /** 
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   * This method will delete all the bfsp records whose baby id is not present.
+   * This method is written for preventive measrues as this issue was did not happen
+   * again
+  */
+  ionViewWillLeave(){
+    this.bfPostDischargeService.sanitizeData()
   }
 
 }

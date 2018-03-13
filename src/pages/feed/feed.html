@@ -5,11 +5,12 @@
 -->
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{dataForFeedEntryPage.selectedDate}}</ion-title>
+    <ion-title>Log feed</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <h3 class="form-page-header">{{dataForFeedEntryPage.selectedDate}}</h3>
   <ion-list>
     
     <ion-item class="item-stable timeList" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
@@ -55,35 +56,35 @@
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked >Volume OMM</ion-label>
               <ion-input  type="number" [(ngModel)]="feedExpression.ommVolume" [ngModelOptions]="{standalone: true}" 
-                [pattern]="onlyNumberRegex"></ion-input>
+                ></ion-input>
             </ion-item>
 
             <!-- Volume DHM -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked>Volume DHM</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.dhmVolume" [ngModelOptions]="{standalone: true}" 
-                [pattern]="onlyNumberRegex"></ion-input>
+                ></ion-input>
             </ion-item>
 
             <!-- Volume Formula -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked>Volume Formula</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.formulaVolume" [ngModelOptions]="{standalone: true}" 
-                [pattern]="onlyNumberRegex"></ion-input>
+                ></ion-input>
             </ion-item>
 
             <!-- Volume Animal Milk -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked>Volume Animal Milk</ion-label>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
               <ion-input type="number" [(ngModel)]="feedExpression.animalMilkVolume" [ngModelOptions]="{standalone: true}" 
-                [pattern]="onlyNumberRegex"></ion-input>
+                ></ion-input>
             </ion-item>
 
             <!-- Volume Other -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked>Volume Other</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.otherVolume" [ngModelOptions]="{standalone: true}"
-                [pattern]="onlyNumberRegex"></ion-input>
+                ></ion-input>
             </ion-item>
 
             <!-- Location of feeding -->

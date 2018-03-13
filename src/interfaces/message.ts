@@ -69,4 +69,5 @@ interface IMessage{
     updateSuccessfull: string;
     registeredPage: string;
     singlePatientSummary: string;
+    pastTime: string;
 }

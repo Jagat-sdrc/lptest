@@ -70,21 +70,34 @@ export class FeedPage {
  * @since 0.0.1
  */
   validateExpression(feedExpression: IFeed) {
+    debugger
     if(feedExpression.dateOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
-    }else if(feedExpression.timeOfFeed === null) {
+    }
+    else if(feedExpression.timeOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
-    }else if(feedExpression.ommVolume === undefined || !this.checkForOnlyNumber(feedExpression.ommVolume)) {
+    }
+    else if(feedExpression.ommVolume != null
+      && (feedExpression.ommVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.ommVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
-    }else if(feedExpression.dhmVolume === undefined || !this.checkForOnlyNumber(feedExpression.dhmVolume)) {
+    }
+    else if(feedExpression.dhmVolume != null &&
+      (feedExpression.dhmVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.dhmVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
-    }else if(feedExpression.formulaVolume === undefined || !this.checkForOnlyNumber(feedExpression.formulaVolume)) {
+    }
+    else if(feedExpression.formulaVolume != null &&
+      (feedExpression.formulaVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.formulaVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
-    }else if(feedExpression.animalMilkVolume === undefined || !this.checkForOnlyNumber(feedExpression.animalMilkVolume)) {
+    }
+    else if(feedExpression.animalMilkVolume != null &&
+      (feedExpression.animalMilkVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.animalMilkVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
-    }else if(feedExpression.otherVolume === undefined || !this.checkForOnlyNumber(feedExpression.otherVolume)) {
+    }
+    else if(feedExpression.otherVolume != null && 
+      (feedExpression.otherVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.otherVolume))) {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
-    }else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
+    }
+    else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
       && (feedExpression.babyWeight < 500 || feedExpression.babyWeight > 4000)){
       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
         .then((data)=>{
@@ -98,12 +111,15 @@ export class FeedPage {
   }
 
   saveExpression(feedExpression: IFeed){
+    let newData: boolean = feedExpression.id === null ? true : false
     this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
       .then(data=> {
         this.dataForFeedEntryPage.isNewExpression = false;
-        // this.toggleGroup(feedExpression);
         this.findExpressionsByBabyCodeAndDate();
-        this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
+        if(newData)
+          this.messageService.showSuccessToast(ConstantProvider.messages.saveSuccessfull)
+        else
+          this.messageService.showSuccessToast(ConstantProvider.messages.updateSuccessfull);
       })
       .catch(err =>{
         feedExpression.createdDate = null;
@@ -259,10 +275,14 @@ export class FeedPage {
    * @since - 0.0.1
   */
  validateTime(time: string, feedExp: IFeed){
-    if(feedExp.dateOfFeed === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
-      && time != null && time != this.datePipe.transform(new Date(),'HH:mm')){
+    if(feedExp.dateOfFeed === this.datePipe.transform(new Date(),'dd-MM-yyyy')
+      && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         feedExp.timeOfFeed = null;
+    }else if(feedExp.dateOfFeed === this.dataForFeedEntryPage.deliveryDate && time != null 
+      && time < this.dataForFeedEntryPage.deliveryTime){
+      this.messageService.showErrorToast(ConstantProvider.messages.pastTime)
+      feedExp.timeOfFeed = null;
     }else{
       feedExp.timeOfFeed = time
     }

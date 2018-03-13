@@ -8,4 +8,5 @@ interface IDataForBFEntryPage{
     selectedDate: string;
     isNewExpression: boolean;
     deliveryDate: string;
+    deliveryTime: string;
 }
