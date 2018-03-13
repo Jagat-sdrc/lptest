@@ -35,12 +35,16 @@
         </ion-item>
       </ion-list>
       <ion-list>
-          <ion-item *ngFor="let togetherItem  of togetherDataList; let i = index">{{i+1}} , {{togetherItem.date}} ,
-            {{togetherItem.dailyTotalTimeInKMC}}({{togetherItem.dailyTotalQuantityInKMC}})
-            {{togetherItem.noOfOralCare}} , {{togetherItem.noOfNNS}}
-          </ion-item>
-        </ion-list>
-
+        <ion-item *ngFor="let togetherItem  of togetherDataList; let i = index">{{i+1}} , {{togetherItem.date}} ,
+          {{togetherItem.dailyTotalTimeInKMC}}({{togetherItem.dailyTotalQuantityInKMC}})
+          {{togetherItem.noOfOralCare}} , {{togetherItem.noOfNNS}}
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-item *ngFor="let infantRelated  of infantRelatedDataList; let i = index">{{i+1}} , {{infantRelated.date}} ,
+          {{infantRelated.dailyDoseOMM}}
+        </ion-item>
+      </ion-list>
 
   </div>
 </ion-content>

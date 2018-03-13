@@ -135,9 +135,6 @@ export class SinglePatientSummaryServiceProvider {
           if(totalExpression[index].volOfMilkExpressedFromLR != null){
             totalVolumeMilk = Number(totalExpression[index].volOfMilkExpressedFromLR) + totalVolumeMilk;
           }
-          let startTime = '22:00';
-          let  endTime = '04:00';
-
           let currentTime = totalExpression[index].timeOfExpression;
 
           let hourCurrent = parseInt(currentTime.split(':')[0])
@@ -211,7 +208,7 @@ export class SinglePatientSummaryServiceProvider {
    */
   async getInfantRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
     let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
-    let bsfp = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
+    let feedData = await this.storage.get(ConstantProvider.dbKeyNames.feedExpressions);
     let infantRelatedDataList : IInfantRelated[] = [];
 
     for (let index = 0; index < dates.length; index++) {
@@ -225,6 +222,23 @@ export class SinglePatientSummaryServiceProvider {
         percentageOther: 0,
         percentageWeght: 0
       }
+      infantRelatedData.date = dates[index];
+      let dailyDoseOMM = 0;
+      let babyWeight = 0;
+      for (let index = 0; index < feedData.length; index++) {
+        if((feedData as IFeed[]).filter(d =>d.babyCode === babyCode && d.dateOfFeed === dates[index]
+        && d.ommVolume != null)){
+            dailyDoseOMM = Number(feedData[index].ommVolume) + dailyDoseOMM;
+          }
+      }
+      for (let index = 0; index < feedData.length; index++) {
+        if((feedData as IFeed[]).filter(d =>d.babyWeight != null && d.babyWeight > 0)){
+          babyWeight = feedData[index].babyWeight;
+          break;
+        }
+      }
+      infantRelatedData.dailyDoseOMM = (dailyDoseOMM/babyWeight)*100;
+
       infantRelatedDataList.push(infantRelatedData)
     }
     return infantRelatedDataList;
