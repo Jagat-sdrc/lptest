@@ -95,22 +95,26 @@ export class AddPatientPage implements OnInit{
       control.markAsPristine({onlySelf: true});
     });
     this.patientForm.controls.hospital_baby_id.setValue(null)
-    this.patientForm.controls.mother_name.setValue(null),
-    this.patientForm.controls.mother_age.setValue(null),
-    this.patientForm.controls.delivery_date.setValue(null),
-    this.patientForm.controls.delivery_time.setValue(null),
-    this.patientForm.controls.delivery_method.setValue(null),
-    this.patientForm.controls.baby_weight.setValue(null),
-    this.patientForm.controls.gestational_age.setValue(null),
-    this.patientForm.controls.intent_provide_milk.setValue(null),
-    this.patientForm.controls.hm_lactation.setValue(null),
-    this.patientForm.controls.first_exp_time_in_hour.setValue(null),
-    this.patientForm.controls.first_exp_time_in_minute.setValue(null),
-    this.patientForm.controls.inpatient_outpatient.setValue(""),
-    this.patientForm.controls.admission_date.setValue(null),
-    this.patientForm.controls.baby_admitted.setValue(null),
-    this.babyAdmittedToStatus = false;
-    this.patientForm.controls.nicu_admission.setValue(null),
+    this.patientForm.controls.mother_name.setValue(null)
+    this.patientForm.controls.mother_age.setValue(null)
+
+    if(!this.forEdit){
+      this.patientForm.controls.delivery_date.setValue(null)
+      this.patientForm.controls.delivery_time.setValue(null)
+    }
+
+    this.patientForm.controls.delivery_method.setValue(null)
+    this.patientForm.controls.baby_weight.setValue(null)
+    this.patientForm.controls.gestational_age.setValue(null)
+    this.patientForm.controls.intent_provide_milk.setValue(null)
+    this.patientForm.controls.hm_lactation.setValue(null)
+    this.patientForm.controls.first_exp_time_in_hour.setValue(null)
+    this.patientForm.controls.first_exp_time_in_minute.setValue(null)
+    this.patientForm.controls.inpatient_outpatient.setValue("")
+    this.patientForm.controls.admission_date.setValue(null)
+    this.patientForm.controls.baby_admitted.setValue(null)
+    this.babyAdmittedToStatus = false
+    this.patientForm.controls.nicu_admission.setValue(null)
     this.patientForm.controls.discharge_date.setValue(null)
   }
 
