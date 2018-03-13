@@ -98,6 +98,8 @@ export class FeedPage {
         .then((data)=>{
           if(data){
             this.saveExpression(feedExpression);
+          }else{
+            feedExpression.babyWeight = null;
           }
         })
     }else{

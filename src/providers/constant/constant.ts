@@ -170,7 +170,7 @@ export class ConstantProvider {
     dischargeDateValidation: 'Discharge date cannot be less than Delivery date',
     checkInternetConnection: 'No internet connection. Please check your internet connectivity and try again',
     submitSuccessfull: 'Submitted successfully.',
-    deleteForm: 'Are you sure you want to delete this record',
+    deleteForm: 'Are you sure you want to delete this record?',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
     pastTime: 'Time before delivery time is not allowed'
