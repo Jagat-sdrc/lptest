@@ -54,7 +54,7 @@
               </ion-item>
               <ion-item *ngIf="item.methodOfExpression && item.methodOfExpression != 43">
                 <ion-label color="black" stacked>Volume of milk expressed from left and right breast (in ml,range 0-300)</ion-label>
-                <ion-input type="number" [value]="item.volOfMilkExpressedFromLR" [(ngModel)]="item.volOfMilkExpressedFromLR"></ion-input>
+                <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="item.volOfMilkExpressedFromLR"></ion-input>
               </ion-item>
 
               <ion-row padding>
