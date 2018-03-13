@@ -239,6 +239,8 @@ export class FeedPage {
   checkForOnlyNumber(feed: IFeed, variableName: string){
     if(feed[variableName] === null)
       return true;
+    else if(feed[variableName] === '')
+      return true;
     else{
       let forValidation = feed[variableName].toString()
       let rx = /^\d+(?:\.\d{0,2})?$/
@@ -258,13 +260,13 @@ export class FeedPage {
    * @param feedExpression - this is the form that the user is entering
    */
   validateVolumeFields(feedExpression: IFeed){
-    if(feedExpression.methodOfFeed === 61 || feedExpression.methodOfFeed === 66) {
+    // if(feedExpression.methodOfFeed === 61 || feedExpression.methodOfFeed === 66) {
       feedExpression.animalMilkVolume = null
       feedExpression.dhmVolume = null
       feedExpression.formulaVolume = null
       feedExpression.ommVolume = null
       feedExpression.otherVolume = null
-    }
+    // }
   }
 
   /** 
