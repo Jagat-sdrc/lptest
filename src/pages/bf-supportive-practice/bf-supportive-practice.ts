@@ -90,12 +90,16 @@ export class BfSupportivePracticePage {
   };
 
   /**
+   * @author - Naseem Akhtar
+   * @since - 0.0.1
+   * This method documen.getElement is called to scroll to the latest accordion
    * For creating or resetting breastfeedign supportive practice form
    */
   newBFSPForm() {
     this.bfspList = this.bfspService.appendNewRecordAndReturn(this.bfspList, this.dataForBfspPage.babyCode,
       this.dataForBfspPage.selectedDate);
     setTimeout( data => this.toggleGroup(this.bfspList[0]), 100);
+    document.getElementById('scrollHere').scrollIntoView({behavior: 'smooth'})
   };
 
   

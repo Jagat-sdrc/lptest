@@ -121,7 +121,8 @@ export class ExpressionTimeFormPage {
   newExpression(){
     this.bFExpressions = this.expressionBFdateService.appendNewRecordAndReturn(this.bFExpressions,
       this.dataForBFEntryPage.babyCode, this.dataForBFEntryPage.selectedDate);
-    setTimeout(d => this.toggleGroup(this.bFExpressions[0]),200);
+    setTimeout(d => this.toggleGroup(this.bFExpressions[0]),100);
+    document.getElementById('scrollHere').scrollIntoView({behavior: 'smooth'})
   }
 
   /**

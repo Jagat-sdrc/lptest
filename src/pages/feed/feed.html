@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content padding>
-  <h3 class="form-page-header">{{dataForFeedEntryPage.selectedDate}}</h3>
+  <h3 class="form-page-header" id="scrollHere">{{dataForFeedEntryPage.selectedDate}}</h3>
   <ion-list>
     
     <ion-item class="item-stable timeList" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
