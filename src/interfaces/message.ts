@@ -68,4 +68,7 @@ interface IMessage{
     futureTime: string;
     updateSuccessfull: string;
     pastTime: string;
+    dataExportSuccessful: string;
+    couldNotCreateFile: string;
+    couldNotWriteToFile: string;
 }

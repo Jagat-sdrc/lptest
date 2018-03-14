@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /**
@@ -173,7 +172,10 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record?',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
-    pastTime: 'Time before delivery time is not allowed'
+    pastTime: 'Time before delivery time is not allowed',
+    dataExportSuccessful: 'Export successful',
+    couldNotCreateFile: 'Could not create export file',
+    couldNotWriteToFile: 'Could not write data to export file'
   };
 
 /**
@@ -197,9 +199,6 @@ static areaLevels: IAreaLevel ={
     addmissionDate: "addmissionDate"
   }
 
-  constructor(public http: HttpClient) {
-  }
-
-
+  static appFolderName: string = 'Lactation'
 
 }

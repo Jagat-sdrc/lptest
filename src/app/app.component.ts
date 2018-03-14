@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MessageProvider } from '../providers/message/message';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service'
+import { ExportServiceProvider } from '../providers/export-service/export-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,7 +29,7 @@ export class MyApp {
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     private messageProvider: MessageProvider, private syncService: SyncServiceProvider,
-  private events: Events) {
+  private events: Events, private exportService: ExportServiceProvider) {
     this.initializeApp();
   }
 
@@ -54,8 +55,15 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
+  /**
+   * This method is going to export data to csv file which will reside in android device root folder
+   * 
+   * @memberof MyApp
+   * @since 1.2.0
+   * @author Ratikanta
+   */
   export(){
-    this.messageProvider.showErrorToast("Under construction!")
+    this.exportService.export()
   }
 
   /**
