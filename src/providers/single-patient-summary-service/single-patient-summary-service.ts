@@ -113,40 +113,38 @@ export class SinglePatientSummaryServiceProvider {
    */
   async getMotherRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
-      let expressions = await this.storage.get(ConstantProvider.dbKeyNames.bfExpressions);
+      let bfExpressions: IBFExpression[] = await this.storage.get(ConstantProvider.dbKeyNames.bfExpressions);
+      let expressions: IBFExpression[] = [];
       let motherRelatedDataList : IMotherRelatedData[] = [];
+      if(bfExpressions != null && bfExpressions.length > 0)
+        expressions = bfExpressions.filter(d => d.babyCode === babyCode)
 
 
         for (let index = 0; index < dates.length; index++) {
-          let motherRelatedData: IMotherRelatedData = {
-            date: "",
-            expAndBfEpisodPerday: 0,
-            ofWhichBf: 0,
-            totalDailyVolumn: 0,
-            nightExp: 0
-          }
+          let motherRelatedData: IMotherRelatedData;
           motherRelatedData.date = dates[index];
-          if(expressions != null){
-          motherRelatedData.expAndBfEpisodPerday = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index]).length
-          motherRelatedData.ofWhichBf = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index] &&
-          d.methodOfExpression == ConstantProvider.typeDetailsIds.breastfeed).length
-          let totalExpression = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index])
-          let totalVolumeMilk = 0;
-          let count = 0;
-          for (let index = 0; index < totalExpression.length; index++) {
-            if(totalExpression[index].volOfMilkExpressedFromLR != null){
-              totalVolumeMilk = Number(totalExpression[index].volOfMilkExpressedFromLR) + totalVolumeMilk;
-            }
-            let currentTime = totalExpression[index].timeOfExpression;
 
-            let hourCurrent = parseInt(currentTime.split(':')[0])
-            if(hourCurrent > 21 || hourCurrent < 5){
-              count++
+          if(expressions != null){
+            motherRelatedData.expAndBfEpisodPerday = expressions.filter(d =>d.dateOfExpression === dates[index]).length
+            motherRelatedData.ofWhichBf = expressions.filter(d =>d.dateOfExpression === dates[index] &&
+            d.methodOfExpression == ConstantProvider.typeDetailsIds.breastfeed).length
+            let totalExpression = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index])
+            let totalVolumeMilk = 0;
+            let count = 0;
+            for (let index = 0; index < totalExpression.length; index++) {
+              if(totalExpression[index].volOfMilkExpressedFromLR != null){
+                totalVolumeMilk = Number(totalExpression[index].volOfMilkExpressedFromLR) + totalVolumeMilk;
+              }
+              let currentTime = totalExpression[index].timeOfExpression;
+
+              let hourCurrent = parseInt(currentTime.split(':')[0])
+              if(hourCurrent > 21 || hourCurrent < 5){
+                count++
+              }
             }
+            motherRelatedData.totalDailyVolumn = totalVolumeMilk;
+            motherRelatedData.nightExp = count;
           }
-          motherRelatedData.totalDailyVolumn = totalVolumeMilk;
-          motherRelatedData.nightExp = count;
-        }
         motherRelatedDataList.push(motherRelatedData)
       }
       return motherRelatedDataList;
