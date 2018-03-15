@@ -29,7 +29,7 @@ export class SinglePatientSummaryServiceProvider {
     mothersPrenatalIntent: null,
     compositionOfFirstEnteralFeed: null,
     babyAdmittedTo: null,
-    reasonForAdmission: null,
+    reasonForAdmission: '',
     timeSpentInNicu: null,
     timeSpentInHospital: null,
     createdDate: null,
@@ -52,7 +52,7 @@ export class SinglePatientSummaryServiceProvider {
  * @returns {Observable <ITypeDetails[]>} All areas
  * @memberof SinglePatientSummaryServiceProvider
  */
-  getTypeDetails(): Observable <ITypeDetails[]>{
+  fetchTypeDetails(): Observable <ITypeDetails[]> {
     return this.http.get("./assets/data.json").map((response: Response) => {
       return (response as any).typeDetails
       })
@@ -193,7 +193,7 @@ export class SinglePatientSummaryServiceProvider {
    */
   async getTogetherData(deliveryDate: any,dischargeDate: any,babyCode: string){
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
-      let bsfp = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
+      let bsfp: IBFSP[] = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
       let togetherDataList : ITogetherData[] = [];
 
 
@@ -281,29 +281,41 @@ export class SinglePatientSummaryServiceProvider {
     return infantRelatedDataList;
   }
 
+  /**
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @param babyDetails - Registration details of baby which the user has selected
+   * @param typeDetails - to fetch the dropdown options
+   */
   setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]){
-    console.log('sucess babyDetails')
-
     this.babyBasicDetails.deliveryDate = babyDetails.dischargeDate;
     this.babyBasicDetails.dischargeDate = babyDetails.dischargeDate;
     this.babyBasicDetails.admissionDateForOutdoorPatients = babyDetails.admissionDateForOutdoorPatients;
-    this.babyBasicDetails.babyAdmittedTo = babyDetails.babyAdmittedTo != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
+    this.babyBasicDetails.babyAdmittedTo = (babyDetails.babyAdmittedTo != null && babyDetails.babyAdmittedTo.toString() != '') ?
+      typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
     this.babyBasicDetails.babyCode = babyDetails.babyCode;
     this.babyBasicDetails.compositionOfFirstEnteralFeed = 0;
     // this.babyBasicDetails.createdBy
     // this.babyBasicDetails.createdDate
-    this.babyBasicDetails.deliveryMethod = babyDetails.deliveryMethod != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.deliveryMethod)].name : null;
-    this.babyBasicDetails.gestationalAgeInWeek = babyDetails.gestationalAgeInWeek;
-    this.babyBasicDetails.inpatientOrOutPatient = babyDetails.inpatientOrOutPatient != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.inpatientOrOutPatient)].name : null;
-    this.babyBasicDetails.mothersPrenatalIntent = babyDetails.mothersPrenatalIntent != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.mothersPrenatalIntent)].name : null;
-    this.babyBasicDetails.parentsInformedDecision = babyDetails.parentsKnowledgeOnHmAndLactation != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.parentsKnowledgeOnHmAndLactation)].name : null;
+    this.babyBasicDetails.deliveryMethod = (babyDetails.deliveryMethod != null && babyDetails.deliveryMethod.toString() != '') ?
+      typeDetails[typeDetails.findIndex(d => d.id === babyDetails.deliveryMethod)].name : null;
 
-    let x = babyDetails.nicuAdmissionReason != null ? babyDetails.nicuAdmissionReason.toString().split(',') : null;
-    if(babyDetails.nicuAdmissionReason != null){
+    this.babyBasicDetails.gestationalAgeInWeek = babyDetails.gestationalAgeInWeek;
+    this.babyBasicDetails.inpatientOrOutPatient = (babyDetails.inpatientOrOutPatient != null && babyDetails.inpatientOrOutPatient.toString() != '') ?
+      typeDetails[typeDetails.findIndex(d => d.id === babyDetails.inpatientOrOutPatient)].name : null;
+
+    this.babyBasicDetails.mothersPrenatalIntent = (babyDetails.mothersPrenatalIntent != null && babyDetails.mothersPrenatalIntent.toString() != '') ?
+      typeDetails[typeDetails.findIndex(d => d.id === babyDetails.mothersPrenatalIntent)].name : null;
+
+    this.babyBasicDetails.parentsInformedDecision = (babyDetails.parentsKnowledgeOnHmAndLactation != null && babyDetails.parentsKnowledgeOnHmAndLactation.toString() != '') ?
+      typeDetails[typeDetails.findIndex(d => d.id === babyDetails.parentsKnowledgeOnHmAndLactation)].name : null;
+
+      //As reasons can be multiple so extracting each reason id and iterating through typedetail to get its name.
+    let x = (babyDetails.nicuAdmissionReason != null && babyDetails.nicuAdmissionReason.toString() != '') ? babyDetails.nicuAdmissionReason.toString().split(',') : null;
+    if(x != null && x.length > 0){
       for (let index = 0; index < x.length; index++) {
-        this.babyBasicDetails.reasonForAdmission += typeDetails[typeDetails.findIndex(d => d.id === +x[index])].name + ",";
+        this.babyBasicDetails.reasonForAdmission += typeDetails[typeDetails.findIndex(d => d.id === +x[index])].name + ", ";
       }
-      this.babyBasicDetails.reasonForAdmission = this.babyBasicDetails.reasonForAdmission.slice(0, this.babyBasicDetails.reasonForAdmission.length - 1);
+      this.babyBasicDetails.reasonForAdmission = this.babyBasicDetails.reasonForAdmission.slice(0, this.babyBasicDetails.reasonForAdmission.length - 2);
     }
 
     this.babyBasicDetails.timeSpentInHospital = null
@@ -316,12 +328,28 @@ export class SinglePatientSummaryServiceProvider {
         }
       })
     
-    this.babyBasicDetails.timeTillFirstExpression = babyDetails.timeTillFirstExpressionInHour + ':' + babyDetails.timeTillFirstExpressionInMinute;
+      //checking if time in hour and time in minute are present then only display the time
+    if((babyDetails.timeTillFirstExpressionInHour != null && babyDetails.timeTillFirstExpressionInHour != '') && 
+      (babyDetails.timeTillFirstExpressionInMinute != null && babyDetails.timeTillFirstExpressionInMinute != ''))
+      this.babyBasicDetails.timeTillFirstExpression = babyDetails.timeTillFirstExpressionInHour + ':' + babyDetails.timeTillFirstExpressionInMinute;
+
+    this.typeDetails = typeDetails
+
     return this.babyBasicDetails;
   }
 
-  getBabyDetails(){
+  /**
+   * @author - Naseem Akhtar
+   * @since - 1.0.1
+   * If other tabs in the single patient summary need baby details,
+   * they can fetch it through this method
+   */
+  getBabyDetails() {
     return this.babyBasicDetails
+  }
+
+  getTypeDetails() {
+    return this.typeDetails
   }
 
 }

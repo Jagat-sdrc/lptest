@@ -4,10 +4,8 @@ import { SinglePatientSummaryServiceProvider } from '../../providers/single-pati
 import { MessageProvider } from '../../providers/message/message';
 
 /**
- * Generated class for the BasicPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @author - Naseem Akhtar
+ * @since - 1.0.1
  */
 
 @IonicPage()
@@ -23,12 +21,8 @@ export class BasicPage {
     public spsService: SinglePatientSummaryServiceProvider, public messageService: MessageProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BasicPage');
-  }
   ngOnInit(){
-    debugger
-    this.spsService.getTypeDetails()
+    this.spsService.fetchTypeDetails()
       .subscribe(data => {
         this.typeDetails = data;
         this.babyDetails = this.spsService.setBabyDetails(this.navParams.data, this.typeDetails);

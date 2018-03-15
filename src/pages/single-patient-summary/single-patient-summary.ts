@@ -44,7 +44,7 @@ export class SinglePatientSummaryPage {
     this.babyAllDetails = (this.navParams.get('babyAllDetails'))
     console.log(this.babyAllDetails)
 
-    this.spsService.getTypeDetails()
+    this.spsService.fetchTypeDetails()
     .subscribe(data => {
       this.typeDetails = data
       console.log(this.typeDetails);
