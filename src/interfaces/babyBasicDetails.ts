@@ -1,7 +1,7 @@
 /**
  * This inteface will describe the area levels
  * @author Naseem
- * @since 0.0.1 
+ * @since 0.0.1
  * @interface IBabyBasicDetails
  */
 
@@ -26,4 +26,5 @@ interface IBabyBasicDetails{
     updatedBy: string;
     deliveryDate: string;
     dischargeDate: string;
+    weight: number;
 }

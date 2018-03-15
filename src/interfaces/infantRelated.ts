@@ -8,7 +8,7 @@
  */
 interface IInfantRelated{
   date: string;
-  dailyDoseOMM: number;
+  dailyDoseOMM: string;
   percentageOMM: number;
   percentageDHM: number;
   percentageFormula: number;
