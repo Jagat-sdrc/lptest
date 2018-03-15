@@ -5,6 +5,8 @@
  * @interface IMessage
  */
 interface IMessage{
+    exportingData: string;
+    dataExported: string;
     invalidCredentials: string;
     enterDateOfExpression: string;
     enterTimeOfExpression: string;

@@ -7,6 +7,7 @@ import { SyncServiceProvider } from '../providers/sync-service/sync-service'
 import { ExportServiceProvider } from '../providers/export-service/export-service';
 import { File } from '@ionic-native/file';
 import { ConstantProvider } from '../providers/constant/constant';
+import { UtilServiceProvider } from '../providers/util-service/util-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -31,7 +32,8 @@ export class MyApp {
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     private messageProvider: MessageProvider, private syncService: SyncServiceProvider,
-  private events: Events, private exportService: ExportServiceProvider, private file: File) {
+  private events: Events, private exportService: ExportServiceProvider, private file: File,
+private utilService: UtilServiceProvider) {
     this.initializeApp();
   }
 
@@ -51,6 +53,8 @@ export class MyApp {
     })
 
     this.createProjectFolder()
+    this.utilService.setDefaults()
+    
   }
 
   openPage(page) {

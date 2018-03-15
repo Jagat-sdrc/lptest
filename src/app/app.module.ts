@@ -34,6 +34,7 @@ import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
 import { ExportServiceProvider } from '../providers/export-service/export-service';
 import { PapaParseModule, PapaParseService } from 'ngx-papaparse';
 import { File } from '@ionic-native/file';
+import { UtilServiceProvider } from '../providers/util-service/util-service';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { File } from '@ionic-native/file';
     SortPatientPipe,
     ExportServiceProvider,
     PapaParseService,
-    File
+    File,
+    UtilServiceProvider
   ]
 })
 export class AppModule {}

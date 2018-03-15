@@ -100,16 +100,16 @@ export class ConstantProvider {
    * @author Naseem Akhtar (naseem@sdrc.co.in)
    * @since 0.0.1
    */
-  static serverUrls:any = {
-    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation-test/serverStatus',
-    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation-test/sync'
-    // SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
-    // SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
+  static serverUrls:any = {    
+    SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
+    SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
 
   static postDischargeMenu: number = 12;
 
   static messages: IMessage = {
+    exportingData: 'Exporting data, please wait',
+    dataExported: 'Data exported',
     enterDateOfExpression: 'Please enter date of expression',
     enterTimeOfExpression :'Please enter time of expression',
     enterTypeOfExpression:'Please enter method of expression',
@@ -173,7 +173,7 @@ export class ConstantProvider {
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
     pastTime: 'Time before delivery time is not allowed',
-    dataExportSuccessful: 'Export successful',
+    dataExportSuccessful: 'Data exported successfully to the following file',
     couldNotCreateFile: 'Could not create export file',
     couldNotWriteToFile: 'Could not write data to export file'
   };
