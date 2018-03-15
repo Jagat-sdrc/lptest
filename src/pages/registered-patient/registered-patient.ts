@@ -67,8 +67,8 @@ export class RegisteredPatientPage {
         deliveryDate: deliveryDate
       });
     }else{
-      this.navCtrl.push('SinglePatientSummaryPage',{
-        babyAllDetails: babyAllDetails,
+      this.navCtrl.push('SpsPage',{
+        //babyAllDetails: babyAllDetails,
       });
     }
   }

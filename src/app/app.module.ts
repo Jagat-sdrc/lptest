@@ -41,9 +41,24 @@ import { SinglePatientSummaryServiceProvider } from '../providers/single-patient
     BrowserModule,
     IonicStorageModule.forRoot({
       name: 'lactation',
-         driverOrder: ['sqlite', 'indexeddb', 'websql']
+         driverOrder: ['sqlite', 'indexeddb', 'websql'],
+
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      tabsPlacement: 'bottom',
+        platforms: {
+          android: {
+            tabsPlacement: 'top'
+          },
+          ios: {
+            tabsPlacement: 'top'
+          },
+          windows:
+          {
+            tabsPlacement: 'top'
+          }
+        }
+      }),
     IonicStorageModule.forRoot(),
     HttpClientModule,
   ],
