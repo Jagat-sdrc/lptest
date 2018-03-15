@@ -165,38 +165,34 @@ export class SinglePatientSummaryServiceProvider {
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
       let bsfp = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
       let togetherDataList : ITogetherData[] = [];
+      if(bsfp != null){
+        let bsfpExp = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode)
+        let togetherData: ITogetherData;
+          for (let index = 0; index < dates.length; index++) {
 
+            let countDailyTotalQuantityInKMC = 0;
+            togetherData.date = dates[index];
 
-        for (let index = 0; index < dates.length; index++) {
-          let togetherData: ITogetherData = {
-            date: "string",
-            dailyTotalTimeInKMC: 0,
-            dailyTotalQuantityInKMC: 0,
-            noOfOralCare: 0,
-            noOfNNS: 0
-          }
-          let countDailyTotalQuantityInKMC = 0;
-          togetherData.date = dates[index];
-          if(bsfp != null){
-          togetherData.dailyTotalTimeInKMC = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
-          && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc).length;
+            togetherData.dailyTotalTimeInKMC = bsfpExp.filter(d =>d.dateOfBFSP === dates[index]
+            && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc).length;
 
-          let dailyTotalTimeInKMC = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
-            && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc);
-          for (let index = 0; index < dailyTotalTimeInKMC.length; index++) {
-            if(dailyTotalTimeInKMC[index].bfspDuration != null){
-              countDailyTotalQuantityInKMC = Number(dailyTotalTimeInKMC[index].bfspDuration) + countDailyTotalQuantityInKMC;
+            let dailyTotalTimeInKMC = bsfpExp.filter(d =>d.dateOfBFSP === dates[index]
+              && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc);
+            for (let index = 0; index < dailyTotalTimeInKMC.length; index++) {
+              if(dailyTotalTimeInKMC[index].bfspDuration != null){
+                countDailyTotalQuantityInKMC = Number(dailyTotalTimeInKMC[index].bfspDuration) + countDailyTotalQuantityInKMC;
+              }
             }
+            togetherData.dailyTotalQuantityInKMC = countDailyTotalQuantityInKMC;
+
+            togetherData.noOfOralCare = bsfpExp.filter(d =>d.dateOfBFSP === dates[index]
+            && d.bfspPerformed == ConstantProvider.typeDetailsIds.oral).length;
+
+            togetherData.noOfNNS = bsfpExp.filter(d =>d.dateOfBFSP === dates[index]
+            && d.bfspPerformed == ConstantProvider.typeDetailsIds.nns).length;
           }
-          togetherData.dailyTotalQuantityInKMC = countDailyTotalQuantityInKMC;
-
-          togetherData.noOfOralCare = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
-          && d.bfspPerformed == ConstantProvider.typeDetailsIds.oral).length;
-
-          togetherData.noOfNNS = (bsfp as IBFSP[]).filter(d =>d.babyCode === babyCode && d.dateOfBFSP === dates[index]
-          && d.bfspPerformed == ConstantProvider.typeDetailsIds.nns).length;
-        }
         togetherDataList.push(togetherData);
+
       }
       return togetherDataList;
   }
@@ -214,40 +210,30 @@ export class SinglePatientSummaryServiceProvider {
     let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
     let feedData = await this.storage.get(ConstantProvider.dbKeyNames.feedExpressions);
     let infantRelatedDataList : IInfantRelated[] = [];
-
-
-    for (let index = 0; index < dates.length; index++) {
-      let infantRelatedData: IInfantRelated = {
-        date: "string",
-        dailyDoseOMM: 0,
-        percentageOMM: 0,
-        percentageDHM: 0,
-        percentageFormula: 0,
-        percentageAnimalMilk: 0,
-        percentageOther: 0,
-        percentageWeght: 0
-      }
-      infantRelatedData.date = dates[index];
-      let dailyDoseOMM = 0;
-      let babyWeight = 0;
-      if(feedData != null){
-      for (let index = 0; index < feedData.length; index++) {
-        if((feedData as IFeed[]).filter(d =>d.babyCode === babyCode && d.dateOfFeed === dates[index]
-        && d.ommVolume != null)){
-            dailyDoseOMM = Number(feedData[index].ommVolume) + dailyDoseOMM;
-          }
-      }
-      for (let index = 0; index < feedData.length; index++) {
-        if((feedData as IFeed[]).filter(d =>d.babyWeight != null && d.babyWeight > 0)){
-          babyWeight = feedData[index].babyWeight;
-          break;
+    if(feedData != null){
+      let feedDataExp = (feedData as IFeed[]).filter(d =>d.babyCode === babyCode)
+      for (let index = 0; index < dates.length; index++) {
+        let infantRelatedData: IInfantRelated;
+        infantRelatedData.date = dates[index];
+        let dailyDoseOMM = 0;
+        let babyWeight = 0;
+        if(feedData != null){
+        for (let index = 0; index < feedData.length; index++) {
+          if(feedDataExp.filter(d =>d.dateOfFeed === dates[index] && d.ommVolume != null)){
+              dailyDoseOMM = Number(feedData[index].ommVolume) + dailyDoseOMM;
+            }
         }
-      }
-      infantRelatedData.dailyDoseOMM = (dailyDoseOMM/babyWeight)*100;
-      }
-      infantRelatedDataList.push(infantRelatedData)
+        for (let index = 0; index < feedData.length; index++) {
+          if(feedDataExp.filter(d =>d.babyWeight != null && d.babyWeight > 0)){
+            babyWeight = feedData[index].babyWeight;
+            break;
+          }
+        }
+        infantRelatedData.dailyDoseOMM = (dailyDoseOMM/babyWeight)*100;
+        }
+        infantRelatedDataList.push(infantRelatedData)
 
-    }
+      }
     return infantRelatedDataList;
   }
 
