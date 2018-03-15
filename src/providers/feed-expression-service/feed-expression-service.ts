@@ -287,6 +287,15 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
     return promise;
   }
 
+  /**
+   * This method will return time till first enteral feed as a promise
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param babyCode
+   * @param deliveryDate
+   * @param deliveryTime
+   */
   getTimeTillFirstEnteralFeed(babyCode: string,deliveryDate: string,deliveryTime: string): Promise<any>{
     let promise = new Promise<any>((resolve,reject)=>{
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)

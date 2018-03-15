@@ -61,7 +61,7 @@ export class MyApp {
   /**
    * This function will be called when a user clicks on the sync button of the side menu.
    * @author Naseem Akhtar (naseem@sdrc.co.in)
-   * 
+   *
    */
   prepareForSync(){
     this.messageProvider.showLoader("Syncing, please wait...");
