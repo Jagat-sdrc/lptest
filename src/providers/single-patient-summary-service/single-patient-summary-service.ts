@@ -35,7 +35,9 @@ export class SinglePatientSummaryServiceProvider {
     createdDate: null,
     updatedDate: null,
     createdBy: null,
-    updatedBy: null
+    updatedBy: null,
+    deliveryDate: null,
+    dischargeDate: null
   };
   typeDetails: ITypeDetails[] = [];
 
@@ -145,7 +147,13 @@ export class SinglePatientSummaryServiceProvider {
 
 
         for (let index = 0; index < dates.length; index++) {
-          let motherRelatedData: IMotherRelatedData;
+          let motherRelatedData: IMotherRelatedData = {
+            date: null,
+            expAndBfEpisodPerday: null,
+            ofWhichBf: null,
+            totalDailyVolumn: null,
+            nightExp: null
+          };
           motherRelatedData.date = dates[index];
 
           if(expressions != null){
@@ -276,6 +284,8 @@ export class SinglePatientSummaryServiceProvider {
   setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]){
     console.log('sucess babyDetails')
 
+    this.babyBasicDetails.deliveryDate = babyDetails.dischargeDate;
+    this.babyBasicDetails.dischargeDate = babyDetails.dischargeDate;
     this.babyBasicDetails.admissionDateForOutdoorPatients = babyDetails.admissionDateForOutdoorPatients;
     this.babyBasicDetails.babyAdmittedTo = babyDetails.babyAdmittedTo != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
     this.babyBasicDetails.babyCode = babyDetails.babyCode;

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
 
 /**
  * Generated class for the MotherRelatedPage page.
@@ -15,11 +16,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MotherRelatedPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  motherRelatedDataList: IMotherRelatedData[];
+  babyDetails: IBabyBasicDetails;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public spsService: SinglePatientSummaryServiceProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MotherRelatedPage');
+  ngOnInit(){
+    this.babyDetails = this.spsService.getBabyDetails();
+    this.getMotherRelatedDataList();
+  }
+
+  async getMotherRelatedDataList(){
+    this.motherRelatedDataList = await this.spsService.getMotherRelatedData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode);
   }
 
 }

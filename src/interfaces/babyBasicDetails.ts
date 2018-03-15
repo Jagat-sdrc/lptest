@@ -23,4 +23,6 @@ interface IBabyBasicDetails{
     updatedDate: string;
     createdBy: string;
     updatedBy: string;
+    deliveryDate: string;
+    dischargeDate: string;
 }
