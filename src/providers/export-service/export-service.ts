@@ -34,9 +34,6 @@ export class ExportServiceProvider {
     let result = await this.createFolderAndFile()
     if (result)
       await this.writeDataToFile()
-
-
-
   }
 
   /**
@@ -55,12 +52,12 @@ export class ExportServiceProvider {
       data: data
     }
 
-    data.push(await this.getPatients())
-    data.push(await this.getBFExpressions())
-    data.push(await this.getBFSPs())
-    data.push(await this.getFeedExpressions())
-    data.push(await this.getBFPDs())
-    data.push(await this.getUsers())
+    data = await this.getPatients(data)
+    data = await this.getBFExpressions(data)
+    data = await this.getBFSPs(data)
+    data = await this.getFeedExpressions(data)
+    data = await this.getBFPDs(data)
+    data = await this.getUsers(data)
 
     this.dataToExport.data = data;
   }
@@ -78,25 +75,13 @@ export class ExportServiceProvider {
   async createFolderAndFile(): Promise<boolean> {
 
     try {
-
-
       this.folder_name = ConstantProvider.appFolderName;
-      this.file_name = 'Lactation ' + this.datePipe.transform(new Date(), 'dd-MM-yyyy HHmm') + ".csv"
-
-
-      //checking folder existance
-      let folderExists: boolean = await this.file.checkDir(this.file.externalRootDirectory, this.folder_name)
-      if (!folderExists) {
-
-        // folder not present, creating new folder
-        await this.file.createDir(this.file.externalRootDirectory, this.folder_name, false)
-      }
+      this.file_name = 'Lactation ' + this.datePipe.transform(new Date(), 'dd-MM-yyyy HHmm') + ".csv"    
 
       //creating file       
       await this.file.createFile(this.file.externalRootDirectory + "/" + this.folder_name, this.file_name, true)
       return true
     } catch (err) {
-      console.log(err)
       this.messageService.showErrorToast(ConstantProvider.messages.couldNotCreateFile)
       return false
     }
@@ -136,9 +121,8 @@ export class ExportServiceProvider {
    * @since 1.2.0
    * @author Ratikanta
    */
-  async getPatients() {
+  async getPatients(data: any[]) {
 
-    let data: any[] = []
 
     //setting header
     let row: any[] = []
@@ -152,6 +136,13 @@ export class ExportServiceProvider {
     //getting data from database
     let patients: IPatient[] = await this.storage.get(ConstantProvider.dbKeyNames.patients);
     if (patients != null) {
+
+      //set headers
+      row = []
+      row.push('Baby ID')
+      row.push('Baby ID by hospital')
+      //need to right all the columns
+
       //Looping over patients and setting it in data
       patients.forEach(patient => {
         row = []
@@ -178,9 +169,8 @@ export class ExportServiceProvider {
    * @since 1.2.0
    * @author Ratikanta
    */
-  async getBFExpressions() {
+  async getBFExpressions(data: any[]) {
 
-    let data: any[] = []
 
     //setting header
 
@@ -227,9 +217,8 @@ export class ExportServiceProvider {
    * @since 1.2.0
    * @author Ratikanta
    */
-  async getBFSPs() {
+  async getBFSPs(data: any[]) {
 
-    let data: any[] = []
 
     //setting header
 
@@ -278,9 +267,9 @@ export class ExportServiceProvider {
    * @since 1.2.0
    * @author Ratikanta
    */
-  async getFeedExpressions() {
+  async getFeedExpressions(data: any[]) {
 
-    let data: any[] = []
+    
 
     //setting header
 
@@ -328,9 +317,9 @@ export class ExportServiceProvider {
    * @since 1.2.0
    * @author Ratikanta
    */
-  async getBFPDs() {
+  async getBFPDs(data: any[]) {
 
-    let data: any[] = []
+    
 
 
     //setting header
@@ -379,14 +368,14 @@ export class ExportServiceProvider {
    * @since 1.2.0
    * @author Ratikanta
    */
-  async getUsers() {
+  async getUsers(data: any[]) {
 
 
 
 
 
 
-    let data: any[] = []
+    
 
 
 
