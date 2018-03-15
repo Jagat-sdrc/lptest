@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
 
 /**
  * Generated class for the SpsPage tabs.
@@ -20,8 +21,13 @@ export class SpsPage {
   togetherRoot = 'TogetherPage'
   infantRelatedRoot = 'InfantRelatedPage'
   exclusiveBfRoot = 'ExclusiveBfPage'
+  babyAllDetails: IPatient;
 
+  constructor(public navCtrl: NavController, private navParams: NavParams,
+    public spsService: SinglePatientSummaryServiceProvider) {}
 
-  constructor(public navCtrl: NavController) {}
+  ngOnInit(){
+    this.babyAllDetails = this.navParams.get('babyDetails');
+  }
 
 }

@@ -59,7 +59,7 @@ export class RegisteredPatientPage {
     });
   }
 
-  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string,babyAllDetails: any){
+  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string,babyDetails: any){
     if((this.navParams.get('param') == "RegisteredPatientPage")){
       this.navCtrl.push('BabyDashboardPage',{
         babyCode: babyCode,
@@ -68,7 +68,7 @@ export class RegisteredPatientPage {
       });
     }else{
       this.navCtrl.push('SpsPage',{
-        //babyAllDetails: babyAllDetails,
+        babyDetails: babyDetails
       });
     }
   }

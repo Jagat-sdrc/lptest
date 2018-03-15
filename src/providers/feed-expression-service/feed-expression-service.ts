@@ -301,14 +301,15 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
         if(data !=null){
-          let feedData = (data as IFeed[]).filter(d=>(d.babyCode === babyCode));
+          let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
+            || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
           if(feedData.length > 0){
             let dateOfFeed;
             let timeOfFeed;
               for (let index = 0; index < feedData.length; index++) {
-                if(feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.parenteralEnteral ||
-                  feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOnly ||
-                  feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOral){
+                // if(feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.parenteralEnteral ||
+                //   feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOnly ||
+                //   feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOral){
                   dateOfFeed = feedData[index].dateOfFeed;
                   timeOfFeed = feedData[index].timeOfFeed;
 
@@ -335,12 +336,12 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
                   console.log("feed Time difference : "+hours+":"+minutes);
                   resolve(hours+":"+minutes)
                   break;
-                }else{
-                  resolve("")
-                }
+                // }else{
+                //   resolve("")
+                // }
               }
             }else{
-              resolve("")
+              resolve()
             }
         }
       })

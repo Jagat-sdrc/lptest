@@ -6,6 +6,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { DatePipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
+import { FeedExpressionServiceProvider } from '../feed-expression-service/feed-expression-service';
 
 /*
   Generated class for the SinglePatientSummaryServiceProvider provider.
@@ -16,7 +17,30 @@ import { ConstantProvider } from '../constant/constant';
 @Injectable()
 export class SinglePatientSummaryServiceProvider {
 
-  constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage) {
+  babyBasicDetails: IBabyBasicDetails = {
+    babyCode: null,
+    gestationalAgeInWeek: null,
+    deliveryMethod: null,
+    inpatientOrOutPatient: null,
+    parentsInformedDecision: null,
+    timeTillFirstExpression: null,
+    timeTillFirstEnteralFeed: null,
+    admissionDateForOutdoorPatients: null,
+    mothersPrenatalIntent: null,
+    compositionOfFirstEnteralFeed: null,
+    babyAdmittedTo: null,
+    reasonForAdmission: null,
+    timeSpentInNicu: null,
+    timeSpentInHospital: null,
+    createdDate: null,
+    updatedDate: null,
+    createdBy: null,
+    updatedBy: null
+  };
+  typeDetails: ITypeDetails[] = [];
+
+  constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage,
+    private feedExpressionService: FeedExpressionServiceProvider) {
   }
 
   /**
@@ -247,6 +271,47 @@ export class SinglePatientSummaryServiceProvider {
 
     }
     return infantRelatedDataList;
+  }
+
+  setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]){
+    console.log('sucess babyDetails')
+
+    this.babyBasicDetails.admissionDateForOutdoorPatients = babyDetails.admissionDateForOutdoorPatients;
+    this.babyBasicDetails.babyAdmittedTo = babyDetails.babyAdmittedTo != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
+    this.babyBasicDetails.babyCode = babyDetails.babyCode;
+    this.babyBasicDetails.compositionOfFirstEnteralFeed = 0;
+    // this.babyBasicDetails.createdBy
+    // this.babyBasicDetails.createdDate
+    this.babyBasicDetails.deliveryMethod = babyDetails.deliveryMethod != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.deliveryMethod)].name : null;
+    this.babyBasicDetails.gestationalAgeInWeek = babyDetails.gestationalAgeInWeek;
+    this.babyBasicDetails.inpatientOrOutPatient = babyDetails.inpatientOrOutPatient != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.inpatientOrOutPatient)].name : null;
+    this.babyBasicDetails.mothersPrenatalIntent = babyDetails.mothersPrenatalIntent != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.mothersPrenatalIntent)].name : null;
+    this.babyBasicDetails.parentsInformedDecision = babyDetails.parentsKnowledgeOnHmAndLactation != null ? typeDetails[typeDetails.findIndex(d => d.id === babyDetails.parentsKnowledgeOnHmAndLactation)].name : null;
+
+    let x = babyDetails.nicuAdmissionReason != null ? babyDetails.nicuAdmissionReason.toString().split(',') : null;
+    if(babyDetails.nicuAdmissionReason != null){
+      for (let index = 0; index < x.length; index++) {
+        this.babyBasicDetails.reasonForAdmission += typeDetails[typeDetails.findIndex(d => d.id === +x[index])].name + ",";
+      }
+      this.babyBasicDetails.reasonForAdmission = this.babyBasicDetails.reasonForAdmission.slice(0, this.babyBasicDetails.reasonForAdmission.length - 1);
+    }
+
+    this.babyBasicDetails.timeSpentInHospital = null
+    this.babyBasicDetails.timeSpentInNicu = null
+
+    this.feedExpressionService.getTimeTillFirstEnteralFeed(babyDetails.babyCode,babyDetails.deliveryDate,babyDetails.deliveryTime)
+      .then(data=>{
+        if(data){
+          this.babyBasicDetails.timeTillFirstEnteralFeed  = data
+        }
+      })
+    
+    this.babyBasicDetails.timeTillFirstExpression = babyDetails.timeTillFirstExpressionInHour + ':' + babyDetails.timeTillFirstExpressionInMinute;
+    return this.babyBasicDetails;
+  }
+
+  getBabyDetails(){
+    return this.babyBasicDetails
   }
 
 }
