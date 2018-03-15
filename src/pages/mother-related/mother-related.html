@@ -14,9 +14,22 @@
 
 
 <ion-content padding>
-  <ion-list>
+  <ion-grid margin-top>
+    <ion-row class="sps-mother-related-header">
+      <ion-col col-1>Day</ion-col> <ion-col col-2>Date</ion-col>
+      <ion-col col-2>Exp & BF epd / day</ion-col> <ion-col col-2>Of which BF</ion-col>
+      <ion-col col-3>Total daily vol.(ml)</ion-col> <ion-col col-2>Night exp(2200 - 0400)</ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">
+      <ion-col col-1>{{i+1}}</ion-col> <ion-col col-2>{{motherRelatedItem.date}}</ion-col>
+      <ion-col col-2>{{motherRelatedItem.expAndBfEpisodPerday}}</ion-col> <ion-col col-2>{{motherRelatedItem.ofWhichBf}}</ion-col>
+      <ion-col col-3>{{motherRelatedItem.totalDailyVolumn}}</ion-col> <ion-col col-2>{{motherRelatedItem.nightExp}}</ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <ion-list>
     <ion-item *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">{{i+1}} , {{motherRelatedItem.date}},{{motherRelatedItem.expAndBfEpisodPerday}} ,
       {{motherRelatedItem.ofWhichBf}} , {{motherRelatedItem.totalDailyVolumn}} , {{motherRelatedItem.nightExp}}
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 </ion-content>

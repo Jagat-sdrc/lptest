@@ -77,7 +77,7 @@ export class SinglePatientSummaryPage {
 
     this.getMotherRelatedDataList();
     this.getTogetherDataList();
-    this.getInfantRelated();
+    // this.getInfantRelated();
   }
 
   async getMotherRelatedDataList(){
@@ -88,9 +88,9 @@ export class SinglePatientSummaryPage {
     this.togetherDataList = await this.spsService.getTogetherData(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate,this.babyAllDetails.babyCode);
   }
 
-  async getInfantRelated(){
-    this.infantRelatedDataList = await this.spsService.getInfantRelatedData(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate,this.babyAllDetails.babyCode);
-  }
+  // async getInfantRelated(){
+  //   this.infantRelatedDataList = await this.spsService.getInfantRelatedData(this.babyAllDetails.deliveryDate,this.babyAllDetails.dischargeDate,this.babyAllDetails.babyCode);
+  // }
 
 
 
