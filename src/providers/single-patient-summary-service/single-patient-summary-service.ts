@@ -281,12 +281,15 @@ export class SinglePatientSummaryServiceProvider {
     return infantRelatedDataList;
   }
 
+  //Basic Baby Detail Code starts here
+
+
   /**
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @param babyDetails - Registration details of baby which the user has selected
    * @param typeDetails - to fetch the dropdown options
    */
-  setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]){
+  setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]) {
     this.babyBasicDetails.deliveryDate = babyDetails.deliveryDate;
     this.babyBasicDetails.dischargeDate = babyDetails.dischargeDate;
     this.babyBasicDetails.admissionDateForOutdoorPatients = babyDetails.admissionDateForOutdoorPatients;
@@ -350,6 +353,42 @@ export class SinglePatientSummaryServiceProvider {
 
   getTypeDetails() {
     return this.typeDetails
+  }
+
+  // Exclusive BF code starts from here.
+
+  /**
+   * This method will structure the data coming in for display in the exclusive breastfeed page
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @param bfpdList - list of bf that can be captured after discharge
+   * @param bfpdBabyData - no of records for the selected child or baby
+   */
+  fetchSpsExclusiveBfData(bfpdList: ITypeDetails[], bfpdBabyData: IBFPD[]) {
+    let exclusiveBfList: IExclusiveBf[] = [];
+    let typeDetails = this.getTypeDetails();
+    if(bfpdBabyData.length > 0){
+      bfpdList.forEach(a => {
+        let b: IBFPD = bfpdBabyData.find(c => c.timeOfBreastFeeding === a.id)
+        let c: IExclusiveBf = {
+          name: a.name,
+          date: b != undefined ? b.dateOfBreastFeeding : null,
+          status: (b != undefined && b.breastFeedingStatus != null)
+            ? typeDetails.find(d => d.id === b.breastFeedingStatus).name : null
+        }
+        exclusiveBfList.push(c);
+      })
+    }else{
+      bfpdList.forEach(a => {
+        let b: IExclusiveBf = {
+          name: a.name,
+          date: null,
+          status: null
+        }
+        exclusiveBfList.push(b);
+      })
+    }
+
+    return exclusiveBfList;
   }
 
 }
