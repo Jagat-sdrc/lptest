@@ -32,4 +32,12 @@ export class BasicPage {
       });
   }
 
+  getBgColorForTypeOfPatient(){
+    if(this.babyDetails.inpatientOrOutPatient != null 
+      && this.babyDetails.inpatientOrOutPatient != 'Inpatient')
+      return 'red';
+    // else
+    //   return 'white';
+  }
+
 }

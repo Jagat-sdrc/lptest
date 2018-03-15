@@ -287,7 +287,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param typeDetails - to fetch the dropdown options
    */
   setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]){
-    this.babyBasicDetails.deliveryDate = babyDetails.dischargeDate;
+    this.babyBasicDetails.deliveryDate = babyDetails.deliveryDate;
     this.babyBasicDetails.dischargeDate = babyDetails.dischargeDate;
     this.babyBasicDetails.admissionDateForOutdoorPatients = babyDetails.admissionDateForOutdoorPatients;
     this.babyBasicDetails.babyAdmittedTo = (babyDetails.babyAdmittedTo != null && babyDetails.babyAdmittedTo.toString() != '') ?
