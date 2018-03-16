@@ -64,13 +64,13 @@ export class SinglePatientSummaryPage {
         }
         this.nicuAdmissionReason = this.nicuAdmissionReason.slice(0,this.nicuAdmissionReason.length - 1);
       }
-      this.feedExpressionServiceProvider.getTimeTillFirstEnteralFeed(this.babyAllDetails.babyCode,this.babyAllDetails.deliveryDate,
-      this.babyAllDetails.deliveryTime)
-      .then(data=>{
-        if(data != ""){
-          this.tillTillFirstEnteralFeed = data
-        }
-      })
+      // this.feedExpressionServiceProvider.getTimeTillFirstEnteralFeed(this.babyAllDetails.babyCode,this.babyAllDetails.deliveryDate,
+      // this.babyAllDetails.deliveryTime)
+      // .then(data=>{
+      //   if(data != ""){
+      //     this.tillTillFirstEnteralFeed = data
+      //   }
+      // })
     }, err => {
       this.messageService.showErrorToast(err)
     });

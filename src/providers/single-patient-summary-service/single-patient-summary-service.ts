@@ -356,7 +356,7 @@ export class SinglePatientSummaryServiceProvider {
     this.babyBasicDetails.babyAdmittedTo = (babyDetails.babyAdmittedTo != null && babyDetails.babyAdmittedTo.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
     this.babyBasicDetails.babyCode = babyDetails.babyCode;
-    this.babyBasicDetails.compositionOfFirstEnteralFeed = 0;
+    
     // this.babyBasicDetails.createdBy
     // this.babyBasicDetails.createdDate
     this.babyBasicDetails.deliveryMethod = (babyDetails.deliveryMethod != null && babyDetails.deliveryMethod.toString() != '') ?
@@ -381,13 +381,14 @@ export class SinglePatientSummaryServiceProvider {
       this.babyBasicDetails.reasonForAdmission = this.babyBasicDetails.reasonForAdmission.slice(0, this.babyBasicDetails.reasonForAdmission.length - 2);
     }
 
-    this.babyBasicDetails.timeSpentInHospital = null
-    this.babyBasicDetails.timeSpentInNicu = null
-
-    this.feedExpressionService.getTimeTillFirstEnteralFeed(babyDetails.babyCode,babyDetails.deliveryDate,babyDetails.deliveryTime)
+    this.feedExpressionService.getTimeTillFirstEnteralFeed(babyDetails.babyCode,babyDetails.deliveryDate,
+      babyDetails.deliveryTime,babyDetails.dischargeDate)
       .then(data=>{
         if(data){
-          this.babyBasicDetails.timeTillFirstEnteralFeed  = data
+          this.babyBasicDetails.timeTillFirstEnteralFeed  = data.timeTillFirstEnteralFeed;
+          this.babyBasicDetails.compositionOfFirstEnteralFeed = data.compositionOfFirstEnteralFeed;
+          this.babyBasicDetails.timeSpentInHospital = data.timeSpentInHospital;
+          this.babyBasicDetails.timeSpentInNicu = data.timeSpentInNICU;
         }
       })
 

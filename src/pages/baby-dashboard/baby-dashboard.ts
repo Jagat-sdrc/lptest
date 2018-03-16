@@ -23,6 +23,7 @@ export class BabyDashboardPage {
   addPatientPage;
   bfspDateListPage;
   bfPostDischargeMenuPage;
+  babyDetails: IPatient;
 
   paramToExpressionPage: IParamToExpresssionPage;
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -34,6 +35,7 @@ export class BabyDashboardPage {
       .then(data => {
         this.paramToExpressionPage.deliveryDate = data.deliveryDate
         this.paramToExpressionPage.deliveryTime = data.deliveryTime
+        this.babyDetails = data;
       })
       .catch(error => this.messageService.showErrorToast(error))
   }
@@ -64,6 +66,12 @@ export class BabyDashboardPage {
    */
   underConstruction(){
     this.messageService.showErrorToast(ConstantProvider.messages.userConstruction)
+  }
+
+  goToSinglePatientSummary(){
+    this.navCtrl.push('SpsPage',{
+      babyDetails: this.babyDetails
+    });
   }
 
 }

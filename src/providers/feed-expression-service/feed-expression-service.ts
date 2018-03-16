@@ -8,6 +8,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
+import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 
 /**
  * This service will only provide service to Feed component
@@ -296,50 +297,80 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
    * @param deliveryDate
    * @param deliveryTime
    */
-  getTimeTillFirstEnteralFeed(babyCode: string,deliveryDate: string,deliveryTime: string): Promise<any>{
+  getTimeTillFirstEnteralFeed(babyCode: string,deliveryDate: string,deliveryTime: string, dischargeDate: string): Promise<any>{
     let promise = new Promise<any>((resolve,reject)=>{
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
         if(data !=null){
           let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
             || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
+
+          let timeSpentInNicuData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && 
+            (d.locationOfFeeding === ConstantProvider.typeDetailsIds.level1NICU ||
+              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level2SNCU || 
+              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level3NICU) ).length;
+
           if(feedData.length > 0){
+            let dates = [];
+            feedData = new OrderByTimePipe().transform(feedData);
+
             let dateOfFeed;
             let timeOfFeed;
-              for (let index = 0; index < feedData.length; index++) {
-                // if(feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.parenteralEnteral ||
-                //   feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOnly ||
-                //   feedData[index].methodOfFeed == ConstantProvider.typeDetailsIds.enteralOral){
-                  dateOfFeed = feedData[index].dateOfFeed;
-                  timeOfFeed = feedData[index].timeOfFeed;
 
-                  let dayOfA = parseInt(deliveryDate.split('-')[0])
-                  let monthOfA = parseInt(deliveryDate.split('-')[1])
-                  let yearOfA = parseInt(deliveryDate.split('-')[2])
+            dateOfFeed = feedData[feedData.length - 1].dateOfFeed;
+            timeOfFeed = feedData[feedData.length - 1].timeOfFeed;
 
-                  let dayOfB = parseInt(dateOfFeed.split('-')[0])
-                  let monthOfB = parseInt(dateOfFeed.split('-')[1])
-                  let yearOfB = parseInt(dateOfFeed.split('-')[2])
+            let a = deliveryDate.split('-')
+            let b = deliveryTime.split(':')
+            let dateOfA = new Date(+a[2], +a[1]-1, +a[0], +b[0], +b[1])
 
-                  let hourOfA = parseInt(deliveryTime.split(':')[0])
-                  let minuteOfA = parseInt(deliveryTime.split(':')[1])
+            let c = dateOfFeed.split('-')
+            let d = timeOfFeed.split(':')
+            let dateOfB = new Date(+c[2], +c[1]-1, +c[0], +d[0], +d[1])
 
-                  let hourOfB = parseInt(timeOfFeed.split(':')[0])
-                  let minuteOfB = parseInt(timeOfFeed.split(':')[1])
+            let noOfDay = dateOfB.getTime() - dateOfA.getTime()
+            let minutes = ((noOfDay / (1000*60)) % 60);
+            let hours   = parseInt((noOfDay / (1000*60*60)).toString());
 
-                  let dateOfA: Date = new Date(yearOfA, monthOfA, dayOfA, hourOfA, minuteOfA)
-                  let dateOfB: Date = new Date(yearOfB, monthOfB, dayOfB, hourOfB, minuteOfB)
 
-                  let noOfDay = dateOfB.getTime() - dateOfA.getTime()
-                  let minutes = ((noOfDay / (1000*60)) % 60);
-                  let hours   = parseInt((noOfDay / (1000*60*60)).toString());
-                  console.log("feed Time difference : "+hours+":"+minutes);
-                  resolve(hours+":"+minutes)
-                  break;
-                // }else{
-                //   resolve("")
-                // }
-              }
+            let x;
+            let timeInHospital: Date = null;
+            let e = null;
+            if(dischargeDate != null && dischargeDate != ''){
+              x = dischargeDate.split('-');
+              timeInHospital = new Date(+x[2],+x[1]-1,+x[0], 0, 0);
+            }
+
+            if(timeInHospital != null)
+              e = timeInHospital.valueOf() - dateOfA.valueOf();
+                    
+
+                 
+
+                  //Calculating composition of first enteral feed.
+
+                  let compositionOfFirstEf = '';
+                  if(feedData[feedData.length - 1].ommVolume)
+                    compositionOfFirstEf += 'OMM, '
+                  if(feedData[feedData.length - 1].dhmVolume)
+                    compositionOfFirstEf += 'DHM, '
+                  if(feedData[feedData.length - 1].formulaVolume)
+                    compositionOfFirstEf += 'Formula, '
+                  if(feedData[feedData.length - 1].animalMilkVolume)
+                    compositionOfFirstEf += 'Animal Milk, '
+                  if(feedData[feedData.length - 1].otherVolume)
+                    compositionOfFirstEf += 'Other, '
+
+                  let result = {
+                    timeTillFirstEnteralFeed: hours+":"+minutes,
+                    compositionOfFirstEnteralFeed: compositionOfFirstEf.slice(0, compositionOfFirstEf.length-2),
+                    timeSpentInNICU: timeSpentInNicuData > 0 ? timeSpentInNicuData : null,
+                    timeSpentInHospital: e
+                  }
+
+                  resolve(result)
+                  // break;
+              // }
             }else{
               resolve()
             }
@@ -349,4 +380,5 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
     })
     return promise
   }
+
 }
