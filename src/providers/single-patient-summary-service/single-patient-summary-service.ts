@@ -126,7 +126,6 @@ export class SinglePatientSummaryServiceProvider {
         var nextDay = new Date(myDates);
         deliveryDate = this.datePipe.transform(nextDay.setDate(myDates.getDate()+1),"dd-MM-yyyy")
       }
-      console.log(dates);
      return dates;
   }
 
@@ -182,6 +181,8 @@ export class SinglePatientSummaryServiceProvider {
       }
       return motherRelatedDataList;
   }
+
+  //Together Detail Code starts here
 
   /**
    * This method will return all together data of sps
@@ -267,6 +268,8 @@ export class SinglePatientSummaryServiceProvider {
       }
       return togetherDataList;
   }
+
+  //Infant related Detail Code starts here
 
   /**
    * This method will return all infant related data of sps
@@ -380,7 +383,7 @@ export class SinglePatientSummaryServiceProvider {
       if(dailyDoseOMM == 0 && sumofTotalDailyfeed == 0){
         infantRelatedData.percentageOMM = "-";
       }else if(dailyDoseOMM == 0 && sumofTotalDailyfeed > 0){
-        infantRelatedData.percentageOMM = "";
+        infantRelatedData.percentageOMM = null;
       }else{
         infantRelatedData.percentageOMM = ((dailyDoseOMM/sumofTotalDailyfeed)*100).toString();
       }
@@ -388,7 +391,7 @@ export class SinglePatientSummaryServiceProvider {
       if(dailyDHM == 0 && sumofTotalDailyfeed == 0){
         infantRelatedData.percentageDHM = "-";
       }else if(dailyDHM == 0 && sumofTotalDailyfeed > 0){
-        infantRelatedData.percentageDHM = "";
+        infantRelatedData.percentageDHM = null;
       }else{
         infantRelatedData.percentageDHM = ((dailyDHM/sumofTotalDailyfeed)*100).toString();
       }
@@ -396,7 +399,7 @@ export class SinglePatientSummaryServiceProvider {
       if(dailyFormula == 0 && sumofTotalDailyfeed == 0){
         infantRelatedData.percentageFormula = "-";
       }else if(dailyFormula == 0 && sumofTotalDailyfeed > 0){
-        infantRelatedData.percentageFormula = "";
+        infantRelatedData.percentageFormula = null;
       }else{
         infantRelatedData.percentageFormula = ((dailyFormula/sumofTotalDailyfeed)*100).toString();
       }
@@ -404,7 +407,7 @@ export class SinglePatientSummaryServiceProvider {
       if(dailyAnimalMilk == 0 && sumofTotalDailyfeed == 0){
         infantRelatedData.percentageAnimalMilk = "-";
       }else if(dailyAnimalMilk == 0 && sumofTotalDailyfeed > 0){
-        infantRelatedData.percentageAnimalMilk = "";
+        infantRelatedData.percentageAnimalMilk = null;
       }else{
         infantRelatedData.percentageAnimalMilk = ((dailyAnimalMilk/sumofTotalDailyfeed)*100).toString();
       }
@@ -412,7 +415,7 @@ export class SinglePatientSummaryServiceProvider {
       if(dailyOther == 0 && sumofTotalDailyfeed == 0){
         infantRelatedData.percentageOther = "-";
       }else if(dailyOther == 0 && sumofTotalDailyfeed > 0){
-        infantRelatedData.percentageOther = "";
+        infantRelatedData.percentageOther = null;
       }else{
         infantRelatedData.percentageOther = ((dailyOther/sumofTotalDailyfeed)*100).toString();
       }
@@ -440,7 +443,7 @@ export class SinglePatientSummaryServiceProvider {
     this.babyBasicDetails.babyAdmittedTo = (babyDetails.babyAdmittedTo != null && babyDetails.babyAdmittedTo.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
     this.babyBasicDetails.babyCode = babyDetails.babyCode;
-    
+
     // this.babyBasicDetails.createdBy
     // this.babyBasicDetails.createdDate
     this.babyBasicDetails.deliveryMethod = (babyDetails.deliveryMethod != null && babyDetails.deliveryMethod.toString() != '') ?
