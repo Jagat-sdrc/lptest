@@ -1,8 +1,5 @@
 <!--
-  Generated template for the MotherRelatedPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
+  @author - Naseem Akhtar
 -->
 <ion-header>
 
@@ -22,11 +19,13 @@
     </ion-row>
 
     <ion-row *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">
-      <ion-col col-1>{{i+1}}</ion-col> <ion-col col-2>{{motherRelatedItem.date}}</ion-col>
-      <ion-col col-2 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.expAndBfEpisodePerday)}">{{motherRelatedItem.expAndBfEpisodePerday}}</ion-col>
-      <ion-col col-2 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.ofWhichBf)}">{{motherRelatedItem.ofWhichBf}}</ion-col>
-      <ion-col col-3 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.totalDailyVolumn)}">{{motherRelatedItem.totalDailyVolumn}}</ion-col>
-      <ion-col col-2 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.nightExp)}">{{motherRelatedItem.nightExp}}</ion-col>
+      <ion-col col-1>{{i+1}}</ion-col> 
+      <ion-col col-2>{{motherRelatedItem.date}}</ion-col>
+      <ion-col col-2 [ngClass]="getBackgroundColor(motherRelatedItem.expAndBfEpisodePerday)">{{motherRelatedItem.expAndBfEpisodePerday}}</ion-col>
+      <ion-col col-2 [ngClass]="getBackgroundColor(motherRelatedItem.ofWhichBf)">{{motherRelatedItem.ofWhichBf}}</ion-col>
+      <ion-col col-3 [ngClass]="getBackgroundColor(motherRelatedItem.totalDailyVolume)">{{motherRelatedItem.totalDailyVolume}}</ion-col>
+      <ion-col col-2 [ngClass]="getBackgroundColor(motherRelatedItem.nightExp)">{{motherRelatedItem.nightExp}}</ion-col>
+      <!-- <ion-col *ngIf="i === 7">Come to volume: Yes</ion-col> -->
     </ion-row>
   </ion-grid>
 </ion-content>

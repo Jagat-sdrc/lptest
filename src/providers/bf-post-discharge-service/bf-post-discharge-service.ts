@@ -193,21 +193,21 @@ export class BfPostDischargeServiceProvider {
     return promise;
   }
 
-  private getBfPd(babyCode: string, timeOfBf: number): IBFPD{
-    let bfpd : IBFPD = {
-      babyCode: babyCode,
-      dateOfBreastFeeding: null,
-      id: null,
-      isSynced: false,
-      breastFeedingStatus: null,
-      syncFailureMessage: null,
-      timeOfBreastFeeding: timeOfBf,
-      userId: this.userService.getUser().email,
-      createdDate: null,
-      updatedDate: null
-    }
-    return bfpd;
-  }
+  // private getBfPd(babyCode: string, timeOfBf: number): IBFPD{
+  //   let bfpd : IBFPD = {
+  //     babyCode: babyCode,
+  //     dateOfBreastFeeding: null,
+  //     id: null,
+  //     isSynced: false,
+  //     breastFeedingStatus: null,
+  //     syncFailureMessage: null,
+  //     timeOfBreastFeeding: timeOfBf,
+  //     userId: this.userService.getUser().email,
+  //     createdDate: null,
+  //     updatedDate: null
+  //   }
+  //   return bfpd;
+  // }
 
   /** 
    * @author - Naseem Akhtar

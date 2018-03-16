@@ -7,6 +7,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { FeedExpressionServiceProvider } from '../feed-expression-service/feed-expression-service';
+import { OrderByTimeExpressionFromPipe } from '../../pipes/order-by-time-expression-from/order-by-time-expression-from';
 
 /*
   Generated class for the SinglePatientSummaryServiceProvider provider.
@@ -138,73 +139,133 @@ export class SinglePatientSummaryServiceProvider {
    * @param dischargeDate
    */
   async getMotherRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
+      // getting dates between delivery date and discharge date(if available) / current date
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
+
+      // fetching all breastfeed expressions
       let bfExpressions: IBFExpression[] = await this.storage.get(ConstantProvider.dbKeyNames.bfExpressions);
       let expressions: IBFExpression[] = [];
       let motherRelatedDataList : IMotherRelatedData[] = [];
+
+      //checking if expression available in the application, then find expressions for the selected baby.
       if(bfExpressions != null && bfExpressions.length > 0)
         expressions = bfExpressions.filter(d => d.babyCode === babyCode)
 
+      /**
+       * iterating through each date between delivery date and 
+       * discharge date(if available) / current date
+       */
       for (let index = 0; index < dates.length; index++) {
-        let milkComeInForSingleDay = 0
+        let milkComeInForSingleDay = false;
         let motherRelatedData: IMotherRelatedData = {
           date: null,
           expAndBfEpisodePerday: null,
           ofWhichBf: null,
-          totalDailyVolumn: null,
+          totalDailyVolume: null,
           nightExp: null
         };
         motherRelatedData.date = dates[index];
 
+        //if length = 0, then set all values to '-'
         if(expressions.length > 0) {
+          /**
+           *finding expressions for a particular date and baby 
+           *if no expression found for that particular date then set all the mother 
+           *related values to '-'
+           */
           let expressionByDate: IBFExpression[] = expressions.filter(d =>d.dateOfExpression === dates[index])
           if(expressionByDate.length > 0) {
+            
+            // ordering all the records, because we have to check consecutive records.
+            expressionByDate = new OrderByTimeExpressionFromPipe().transform(expressionByDate)
             motherRelatedData.expAndBfEpisodePerday =  String(expressionByDate.length)
 
-            let noOfBfExpression = expressionByDate.filter(d => d.methodOfExpression == ConstantProvider.typeDetailsIds.breastfeed).length
+            let totalVolumeMilk = 0
+            let nightExpressionCount = 0
 
-            // if(noOfBfExpression > 0) {
-              motherRelatedData.ofWhichBf = String(noOfBfExpression)
-            // }
-
-            let totalExpression = expressionByDate
-            let totalVolumeMilk = 0;
-            let count = 0;
-            for (let i = 0; i < totalExpression.length; i++) {
-              if(totalExpression[i].volOfMilkExpressedFromLR != null) {
-                totalVolumeMilk = Number(totalExpression[i].volOfMilkExpressedFromLR) + totalVolumeMilk;
-
-                if(index <= 3 && totalExpression[i].volOfMilkExpressedFromLR > 20)
-                  milkComeInForSingleDay++
-              }
-
-              let currentTime = totalExpression[i].timeOfExpression;
-              let hourCurrent = parseInt(currentTime.split(':')[0])
-              if(hourCurrent > 21 || hourCurrent < 5){
-                count++
+            /**
+             * checking if not the last record, then continue.
+             * This iteraton is to calculate the expressions that happened next
+             * day morning before 5 am.
+             */
+            if(dates.length - (index+1) > 0){
+              let nextDayExpressions = expressions.filter(d =>d.dateOfExpression === dates[index+1])
+              if(nextDayExpressions.length > 0){
+                nextDayExpressions.forEach(d => {
+                  let nextDayHour = parseInt(d.timeOfExpression.split(':')[0])
+                  if(nextDayHour < 5)
+                    nightExpressionCount++
+                })
               }
             }
 
-            if(index <= 3 && milkComeInForSingleDay >= 3)
-              motherRelatedData.totalDailyVolumn = 'Yes'
-            else if(index <= 3 && milkComeInForSingleDay < 3)
-              motherRelatedData.totalDailyVolumn = 'No'
-            else
-              motherRelatedData.totalDailyVolumn = String(totalVolumeMilk)
+            let noOfBfExpression;
+            for (let i = 0; i < expressionByDate.length; i++) {
 
-            motherRelatedData.nightExp = String(count)
+              //calculating no. of breast feed expressions that have occured for that day
+              if(expressionByDate[i].methodOfExpression === ConstantProvider.typeDetailsIds.breastfeed)
+                noOfBfExpression++
+
+              //calculating total volume of milk for a particular day
+              if(expressionByDate[i].volOfMilkExpressedFromLR != null)
+                totalVolumeMilk = Number(expressionByDate[i].volOfMilkExpressedFromLR) + totalVolumeMilk
+
+              /**
+               * Calculating the night expressions that have occured in the present date 
+               * within 22:00 to 23:59 hours
+               */
+              let currentTime = expressionByDate[i].timeOfExpression;
+              let hourCurrent = parseInt(currentTime.split(':')[0])
+              if(hourCurrent > 21){
+                  nightExpressionCount++
+              }
+              
+              /**
+               * The following block of code is to check the first 4 days of record
+               * and compute the logic for come to volume for that particular day.
+               */
+              if(index <= 3 && expressionByDate[i].volOfMilkExpressedFromLR != null && 
+                expressionByDate[i].volOfMilkExpressedFromLR > 20 && !milkComeInForSingleDay
+                && ((expressionByDate.length - (i+1)) > 1)) {
+                  let k = 0
+                  let trueCount = 2
+                  for (let j = i+1; j < expressionByDate.length; j++) {
+                    if(expressionByDate[j].volOfMilkExpressedFromLR === null || 
+                      expressionByDate[j].volOfMilkExpressedFromLR <= 20) {
+                        trueCount--
+                    }
+                    if(k === 1)
+                      break;
+                    k++
+                  }
+                  
+                  if(trueCount === 2)
+                    milkComeInForSingleDay = true
+              }
+            }
+
+            motherRelatedData.ofWhichBf = String(noOfBfExpression)
+
+            if(index <= 3 && milkComeInForSingleDay === true)
+              motherRelatedData.totalDailyVolume = 'Yes'
+            else if(index <= 3 && milkComeInForSingleDay === false)
+              motherRelatedData.totalDailyVolume = 'No'
+            else
+              motherRelatedData.totalDailyVolume = String(totalVolumeMilk)
+
+            motherRelatedData.nightExp = String(nightExpressionCount)
 
           }else {
             motherRelatedData.expAndBfEpisodePerday = '-'
             motherRelatedData.ofWhichBf = '-'
-            motherRelatedData.totalDailyVolumn = '-';
+            motherRelatedData.totalDailyVolume = '-';
             motherRelatedData.nightExp = '-';
           }
 
         }else{
           motherRelatedData.expAndBfEpisodePerday = '-'
           motherRelatedData.ofWhichBf = '-'
-          motherRelatedData.totalDailyVolumn = '-';
+          motherRelatedData.totalDailyVolume = '-';
           motherRelatedData.nightExp = '-';
         }
         motherRelatedDataList.push(motherRelatedData)
@@ -466,26 +527,33 @@ export class SinglePatientSummaryServiceProvider {
 
 
   /**
+   * This service method is called as soon as user taps on single patient summary of any baby.
+   * This service will compute basic data of seleted baby and return it to the basic page for 
+   * rendering. (Basic page of SPS is loaded by default)
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @param babyDetails - Registration details of baby which the user has selected
    * @param typeDetails - to fetch the dropdown options
    */
   setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]) {
+    //initializing the baby details variable
     this.resetBasicBabyDetails();
     this.babyBasicDetails.deliveryDate = babyDetails.deliveryDate;
     this.babyBasicDetails.dischargeDate = babyDetails.dischargeDate;
     this.babyBasicDetails.weight = babyDetails.babyWeight;
     this.babyBasicDetails.admissionDateForOutdoorPatients = babyDetails.admissionDateForOutdoorPatients;
+    
+    //finding the value for the id of baby admitted to in type details array
     this.babyBasicDetails.babyAdmittedTo = (babyDetails.babyAdmittedTo != null && babyDetails.babyAdmittedTo.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
     this.babyBasicDetails.babyCode = babyDetails.babyCode;
 
-    // this.babyBasicDetails.createdBy
-    // this.babyBasicDetails.createdDate
+    //finding delivery method name in type details array
     this.babyBasicDetails.deliveryMethod = (babyDetails.deliveryMethod != null && babyDetails.deliveryMethod.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.deliveryMethod)].name : null;
 
     this.babyBasicDetails.gestationalAgeInWeek = babyDetails.gestationalAgeInWeek;
+
+    //finding inpatient or outpatient in type details array
     this.babyBasicDetails.inpatientOrOutPatient = (babyDetails.inpatientOrOutPatient != null && babyDetails.inpatientOrOutPatient.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.inpatientOrOutPatient)].name : null;
 
@@ -504,6 +572,11 @@ export class SinglePatientSummaryServiceProvider {
       this.babyBasicDetails.reasonForAdmission = this.babyBasicDetails.reasonForAdmission.slice(0, this.babyBasicDetails.reasonForAdmission.length - 2);
     }
 
+    /**
+     * time till first enteral feed can be known by accessing the log feeds for that baby.
+     * hence the feed service is being called and then data is being set.
+     * compositionOfFirstEnteralFeed and time spent in NICU  is also being set
+     */
     this.feedExpressionService.getTimeTillFirstEnteralFeed(babyDetails.babyCode,babyDetails.deliveryDate,
       babyDetails.deliveryTime)
       .then(data=>{
@@ -543,11 +616,19 @@ export class SinglePatientSummaryServiceProvider {
    * @since - 1.0.1
    * If other tabs in the single patient summary need baby details,
    * they can fetch it through this method
+   * baby details is being set when basic page is loaded.
    */
   getBabyDetails() {
     return this.babyBasicDetails
   }
 
+  /**
+   * @author - Naseem Akhtar
+   * @since - 1.0.1
+   * If other tabs in the single patient summary need type details,
+   * they can fetch it through this method
+   * Type details is being set when basic page is loaded.
+   */
   getTypeDetails() {
     return this.typeDetails
   }
@@ -563,6 +644,14 @@ export class SinglePatientSummaryServiceProvider {
   fetchSpsExclusiveBfData(bfpdList: ITypeDetails[], bfpdBabyData: IBFPD[]) {
     let exclusiveBfList: IExclusiveBf[] = [];
     let typeDetails = this.getTypeDetails();
+
+    /**
+     * if data present for, then find the data for particular time frame and set
+     * them accordinlgy.
+     * 
+     * else set null in all the time frame.
+     */
+
     if(bfpdBabyData.length > 0){
       bfpdList.forEach(a => {
         let b: IBFPD = bfpdBabyData.find(c => c.timeOfBreastFeeding === a.id)
@@ -588,6 +677,10 @@ export class SinglePatientSummaryServiceProvider {
     return exclusiveBfList;
   }
 
+  /**
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * resetting basic baby details.
+   */
   resetBasicBabyDetails(){
     this.babyBasicDetails = {
       babyCode: null,

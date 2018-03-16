@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
  * Generated class for the MotherRelatedPage page.
@@ -39,9 +40,9 @@ export class MotherRelatedPage {
   getBackgroundColor(data){
     if(data){
       if(data === '-' || data === 'No')
-        return 'rgb(209, 63, 67)';
+        return ConstantProvider.messages.spsContentColorRed
       else if(data === 'Yes')
-        return 'rgb(34, 179, 105)';
+        return ConstantProvider.messages.spsContentColorGreen
     }
   }
 

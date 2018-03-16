@@ -8,6 +8,6 @@ interface IMotherRelatedData{
   date: string;
   expAndBfEpisodePerday: string;
   ofWhichBf: string;
-  totalDailyVolumn: string;
+  totalDailyVolume: string;
   nightExp: string;
 }

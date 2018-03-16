@@ -21,27 +21,33 @@ export class BasicPage {
     public spsService: SinglePatientSummaryServiceProvider, public messageService: MessageProvider) {
   }
 
-  ngOnInit(){
-    
-  }
 
+  /**
+   * This method will call sps service to compute the baby basic details
+   * @author - Naseem Akhtar - naseem@sdrc.co.in
+   * 
+   */
   ionViewWillEnter(){
+    this.messageService.showLoader("Generating Single  Patient Summary, please wait...")
     this.spsService.fetchTypeDetails()
       .subscribe(data => {
-        this.typeDetails = data;
-        this.babyDetails = this.spsService.setBabyDetails(this.navParams.data, this.typeDetails);
-        console.log(this.babyDetails)
+        this.typeDetails = data
+        this.babyDetails = this.spsService.setBabyDetails(this.navParams.data, this.typeDetails)
+        this.messageService.stopLoader()
       }, err => {
         this.messageService.showErrorToast(err)
-      });
+      })
   }
 
+  /**
+   * This method will decide the colour of individual columns, depending on
+   * their volume.
+   * @author - Naseem Akhtar (naseem@sdrc.in)
+   */
   getBgColorForTypeOfPatient(){
     if(this.babyDetails.inpatientOrOutPatient != null 
       && this.babyDetails.inpatientOrOutPatient != 'Inpatient')
       return 'red';
-    // else
-    //   return 'white';
   }
 
 }

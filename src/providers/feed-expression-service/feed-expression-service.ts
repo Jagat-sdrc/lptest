@@ -289,9 +289,12 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
   }
 
   /**
-   * This method will return time till first enteral feed as a promise
+   * This method will return time till first enteral feed,
+   * compositionOfFirstEnteralFeed and 
+   * timeSpentInNICU as a promise
    *
    * @author Jagat Bandhu
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @since 1.1.0
    * @param babyCode
    * @param deliveryDate
@@ -311,7 +314,6 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
               d.locationOfFeeding === ConstantProvider.typeDetailsIds.level3NICU) ).length;
 
           if(feedData.length > 0){
-            let dates = [];
             feedData = new OrderByTimePipe().transform(feedData);
 
             let dateOfFeed;
