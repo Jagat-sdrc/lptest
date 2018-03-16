@@ -28,8 +28,39 @@ export class InfantRelatedPage {
     this.getInfantRelated();
   }
 
+  /**
+   * This method will get the all infant related data
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   async getInfantRelated(){
     this.infantRelatedDataList = await this.spsService.getInfantRelatedData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode,this.babyDetails.weight);
+  }
+
+  /**
+   * This method will return color to html page based on the value
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param value
+   */
+  getBgColorForDailyOmm(value){
+    if(value != null && value != "-")
+    if(value < 51)
+    return 'red';
+  }
+
+  /**
+   * This method will return color to html page based on the value
+   *
+   * @author Jagat Bandhu Sahoo
+   * @since 1.1.0
+   * @param value
+   */
+  getBgColor(value){
+    if(value != null && value != "-")
+      return 'red';
   }
 
 }

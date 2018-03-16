@@ -32,12 +32,12 @@
 
         <ion-row *ngFor="let infantRelated  of infantRelatedDataList; let i = index">
             <ion-col col-1>{{i+1}}</ion-col> <ion-col col-2>{{infantRelated.date}}</ion-col>
-            <ion-col col-2>{{infantRelated.dailyDoseOMM}}</ion-col>
+            <ion-col col-2 [ngStyle]="{backgroundColor:getBgColorForDailyOmm(infantRelated.dailyDoseOMM)}">{{infantRelated.dailyDoseOMM}}</ion-col>
             <ion-col col-1>{{infantRelated.percentageOMM}}</ion-col>
             <ion-col col-1>{{infantRelated.percentageDHM}}</ion-col>
-            <ion-col col-1>{{infantRelated.percentageFormula}}</ion-col>
-            <ion-col col-1>{{infantRelated.percentageAnimalMilk}}</ion-col>
-            <ion-col col-1>{{infantRelated.percentageOther}}</ion-col>
+            <ion-col col-1 [ngStyle]="{backgroundColor:getBgColor(infantRelated.percentageFormula)}">{{infantRelated.percentageFormula}}</ion-col>
+            <ion-col col-1 [ngStyle]="{backgroundColor:getBgColor(infantRelated.percentageAnimalMilk)}">{{infantRelated.percentageAnimalMilk}}</ion-col>
+            <ion-col col-1 [ngStyle]="{backgroundColor:getBgColor(infantRelated.percentageOther)}">{{infantRelated.percentageOther}}</ion-col>
             <ion-col col-2>{{infantRelated.percentageWeght}}</ion-col>
         </ion-row>
       </ion-grid>

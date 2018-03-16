@@ -28,6 +28,12 @@ export class TogetherPage {
     this.getTogetherDataList();
   }
 
+  /**
+   * This method will get the all together data
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   async getTogetherDataList(){
     this.togetherDataList = await this.spsService.getTogetherData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode);
   }
