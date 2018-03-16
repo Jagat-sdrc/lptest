@@ -9,10 +9,10 @@
 interface IInfantRelated{
   date: string;
   dailyDoseOMM: string;
-  percentageOMM: number;
-  percentageDHM: number;
-  percentageFormula: number;
-  percentageAnimalMilk: number;
-  percentageOther: number;
-  percentageWeght: number;
+  percentageOMM: string;
+  percentageDHM: string;
+  percentageFormula: string;
+  percentageAnimalMilk: string;
+  percentageOther: string;
+  percentageWeght: string;
 }

@@ -269,6 +269,7 @@ export class SinglePatientSummaryServiceProvider {
       let dailyFormula = 0;
       let dailyAnimalMilk = 0;
       let dailyOther = 0;
+      let sumofTotalDailyfeed = 0;
       let latestbabyWeight = babyWeight;
       if(feedDataExpression != null){
 
@@ -317,6 +318,7 @@ export class SinglePatientSummaryServiceProvider {
         dailyOther = Number(otherVolume[i].otherVolume) + dailyOther;
       }
 
+      //checking baby weight
       let weightExp = feedDataExpression.filter(d =>d.dateOfFeed === dates[index]);
       for (let i = 0; i < weightExp.length; i++) {
         if(weightExp[i].babyWeight != null && weightExp[i].babyWeight > 0){
@@ -326,6 +328,12 @@ export class SinglePatientSummaryServiceProvider {
         }
       }
 
+      if(latestbabyWeight > 0){
+        infantRelatedData.percentageWeght = latestbabyWeight.toString();
+      }else{
+        infantRelatedData.percentageWeght = "-";
+      }
+
       if(dailyDoseOMM > 0 && latestbabyWeight != null){
         let dailyDoseOMMRound = this.decimal.transform((dailyDoseOMM/latestbabyWeight)*1000,'1.2-2');
         infantRelatedData.dailyDoseOMM = dailyDoseOMMRound.toString();
@@ -333,8 +341,50 @@ export class SinglePatientSummaryServiceProvider {
         infantRelatedData.dailyDoseOMM = "-";
       }
 
+      sumofTotalDailyfeed = dailyDoseOMM + dailyDHM + dailyFormula + dailyAnimalMilk + dailyOther;
+
+      if(dailyDoseOMM == 0 && sumofTotalDailyfeed == 0){
+        infantRelatedData.percentageOMM = "-";
+      }else if(dailyDoseOMM == 0 && sumofTotalDailyfeed > 0){
+        infantRelatedData.percentageOMM = "";
+      }else{
+        infantRelatedData.percentageOMM = ((dailyDoseOMM/sumofTotalDailyfeed)*100).toString();
       }
-      infantRelatedDataList.push(infantRelatedData)
+
+      if(dailyDHM == 0 && sumofTotalDailyfeed == 0){
+        infantRelatedData.percentageDHM = "-";
+      }else if(dailyDHM == 0 && sumofTotalDailyfeed > 0){
+        infantRelatedData.percentageDHM = "";
+      }else{
+        infantRelatedData.percentageDHM = ((dailyDHM/sumofTotalDailyfeed)*100).toString();
+      }
+
+      if(dailyFormula == 0 && sumofTotalDailyfeed == 0){
+        infantRelatedData.percentageFormula = "-";
+      }else if(dailyFormula == 0 && sumofTotalDailyfeed > 0){
+        infantRelatedData.percentageFormula = "";
+      }else{
+        infantRelatedData.percentageFormula = ((dailyFormula/sumofTotalDailyfeed)*100).toString();
+      }
+
+      if(dailyAnimalMilk == 0 && sumofTotalDailyfeed == 0){
+        infantRelatedData.percentageAnimalMilk = "-";
+      }else if(dailyAnimalMilk == 0 && sumofTotalDailyfeed > 0){
+        infantRelatedData.percentageAnimalMilk = "";
+      }else{
+        infantRelatedData.percentageAnimalMilk = ((dailyAnimalMilk/sumofTotalDailyfeed)*100).toString();
+      }
+
+      if(dailyOther == 0 && sumofTotalDailyfeed == 0){
+        infantRelatedData.percentageOther = "-";
+      }else if(dailyOther == 0 && sumofTotalDailyfeed > 0){
+        infantRelatedData.percentageOther = "";
+      }else{
+        infantRelatedData.percentageOther = ((dailyOther/sumofTotalDailyfeed)*100).toString();
+      }
+    }
+
+    infantRelatedDataList.push(infantRelatedData)
 
     }
     return infantRelatedDataList;
