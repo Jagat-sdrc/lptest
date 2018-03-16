@@ -14,9 +14,29 @@
 
 
 <ion-content padding>
-    <ion-list>
-        <ion-item *ngFor="let infantRelated  of infantRelatedDataList; let i = index">{{i+1}} , {{infantRelated.date}} ,
-          {{infantRelated.dailyDoseOMM}}
-        </ion-item>
-      </ion-list>
+    <ion-grid margin-top text-center>
+        <ion-row class="sps-mother-related-header">
+          <ion-col col-1>Day</ion-col> <ion-col col-2>Date</ion-col>
+          <ion-col col-2>Daily dose of OMM(ml/kg/day)</ion-col>
+          <ion-col col-5>No of Oral care</ion-col>
+          <ion-col col-2>No of NNs</ion-col>
+        </ion-row>
+        <ion-row class="sps-mother-related-header">
+            <ion-col col-1></ion-col> <ion-col col-2></ion-col>
+            <ion-col col-2></ion-col>
+            <ion-col col-1>OMM</ion-col><ion-col col-1>DHM</ion-col>
+            <ion-col col-1>Formula</ion-col><ion-col col-1>Animal Milk</ion-col>
+            <ion-col col-1>Other</ion-col>
+            <ion-col col-2></ion-col>
+          </ion-row>
+
+        <ion-row *ngFor="let infantRelated  of infantRelatedDataList; let i = index">
+            <ion-col col-1>{{i+1}}</ion-col> <ion-col col-2>{{infantRelated.date}}</ion-col>
+            <ion-col col-2>{{infantRelated.dailyDoseOMM}}</ion-col>
+            <ion-col col-1></ion-col><ion-col col-1></ion-col>
+            <ion-col col-1></ion-col><ion-col col-1></ion-col>
+            <ion-col col-1></ion-col>
+            <ion-col col-2></ion-col>
+        </ion-row>
+      </ion-grid>
 </ion-content>

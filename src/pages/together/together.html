@@ -14,10 +14,18 @@
 
 
 <ion-content padding>
-    <ion-list>
-        <ion-item *ngFor="let togetherItem  of togetherDataList; let i = index">{{i+1}} , {{togetherItem.date}} ,
-          {{togetherItem.dailyTotalTimeInKMC}}({{togetherItem.dailyTotalQuantityInKMC}})
-          {{togetherItem.noOfOralCare}} , {{togetherItem.noOfNNS}}
-        </ion-item>
-      </ion-list>
+    <ion-grid margin-top text-center>
+        <ion-row class="sps-mother-related-header">
+          <ion-col col-1>Day</ion-col> <ion-col col-2>Date</ion-col>
+          <ion-col col-4>Daily total time in KMC No of.(total minutes/hours)</ion-col> <ion-col col-3>No of Oral care</ion-col>
+          <ion-col col-2>No of NNs</ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let togetherItem  of togetherDataList; let i = index">
+          <ion-col col-1>{{i+1}}</ion-col> <ion-col col-2>{{togetherItem.date}}</ion-col>
+          <ion-col col-4>{{togetherItem.dailyTotalTimeInKMC}}({{togetherItem.dailyTotalQuantityInKMC}})</ion-col>
+          <ion-col col-3>{{togetherItem.noOfOralCare}} </ion-col>
+          <ion-col col-2>{{togetherItem.noOfNNS}}</ion-col>
+        </ion-row>
+      </ion-grid>
 </ion-content>

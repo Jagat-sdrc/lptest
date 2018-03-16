@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { FeedExpressionServiceProvider } from '../feed-expression-service/feed-expression-service';
@@ -43,7 +43,7 @@ export class SinglePatientSummaryServiceProvider {
   typeDetails: ITypeDetails[] = [];
 
   constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage,
-    private feedExpressionService: FeedExpressionServiceProvider) {
+    private feedExpressionService: FeedExpressionServiceProvider, private decimal: DecimalPipe) {
   }
 
   /**
@@ -265,6 +265,10 @@ export class SinglePatientSummaryServiceProvider {
       }
       infantRelatedData.date = dates[index];
       let dailyDoseOMM = 0;
+      let dailyDHM = 0;
+      let dailyFormula = 0;
+      let dailyAnimalMilk = 0;
+      let dailyOther = 0;
       let latestbabyWeight = babyWeight;
       if(feedDataExpression != null){
 
@@ -277,6 +281,42 @@ export class SinglePatientSummaryServiceProvider {
         dailyDoseOMM = Number(ommVolume[i].ommVolume) + dailyDoseOMM;
       }
 
+      let dhmVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
+      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
+      for (let i = 0; i < dhmVolume.length; i++) {
+        if(dhmVolume[i].dhmVolume != null)
+        dailyDHM = Number(dhmVolume[i].dhmVolume) + dailyDHM;
+      }
+
+      let formulaVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
+      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
+      for (let i = 0; i < formulaVolume.length; i++) {
+        if(formulaVolume[i].formulaVolume != null)
+        dailyFormula = Number(formulaVolume[i].formulaVolume) + dailyFormula;
+      }
+
+      let animalMilkVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
+      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
+      for (let i = 0; i < animalMilkVolume.length; i++) {
+        if(animalMilkVolume[i].animalMilkVolume != null)
+        dailyAnimalMilk = Number(animalMilkVolume[i].animalMilkVolume) + dailyAnimalMilk;
+      }
+
+      let otherVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
+      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
+      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
+      for (let i = 0; i < otherVolume.length; i++) {
+        if(otherVolume[i].otherVolume != null)
+        dailyOther = Number(otherVolume[i].otherVolume) + dailyOther;
+      }
+
       let weightExp = feedDataExpression.filter(d =>d.dateOfFeed === dates[index]);
       for (let i = 0; i < weightExp.length; i++) {
         if(weightExp[i].babyWeight != null && weightExp[i].babyWeight > 0){
@@ -285,8 +325,10 @@ export class SinglePatientSummaryServiceProvider {
           break;
         }
       }
-      if(dailyDoseOMM > 0){
-        infantRelatedData.dailyDoseOMM = ((dailyDoseOMM/latestbabyWeight)*1000).toString();
+
+      if(dailyDoseOMM > 0 && latestbabyWeight != null){
+        let dailyDoseOMMRound = this.decimal.transform((dailyDoseOMM/latestbabyWeight)*1000,'1.2-2');
+        infantRelatedData.dailyDoseOMM = dailyDoseOMMRound.toString();
       }else{
         infantRelatedData.dailyDoseOMM = "-";
       }

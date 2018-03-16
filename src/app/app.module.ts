@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
 import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
 import { FeedDateListServiceProvider } from '../providers/feed-date-list-service/feed-date-list-service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service';
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
@@ -93,7 +93,8 @@ import { SinglePatientSummaryServiceProvider } from '../providers/single-patient
     AppVersion,
     SearchPipe,
     SortPatientPipe,
-    SinglePatientSummaryServiceProvider
+    SinglePatientSummaryServiceProvider,
+    DecimalPipe
   ]
 })
 export class AppModule {}
