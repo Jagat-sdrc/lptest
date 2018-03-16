@@ -199,7 +199,7 @@ export class SinglePatientSummaryServiceProvider {
               }
             }
 
-            let noOfBfExpression;
+            let noOfBfExpression = 0;
             for (let i = 0; i < expressionByDate.length; i++) {
 
               //calculating no. of breast feed expressions that have occured for that day
@@ -602,9 +602,15 @@ export class SinglePatientSummaryServiceProvider {
     }
 
       //checking if time in hour and time in minute are present then only display the time
-    if((babyDetails.timeTillFirstExpressionInHour != null && babyDetails.timeTillFirstExpressionInHour != '') &&
-      (babyDetails.timeTillFirstExpressionInMinute != null && babyDetails.timeTillFirstExpressionInMinute != ''))
-      this.babyBasicDetails.timeTillFirstExpression = babyDetails.timeTillFirstExpressionInHour + ':' + babyDetails.timeTillFirstExpressionInMinute;
+    let tempTimeTillFirstExpHrs = '00'
+    let tempTimeTillFirstExpMin = '00'
+    if(babyDetails.timeTillFirstExpressionInHour != null && babyDetails.timeTillFirstExpressionInHour != '')
+      tempTimeTillFirstExpHrs = babyDetails.timeTillFirstExpressionInHour
+
+    if(babyDetails.timeTillFirstExpressionInMinute != null && babyDetails.timeTillFirstExpressionInMinute != '')
+      tempTimeTillFirstExpMin = babyDetails.timeTillFirstExpressionInMinute
+      
+    this.babyBasicDetails.timeTillFirstExpression = tempTimeTillFirstExpHrs + ':' + tempTimeTillFirstExpMin
 
     this.typeDetails = typeDetails
 

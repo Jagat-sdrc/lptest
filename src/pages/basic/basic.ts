@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
 import { MessageProvider } from '../../providers/message/message';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
  * @author - Naseem Akhtar
@@ -21,6 +22,9 @@ export class BasicPage {
     public spsService: SinglePatientSummaryServiceProvider, public messageService: MessageProvider) {
   }
 
+  ngOnInit(){
+    setTimeout(d => this.messageService.stopLoader(), 2000)
+  }
 
   /**
    * This method will call sps service to compute the baby basic details
@@ -28,12 +32,10 @@ export class BasicPage {
    * 
    */
   ionViewWillEnter(){
-    this.messageService.showLoader("Generating Single  Patient Summary, please wait...")
     this.spsService.fetchTypeDetails()
       .subscribe(data => {
         this.typeDetails = data
         this.babyDetails = this.spsService.setBabyDetails(this.navParams.data, this.typeDetails)
-        this.messageService.stopLoader()
       }, err => {
         this.messageService.showErrorToast(err)
       })
@@ -47,7 +49,15 @@ export class BasicPage {
   getBgColorForTypeOfPatient(){
     if(this.babyDetails.inpatientOrOutPatient != null 
       && this.babyDetails.inpatientOrOutPatient != 'Inpatient')
-      return 'red';
+      return ConstantProvider.messages.spsContentColorRed;
+  }
+
+  getBgColorForTypeOfTimeTillFirstExp(){
+    let timeInHrs = Number(this.babyDetails.timeTillFirstExpression.split(':')[0])
+    if(timeInHrs > 0 && timeInHrs < 7)
+      return 'yellow'
+    else if(timeInHrs > 6)
+      return ConstantProvider.messages.spsContentColorRed
   }
 
 }
