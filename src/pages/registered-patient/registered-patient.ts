@@ -64,7 +64,8 @@ export class RegisteredPatientPage {
       this.navCtrl.push('BabyDashboardPage',{
         babyCode: babyCode,
         babyCodeByHospital: babyCodeHospital,
-        deliveryDate: deliveryDate
+        deliveryDate: deliveryDate,
+        babyDetails: babyDetails
       });
     }else{
       this.navCtrl.push('SpsPage',{

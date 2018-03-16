@@ -8,8 +8,7 @@
  */
 interface ITogetherData{
   date: string;
-  dailyTotalTimeInKMC: number;
-  dailyTotalQuantityInKMC: number;
-  noOfOralCare: number;
-  noOfNNS: number;
+  dailyTotalTimeInKMC: string;
+  noOfOralCare: string;
+  noOfNNS: string;
 }

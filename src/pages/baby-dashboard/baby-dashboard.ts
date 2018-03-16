@@ -27,7 +27,7 @@ export class BabyDashboardPage {
 
   paramToExpressionPage: IParamToExpresssionPage;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {    
+  private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {
   }
 
   ionViewWillEnter(){
@@ -61,7 +61,7 @@ export class BabyDashboardPage {
 
   /**
    * This method will just show the action under construction message
-   * 
+   *
    * @memberof HomePage
    */
   underConstruction(){
