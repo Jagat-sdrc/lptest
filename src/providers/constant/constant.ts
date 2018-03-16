@@ -182,7 +182,9 @@ export class ConstantProvider {
     updateSuccessfull: 'Updated successfully.',
     registeredPage: "registeredPage",
     singlePatientSummary: "singlePageSummarty",
-    pastTime: 'Time before delivery time is not allowed'
+    pastTime: 'Time before delivery time is not allowed',
+    spsContentColorRed: 'sps-content-color-red',
+    spsContentColorGreen: 'sps-content-color-green'
   };
 
 /**

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
  * Generated class for the InfantRelatedPage page.
@@ -48,7 +49,7 @@ export class InfantRelatedPage {
   getBgColorForDailyOmm(value){
     if(value != null && value != "-")
     if(value < 51)
-    return 'red';
+    return ConstantProvider.messages.spsContentColorRed;
   }
 
   /**
@@ -60,7 +61,7 @@ export class InfantRelatedPage {
    */
   getBgColor(value){
     if(value != null && value != "-")
-      return 'red';
+      return ConstantProvider.messages.spsContentColorRed;
   }
 
 }

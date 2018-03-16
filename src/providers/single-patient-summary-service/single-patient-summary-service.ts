@@ -193,7 +193,7 @@ export class SinglePatientSummaryServiceProvider {
               motherRelatedData.totalDailyVolumn = String(totalVolumeMilk)
 
             motherRelatedData.nightExp = String(count)
-            
+
           }else {
             motherRelatedData.expAndBfEpisodePerday = '-'
             motherRelatedData.ofWhichBf = '-'
@@ -250,7 +250,7 @@ export class SinglePatientSummaryServiceProvider {
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc).length;
 
           if(totalTimeInKMC > 0){
-            totalTimeInKMC = totalTimeInKMC.toString();
+            totalTimeInKMC = String(totalTimeInKMC);
           }else{
             totalTimeInKMC = "-";
           }
@@ -264,7 +264,7 @@ export class SinglePatientSummaryServiceProvider {
           }
 
           if(countDailyTotalQuantityInKMC > 0){
-            totalQuantutyInKMC = countDailyTotalQuantityInKMC.toString();
+            totalQuantutyInKMC = String(countDailyTotalQuantityInKMC);
           }else{
             totalQuantutyInKMC = "-"
           }
@@ -280,7 +280,7 @@ export class SinglePatientSummaryServiceProvider {
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.oral).length;
 
           if(noOfOralCareCount > 0){
-            togetherData.noOfOralCare = noOfOralCareCount.toString();
+            togetherData.noOfOralCare = String(noOfOralCareCount);
           }else{
             togetherData.noOfOralCare = "-";
           }
@@ -289,7 +289,7 @@ export class SinglePatientSummaryServiceProvider {
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.nns).length;
 
           if(noOfNNSCount > 0){
-            togetherData.noOfNNS = noOfNNSCount.toString();
+            togetherData.noOfNNS = String(noOfNNSCount);
           }else{
             togetherData.noOfNNS = "-";
           }
@@ -396,14 +396,14 @@ export class SinglePatientSummaryServiceProvider {
       }
 
       if(latestbabyWeight > 0){
-        infantRelatedData.percentageWeght = latestbabyWeight.toString();
+        infantRelatedData.percentageWeght = String(latestbabyWeight);
       }else{
         infantRelatedData.percentageWeght = "-";
       }
 
       if(dailyDoseOMM > 0 && latestbabyWeight != null){
         let dailyDoseOMMRound = this.decimal.transform((dailyDoseOMM/latestbabyWeight)*1000,'1.2-2');
-        infantRelatedData.dailyDoseOMM = dailyDoseOMMRound.toString();
+        infantRelatedData.dailyDoseOMM = String(dailyDoseOMMRound);
       }else{
         infantRelatedData.dailyDoseOMM = "-";
       }
@@ -415,7 +415,8 @@ export class SinglePatientSummaryServiceProvider {
       }else if(dailyDoseOMM == 0 && sumofTotalDailyfeed > 0){
         infantRelatedData.percentageOMM = null;
       }else{
-        infantRelatedData.percentageOMM = ((dailyDoseOMM/sumofTotalDailyfeed)*100).toString();
+        let dailyDoseOMMRound = this.decimal.transform((dailyDoseOMM/sumofTotalDailyfeed)*100,'1.2-2');
+        infantRelatedData.percentageOMM = String(dailyDoseOMMRound);
       }
 
       if(dailyDHM == 0 && sumofTotalDailyfeed == 0){
@@ -423,7 +424,8 @@ export class SinglePatientSummaryServiceProvider {
       }else if(dailyDHM == 0 && sumofTotalDailyfeed > 0){
         infantRelatedData.percentageDHM = null;
       }else{
-        infantRelatedData.percentageDHM = ((dailyDHM/sumofTotalDailyfeed)*100).toString();
+        let dailyDoseDHMRound = this.decimal.transform((dailyDHM/sumofTotalDailyfeed)*100,'1.2-2');
+        infantRelatedData.percentageDHM = String(dailyDoseDHMRound);
       }
 
       if(dailyFormula == 0 && sumofTotalDailyfeed == 0){
@@ -431,7 +433,8 @@ export class SinglePatientSummaryServiceProvider {
       }else if(dailyFormula == 0 && sumofTotalDailyfeed > 0){
         infantRelatedData.percentageFormula = null;
       }else{
-        infantRelatedData.percentageFormula = ((dailyFormula/sumofTotalDailyfeed)*100).toString();
+        let dailyDoseFormulaRound = this.decimal.transform((dailyFormula/sumofTotalDailyfeed)*100,'1.2-2');
+        infantRelatedData.percentageFormula = String(dailyDoseFormulaRound);
       }
 
       if(dailyAnimalMilk == 0 && sumofTotalDailyfeed == 0){
@@ -439,7 +442,8 @@ export class SinglePatientSummaryServiceProvider {
       }else if(dailyAnimalMilk == 0 && sumofTotalDailyfeed > 0){
         infantRelatedData.percentageAnimalMilk = null;
       }else{
-        infantRelatedData.percentageAnimalMilk = ((dailyAnimalMilk/sumofTotalDailyfeed)*100).toString();
+        let dailyDoseAnimalMilkRound = this.decimal.transform((dailyAnimalMilk/sumofTotalDailyfeed)*100,'1.2-2');
+        infantRelatedData.percentageAnimalMilk = String(dailyDoseAnimalMilkRound);
       }
 
       if(dailyOther == 0 && sumofTotalDailyfeed == 0){
@@ -447,7 +451,8 @@ export class SinglePatientSummaryServiceProvider {
       }else if(dailyOther == 0 && sumofTotalDailyfeed > 0){
         infantRelatedData.percentageOther = null;
       }else{
-        infantRelatedData.percentageOther = ((dailyOther/sumofTotalDailyfeed)*100).toString();
+        let dailyDoseOtherRound = this.decimal.transform((dailyOther/sumofTotalDailyfeed)*100,'1.2-2');
+        infantRelatedData.percentageOther = String(dailyDoseOtherRound);
       }
     }
 
@@ -505,7 +510,7 @@ export class SinglePatientSummaryServiceProvider {
         if(data){
           this.babyBasicDetails.timeTillFirstEnteralFeed  = data.timeTillFirstEnteralFeed;
           this.babyBasicDetails.compositionOfFirstEnteralFeed = data.compositionOfFirstEnteralFeed;
-          
+
           this.babyBasicDetails.timeSpentInNicu = data.timeSpentInNICU;
         }
       })
@@ -518,7 +523,7 @@ export class SinglePatientSummaryServiceProvider {
       let tempDischargeDate = new Date(+tempDateSplitter[2],+tempDateSplitter[1]-1,+tempDateSplitter[0]);
       let deliveryDate = new Date(+tempDeliveryDate[2],+tempDeliveryDate[1]-1,+tempDeliveryDate[0])
       let diff = Math.abs(tempDischargeDate.getTime() - deliveryDate.getTime());
-      let diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+      let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
 
       this.babyBasicDetails.timeSpentInHospital = diffDays;
     }

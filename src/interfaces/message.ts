@@ -70,4 +70,6 @@ interface IMessage{
     registeredPage: string;
     singlePatientSummary: string;
     pastTime: string;
+    spsContentColorRed: string;
+    spsContentColorGreen: string;
 }
