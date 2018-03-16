@@ -25,7 +25,7 @@
     <ion-col [navPush]=bfspDateListPage class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">Log breastfeeding supportive practice</div>
     </ion-col>
-    <ion-col [navPush]="feedDateListPage" class="gap" [navParams]="paramToExpressionPage">        
+    <ion-col [navPush]="feedDateListPage" class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">Log feed</div>
     </ion-col>
   </ion-row>
@@ -34,8 +34,7 @@
     <ion-col [navPush]="bfPostDischargeMenuPage" class="gap" [navParams]="paramToExpressionPage">
       <div class="bg-grey">Log breastfeeding post-discharge</div>
     </ion-col>
-    <!-- <ion-col [navPush]="vurnerableBabies" class="gap"> -->
-        <ion-col (click)="underConstruction()" class="gap">
+    <ion-col [navPush]="spsPage" class="gap" [navParams]="paramToSpsPage">
       <div class="bg-grey">Single Patient Summary</div>
     </ion-col>
   </ion-row>

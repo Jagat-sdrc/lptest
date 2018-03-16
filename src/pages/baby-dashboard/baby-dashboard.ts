@@ -23,10 +23,12 @@ export class BabyDashboardPage {
   addPatientPage;
   bfspDateListPage;
   bfPostDischargeMenuPage;
+  spsPage;
 
   paramToExpressionPage: IParamToExpresssionPage;
+  paramToSpsPage;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {    
+  private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {
   }
 
   ionViewWillEnter(){
@@ -44,12 +46,17 @@ export class BabyDashboardPage {
     this.addPatientPage = 'AddPatientPage';
     this.bfspDateListPage = 'BfSupportivePracticeDateListPage';
     this.bfPostDischargeMenuPage = 'BfPostDischargeMenuPage';
+    this.spsPage = 'SpsPage';
 
     this.paramToExpressionPage = {
       babyCode: this.navParams.get("babyCode"),
       babyCodeByHospital: this.navParams.get("babyCodeByHospital"),
       deliveryDate: this.navParams.get('deliveryDate'),
       deliveryTime: null
+    }
+
+    this.paramToSpsPage = {
+      babyDetails: this.navParams.get("babyDetails")
     }
   }
 
@@ -59,7 +66,7 @@ export class BabyDashboardPage {
 
   /**
    * This method will just show the action under construction message
-   * 
+   *
    * @memberof HomePage
    */
   underConstruction(){

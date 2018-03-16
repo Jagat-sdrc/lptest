@@ -204,15 +204,25 @@ export class SinglePatientSummaryServiceProvider {
           let togetherData: ITogetherData = {
             date: null,
             dailyTotalTimeInKMC: null,
-            dailyTotalQuantityInKMC: null,
             noOfOralCare:null,
             noOfNNS: null
           }
           let countDailyTotalQuantityInKMC = 0;
           togetherData.date = dates[index];
+          let totalTimeInKMC;
+          let totalQuantutyInKMC;
+          let noOfOralCareCount;
+          let noOfNNSCount;
           if(bsfpExpression != null){
-          togetherData.dailyTotalTimeInKMC = bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
+
+          totalTimeInKMC = bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc).length;
+
+          if(totalTimeInKMC > 0){
+            totalTimeInKMC = totalTimeInKMC.toString();
+          }else{
+            totalTimeInKMC = "-";
+          }
 
           let dailyTotalTimeInKMC = bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
             && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc);
@@ -221,13 +231,37 @@ export class SinglePatientSummaryServiceProvider {
               countDailyTotalQuantityInKMC = Number(dailyTotalTimeInKMC[index].bfspDuration) + countDailyTotalQuantityInKMC;
             }
           }
-          togetherData.dailyTotalQuantityInKMC = countDailyTotalQuantityInKMC;
 
-          togetherData.noOfOralCare = bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
+          if(countDailyTotalQuantityInKMC > 0){
+            totalQuantutyInKMC = countDailyTotalQuantityInKMC.toString();
+          }else{
+            totalQuantutyInKMC = "-"
+          }
+
+          if(totalTimeInKMC == "-" && totalQuantutyInKMC == "-"){
+            togetherData.dailyTotalTimeInKMC = "-";
+          }else{
+            togetherData.dailyTotalTimeInKMC = totalTimeInKMC+"("+totalQuantutyInKMC+")";
+          }
+
+
+          noOfOralCareCount= bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.oral).length;
 
-          togetherData.noOfNNS = bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
+          if(noOfOralCareCount > 0){
+            togetherData.noOfOralCare = noOfOralCareCount.toString();
+          }else{
+            togetherData.noOfOralCare = "-";
+          }
+
+          noOfNNSCount= bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.nns).length;
+
+          if(noOfNNSCount > 0){
+            togetherData.noOfNNS = noOfNNSCount.toString();
+          }else{
+            togetherData.noOfNNS = "-";
+          }
         }
         togetherDataList.push(togetherData);
       }
