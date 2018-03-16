@@ -6,8 +6,8 @@
 */
 interface IMotherRelatedData{
   date: string;
-  expAndBfEpisodPerday: number;
-  ofWhichBf: number;
-  totalDailyVolumn: number;
-  nightExp: number;
+  expAndBfEpisodePerday: string;
+  ofWhichBf: string;
+  totalDailyVolumn: string;
+  nightExp: string;
 }

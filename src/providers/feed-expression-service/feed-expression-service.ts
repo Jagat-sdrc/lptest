@@ -297,7 +297,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
    * @param deliveryDate
    * @param deliveryTime
    */
-  getTimeTillFirstEnteralFeed(babyCode: string,deliveryDate: string,deliveryTime: string, dischargeDate: string): Promise<any>{
+  getTimeTillFirstEnteralFeed(babyCode: string,deliveryDate: string,deliveryTime: string): Promise<any>{
     let promise = new Promise<any>((resolve,reject)=>{
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
@@ -332,48 +332,30 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
             let minutes = ((noOfDay / (1000*60)) % 60);
             let hours   = parseInt((noOfDay / (1000*60*60)).toString());
 
+            //Calculating composition of first enteral feed.
 
-            let x;
-            let timeInHospital: Date = null;
-            let e = null;
-            if(dischargeDate != null && dischargeDate != ''){
-              x = dischargeDate.split('-');
-              timeInHospital = new Date(+x[2],+x[1]-1,+x[0], 0, 0);
+            let compositionOfFirstEf = '';
+            if(feedData[feedData.length - 1].ommVolume)
+              compositionOfFirstEf += 'OMM, '
+            if(feedData[feedData.length - 1].dhmVolume)
+              compositionOfFirstEf += 'DHM, '
+            if(feedData[feedData.length - 1].formulaVolume)
+              compositionOfFirstEf += 'Formula, '
+            if(feedData[feedData.length - 1].animalMilkVolume)
+              compositionOfFirstEf += 'Animal Milk, '
+            if(feedData[feedData.length - 1].otherVolume)
+              compositionOfFirstEf += 'Other, '
+
+            let result = {
+              timeTillFirstEnteralFeed: hours+":"+minutes,
+              compositionOfFirstEnteralFeed: compositionOfFirstEf.slice(0, compositionOfFirstEf.length-2),
+              timeSpentInNICU: timeSpentInNicuData > 0 ? timeSpentInNicuData : null
             }
 
-            if(timeInHospital != null)
-              e = timeInHospital.valueOf() - dateOfA.valueOf();
-                    
-
-                 
-
-                  //Calculating composition of first enteral feed.
-
-                  let compositionOfFirstEf = '';
-                  if(feedData[feedData.length - 1].ommVolume)
-                    compositionOfFirstEf += 'OMM, '
-                  if(feedData[feedData.length - 1].dhmVolume)
-                    compositionOfFirstEf += 'DHM, '
-                  if(feedData[feedData.length - 1].formulaVolume)
-                    compositionOfFirstEf += 'Formula, '
-                  if(feedData[feedData.length - 1].animalMilkVolume)
-                    compositionOfFirstEf += 'Animal Milk, '
-                  if(feedData[feedData.length - 1].otherVolume)
-                    compositionOfFirstEf += 'Other, '
-
-                  let result = {
-                    timeTillFirstEnteralFeed: hours+":"+minutes,
-                    compositionOfFirstEnteralFeed: compositionOfFirstEf.slice(0, compositionOfFirstEf.length-2),
-                    timeSpentInNICU: timeSpentInNicuData > 0 ? timeSpentInNicuData : null,
-                    timeSpentInHospital: e
-                  }
-
-                  resolve(result)
-                  // break;
-              // }
-            }else{
-              resolve()
-            }
+            resolve(result)
+          }else{
+            resolve()
+          }
         }
       })
 

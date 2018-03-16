@@ -23,13 +23,10 @@
 
     <ion-row *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">
       <ion-col col-1>{{i+1}}</ion-col> <ion-col col-2>{{motherRelatedItem.date}}</ion-col>
-      <ion-col col-2>{{motherRelatedItem.expAndBfEpisodPerday}}</ion-col> <ion-col col-2>{{motherRelatedItem.ofWhichBf}}</ion-col>
-      <ion-col col-3>{{motherRelatedItem.totalDailyVolumn}}</ion-col> <ion-col col-2>{{motherRelatedItem.nightExp}}</ion-col>
+      <ion-col col-2 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.expAndBfEpisodePerday)}">{{motherRelatedItem.expAndBfEpisodePerday}}</ion-col>
+      <ion-col col-2 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.ofWhichBf)}">{{motherRelatedItem.ofWhichBf}}</ion-col>
+      <ion-col col-3 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.totalDailyVolumn)}">{{motherRelatedItem.totalDailyVolumn}}</ion-col>
+      <ion-col col-2 [ngStyle]="{background: getBackgroundColor(motherRelatedItem.nightExp)}">{{motherRelatedItem.nightExp}}</ion-col>
     </ion-row>
   </ion-grid>
-  <!-- <ion-list>
-    <ion-item *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">{{i+1}} , {{motherRelatedItem.date}},{{motherRelatedItem.expAndBfEpisodPerday}} ,
-      {{motherRelatedItem.ofWhichBf}} , {{motherRelatedItem.totalDailyVolumn}} , {{motherRelatedItem.nightExp}}
-    </ion-item>
-  </ion-list> -->
 </ion-content>

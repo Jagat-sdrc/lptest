@@ -22,6 +22,10 @@ export class BasicPage {
   }
 
   ngOnInit(){
+    
+  }
+
+  ionViewWillEnter(){
     this.spsService.fetchTypeDetails()
       .subscribe(data => {
         this.typeDetails = data;

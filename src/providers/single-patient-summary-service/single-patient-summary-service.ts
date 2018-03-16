@@ -17,29 +17,29 @@ import { FeedExpressionServiceProvider } from '../feed-expression-service/feed-e
 @Injectable()
 export class SinglePatientSummaryServiceProvider {
 
-  babyBasicDetails: IBabyBasicDetails = {
-    babyCode: null,
-    gestationalAgeInWeek: null,
-    deliveryMethod: null,
-    inpatientOrOutPatient: null,
-    parentsInformedDecision: null,
-    timeTillFirstExpression: null,
-    timeTillFirstEnteralFeed: null,
-    admissionDateForOutdoorPatients: null,
-    mothersPrenatalIntent: null,
-    compositionOfFirstEnteralFeed: null,
-    babyAdmittedTo: null,
-    reasonForAdmission: '',
-    timeSpentInNicu: null,
-    timeSpentInHospital: null,
-    createdDate: null,
-    updatedDate: null,
-    createdBy: null,
-    updatedBy: null,
-    deliveryDate: null,
-    dischargeDate: null,
-    weight: null
-  };
+  babyBasicDetails: IBabyBasicDetails; //= {
+  //   babyCode: null,
+  //   gestationalAgeInWeek: null,
+  //   deliveryMethod: null,
+  //   inpatientOrOutPatient: null,
+  //   parentsInformedDecision: null,
+  //   timeTillFirstExpression: null,
+  //   timeTillFirstEnteralFeed: null,
+  //   admissionDateForOutdoorPatients: null,
+  //   mothersPrenatalIntent: null,
+  //   compositionOfFirstEnteralFeed: null,
+  //   babyAdmittedTo: null,
+  //   reasonForAdmission: '',
+  //   timeSpentInNicu: null,
+  //   timeSpentInHospital: null,
+  //   createdDate: null,
+  //   updatedDate: null,
+  //   createdBy: null,
+  //   updatedBy: null,
+  //   deliveryDate: null,
+  //   dischargeDate: null,
+  //   weight: null
+  // };
   typeDetails: ITypeDetails[] = [];
 
   constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage,
@@ -146,38 +146,68 @@ export class SinglePatientSummaryServiceProvider {
       if(bfExpressions != null && bfExpressions.length > 0)
         expressions = bfExpressions.filter(d => d.babyCode === babyCode)
 
+      for (let index = 0; index < dates.length; index++) {
+        let milkComeInForSingleDay = 0
+        let motherRelatedData: IMotherRelatedData = {
+          date: null,
+          expAndBfEpisodePerday: null,
+          ofWhichBf: null,
+          totalDailyVolumn: null,
+          nightExp: null
+        };
+        motherRelatedData.date = dates[index];
 
-        for (let index = 0; index < dates.length; index++) {
-          let motherRelatedData: IMotherRelatedData = {
-            date: null,
-            expAndBfEpisodPerday: null,
-            ofWhichBf: null,
-            totalDailyVolumn: null,
-            nightExp: null
-          };
-          motherRelatedData.date = dates[index];
+        if(expressions.length > 0) {
+          let expressionByDate: IBFExpression[] = expressions.filter(d =>d.dateOfExpression === dates[index])
+          if(expressionByDate.length > 0) {
+            motherRelatedData.expAndBfEpisodePerday =  String(expressionByDate.length)
 
-          if(expressions != null){
-            motherRelatedData.expAndBfEpisodPerday = expressions.filter(d =>d.dateOfExpression === dates[index]).length
-            motherRelatedData.ofWhichBf = expressions.filter(d =>d.dateOfExpression === dates[index] &&
-            d.methodOfExpression == ConstantProvider.typeDetailsIds.breastfeed).length
-            let totalExpression = (expressions as IBFExpression[]).filter(d =>d.babyCode === babyCode && d.dateOfExpression === dates[index])
+            let noOfBfExpression = expressionByDate.filter(d => d.methodOfExpression == ConstantProvider.typeDetailsIds.breastfeed).length
+
+            // if(noOfBfExpression > 0) {
+              motherRelatedData.ofWhichBf = String(noOfBfExpression)
+            // }
+
+            let totalExpression = expressionByDate
             let totalVolumeMilk = 0;
             let count = 0;
-            for (let index = 0; index < totalExpression.length; index++) {
-              if(totalExpression[index].volOfMilkExpressedFromLR != null){
-                totalVolumeMilk = Number(totalExpression[index].volOfMilkExpressedFromLR) + totalVolumeMilk;
-              }
-              let currentTime = totalExpression[index].timeOfExpression;
+            for (let i = 0; i < totalExpression.length; i++) {
+              if(totalExpression[i].volOfMilkExpressedFromLR != null) {
+                totalVolumeMilk = Number(totalExpression[i].volOfMilkExpressedFromLR) + totalVolumeMilk;
 
+                if(index <= 3 && totalExpression[i].volOfMilkExpressedFromLR > 20)
+                  milkComeInForSingleDay++
+              }
+
+              let currentTime = totalExpression[i].timeOfExpression;
               let hourCurrent = parseInt(currentTime.split(':')[0])
               if(hourCurrent > 21 || hourCurrent < 5){
                 count++
               }
             }
-            motherRelatedData.totalDailyVolumn = totalVolumeMilk;
-            motherRelatedData.nightExp = count;
+
+            if(index <= 3 && milkComeInForSingleDay >= 3)
+              motherRelatedData.totalDailyVolumn = 'Yes'
+            else if(index <= 3 && milkComeInForSingleDay < 3)
+              motherRelatedData.totalDailyVolumn = 'No'
+            else
+              motherRelatedData.totalDailyVolumn = String(totalVolumeMilk)
+
+            motherRelatedData.nightExp = String(count)
+            
+          }else {
+            motherRelatedData.expAndBfEpisodePerday = '-'
+            motherRelatedData.ofWhichBf = '-'
+            motherRelatedData.totalDailyVolumn = '-';
+            motherRelatedData.nightExp = '-';
           }
+
+        }else{
+          motherRelatedData.expAndBfEpisodePerday = '-'
+          motherRelatedData.ofWhichBf = '-'
+          motherRelatedData.totalDailyVolumn = '-';
+          motherRelatedData.nightExp = '-';
+        }
         motherRelatedDataList.push(motherRelatedData)
       }
       return motherRelatedDataList;
@@ -433,6 +463,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param typeDetails - to fetch the dropdown options
    */
   setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]) {
+    this.resetBasicBabyDetails();
     this.babyBasicDetails.deliveryDate = babyDetails.deliveryDate;
     this.babyBasicDetails.dischargeDate = babyDetails.dischargeDate;
     this.babyBasicDetails.weight = babyDetails.babyWeight;
@@ -466,15 +497,28 @@ export class SinglePatientSummaryServiceProvider {
     }
 
     this.feedExpressionService.getTimeTillFirstEnteralFeed(babyDetails.babyCode,babyDetails.deliveryDate,
-      babyDetails.deliveryTime,babyDetails.dischargeDate)
+      babyDetails.deliveryTime)
       .then(data=>{
         if(data){
           this.babyBasicDetails.timeTillFirstEnteralFeed  = data.timeTillFirstEnteralFeed;
           this.babyBasicDetails.compositionOfFirstEnteralFeed = data.compositionOfFirstEnteralFeed;
-          this.babyBasicDetails.timeSpentInHospital = data.timeSpentInHospital;
+          
           this.babyBasicDetails.timeSpentInNicu = data.timeSpentInNICU;
         }
       })
+
+      //setting days spent in hospital, discharge date - delivery date
+    if(babyDetails.dischargeDate != null && babyDetails.dischargeDate != ''){
+      let tempDateSplitter = babyDetails.dischargeDate.split('-');
+      let tempDeliveryDate = babyDetails.deliveryDate.split('-');
+
+      let tempDischargeDate = new Date(+tempDateSplitter[2],+tempDateSplitter[1]-1,+tempDateSplitter[0]);
+      let deliveryDate = new Date(+tempDeliveryDate[2],+tempDeliveryDate[1]-1,+tempDeliveryDate[0])
+      let diff = Math.abs(tempDischargeDate.getTime() - deliveryDate.getTime());
+      let diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+
+      this.babyBasicDetails.timeSpentInHospital = diffDays;
+    }
 
       //checking if time in hour and time in minute are present then only display the time
     if((babyDetails.timeTillFirstExpressionInHour != null && babyDetails.timeTillFirstExpressionInHour != '') &&
@@ -534,6 +578,32 @@ export class SinglePatientSummaryServiceProvider {
     }
 
     return exclusiveBfList;
+  }
+
+  resetBasicBabyDetails(){
+    this.babyBasicDetails = {
+      babyCode: null,
+      gestationalAgeInWeek: null,
+      deliveryMethod: null,
+      inpatientOrOutPatient: null,
+      parentsInformedDecision: null,
+      timeTillFirstExpression: null,
+      timeTillFirstEnteralFeed: null,
+      admissionDateForOutdoorPatients: null,
+      mothersPrenatalIntent: null,
+      compositionOfFirstEnteralFeed: null,
+      babyAdmittedTo: null,
+      reasonForAdmission: '',
+      timeSpentInNicu: null,
+      timeSpentInHospital: null,
+      createdDate: null,
+      updatedDate: null,
+      createdBy: null,
+      updatedBy: null,
+      deliveryDate: null,
+      dischargeDate: null,
+      weight: null
+    };
   }
 
 }
