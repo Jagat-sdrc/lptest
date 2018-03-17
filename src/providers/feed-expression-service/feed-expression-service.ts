@@ -310,7 +310,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
           let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
             || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
 
-
+          feedData = new OrderByTimePipe().transform(feedData);
           /**
            * The following block of code is to calculate the no. of days spent in NICU
            */
@@ -322,7 +322,6 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
           
           if(feedDataForTimeSpentInNICU.length > 0){
             let date = null;
-            feedDataForTimeSpentInNICU = new OrderByTimePipe().transform(feedDataForTimeSpentInNICU)
             feedDataForTimeSpentInNICU.forEach(d => {
               if(d.dateOfFeed != date){
                 timeSpentInNicuData++
@@ -331,9 +330,8 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
             })
           }
 
+          feedData = feedData.filter(d => d.dateOfFeed === feedData[0].dateOfFeed)
           if(feedData.length > 0){
-            feedData = new OrderByTimePipe().transform(feedData);
-
             let dateOfFeed;
             let timeOfFeed;
 
@@ -354,6 +352,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
 
             //Calculating composition of first enteral feed.
 
+            debugger
             let compositionOfFirstEf = '';
             if(feedData[feedData.length - 1].ommVolume)
               compositionOfFirstEf += 'OMM, '
