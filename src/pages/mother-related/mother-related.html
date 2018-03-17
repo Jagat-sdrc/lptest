@@ -1,15 +1,6 @@
 <!--
   @author - Naseem Akhtar
 -->
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>Mother-related</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
 <ion-content padding>
   <ion-grid margin-top text-center>
     <ion-row class="sps-mother-related-header">
@@ -19,7 +10,7 @@
     </ion-row>
 
     <ion-row *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">
-      <ion-col col-1>{{i+1}}</ion-col> 
+      <ion-col col-1>{{i+1}}</ion-col>
       <ion-col col-2>{{motherRelatedItem.date}}</ion-col>
       <ion-col col-2 [ngClass]="getBackgroundColor(motherRelatedItem.expAndBfEpisodePerday)">{{motherRelatedItem.expAndBfEpisodePerday}}</ion-col>
       <ion-col col-2 [ngClass]="getBackgroundColor(motherRelatedItem.ofWhichBf)">{{motherRelatedItem.ofWhichBf}}</ion-col>

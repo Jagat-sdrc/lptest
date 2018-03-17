@@ -152,7 +152,7 @@ export class SinglePatientSummaryServiceProvider {
         expressions = bfExpressions.filter(d => d.babyCode === babyCode)
 
       /**
-       * iterating through each date between delivery date and 
+       * iterating through each date between delivery date and
        * discharge date(if available) / current date
        */
       for (let index = 0; index < dates.length; index++) {
@@ -169,13 +169,13 @@ export class SinglePatientSummaryServiceProvider {
         //if length = 0, then set all values to '-'
         if(expressions.length > 0) {
           /**
-           *finding expressions for a particular date and baby 
-           *if no expression found for that particular date then set all the mother 
+           *finding expressions for a particular date and baby
+           *if no expression found for that particular date then set all the mother
            *related values to '-'
            */
           let expressionByDate: IBFExpression[] = expressions.filter(d =>d.dateOfExpression === dates[index])
           if(expressionByDate.length > 0) {
-            
+
             // ordering all the records, because we have to check consecutive records.
             expressionByDate = new OrderByTimeExpressionFromPipe().transform(expressionByDate)
             motherRelatedData.expAndBfEpisodePerday =  String(expressionByDate.length)
@@ -211,7 +211,7 @@ export class SinglePatientSummaryServiceProvider {
                 totalVolumeMilk = Number(expressionByDate[i].volOfMilkExpressedFromLR) + totalVolumeMilk
 
               /**
-               * Calculating the night expressions that have occured in the present date 
+               * Calculating the night expressions that have occured in the present date
                * within 22:00 to 23:59 hours
                */
               let currentTime = expressionByDate[i].timeOfExpression;
@@ -219,18 +219,18 @@ export class SinglePatientSummaryServiceProvider {
               if(hourCurrent > 21){
                   nightExpressionCount++
               }
-              
+
               /**
                * The following block of code is to check the first 4 days of record
                * and compute the logic for come to volume for that particular day.
                */
-              if(index <= 3 && expressionByDate[i].volOfMilkExpressedFromLR != null && 
+              if(index <= 3 && expressionByDate[i].volOfMilkExpressedFromLR != null &&
                 expressionByDate[i].volOfMilkExpressedFromLR > 20 && !milkComeInForSingleDay
                 && ((expressionByDate.length - (i+1)) > 1)) {
                   let k = 0
                   let trueCount = 2
                   for (let j = i+1; j < expressionByDate.length; j++) {
-                    if(expressionByDate[j].volOfMilkExpressedFromLR === null || 
+                    if(expressionByDate[j].volOfMilkExpressedFromLR === null ||
                       expressionByDate[j].volOfMilkExpressedFromLR <= 20) {
                         trueCount--
                     }
@@ -238,7 +238,7 @@ export class SinglePatientSummaryServiceProvider {
                       break;
                     k++
                   }
-                  
+
                   if(trueCount === 2)
                     milkComeInForSingleDay = true
               }
@@ -401,49 +401,30 @@ export class SinglePatientSummaryServiceProvider {
       let latestbabyWeight = babyWeight;
       if(feedDataExpression != null){
 
-      let ommVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
-      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
-      for (let i = 0; i < ommVolume.length; i++) {
-        if(ommVolume[i].ommVolume != null)
-        dailyDoseOMM = Number(ommVolume[i].ommVolume) + dailyDoseOMM;
+      let oralCareVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index])
+      for (let i = 0; i < oralCareVolume.length; i++) {
+        if(oralCareVolume[i].ommVolume != null)
+        dailyDoseOMM = Number(oralCareVolume[i].ommVolume) + dailyDoseOMM;
       }
 
-      let dhmVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
-      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
-      for (let i = 0; i < dhmVolume.length; i++) {
-        if(dhmVolume[i].dhmVolume != null)
-        dailyDHM = Number(dhmVolume[i].dhmVolume) + dailyDHM;
+      for (let i = 0; i < oralCareVolume.length; i++) {
+        if(oralCareVolume[i].dhmVolume != null)
+        dailyDHM = Number(oralCareVolume[i].dhmVolume) + dailyDHM;
       }
 
-      let formulaVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
-      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
-      for (let i = 0; i < formulaVolume.length; i++) {
-        if(formulaVolume[i].formulaVolume != null)
-        dailyFormula = Number(formulaVolume[i].formulaVolume) + dailyFormula;
+      for (let i = 0; i < oralCareVolume.length; i++) {
+        if(oralCareVolume[i].formulaVolume != null)
+        dailyFormula = Number(oralCareVolume[i].formulaVolume) + dailyFormula;
       }
 
-      let animalMilkVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
-      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
-      for (let i = 0; i < animalMilkVolume.length; i++) {
-        if(animalMilkVolume[i].animalMilkVolume != null)
-        dailyAnimalMilk = Number(animalMilkVolume[i].animalMilkVolume) + dailyAnimalMilk;
+      for (let i = 0; i < oralCareVolume.length; i++) {
+        if(oralCareVolume[i].animalMilkVolume != null)
+        dailyAnimalMilk = Number(oralCareVolume[i].animalMilkVolume) + dailyAnimalMilk;
       }
 
-      let otherVolume = feedDataExpression.filter(d =>d.dateOfFeed === dates[index] &&
-      (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly ||
-      d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
-      for (let i = 0; i < otherVolume.length; i++) {
-        if(otherVolume[i].otherVolume != null)
-        dailyOther = Number(otherVolume[i].otherVolume) + dailyOther;
+      for (let i = 0; i < oralCareVolume.length; i++) {
+        if(oralCareVolume[i].otherVolume != null)
+        dailyOther = Number(oralCareVolume[i].otherVolume) + dailyOther;
       }
 
       //checking baby weight
@@ -528,7 +509,7 @@ export class SinglePatientSummaryServiceProvider {
 
   /**
    * This service method is called as soon as user taps on single patient summary of any baby.
-   * This service will compute basic data of seleted baby and return it to the basic page for 
+   * This service will compute basic data of seleted baby and return it to the basic page for
    * rendering. (Basic page of SPS is loaded by default)
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @param babyDetails - Registration details of baby which the user has selected
@@ -541,7 +522,7 @@ export class SinglePatientSummaryServiceProvider {
     this.babyBasicDetails.dischargeDate = babyDetails.dischargeDate;
     this.babyBasicDetails.weight = babyDetails.babyWeight;
     this.babyBasicDetails.admissionDateForOutdoorPatients = babyDetails.admissionDateForOutdoorPatients;
-    
+
     //finding the value for the id of baby admitted to in type details array
     this.babyBasicDetails.babyAdmittedTo = (babyDetails.babyAdmittedTo != null && babyDetails.babyAdmittedTo.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.babyAdmittedTo)].name : null;
@@ -609,7 +590,7 @@ export class SinglePatientSummaryServiceProvider {
 
     if(babyDetails.timeTillFirstExpressionInMinute != null && babyDetails.timeTillFirstExpressionInMinute != '')
       tempTimeTillFirstExpMin = babyDetails.timeTillFirstExpressionInMinute
-      
+
     this.babyBasicDetails.timeTillFirstExpression = tempTimeTillFirstExpHrs + ':' + tempTimeTillFirstExpMin
 
     this.typeDetails = typeDetails
@@ -654,7 +635,7 @@ export class SinglePatientSummaryServiceProvider {
     /**
      * if data present for, then find the data for particular time frame and set
      * them accordinlgy.
-     * 
+     *
      * else set null in all the time frame.
      */
 

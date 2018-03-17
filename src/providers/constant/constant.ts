@@ -97,6 +97,7 @@ export class ConstantProvider {
     parenteralEnteral: 62,
     enteralOnly: 63,
     enteralOral: 64,
+    oralCup: 65,
     breastfeed: 43,
     kmc: 53,
     nns: 54,
