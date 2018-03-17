@@ -9,6 +9,7 @@ import { ConstantProvider } from '../constant/constant';
 import { FeedExpressionServiceProvider } from '../feed-expression-service/feed-expression-service';
 import { OrderByTimeExpressionFromPipe } from '../../pipes/order-by-time-expression-from/order-by-time-expression-from';
 import { MessageProvider } from '../message/message';
+import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 
 /*
   Generated class for the SinglePatientSummaryServiceProvider provider.
@@ -132,7 +133,7 @@ export class SinglePatientSummaryServiceProvider {
       if(bfExpressions != null && bfExpressions.length > 0)
         expressions = bfExpressions.filter(d => d.babyCode === babyCode)
 
-      //declaring variables 
+      //declaring variables
       let comeToVolume7Day = 'No';
       let comeToVolume14Day = 'No';
       let comeToVolume7DayCount = 0;
@@ -152,7 +153,7 @@ export class SinglePatientSummaryServiceProvider {
           nightExp: null
         };
 
-        //preparing two new object in an array to push into mother related data array for 
+        //preparing two new object in an array to push into mother related data array for
         //come to volume option
         if(index === 7 || index === 14)
           motherRelatedDataList.push(motherRelatedData)
@@ -276,7 +277,7 @@ export class SinglePatientSummaryServiceProvider {
 
         if(comeToVolume7DayCount > 2)
           comeToVolume7Day = 'Yes'
-        
+
         if(comeToVolume14DayCount > 2)
           comeToVolume14Day = 'Yes';
 
@@ -288,7 +289,7 @@ export class SinglePatientSummaryServiceProvider {
         comeToVolume7Day: comeToVolume7Day,
         comeToVolume14Day: comeToVolume14Day
       }
-      
+
       return obj;
   }
 
@@ -448,6 +449,7 @@ export class SinglePatientSummaryServiceProvider {
 
       //checking baby weight
       let weightExp = feedDataExpression.filter(d =>d.dateOfFeed === dates[index]);
+      weightExp = new OrderByTimePipe().transform(weightExp)
       for (let i = 0; i < weightExp.length; i++) {
         if(weightExp[i].babyWeight != null && weightExp[i].babyWeight > 0){
           latestbabyWeight = (weightExp[i].babyWeight);
