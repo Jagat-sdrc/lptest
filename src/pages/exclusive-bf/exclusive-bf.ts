@@ -39,9 +39,10 @@ export class ExclusiveBfPage {
   fetchDataForExclusiveBfPage(bfpdList: ITypeDetails[]){
     //fetching the records for the particular baby and then calling service to 
     //re-structure it for display in exclusive bf
-    this.bfpdService.findByBabyCode(this.navParams.data)
+    let babyDetails: IPatient = this.navParams.data
+    this.bfpdService.findByBabyCode(babyDetails.babyCode)
       .then(bfpdBabyData => {
-        this.exclusiveBfList = this.spsService.fetchSpsExclusiveBfData(bfpdList, bfpdBabyData);
+        this.exclusiveBfList = this.spsService.fetchSpsExclusiveBfData(bfpdList, bfpdBabyData, babyDetails);
       }).catch(error => {
         this.messageService.showErrorToast(error);
       });

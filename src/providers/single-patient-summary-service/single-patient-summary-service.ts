@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { FeedExpressionServiceProvider } from '../feed-expression-service/feed-expression-service';
 import { OrderByTimeExpressionFromPipe } from '../../pipes/order-by-time-expression-from/order-by-time-expression-from';
+import { MessageProvider } from '../message/message';
 
 /*
   Generated class for the SinglePatientSummaryServiceProvider provider.
@@ -18,33 +19,12 @@ import { OrderByTimeExpressionFromPipe } from '../../pipes/order-by-time-express
 @Injectable()
 export class SinglePatientSummaryServiceProvider {
 
-  babyBasicDetails: IBabyBasicDetails; //= {
-  //   babyCode: null,
-  //   gestationalAgeInWeek: null,
-  //   deliveryMethod: null,
-  //   inpatientOrOutPatient: null,
-  //   parentsInformedDecision: null,
-  //   timeTillFirstExpression: null,
-  //   timeTillFirstEnteralFeed: null,
-  //   admissionDateForOutdoorPatients: null,
-  //   mothersPrenatalIntent: null,
-  //   compositionOfFirstEnteralFeed: null,
-  //   babyAdmittedTo: null,
-  //   reasonForAdmission: '',
-  //   timeSpentInNicu: null,
-  //   timeSpentInHospital: null,
-  //   createdDate: null,
-  //   updatedDate: null,
-  //   createdBy: null,
-  //   updatedBy: null,
-  //   deliveryDate: null,
-  //   dischargeDate: null,
-  //   weight: null
-  // };
+  babyBasicDetails: IBabyBasicDetails;
   typeDetails: ITypeDetails[] = [];
 
   constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage,
-    private feedExpressionService: FeedExpressionServiceProvider, private decimal: DecimalPipe) {
+    private feedExpressionService: FeedExpressionServiceProvider, private decimal: DecimalPipe,
+    private messageService: MessageProvider) {
   }
 
   /**
@@ -667,7 +647,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param bfpdList - list of bf that can be captured after discharge
    * @param bfpdBabyData - no of records for the selected child or baby
    */
-  fetchSpsExclusiveBfData(bfpdList: ITypeDetails[], bfpdBabyData: IBFPD[]) {
+  fetchSpsExclusiveBfData(bfpdList: ITypeDetails[], bfpdBabyData: IBFPD[], babyDetails: IPatient) {
     let exclusiveBfList: IExclusiveBf[] = [];
     let typeDetails = this.getTypeDetails();
 
@@ -699,6 +679,23 @@ export class SinglePatientSummaryServiceProvider {
         exclusiveBfList.push(b);
       })
     }
+
+    //Adding hospital discharge exclusively as it is not present in the above list
+    let hospitalDischarge: IExclusiveBf = {
+      name: 'Hospital discharge',
+      date: null,
+      status: null
+    }
+
+    if(babyDetails.dischargeDate != null && babyDetails.dischargeDate != ''){
+      hospitalDischarge.date = babyDetails.dischargeDate
+      this.feedExpressionService.getHospitalDischargeDataForExclusiveBf(babyDetails.babyCode, 
+        babyDetails.dischargeDate)
+        .then(data => hospitalDischarge.status = data)
+        .catch(error => this.messageService.showErrorToast(error))
+    }
+
+    exclusiveBfList.splice(0,0,hospitalDischarge)
 
     return exclusiveBfList;
   }

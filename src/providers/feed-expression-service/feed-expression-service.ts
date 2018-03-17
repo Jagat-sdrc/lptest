@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
 import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
+import { MessageProvider } from '../message/message';
 
 /**
  * This service will only provide service to Feed component
@@ -20,7 +21,8 @@ export class FeedExpressionServiceProvider {
 
   constructor(public http: HttpClient,
     private storage: Storage, private datePipe: DatePipe,
-  private userService: UserServiceProvider) {
+  private userService: UserServiceProvider,
+  private messageService: MessageProvider) {
   }
 
 
@@ -351,8 +353,6 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
             let hours   = parseInt((noOfDay / (1000*60*60)).toString());
 
             //Calculating composition of first enteral feed.
-
-            debugger
             let compositionOfFirstEf = '';
             if(feedData[feedData.length - 1].ommVolume)
               compositionOfFirstEf += 'OMM, '
@@ -378,6 +378,40 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
         }
       })
 
+    })
+    return promise
+  }
+
+  getHospitalDischargeDataForExclusiveBf(babyCode: string, dischargeDate: string): Promise<any> {
+    let promise = new Promise<any>((resolve,reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+        .then(data=>{
+          let bfCount = 0;
+          let hospitalDishcargeStatus = null;
+          let feedArray = (data as IFeed[]).filter(d => d.babyCode === babyCode)
+
+          if(feedArray.length > 0){
+            feedArray.forEach(d => {
+              if(d.methodOfFeed === ConstantProvider.typeDetailsIds.logFeedBreastFeed)
+                bfCount++
+              else{
+                let sum = Number(d.animalMilkVolume) + Number(d.dhmVolume) + Number(d.formulaVolume) + 
+                  Number(d.ommVolume) + Number(d.otherVolume)
+                if(Number(d.ommVolume) > 0 && sum === Number(d.ommVolume))
+                  bfCount++
+              }
+            })
+            if(bfCount === feedArray.length)
+              hospitalDishcargeStatus = 'Exclusive'
+            else{
+              if(bfCount > 0)
+                hospitalDishcargeStatus = 'Partial'
+              else
+                hospitalDishcargeStatus = 'None'
+            }
+          }
+          resolve(hospitalDishcargeStatus)
+      }).catch(error => this.messageService.showErrorToast(error))
     })
     return promise
   }

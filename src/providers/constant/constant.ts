@@ -101,7 +101,8 @@ export class ConstantProvider {
     breastfeed: 43,
     kmc: 53,
     nns: 54,
-    oral: 55
+    oral: 55,
+    logFeedBreastFeed: 66
   }
 
   /**
