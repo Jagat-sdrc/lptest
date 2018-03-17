@@ -193,21 +193,21 @@ export class BfPostDischargeServiceProvider {
     return promise;
   }
 
-  private getBfPd(babyCode: string, timeOfBf: number): IBFPD{
-    let bfpd : IBFPD = {
-      babyCode: babyCode,
-      dateOfBreastFeeding: null,
-      id: null,
-      isSynced: false,
-      breastFeedingStatus: null,
-      syncFailureMessage: null,
-      timeOfBreastFeeding: timeOfBf,
-      userId: this.userService.getUser().email,
-      createdDate: null,
-      updatedDate: null
-    }
-    return bfpd;
-  }
+  // private getBfPd(babyCode: string, timeOfBf: number): IBFPD{
+  //   let bfpd : IBFPD = {
+  //     babyCode: babyCode,
+  //     dateOfBreastFeeding: null,
+  //     id: null,
+  //     isSynced: false,
+  //     breastFeedingStatus: null,
+  //     syncFailureMessage: null,
+  //     timeOfBreastFeeding: timeOfBf,
+  //     userId: this.userService.getUser().email,
+  //     createdDate: null,
+  //     updatedDate: null
+  //   }
+  //   return bfpd;
+  // }
 
   /** 
    * @author - Naseem Akhtar
@@ -227,6 +227,29 @@ export class BfPostDischargeServiceProvider {
       .catch(err=>{
         console.log(err.message)
       })
+  }
+
+  /**
+   * This method will be called to fecth all the BFPD records of a particular child.
+   * This method was initially created for SPS(Single patient summary - exclusive breastfeed)
+   * 
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @param babyCode - baby whose all records are being fetched
+   */
+  findByBabyCode(babyCode: string): Promise < IBFPD[] > {
+    let promise: Promise < IBFPD[] > = new Promise((resolve, reject) => {
+      this.storage.get(ConstantProvider.dbKeyNames.bfpds)
+        .then(data => {
+            if(data != null)
+              resolve(data);
+            else
+              resolve([]);
+        })
+        .catch(err => {
+          reject(err.message)
+        })
+    });
+    return promise;
   }
 
 }

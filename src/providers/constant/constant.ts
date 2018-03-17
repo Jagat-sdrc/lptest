@@ -93,7 +93,15 @@ export class ConstantProvider {
     unknown: 4,
     level3NICU: 14,
     level2SNCU: 15,
-    level1NICU: 16
+    level1NICU: 16,
+    parenteralEnteral: 62,
+    enteralOnly: 63,
+    enteralOral: 64,
+    oralCup: 65,
+    breastfeed: 43,
+    kmc: 53,
+    nns: 54,
+    oral: 55
   }
 
   /**
@@ -173,7 +181,11 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record?',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
-    pastTime: 'Time before delivery time is not allowed'
+    registeredPage: "registeredPage",
+    singlePatientSummary: "singlePageSummarty",
+    pastTime: 'Time before delivery time is not allowed',
+    spsContentColorRed: 'sps-content-color-red',
+    spsContentColorGreen: 'sps-content-color-green'
   };
 
 /**

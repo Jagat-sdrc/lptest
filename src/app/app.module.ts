@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
 import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
 import { FeedDateListServiceProvider } from '../providers/feed-date-list-service/feed-date-list-service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service';
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
@@ -31,6 +31,7 @@ import { BFExpressionDateListProvider } from '../providers/bf-expression-date-li
 import { AppVersion } from '@ionic-native/app-version';
 import { SearchPipe } from '../pipes/search/search';
 import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
+import { SinglePatientSummaryServiceProvider } from '../providers/single-patient-summary-service/single-patient-summary-service';
 
 @NgModule({
   declarations: [
@@ -40,9 +41,24 @@ import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
     BrowserModule,
     IonicStorageModule.forRoot({
       name: 'lactation',
-         driverOrder: ['sqlite', 'indexeddb', 'websql']
+         driverOrder: ['sqlite', 'indexeddb', 'websql'],
+
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      tabsPlacement: 'bottom',
+        platforms: {
+          android: {
+            tabsPlacement: 'top'
+          },
+          ios: {
+            tabsPlacement: 'top'
+          },
+          windows:
+          {
+            tabsPlacement: 'top'
+          }
+        }
+      }),
     IonicStorageModule.forRoot(),
     HttpClientModule,
   ],
@@ -76,7 +92,9 @@ import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
     BfPostDischargeServiceProvider,
     AppVersion,
     SearchPipe,
-    SortPatientPipe
+    SortPatientPipe,
+    SinglePatientSummaryServiceProvider,
+    DecimalPipe
   ]
 })
 export class AppModule {}

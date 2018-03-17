@@ -20,6 +20,10 @@ export class RegisteredPatientPage {
   patientList: IPatient[] = [];
   sortBy: string;
   searching: any = false;
+  babyDashboardPage;
+  singlePatientSummary;
+  pageStatus: boolean = false;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
@@ -46,7 +50,6 @@ export class RegisteredPatientPage {
     this.searchControl = new FormControl();
   }
 
-
   ionViewDidLoad() {
     this.setSearchedPatients();
     this.searchControl.valueChanges.debounceTime(700)
@@ -56,15 +59,19 @@ export class RegisteredPatientPage {
     });
   }
 
-
-
-
-  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string){
-    this.navCtrl.push('BabyDashboardPage',{
-      babyCode: babyCode,
-      babyCodeByHospital: babyCodeHospital,
-      deliveryDate: deliveryDate
-    });
+  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string,babyDetails: any){
+    if((this.navParams.get('param') == "RegisteredPatientPage")){
+      this.navCtrl.push('BabyDashboardPage',{
+        babyCode: babyCode,
+        babyCodeByHospital: babyCodeHospital,
+        deliveryDate: deliveryDate,
+        babyDetails: babyDetails
+      });
+    }else{
+      this.navCtrl.push('SpsPage',{
+        babyDetails: babyDetails
+      });
+    }
   }
 
   goToAddNewPatient(){

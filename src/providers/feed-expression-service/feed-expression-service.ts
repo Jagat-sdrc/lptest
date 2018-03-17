@@ -8,6 +8,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
+import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 
 /**
  * This service will only provide service to Feed component
@@ -19,16 +20,16 @@ export class FeedExpressionServiceProvider {
 
   constructor(public http: HttpClient,
     private storage: Storage, private datePipe: DatePipe,
-  private userService: UserServiceProvider) {   
+  private userService: UserServiceProvider) {
   }
 
-  
+
 
   /**
    * This method should return feeding method lists
-   * 
+   *
    * @author Ratikanta
-   * @returns {Observable<ITypeDetails[]>} 
+   * @returns {Observable<ITypeDetails[]>}
    * @memberof FeedExpressionServiceProvider
    */
   getFeedingMethods(): Observable<ITypeDetails[]> {
@@ -41,9 +42,9 @@ export class FeedExpressionServiceProvider {
 
   /**
    * This method should return location of feeding lists
-   * 
+   *
    * @author Ratikanta
-   * @returns {Observable<ITypeDetails[]>} 
+   * @returns {Observable<ITypeDetails[]>}
    * @memberof FeedExpressionServiceProvider
    */
   getLocationOfFeedings(): Observable<ITypeDetails[]> {
@@ -73,14 +74,14 @@ export class FeedExpressionServiceProvider {
    * @since 0.0.1
    * @returns Promise<IDBOperationStatus>
    * @param feedExpression one feed expression entry
-   * 
+   *
    */
 
   saveFeedExpression(feedExpression: IFeed, existingDate: string, existingTime: string): Promise<any>{
 
     let promise = new Promise((resolve, reject) => {
       feedExpression.isSynced = false;
-      feedExpression.createdDate = feedExpression.createdDate === null ? 
+      feedExpression.createdDate = feedExpression.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : feedExpression.createdDate;
       feedExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
@@ -91,7 +92,7 @@ export class FeedExpressionServiceProvider {
           let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
           if(index < 0) {
             index = feedExpressions.findIndex(d=>d.dateOfFeed === existingDate && d.timeOfFeed === existingTime)
-            feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)          
+            feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)
             this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
               .then(data=>{
                 resolve()
@@ -120,26 +121,26 @@ export class FeedExpressionServiceProvider {
             resolve()
           })
           .catch(err=>{
-            reject(err.message);    
+            reject(err.message);
           })
-        }                
+        }
       }).catch(err=>{
         reject(err.message);
       })
-    
-      
+
+
     });
     return promise;
-    
+
   }
 
   /**
    * This method will check whether we have the record with given baby id, date and time.
    * If all the attribute value will match, this will splice that record and append incoming record.
    * Because it has come for an update.
-   * 
+   *
    * If record does not match, this will just push the input record with existing once
-   * 
+   *
    * @author Ratikanta
    * @since 0.0.1
    * @param feedExpressions All the existing feed expressions
@@ -155,7 +156,7 @@ export class FeedExpressionServiceProvider {
       feedExpressions.splice(index, 1);
     }
 
-    feedExpressions.push(feedExpression)    
+    feedExpressions.push(feedExpression)
     return feedExpressions;
 
   }
@@ -198,7 +199,7 @@ export class FeedExpressionServiceProvider {
 
   /**
    * This method is going to give us a new feed expression id
-   * 
+   *
    * @param {string} babyCode This is the baby code for which we are creating the feed expression id
    * @returns {string} The new feed expression id
    * @memberof FeedExpressionServiceProvider
@@ -211,7 +212,7 @@ export class FeedExpressionServiceProvider {
 
 /**
  * This method is going to append a new feed object to axisting list
- * 
+ *
  * @param {IFeed[]} data The existing list
  * @param {string} babyCode The unique baby code
  * @param {date} The date of feeding
@@ -254,8 +255,8 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
    * This method will delete a expression
    * @author Ratikanta
    * @since 0.0.1
-   * @param {string} id 
-   * @returns {Promise<any>} 
+   * @param {string} id
+   * @returns {Promise<any>}
    * @memberof SaveExpressionBfProvider
    */
   delete(id: string): Promise<any>{
@@ -286,4 +287,82 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
     });
     return promise;
   }
+
+  /**
+   * This method will return time till first enteral feed,
+   * compositionOfFirstEnteralFeed and 
+   * timeSpentInNICU as a promise
+   *
+   * @author Jagat Bandhu
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since 1.1.0
+   * @param babyCode
+   * @param deliveryDate
+   * @param deliveryTime
+   */
+  getTimeTillFirstEnteralFeed(babyCode: string,deliveryDate: string,deliveryTime: string): Promise<any>{
+    let promise = new Promise<any>((resolve,reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+      .then(data=>{
+        if(data !=null){
+          let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
+            || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
+
+          let timeSpentInNicuData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && 
+            (d.locationOfFeeding === ConstantProvider.typeDetailsIds.level1NICU ||
+              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level2SNCU || 
+              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level3NICU) ).length;
+
+          if(feedData.length > 0){
+            feedData = new OrderByTimePipe().transform(feedData);
+
+            let dateOfFeed;
+            let timeOfFeed;
+
+            dateOfFeed = feedData[feedData.length - 1].dateOfFeed;
+            timeOfFeed = feedData[feedData.length - 1].timeOfFeed;
+
+            let a = deliveryDate.split('-')
+            let b = deliveryTime.split(':')
+            let dateOfA = new Date(+a[2], +a[1]-1, +a[0], +b[0], +b[1])
+
+            let c = dateOfFeed.split('-')
+            let d = timeOfFeed.split(':')
+            let dateOfB = new Date(+c[2], +c[1]-1, +c[0], +d[0], +d[1])
+
+            let noOfDay = dateOfB.getTime() - dateOfA.getTime()
+            let minutes = ((noOfDay / (1000*60)) % 60);
+            let hours   = parseInt((noOfDay / (1000*60*60)).toString());
+
+            //Calculating composition of first enteral feed.
+
+            let compositionOfFirstEf = '';
+            if(feedData[feedData.length - 1].ommVolume)
+              compositionOfFirstEf += 'OMM, '
+            if(feedData[feedData.length - 1].dhmVolume)
+              compositionOfFirstEf += 'DHM, '
+            if(feedData[feedData.length - 1].formulaVolume)
+              compositionOfFirstEf += 'Formula, '
+            if(feedData[feedData.length - 1].animalMilkVolume)
+              compositionOfFirstEf += 'Animal Milk, '
+            if(feedData[feedData.length - 1].otherVolume)
+              compositionOfFirstEf += 'Other, '
+
+            let result = {
+              timeTillFirstEnteralFeed: hours+":"+minutes,
+              compositionOfFirstEnteralFeed: compositionOfFirstEf.slice(0, compositionOfFirstEf.length-2),
+              timeSpentInNICU: timeSpentInNicuData > 0 ? timeSpentInNicuData : null
+            }
+
+            resolve(result)
+          }else{
+            resolve()
+          }
+        }
+      })
+
+    })
+    return promise
+  }
+
 }

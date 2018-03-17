@@ -1,0 +1,14 @@
+<!--
+  @author - Naseem Akhtar
+-->
+<ion-content padding>
+  <ion-grid *ngIf="exclusiveBfList">
+    <ion-row margin-top class="sps-exclusive-bf-header">
+      <ion-col></ion-col>  <ion-col>Date</ion-col>  <ion-col>Status</ion-col>
+    </ion-row>
+
+    <ion-row margin-top padding-bottom class="sps-exlcusive-bf-contents" *ngFor="let excBf of exclusiveBfList">
+      <ion-col>{{excBf.name}}</ion-col>  <ion-col>{{excBf.date}}</ion-col>  <ion-col>{{excBf.status}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

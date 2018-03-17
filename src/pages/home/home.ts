@@ -19,8 +19,6 @@ import { ConstantProvider } from '../../providers/constant/constant';
 
 export class HomePage {
 
-  registeredPatientPage : any;
-  singlePatientSummary : any;
   vurnerableBabies : any;
   public unregisterBackButtonAction: any;
   constructor(public navCtrl: NavController, public menuCtrl: MenuController,
@@ -29,9 +27,19 @@ export class HomePage {
   }
 
   ngOnInit(){
-    this.registeredPatientPage = 'RegisteredPatientPage';
-    this.singlePatientSummary = 'SinglePatientSummaryPage';
     this.vurnerableBabies = 'VurnerableBabiesPage';
+  }
+
+  registeredPatientPage(){
+    this.navCtrl.push('RegisteredPatientPage',{
+      param: "RegisteredPatientPage"
+    });
+  }
+
+  singlePatientSummaryPage(){
+    this.navCtrl.push('RegisteredPatientPage',{
+      param: "SinglePatientSummaryPage"
+    });
   }
 
   goToAddNewPatient(){
