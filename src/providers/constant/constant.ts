@@ -185,7 +185,8 @@ export class ConstantProvider {
     singlePatientSummary: "singlePageSummarty",
     pastTime: 'Time before delivery time is not allowed',
     spsContentColorRed: 'sps-content-color-red',
-    spsContentColorGreen: 'sps-content-color-green'
+    spsContentColorGreen: 'sps-content-color-green',
+    spsContentColorYellow: 'sps-content-color-yellow'
   };
 
 /**

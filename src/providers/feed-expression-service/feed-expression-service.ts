@@ -310,10 +310,26 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
           let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
             || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
 
-          let timeSpentInNicuData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && 
+
+          /**
+           * The following block of code is to calculate the no. of days spent in NICU
+           */
+          let timeSpentInNicuData = 0
+          let feedDataForTimeSpentInNICU: IFeed[] = (data as IFeed[]).filter(d=> d.babyCode === babyCode && 
             (d.locationOfFeeding === ConstantProvider.typeDetailsIds.level1NICU ||
               d.locationOfFeeding === ConstantProvider.typeDetailsIds.level2SNCU || 
-              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level3NICU) ).length;
+              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level3NICU) )
+          
+          if(feedDataForTimeSpentInNICU.length > 0){
+            let date = null;
+            feedDataForTimeSpentInNICU = new OrderByTimePipe().transform(feedDataForTimeSpentInNICU)
+            feedDataForTimeSpentInNICU.forEach(d => {
+              if(d.dateOfFeed != date){
+                timeSpentInNicuData++
+                date = d.dateOfFeed
+              }
+            })
+          }
 
           if(feedData.length > 0){
             feedData = new OrderByTimePipe().transform(feedData);

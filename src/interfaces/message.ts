@@ -72,4 +72,5 @@ interface IMessage{
     pastTime: string;
     spsContentColorRed: string;
     spsContentColorGreen: string;
+    spsContentColorYellow: string;
 }
