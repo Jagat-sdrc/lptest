@@ -51,6 +51,7 @@ export class AddPatientPage implements OnInit{
   paramToExpressionPage: IParamToExpresssionPage;
   forEdit: boolean = false;
   motherNameRegex: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
+  alphaNumeric: RegExp = /^[-_ a-zA-Z0-9]+$/;
   numberRegex: RegExp = /^[0-9]+(\.[0-9]*){0,1}$/;
   hasError: boolean = false;
   private uniquePatientId : IUniquePatientId = {
@@ -94,22 +95,26 @@ export class AddPatientPage implements OnInit{
       control.markAsPristine({onlySelf: true});
     });
     this.patientForm.controls.hospital_baby_id.setValue(null)
-    this.patientForm.controls.mother_name.setValue(null),
-    this.patientForm.controls.mother_age.setValue(null),
-    this.patientForm.controls.delivery_date.setValue(null),
-    this.patientForm.controls.delivery_time.setValue(null),
-    this.patientForm.controls.delivery_method.setValue(null),
-    this.patientForm.controls.baby_weight.setValue(null),
-    this.patientForm.controls.gestational_age.setValue(null),
-    this.patientForm.controls.intent_provide_milk.setValue(null),
-    this.patientForm.controls.hm_lactation.setValue(null),
-    this.patientForm.controls.first_exp_time_in_hour.setValue(null),
-    this.patientForm.controls.first_exp_time_in_minute.setValue(null),
-    this.patientForm.controls.inpatient_outpatient.setValue(""),
-    this.patientForm.controls.admission_date.setValue(null),
-    this.patientForm.controls.baby_admitted.setValue(null),
-    this.babyAdmittedToStatus = false;
-    this.patientForm.controls.nicu_admission.setValue(null),
+    this.patientForm.controls.mother_name.setValue(null)
+    this.patientForm.controls.mother_age.setValue(null)
+
+    if(!this.forEdit){
+      this.patientForm.controls.delivery_date.setValue(null)
+      this.patientForm.controls.delivery_time.setValue(null)
+    }
+
+    this.patientForm.controls.delivery_method.setValue(null)
+    this.patientForm.controls.baby_weight.setValue(null)
+    this.patientForm.controls.gestational_age.setValue(null)
+    this.patientForm.controls.intent_provide_milk.setValue(null)
+    this.patientForm.controls.hm_lactation.setValue(null)
+    this.patientForm.controls.first_exp_time_in_hour.setValue(null)
+    this.patientForm.controls.first_exp_time_in_minute.setValue(null)
+    this.patientForm.controls.inpatient_outpatient.setValue("")
+    this.patientForm.controls.admission_date.setValue(null)
+    this.patientForm.controls.baby_admitted.setValue(null)
+    this.babyAdmittedToStatus = false
+    this.patientForm.controls.nicu_admission.setValue(null)
     this.patientForm.controls.discharge_date.setValue(null)
   }
 
@@ -212,7 +217,7 @@ export class AddPatientPage implements OnInit{
 
     this.patientForm = new FormGroup({
       baby_id: new FormControl(''),
-      hospital_baby_id: new FormControl(''),
+      hospital_baby_id: new FormControl('', [Validators.pattern(this.alphaNumeric), Validators.maxLength(25)]),
       mother_name: new FormControl('', [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
       mother_age: new FormControl(''),
       delivery_date: new FormControl('',[Validators.required]),
@@ -388,7 +393,7 @@ export class AddPatientPage implements OnInit{
 
       this.patientForm = new FormGroup({
         baby_id: new FormControl(this.patient.babyCode),
-        hospital_baby_id: new FormControl(this.patient.babyCodeHospital),
+        hospital_baby_id: new FormControl(this.patient.babyCodeHospital, [Validators.pattern(this.alphaNumeric), Validators.maxLength(25)]),
         mother_name: new FormControl(this.patient.babyOf, [Validators.pattern(this.motherNameRegex), Validators.maxLength(30)]),
         mother_age: new FormControl(this.patient.mothersAge),
         delivery_date: new FormControl(this.patient.deliveryDate,[Validators.required]),
@@ -426,12 +431,6 @@ export class AddPatientPage implements OnInit{
         }).then(
           date => {
             switch(type){
-              case ConstantProvider.datePickerType.deliveryDate:
-                this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"));
-                if(this.patientForm.controls.delivery_time.value != ""){
-                  this.patientForm.controls.delivery_time.setValue(null);
-                }
-              break;
               case ConstantProvider.datePickerType.addmissionDate:
                 this.patientForm.controls.admission_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"))
               break;
@@ -445,6 +444,30 @@ export class AddPatientPage implements OnInit{
       }
     }
 
+    deliveryDatePicker(type: string){
+      if(!this.hasError){
+        if(!this.forEdit){
+          this.datePicker.show({
+            mode: 'date',
+            date: new Date(),
+            maxDate: new Date().valueOf(),
+            androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+          }).then(
+            date => {
+              switch(type){
+                case ConstantProvider.datePickerType.deliveryDate:
+                  this.patientForm.controls.delivery_date.setValue(this.datePipe.transform(date,"dd-MM-yyyy"));
+                  if(this.patientForm.controls.delivery_time.value != ""){
+                    this.patientForm.controls.delivery_time.setValue(null);
+                  }
+              }
+            },
+            err => console.log('Error occurred while getting date: ', err)
+          );
+        }
+      }
+    }
+
     /**
      * This method will show a native time picker to select time
      *
@@ -453,17 +476,19 @@ export class AddPatientPage implements OnInit{
      */
     timePickerDialog(){
       if(!this.hasError){
-        this.datePicker.show({
-        date: new Date(),
-        mode: 'time',
-        is24Hour: true,
-        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-      }).then(
-        time => {
-          this.validateTime(time)
-        },
-        err => console.log('Error occurred while getting time: ', err)
-        );
+        if(!this.forEdit){
+          this.datePicker.show({
+            date: new Date(),
+            mode: 'time',
+            is24Hour: true,
+            androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+          }).then(
+            time => {
+              this.validateTime(time)
+            },
+            err => console.log('Error occurred while getting time: ', err)
+            );
+        }
       }
     }
 

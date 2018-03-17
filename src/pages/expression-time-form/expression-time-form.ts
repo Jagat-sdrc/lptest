@@ -32,6 +32,7 @@ export class ExpressionTimeFormPage {
   existingDate: string;
   existingTime: string;
   deliveryDate: Date;
+  onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
@@ -96,7 +97,7 @@ export class ExpressionTimeFormPage {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfExpression);
     }else if(bfExpression.timeOfExpression === null){
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfExpression);
-    }else if(!this.validateDurationOfExpression(bfExpression.volOfMilkExpressedFromLR)){
+    }else if(!this.validateDurationOfExpression(bfExpression)){
       this.messageService.showErrorToast(ConstantProvider.messages.volumeOfMilkExpressedFromBreast);
     }else {
       this.bfExpressionTimeService.saveBfExpression(bfExpression, this.existingDate, this.existingTime)
@@ -129,12 +130,17 @@ export class ExpressionTimeFormPage {
  * 
  * @memberof ExpressionTimeFormPage
  */
-  validateDurationOfExpression(value) {
-    if(value == null) {
+  validateDurationOfExpression(bfExpression: IBFExpression) {
+    if(bfExpression.volOfMilkExpressedFromLR == null) {
+      return true;
+    }else if(bfExpression.volOfMilkExpressedFromLR.toString() === ''){
       return true;
     }else {
+      let value = bfExpression.volOfMilkExpressedFromLR.toString()
       let rx = /^\d+(?:\.\d{0,2})?$/
-      if (rx.test(value)) {
+      if (rx.test(value) && (bfExpression.volOfMilkExpressedFromLR >= 0 && bfExpression.volOfMilkExpressedFromLR <= 300)) {
+        if(value.charAt(value.length-1) === '.')
+          bfExpression.volOfMilkExpressedFromLR = parseInt(value.substring(0, value.length-1))
         return true;
       }else {
         return false;
@@ -152,7 +158,10 @@ export class ExpressionTimeFormPage {
     } else {
       return true;
     }
+  }
 
+  volumeValidation(item: IBFExpression){
+    console.log(item.volOfMilkExpressedFromLR)
   }
 
   /**

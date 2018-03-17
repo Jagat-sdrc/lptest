@@ -25,10 +25,11 @@ export class FeedPage {
   dataForFeedEntryPage: IDataForFeedEntryPage;
   shownGroup: any;
   locationOfFeedings: ITypeDetails[];
-  onlyNumberRegex: RegExp = /^[0-9]*$/;
+  // onlyNumberRegex: RegExp = /^[0-9]*$/;
   existingDate: string;
   existingTime: string;
   deliveryDate: Date;
+  onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
   private messageService: MessageProvider, private navParams: NavParams, private datePicker: DatePicker,
@@ -70,31 +71,25 @@ export class FeedPage {
  * @since 0.0.1
  */
   validateExpression(feedExpression: IFeed) {
-    debugger
     if(feedExpression.dateOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfFeed)
     }
     else if(feedExpression.timeOfFeed === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterTimeOfFeed)
     }
-    else if(feedExpression.ommVolume != null
-      && (feedExpression.ommVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.ommVolume))) {
+    else if(!this.checkForOnlyNumber(feedExpression, 'ommVolume')) {
       this.messageService.showErrorToast(ConstantProvider.messages.ommVolumne)
     }
-    else if(feedExpression.dhmVolume != null &&
-      (feedExpression.dhmVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.dhmVolume))) {
+    else if(!this.checkForOnlyNumber(feedExpression, 'dhmVolume')) {
       this.messageService.showErrorToast(ConstantProvider.messages.dhmVolume)
     }
-    else if(feedExpression.formulaVolume != null &&
-      (feedExpression.formulaVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.formulaVolume))) {
+    else if(!this.checkForOnlyNumber(feedExpression, 'formulaVolume')) {
       this.messageService.showErrorToast(ConstantProvider.messages.formulaVolume)
     }
-    else if(feedExpression.animalMilkVolume != null &&
-      (feedExpression.animalMilkVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.animalMilkVolume))) {
+    else if(!this.checkForOnlyNumber(feedExpression, 'animalMilkVolume')) {
       this.messageService.showErrorToast(ConstantProvider.messages.animalMilkVolume)
     }
-    else if(feedExpression.otherVolume != null && 
-      (feedExpression.otherVolume.toString() === "" || !this.checkForOnlyNumber(feedExpression.otherVolume))) {
+    else if(!this.checkForOnlyNumber(feedExpression, 'otherVolume')) {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
     }
     else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
@@ -103,6 +98,8 @@ export class FeedPage {
         .then((data)=>{
           if(data){
             this.saveExpression(feedExpression);
+          }else{
+            feedExpression.babyWeight = null;
           }
         })
     }else{
@@ -241,14 +238,20 @@ export class FeedPage {
    * @author - Naseem Akhtar
    * @param forValidation - the number entered by the user
    */
-  checkForOnlyNumber(forValidation){
-    if(forValidation === null)
+  checkForOnlyNumber(feed: IFeed, variableName: string){
+    if(feed[variableName] === null)
+      return true;
+    else if(feed[variableName] === '')
       return true;
     else{
-      if(this.onlyNumberRegex.test(forValidation))
+      let forValidation = feed[variableName].toString()
+      let rx = /^\d+(?:\.\d{0,2})?$/
+      if(rx.test(forValidation) && (feed[variableName] >= 0 && feed[variableName] <= 300)){
+        if(forValidation.charAt(forValidation.length-1) === '.')
+          feed[variableName] = parseInt(forValidation.substring(0, forValidation.length-1))
         return true;
-      else
-        return false;
+      } else
+          return false;
     }
   }
 
@@ -259,13 +262,13 @@ export class FeedPage {
    * @param feedExpression - this is the form that the user is entering
    */
   validateVolumeFields(feedExpression: IFeed){
-    if(feedExpression.methodOfFeed === 61 || feedExpression.methodOfFeed === 66) {
+    // if(feedExpression.methodOfFeed === 61 || feedExpression.methodOfFeed === 66) {
       feedExpression.animalMilkVolume = null
       feedExpression.dhmVolume = null
       feedExpression.formulaVolume = null
       feedExpression.ommVolume = null
       feedExpression.otherVolume = null
-    }
+    // }
   }
 
   /** 
