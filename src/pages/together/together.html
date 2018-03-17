@@ -5,18 +5,24 @@
   Ionic pages and navigation.
 -->
 <ion-content padding>
-    <ion-grid margin-top text-center>
-        <ion-row class="sps-mother-related-header">
-          <ion-col col-1>Day</ion-col> <ion-col col-2>Date</ion-col>
-          <ion-col col-4>Daily total time in KMC No of.(total minutes/hours)</ion-col> <ion-col col-3>No of Oral care</ion-col>
-          <ion-col col-2>No of NNs</ion-col>
-        </ion-row>
+  <ion-grid margin-top text-center>
+    <ion-row text-left>
+      <ion-col>Legend : "-" No data entered</ion-col>
+    </ion-row>
+    <ion-row class="sps-mother-related-header">
+      <ion-col col-1>Day</ion-col>
+      <ion-col col-2>Date</ion-col>
+      <ion-col col-4>No. of KMCs. (Total duration in minutes)</ion-col>
+      <ion-col col-3>No of Oral care</ion-col>
+      <ion-col col-2>No of NNs</ion-col>
+    </ion-row>
 
-        <ion-row *ngFor="let togetherItem  of togetherDataList; let i = index">
-          <ion-col col-1>{{i+1}}</ion-col> <ion-col col-2>{{togetherItem.date}}</ion-col>
-          <ion-col col-4>{{togetherItem.dailyTotalTimeInKMC}}</ion-col>
-          <ion-col col-3>{{togetherItem.noOfOralCare}} </ion-col>
-          <ion-col col-2>{{togetherItem.noOfNNS}}</ion-col>
-        </ion-row>
-      </ion-grid>
+    <ion-row *ngFor="let togetherItem  of togetherDataList; let i = index">
+      <ion-col col-1>{{i+1}}</ion-col>
+      <ion-col col-2>{{togetherItem.date}}</ion-col>
+      <ion-col col-4>{{togetherItem.dailyTotalTimeInKMC}}</ion-col>
+      <ion-col col-3>{{togetherItem.noOfOralCare}} </ion-col>
+      <ion-col col-2>{{togetherItem.noOfNNS}}</ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

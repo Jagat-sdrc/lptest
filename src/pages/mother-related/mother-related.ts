@@ -17,15 +17,13 @@ import { ConstantProvider } from '../../providers/constant/constant';
 })
 export class MotherRelatedPage {
 
-  motherRelatedDataList: IMotherRelatedData[];
-  babyDetails: IBabyBasicDetails;
+  motherRelatedDataList: IMotherRelatedData[]
+  babyDetails: IBabyBasicDetails
+  comeToVolume7Day: string
+  comeToVolume14Day: string
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public spsService: SinglePatientSummaryServiceProvider) {
-  }
-
-  ngOnInit(){
-    
   }
 
   ionViewWillEnter(){
@@ -34,12 +32,15 @@ export class MotherRelatedPage {
   }
 
   async getMotherRelatedDataList(){
-    this.motherRelatedDataList = await this.spsService.getMotherRelatedData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode);
+    let obj  = await this.spsService.getMotherRelatedData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode);
+    this.motherRelatedDataList = obj.motherRelatedList
+    this.comeToVolume7Day = obj.comeToVolume7Day
+    this.comeToVolume14Day = obj.comeToVolume14Day
   }
 
   getBackgroundColor(data){
     if(data){
-      if(data === '-' || data === 'No')
+      if(data === 'No')
         return ConstantProvider.messages.spsContentColorRed
       else if(data === 'Yes')
         return ConstantProvider.messages.spsContentColorGreen

@@ -5,6 +5,7 @@
  * @since 1.1.0
 */
 interface IMotherRelatedData{
+  slNo: number;
   date: string;
   expAndBfEpisodePerday: string;
   ofWhichBf: string;

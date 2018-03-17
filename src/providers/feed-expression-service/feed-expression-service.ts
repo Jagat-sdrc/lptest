@@ -89,9 +89,11 @@ export class FeedExpressionServiceProvider {
         let feedExpressions: IFeed[] = [];
         if(val != null && val.length > 0) {
           feedExpressions = val
-          let index = feedExpressions.findIndex(d=>d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
+          let index = feedExpressions.findIndex(d=>d.babyCode === feedExpression.babyCode && 
+            d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
           if(index < 0) {
-            index = feedExpressions.findIndex(d=>d.dateOfFeed === existingDate && d.timeOfFeed === existingTime)
+            index = feedExpressions.findIndex(d=>d.babyCode === feedExpression.babyCode && 
+              d.dateOfFeed === existingDate && d.timeOfFeed === existingTime)
             feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)
             this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
               .then(data=>{

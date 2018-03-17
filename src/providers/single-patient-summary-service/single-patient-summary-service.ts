@@ -134,6 +134,7 @@ export class SinglePatientSummaryServiceProvider {
    * This method will return all mother related data of sps
    *
    * @author Jagat Bandhu Sahoo
+   * @author Naseem Akhtar
    * @since 1.1.0
    * @param deliveryDate
    * @param dischargeDate
@@ -151,6 +152,11 @@ export class SinglePatientSummaryServiceProvider {
       if(bfExpressions != null && bfExpressions.length > 0)
         expressions = bfExpressions.filter(d => d.babyCode === babyCode)
 
+      //declaring variables 
+      let comeToVolume7Day = 'No';
+      let comeToVolume14Day = 'No';
+      let comeToVolume7DayCount = 0;
+      let comeToVolume14DayCount = 0;
       /**
        * iterating through each date between delivery date and
        * discharge date(if available) / current date
@@ -158,12 +164,19 @@ export class SinglePatientSummaryServiceProvider {
       for (let index = 0; index < dates.length; index++) {
         let milkComeInForSingleDay = false;
         let motherRelatedData: IMotherRelatedData = {
+          slNo: index+1,
           date: null,
           expAndBfEpisodePerday: null,
           ofWhichBf: null,
           totalDailyVolume: null,
           nightExp: null
         };
+
+        //preparing two new object in an array to push into mother related data array for 
+        //come to volume option
+        if(index === 7 || index === 14)
+          motherRelatedDataList.push(motherRelatedData)
+
         motherRelatedData.date = dates[index];
 
         //if length = 0, then set all values to '-'
@@ -244,8 +257,6 @@ export class SinglePatientSummaryServiceProvider {
               }
             }
 
-            motherRelatedData.ofWhichBf = String(noOfBfExpression)
-
             if(index <= 3 && milkComeInForSingleDay === true)
               motherRelatedData.totalDailyVolume = 'Yes'
             else if(index <= 3 && milkComeInForSingleDay === false)
@@ -253,7 +264,19 @@ export class SinglePatientSummaryServiceProvider {
             else
               motherRelatedData.totalDailyVolume = String(totalVolumeMilk)
 
+            motherRelatedData.ofWhichBf = String(noOfBfExpression)
             motherRelatedData.nightExp = String(nightExpressionCount)
+
+            if(index >3 && index < 7){
+              if(totalVolumeMilk > 350)
+                comeToVolume7DayCount++
+              if(totalVolumeMilk > 500)
+                comeToVolume14DayCount++
+            }
+
+            if(index >6 && index < 14 && totalVolumeMilk > 500){
+              comeToVolume14DayCount++
+            }
 
           }else {
             motherRelatedData.expAndBfEpisodePerday = '-'
@@ -267,10 +290,26 @@ export class SinglePatientSummaryServiceProvider {
           motherRelatedData.ofWhichBf = '-'
           motherRelatedData.totalDailyVolume = '-';
           motherRelatedData.nightExp = '-';
+          comeToVolume7Day = '-';
+          comeToVolume14Day = '-';
         }
+
+        if(comeToVolume7DayCount > 2)
+          comeToVolume7Day = 'Yes'
+        
+        if(comeToVolume14DayCount > 2)
+          comeToVolume14Day = 'Yes';
+
         motherRelatedDataList.push(motherRelatedData)
       }
-      return motherRelatedDataList;
+
+      let obj = {
+        motherRelatedList: motherRelatedDataList,
+        comeToVolume7Day: comeToVolume7Day,
+        comeToVolume14Day: comeToVolume14Day
+      }
+      
+      return obj;
   }
 
   //Together Detail Code starts here
