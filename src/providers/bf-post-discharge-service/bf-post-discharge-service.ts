@@ -241,7 +241,7 @@ export class BfPostDischargeServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then(data => {
             if(data != null)
-              resolve(data);
+              resolve(data.filter(d => d.babyCode  === babyCode));
             else
               resolve([]);
         })

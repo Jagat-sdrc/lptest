@@ -47,4 +47,13 @@ export class MotherRelatedPage {
     }
   }
 
+  getComeToVolumeBgColor(data){
+    if(data){
+      if(data === 'No' || data === '-')
+        return ConstantProvider.messages.spsContentColorRed
+      else if(data === 'Yes')
+        return ConstantProvider.messages.spsContentColorGreen
+    }
+  }
+
 }

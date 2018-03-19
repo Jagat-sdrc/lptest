@@ -91,8 +91,8 @@ export class FeedExpressionServiceProvider {
         let feedExpressions: IFeed[] = [];
         if(val != null && val.length > 0) {
           feedExpressions = val
-          let index = feedExpressions.findIndex(d=>d.babyCode === feedExpression.babyCode && 
-            d.dateOfFeed === feedExpression.dateOfFeed && d.timeOfFeed === feedExpression.timeOfFeed)
+          let index = feedExpressions.findIndex(d=> d.babyCode === feedExpression.babyCode && d.dateOfFeed === feedExpression.dateOfFeed && 
+            d.timeOfFeed === feedExpression.timeOfFeed)
           if(index < 0) {
             index = feedExpressions.findIndex(d=>d.babyCode === feedExpression.babyCode && 
               d.dateOfFeed === existingDate && d.timeOfFeed === existingTime)
@@ -389,6 +389,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
           let bfCount = 0;
           let hospitalDishcargeStatus = null;
           let feedArray = (data as IFeed[]).filter(d => d.babyCode === babyCode)
+          let partialFlag = false
 
           if(feedArray.length > 0){
             feedArray.forEach(d => {
@@ -397,14 +398,18 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
               else{
                 let sum = Number(d.animalMilkVolume) + Number(d.dhmVolume) + Number(d.formulaVolume) + 
                   Number(d.ommVolume) + Number(d.otherVolume)
-                if(Number(d.ommVolume) > 0 && sum === Number(d.ommVolume))
-                  bfCount++
+                if(Number(d.ommVolume) > 0){
+                  if(sum === Number(d.ommVolume))
+                    bfCount++
+                  else
+                    partialFlag = true
+                }
               }
             })
             if(bfCount === feedArray.length)
               hospitalDishcargeStatus = 'Exclusive'
             else{
-              if(bfCount > 0)
+              if(bfCount > 0 || partialFlag)
                 hospitalDishcargeStatus = 'Partial'
               else
                 hospitalDishcargeStatus = 'None'

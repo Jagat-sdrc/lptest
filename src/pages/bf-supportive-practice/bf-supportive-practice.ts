@@ -116,7 +116,7 @@ export class BfSupportivePracticePage {
     }
   };
 
-  save(bfsp: IBFSP, index){
+  save(bfsp: IBFSP, index) {
     let newData = bfsp.id === null ? true : false
     if(bfsp.dateOfBFSP === null) {
       this.messageService.showErrorToast(ConstantProvider.messages.enterDateOfBfsp);
@@ -146,7 +146,7 @@ export class BfSupportivePracticePage {
    * @author Ratikanta
    * @since 0.0.1
    */
-  findExpressionsByBabyCodeAndDate(){
+  findExpressionsByBabyCodeAndDate() {
     //getting existing feed expression for given baby code and date
 
     this.bfspService.findByBabyCodeAndDate(this.dataForBfspPage.babyCode,

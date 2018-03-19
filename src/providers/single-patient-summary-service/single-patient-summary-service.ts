@@ -138,6 +138,15 @@ export class SinglePatientSummaryServiceProvider {
       let comeToVolume14Day = 'No';
       let comeToVolume7DayCount = 0;
       let comeToVolume14DayCount = 0;
+
+      let dummyData: IMotherRelatedData = {
+        slNo: null,
+        date: null,
+        expAndBfEpisodePerday: null,
+        ofWhichBf: null,
+        totalDailyVolume: null,
+        nightExp: null
+      };
       /**
        * iterating through each date between delivery date and
        * discharge date(if available) / current date
@@ -152,11 +161,6 @@ export class SinglePatientSummaryServiceProvider {
           totalDailyVolume: null,
           nightExp: null
         };
-
-        //preparing two new object in an array to push into mother related data array for
-        //come to volume option
-        if(index === 7 || index === 14)
-          motherRelatedDataList.push(motherRelatedData)
 
         motherRelatedData.date = dates[index];
 
@@ -239,9 +243,9 @@ export class SinglePatientSummaryServiceProvider {
             }
 
             if(index <= 3 && milkComeInForSingleDay === true)
-              motherRelatedData.totalDailyVolume = 'Yes'
+              motherRelatedData.totalDailyVolume = 'Yes ('+ String(totalVolumeMilk) + ')'
             else if(index <= 3 && milkComeInForSingleDay === false)
-              motherRelatedData.totalDailyVolume = 'No'
+              motherRelatedData.totalDailyVolume = 'No ('+ String(totalVolumeMilk) + ')'
             else
               motherRelatedData.totalDailyVolume = String(totalVolumeMilk)
 
@@ -282,6 +286,11 @@ export class SinglePatientSummaryServiceProvider {
           comeToVolume14Day = 'Yes';
 
         motherRelatedDataList.push(motherRelatedData)
+
+        //preparing two new object in an array to push into mother related data array for
+        //come to volume option
+        if(index === 6 || index === 13)
+          motherRelatedDataList.push(dummyData)
       }
 
       let obj = {
@@ -600,7 +609,7 @@ export class SinglePatientSummaryServiceProvider {
       let diff = Math.abs(tempDischargeDate.getTime() - deliveryDate.getTime());
       let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
 
-      this.babyBasicDetails.timeSpentInHospital = diffDays;
+      this.babyBasicDetails.timeSpentInHospital = diffDays+1;
     }
 
       //checking if time in hour and time in minute are present then only display the time

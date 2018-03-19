@@ -14,7 +14,7 @@
 
     <ion-row margin-top>
       <ion-col col-6>
-        Gestational Age
+        Gestational Age (in weeks)
       </ion-col>
       <ion-col col-6 class="borderGrey">
         {{babyDetails.gestationalAgeInWeek}}
@@ -50,7 +50,7 @@
 
     <ion-row margin-top>
       <ion-col col-6>
-        Time till first expression
+        Time till first expression (in hrs)
       </ion-col>
       <ion-col col-6 class="borderGrey" [ngClass]="getBgColorForTypeOfTimeTillFirstExp()">
         {{babyDetails.timeTillFirstExpression}}
@@ -59,7 +59,7 @@
 
     <ion-row margin-top>
       <ion-col col-6>
-        Time till first enteral feed
+        Time till first enteral feed (in hrs)
       </ion-col>
       <ion-col col-6 class="borderGrey">
         {{babyDetails.timeTillFirstEnteralFeed}}

@@ -50,17 +50,18 @@ export class SaveExpressionBfProvider {
         let bfExpressions: IBFExpression[] = [];
         if(val != null && val.length > 0) {
           bfExpressions = val;
-          let index = bfExpressions.findIndex(d=>d.dateOfExpression === bfExpression.dateOfExpression 
+          let index = bfExpressions.findIndex(d=>d.babyCode === bfExpression.babyCode && d.dateOfExpression === bfExpression.dateOfExpression 
               && d.timeOfExpression === bfExpression.timeOfExpression);
           if(index < 0) {
-            index = bfExpressions.findIndex(d=>d.dateOfExpression === existingDate && d.timeOfExpression === existingTime);
-            bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression, index)          
+            index = bfExpressions.findIndex(d=>d.babyCode === bfExpression.babyCode && d.dateOfExpression === existingDate 
+              && d.timeOfExpression === existingTime);
+            bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression, index)
             this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
               .then(data=> {
                 resolve()
               })
               .catch(err=> {
-                reject(err.message);    
+                reject(err.message);
               })
           }else {
             if(bfExpression.dateOfExpression === existingDate &&  bfExpression.timeOfExpression === existingTime){
