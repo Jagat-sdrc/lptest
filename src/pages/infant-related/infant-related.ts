@@ -49,7 +49,7 @@ export class InfantRelatedPage {
   getBgColorForDailyOmm(value){
     if(value != null && value != "-")
     if(value < 51)
-    return ConstantProvider.messages.spsContentColorRed;
+      return ConstantProvider.messages.spsContentColorRed;
   }
 
   /**
@@ -59,8 +59,8 @@ export class InfantRelatedPage {
    * @since 1.1.0
    * @param value
    */
-  getBgColor(value){
-    if(value != null && value != "-")
+  getBgColor(value,days){
+    if(value != null && value != "-" && days < 15)
       return ConstantProvider.messages.spsContentColorRed;
   }
 
@@ -74,9 +74,9 @@ export class InfantRelatedPage {
   getBgColorForWeight(value){
     if(value != null && value != "-")
     if(value < 1500 && value >= 1000)
-    return ConstantProvider.messages.spsContentColorYellow;
+      return ConstantProvider.messages.spsContentColorYellow;
     if(value < 1000)
-    return ConstantProvider.messages.spsContentColorRed;
+      return ConstantProvider.messages.spsContentColorRed;
   }
 
 }

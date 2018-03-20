@@ -34,9 +34,9 @@
       <ion-col col-2 [ngClass]="getBgColorForDailyOmm(infantRelated.dailyDoseOMM)">{{infantRelated.dailyDoseOMM}}</ion-col>
       <ion-col col-1>{{infantRelated.percentageOMM}}</ion-col>
       <ion-col col-1>{{infantRelated.percentageDHM}}</ion-col>
-      <ion-col col-1 [ngClass]="getBgColor(infantRelated.percentageFormula)">{{infantRelated.percentageFormula}}</ion-col>
-      <ion-col col-1 [ngClass]="getBgColor(infantRelated.percentageAnimalMilk)">{{infantRelated.percentageAnimalMilk}}</ion-col>
-      <ion-col col-1 [ngClass]="getBgColor(infantRelated.percentageOther)">{{infantRelated.percentageOther}}</ion-col>
+      <ion-col col-1 [ngClass]="getBgColor(infantRelated.percentageFormula,i+1)">{{infantRelated.percentageFormula}}</ion-col>
+      <ion-col col-1 [ngClass]="getBgColor(infantRelated.percentageAnimalMilk,i+1)">{{infantRelated.percentageAnimalMilk}}</ion-col>
+      <ion-col col-1 [ngClass]="getBgColor(infantRelated.percentageOther,i+1)">{{infantRelated.percentageOther}}</ion-col>
       <ion-col col-2 [ngClass]="getBgColorForWeight(infantRelated.percentageWeght)">{{infantRelated.percentageWeght}}</ion-col>
     </ion-row>
   </ion-grid>
