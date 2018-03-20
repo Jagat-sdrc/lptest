@@ -331,7 +331,6 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
             })
           }
 
-          debugger
           let dateArray = []
           feedData.forEach(d => dateArray.push(d.dateOfFeed))
           dateArray = new OrderByDatePipe(this.datePipe).transform(dateArray)
