@@ -204,7 +204,7 @@ export class SinglePatientSummaryServiceProvider {
               if(expressionByDate[i].methodOfExpression === ConstantProvider.typeDetailsIds.breastfeed)
                 noOfBfExpression++
 
-              //calculating total volume of milk for a particular day
+              //calculating AvgCount volume of milk for a particular day
               if(expressionByDate[i].volOfMilkExpressedFromLR != null)
                 totalVolumeMilk = Number(expressionByDate[i].volOfMilkExpressedFromLR) + totalVolumeMilk
 
@@ -320,6 +320,15 @@ export class SinglePatientSummaryServiceProvider {
       let togetherDataList : ITogetherData[] = [];
       if(bsfp != null && bsfp.length > 0)
       bsfpExpression = bsfp.filter(d => d.babyCode === babyCode)
+      let totalTimeInKMCTotal = 0;
+      let totalQuantutyInKMCTotal = 0;
+      let noOfOralCareCountTotal = 0;
+      let noOfNNSCountTotal = 0;
+
+      let totalTimeInKMCAvgCount = 0;
+      let totalQuantutyInKMCAngCount = 0;
+      let noOfOralCareCountAvgCount = 0;
+      let noOfNNSCountAvgCount = 0;
 
         for (let index = 0; index < dates.length; index++) {
           let togetherData: ITogetherData = {
@@ -334,12 +343,15 @@ export class SinglePatientSummaryServiceProvider {
           let totalQuantutyInKMC;
           let noOfOralCareCount;
           let noOfNNSCount;
+
           if(bsfpExpression != null){
 
           totalTimeInKMC = bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc).length;
 
           if(totalTimeInKMC > 0){
+            totalTimeInKMCTotal = totalTimeInKMC + totalTimeInKMCTotal
+            totalTimeInKMCAvgCount++;
             totalTimeInKMC = String(totalTimeInKMC);
           }else{
             totalTimeInKMC = "-";
@@ -354,6 +366,8 @@ export class SinglePatientSummaryServiceProvider {
           }
 
           if(countDailyTotalQuantityInKMC > 0){
+            totalQuantutyInKMCTotal = countDailyTotalQuantityInKMC + totalQuantutyInKMCTotal;
+            totalQuantutyInKMCAngCount++;
             totalQuantutyInKMC = String(countDailyTotalQuantityInKMC);
           }else{
             totalQuantutyInKMC = "-"
@@ -370,6 +384,8 @@ export class SinglePatientSummaryServiceProvider {
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.oral).length;
 
           if(noOfOralCareCount > 0){
+            noOfOralCareCountTotal = noOfOralCareCount + noOfOralCareCountTotal
+            noOfOralCareCountAvgCount++
             togetherData.noOfOralCare = String(noOfOralCareCount);
           }else{
             togetherData.noOfOralCare = "-";
@@ -379,12 +395,30 @@ export class SinglePatientSummaryServiceProvider {
           && d.bfspPerformed == ConstantProvider.typeDetailsIds.nns).length;
 
           if(noOfNNSCount > 0){
+            noOfNNSCountTotal = noOfNNSCount + noOfNNSCountTotal
+            noOfNNSCountAvgCount++
             togetherData.noOfNNS = String(noOfNNSCount);
           }else{
             togetherData.noOfNNS = "-";
           }
         }
         togetherDataList.push(togetherData);
+        if(index+1 == dates.length){
+          let togetherData: ITogetherData = {
+            date: null,
+            dailyTotalTimeInKMC: null,
+            noOfOralCare:null,
+            noOfNNS: null
+          }
+          togetherData.dailyTotalTimeInKMC = totalTimeInKMCAvgCount > 0?String(this.decimal.transform((totalTimeInKMCTotal/totalTimeInKMCAvgCount),'1.2-2')
+          )+"("+String(this.decimal.transform((totalQuantutyInKMCTotal/totalQuantutyInKMCAngCount),'1.2-2')
+          )+")":null;
+          togetherData.noOfOralCare = noOfOralCareCountAvgCount > 0?String(this.decimal.transform((noOfOralCareCountTotal/noOfOralCareCountAvgCount),'1.2-2')
+          ):null;
+          togetherData.noOfNNS = noOfNNSCountAvgCount > 0?String(this.decimal.transform((noOfNNSCountTotal/noOfNNSCountAvgCount),'1.2-2')
+          ):null;
+          togetherDataList.push(togetherData);
+        }
       }
       return togetherDataList;
   }
@@ -408,6 +442,21 @@ export class SinglePatientSummaryServiceProvider {
     if(feedData != null && feedData.length > 0)
     feedDataExpression = feedData.filter(d => d.babyCode === babyCode)
 
+    let dailyDoseOMMTotal = 0;
+    let percentageOMMTotal = 0;
+    let percentageDHMTotal = 0;
+    let percentageFormulaTotal = 0;
+    let percentageAnimalMilkTotal = 0;
+    let percentageOtherTotal = 0;
+    let percentageWeightTotal = 0;
+
+    let dailyDoseOMMAvgCount = 0;
+    let percentageOMMAvgCount = 0;
+    let percentageDHMAvgCount = 0;
+    let percentageFormulaAvgCount = 0;
+    let percentageAnimalMilkAvgCount = 0;
+    let percentageOtherAvgCount = 0;
+    let percentageWeghtAvgCount = 0;
 
     for (let index = 0; index < dates.length; index++) {
       let infantRelatedData: IInfantRelated = {
@@ -468,6 +517,8 @@ export class SinglePatientSummaryServiceProvider {
       }
 
       if(latestbabyWeight > 0){
+        percentageWeightTotal = Number(latestbabyWeight) + percentageWeightTotal
+        percentageWeghtAvgCount++
         infantRelatedData.percentageWeght = String(latestbabyWeight);
       }else{
         infantRelatedData.percentageWeght = "-";
@@ -475,6 +526,8 @@ export class SinglePatientSummaryServiceProvider {
 
       if(dailyDoseOMM > 0 && latestbabyWeight != null){
         let dailyDoseOMMRound = this.decimal.transform((dailyDoseOMM/latestbabyWeight)*1000,'1.2-2');
+        dailyDoseOMMTotal = Number(dailyDoseOMMRound) + dailyDoseOMMTotal
+        dailyDoseOMMAvgCount++
         infantRelatedData.dailyDoseOMM = String(dailyDoseOMMRound);
       }else{
         infantRelatedData.dailyDoseOMM = "-";
@@ -488,6 +541,8 @@ export class SinglePatientSummaryServiceProvider {
         infantRelatedData.percentageOMM = null;
       }else{
         let dailyDoseOMMRound = this.decimal.transform((dailyDoseOMM/sumofTotalDailyfeed)*100,'1.2-2');
+        percentageOMMTotal = Number(dailyDoseOMMRound) + percentageOMMTotal
+        percentageOMMAvgCount++
         infantRelatedData.percentageOMM = String(dailyDoseOMMRound);
       }
 
@@ -497,6 +552,8 @@ export class SinglePatientSummaryServiceProvider {
         infantRelatedData.percentageDHM = null;
       }else{
         let dailyDoseDHMRound = this.decimal.transform((dailyDHM/sumofTotalDailyfeed)*100,'1.2-2');
+        percentageDHMTotal = Number(dailyDoseDHMRound) + percentageDHMTotal
+        percentageDHMAvgCount++
         infantRelatedData.percentageDHM = String(dailyDoseDHMRound);
       }
 
@@ -506,6 +563,8 @@ export class SinglePatientSummaryServiceProvider {
         infantRelatedData.percentageFormula = null;
       }else{
         let dailyDoseFormulaRound = this.decimal.transform((dailyFormula/sumofTotalDailyfeed)*100,'1.2-2');
+        percentageFormulaTotal = Number(dailyDoseFormulaRound) + percentageFormulaTotal
+        percentageFormulaAvgCount++
         infantRelatedData.percentageFormula = String(dailyDoseFormulaRound);
       }
 
@@ -515,6 +574,8 @@ export class SinglePatientSummaryServiceProvider {
         infantRelatedData.percentageAnimalMilk = null;
       }else{
         let dailyDoseAnimalMilkRound = this.decimal.transform((dailyAnimalMilk/sumofTotalDailyfeed)*100,'1.2-2');
+        percentageAnimalMilkTotal = Number(dailyDoseAnimalMilkRound) + percentageAnimalMilkTotal
+        percentageAnimalMilkAvgCount++
         infantRelatedData.percentageAnimalMilk = String(dailyDoseAnimalMilkRound);
       }
 
@@ -524,11 +585,33 @@ export class SinglePatientSummaryServiceProvider {
         infantRelatedData.percentageOther = null;
       }else{
         let dailyDoseOtherRound = this.decimal.transform((dailyOther/sumofTotalDailyfeed)*100,'1.2-2');
+        percentageOtherTotal = Number(dailyDoseOtherRound) + percentageOtherTotal
+        percentageOtherAvgCount++
         infantRelatedData.percentageOther = String(dailyDoseOtherRound);
       }
     }
 
     infantRelatedDataList.push(infantRelatedData)
+    if(index+1 == dates.length){
+      let infantRelatedData: IInfantRelated = {
+        date: null,
+        dailyDoseOMM: null,
+        percentageOMM: null,
+        percentageDHM: null,
+        percentageFormula: null,
+        percentageAnimalMilk: null,
+        percentageOther: null,
+        percentageWeght: null
+      }
+      infantRelatedData.dailyDoseOMM = dailyDoseOMMAvgCount > 0?String(this.decimal.transform((dailyDoseOMMTotal/dailyDoseOMMAvgCount),'1.2-2')):null;
+      infantRelatedData.percentageOMM = percentageOMMAvgCount > 0?String(this.decimal.transform((percentageOMMTotal/percentageOMMAvgCount),'1.2-2')):null;
+      infantRelatedData.percentageDHM = percentageDHMAvgCount > 0?String(this.decimal.transform((percentageDHMTotal/percentageDHMAvgCount),'1.2-2')):null;
+      infantRelatedData.percentageFormula = percentageFormulaAvgCount > 0?String(this.decimal.transform((percentageFormulaTotal/percentageFormulaAvgCount),'1.2-2')):null;
+      infantRelatedData.percentageAnimalMilk = percentageAnimalMilkAvgCount > 0?String(this.decimal.transform((percentageAnimalMilkTotal/percentageAnimalMilkAvgCount),'1.2-2')):null;
+      infantRelatedData.percentageOther = percentageOtherAvgCount > 0?String(this.decimal.transform((percentageOtherTotal/percentageOtherAvgCount),'1.2-2')):null;
+      infantRelatedData.percentageWeght = percentageWeghtAvgCount > 0?String(this.decimal.transform((percentageWeightTotal/percentageWeghtAvgCount),'1.2-2')):null;
+      infantRelatedDataList.push(infantRelatedData)
+    }
 
     }
     return infantRelatedDataList;
@@ -700,7 +783,7 @@ export class SinglePatientSummaryServiceProvider {
 
     if(babyDetails.dischargeDate != null && babyDetails.dischargeDate != ''){
       hospitalDischarge.date = babyDetails.dischargeDate
-      this.feedExpressionService.getHospitalDischargeDataForExclusiveBf(babyDetails.babyCode, 
+      this.feedExpressionService.getHospitalDischargeDataForExclusiveBf(babyDetails.babyCode,
         babyDetails.dischargeDate)
         .then(data => hospitalDischarge.status = data)
         .catch(error => this.messageService.showErrorToast(error))

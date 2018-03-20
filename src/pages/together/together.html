@@ -17,9 +17,11 @@
       <ion-col col-2>No of NNS</ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let togetherItem  of togetherDataList; let i = index">
-      <ion-col col-1>{{i+1}}</ion-col>
-      <ion-col col-2>{{togetherItem.date}}</ion-col>
+    <ion-row class="sps-exlcusive-bf-contents" *ngFor="let togetherItem  of togetherDataList; let i = index">
+      <ion-col col-1 *ngIf="((i+1) != togetherDataList.length)">{{i+1}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) == togetherDataList.length)"></ion-col>
+      <ion-col col-2 *ngIf="((i+1) != togetherDataList.length)">{{togetherItem.date}}</ion-col>
+      <ion-col col-2 *ngIf="((i+1) == togetherDataList.length)">Average</ion-col>
       <ion-col col-4>{{togetherItem.dailyTotalTimeInKMC}}</ion-col>
       <ion-col col-3>{{togetherItem.noOfOralCare}} </ion-col>
       <ion-col col-2>{{togetherItem.noOfNNS}}</ion-col>
