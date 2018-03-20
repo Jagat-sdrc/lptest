@@ -64,4 +64,19 @@ export class InfantRelatedPage {
       return ConstantProvider.messages.spsContentColorRed;
   }
 
+  /**
+   * This method will return color to html page based on the value
+   *
+   * @author Jagat Bandhu Sahoo
+   * @since 1.1.0
+   * @param value
+   */
+  getBgColorForWeight(value){
+    if(value != null && value != "-")
+    if(value < 1500 && value >= 1000)
+    return ConstantProvider.messages.spsContentColorYellow;
+    if(value < 1000)
+    return ConstantProvider.messages.spsContentColorRed;
+  }
+
 }
