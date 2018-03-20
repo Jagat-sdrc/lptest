@@ -38,8 +38,8 @@ export class MotherRelatedPage {
     this.comeToVolume14Day = obj.comeToVolume14Day
   }
 
-  getBackgroundColor(data){
-    if(data){
+  getBackgroundColor(data: string, slNo: number) {
+    if(data && slNo){
       if(data === 'No')
         return ConstantProvider.messages.spsContentColorRed
       else if(data === 'Yes')
@@ -47,7 +47,7 @@ export class MotherRelatedPage {
     }
   }
 
-  getComeToVolumeBgColor(data){
+  getComeToVolumeBgColor(data: string) {
     if(data){
       if(data === 'No' || data === '-')
         return ConstantProvider.messages.spsContentColorRed
@@ -56,8 +56,8 @@ export class MotherRelatedPage {
     }
   }
 
-  getTotalVolumeBgColor(data: string, index: number){
-    if(index <=4 && (data && data != '-')) {
+  getTotalVolumeBgColor(data: string, slNo: number) {
+    if((slNo && slNo <=4) && (data && data != '-')) {
       let yesOrNo = data.split(' ')
       return yesOrNo[0] === 'Yes' ? ConstantProvider.messages.spsContentColorGreen : 
         ConstantProvider.messages.spsContentColorRed

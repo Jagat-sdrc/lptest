@@ -124,6 +124,16 @@ export class SinglePatientSummaryServiceProvider {
       // getting dates between delivery date and discharge date(if available) / current date
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
 
+      //variables for average
+      let expBfEpdCount = 0
+      let expBfEpdSum = 0
+      let bfCount = 0
+      let bfSum = 0
+      let totalVolumeCount = 0
+      let totalVolumeSum = 0
+      let nightExpressionAvgCount = 0
+      let nightExpressionSum = 0
+
       // fetching all breastfeed expressions
       let bfExpressions: IBFExpression[] = await this.storage.get(ConstantProvider.dbKeyNames.bfExpressions);
       let expressions: IBFExpression[] = [];
@@ -257,13 +267,21 @@ export class SinglePatientSummaryServiceProvider {
                 comeToVolume7DayCount++
             }
 
-            let isConsecutive = true
             if(index > 3 && index < 14 && comeToVolume14DayCount < 3) {
               if(totalVolumeMilk > 500)
                 comeToVolume14DayCount++
               else if(comeToVolume14DayCount > 0)
                 comeToVolume14DayCount--
             }
+
+            expBfEpdCount++
+            expBfEpdSum += expressionByDate.length
+            bfCount++
+            bfSum += noOfBfExpression
+            nightExpressionAvgCount++
+            nightExpressionSum += nightExpressionCount
+            totalVolumeCount++
+            totalVolumeSum += totalVolumeMilk 
 
           }else {
             motherRelatedData.expAndBfEpisodePerday = '-'
@@ -294,6 +312,16 @@ export class SinglePatientSummaryServiceProvider {
         if(index === 6 || index === 13)
           motherRelatedDataList.push(dummyData)
       }
+
+      //setting the average of all the columns
+      dummyData.date = 'Average'
+      dummyData.expAndBfEpisodePerday = expBfEpdCount > 0 ? String ((expBfEpdSum / expBfEpdCount).toFixed(2)) : null
+      dummyData.nightExp = nightExpressionAvgCount > 0 ? String((nightExpressionSum / nightExpressionAvgCount).toFixed(2)) : null
+      dummyData.ofWhichBf = bfCount > 0 ? String((bfSum / bfCount).toFixed(2)) : null
+      dummyData.slNo = null
+      dummyData.totalDailyVolume = totalVolumeCount > 0 ? String((totalVolumeSum / totalVolumeCount).toFixed(2)) : null
+
+      motherRelatedDataList.push(dummyData)
 
       let obj = {
         motherRelatedList: motherRelatedDataList,
