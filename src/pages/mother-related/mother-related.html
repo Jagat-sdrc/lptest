@@ -20,7 +20,7 @@
       <ion-col *ngIf="i != 7 && i != 15" col-2>{{motherRelatedItem.date}}</ion-col>
       <ion-col *ngIf="i != 7 && i != 15" col-2 [ngClass]="getBackgroundColor(motherRelatedItem.expAndBfEpisodePerday)">{{motherRelatedItem.expAndBfEpisodePerday}}</ion-col>
       <ion-col *ngIf="i != 7 && i != 15" col-2 [ngClass]="getBackgroundColor(motherRelatedItem.ofWhichBf)">{{motherRelatedItem.ofWhichBf}}</ion-col>
-      <ion-col *ngIf="i != 7 && i != 15" col-3 [ngClass]="getBackgroundColor(motherRelatedItem.totalDailyVolume)">{{motherRelatedItem.totalDailyVolume}}</ion-col>
+      <ion-col *ngIf="i != 7 && i != 15" col-3 [ngClass]="getTotalVolumeBgColor(motherRelatedItem.totalDailyVolume, motherRelatedItem.slNo)">{{motherRelatedItem.totalDailyVolume}}</ion-col>
       <ion-col *ngIf="i != 7 && i != 15" col-2 [ngClass]="getBackgroundColor(motherRelatedItem.nightExp)">{{motherRelatedItem.nightExp}}</ion-col>
       <ion-col *ngIf="i === 7" [ngClass]="getComeToVolumeBgColor(comeToVolume7Day)">Come to volume: {{comeToVolume7Day}}</ion-col>
       <ion-col *ngIf="i === 15" [ngClass]="getComeToVolumeBgColor(comeToVolume14Day)">Come to volume: {{comeToVolume14Day}}</ion-col>

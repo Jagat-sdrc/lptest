@@ -255,12 +255,14 @@ export class SinglePatientSummaryServiceProvider {
             if(index >3 && index < 7){
               if(totalVolumeMilk > 350)
                 comeToVolume7DayCount++
-              if(totalVolumeMilk > 500)
-                comeToVolume14DayCount++
             }
 
-            if(index >6 && index < 14 && totalVolumeMilk > 500){
-              comeToVolume14DayCount++
+            let isConsecutive = true
+            if(index > 3 && index < 14 && comeToVolume14DayCount < 3) {
+              if(totalVolumeMilk > 500)
+                comeToVolume14DayCount++
+              else if(comeToVolume14DayCount > 0)
+                comeToVolume14DayCount--
             }
 
           }else {
