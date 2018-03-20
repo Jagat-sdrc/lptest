@@ -5,6 +5,7 @@
  * @interface IMessage
  */
 interface IMessage{
+    writingDataToFile: string;
     invalidCredentials: string;
     enterDateOfExpression: string;
     enterTimeOfExpression: string;

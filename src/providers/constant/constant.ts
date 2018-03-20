@@ -120,6 +120,7 @@ export class ConstantProvider {
   static postDischargeMenu: number = 12;
 
   static messages: IMessage = {
+    writingDataToFile: 'Writing data to file',
     enterDateOfExpression: 'Please enter date of expression',
     enterTimeOfExpression :'Please enter time of expression',
     enterTypeOfExpression:'Please enter method of expression',
@@ -210,6 +211,7 @@ static areaLevels: IAreaLevel ={
     dischargeDate: "dischargeDate",
     addmissionDate: "addmissionDate"
   }
+  static appFolderName: string = 'Lactation'
 
   constructor(public http: HttpClient) {
   }

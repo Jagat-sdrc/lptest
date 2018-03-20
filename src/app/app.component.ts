@@ -4,6 +4,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MessageProvider } from '../providers/message/message';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service'
+import { PreloadDataServiceProvider } from '../providers/preload-data-service/preload-data-service';
+import { ConstantProvider } from '../providers/constant/constant';
+import { File } from '@ionic-native/file';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,7 +31,9 @@ export class MyApp {
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     private messageProvider: MessageProvider, private syncService: SyncServiceProvider,
-  private events: Events) {
+  private events: Events,
+private preloadedDataService: PreloadDataServiceProvider,
+private file: File) {
     this.initializeApp();
   }
 
@@ -46,6 +51,9 @@ export class MyApp {
     this.events.subscribe('user', data=>{
       this.user = data;
     })
+
+    this.createProjectFolder()
+    // this.preloadedDataService.checkAndPreloadData()
   }
 
   openPage(page) {
@@ -77,4 +85,38 @@ export class MyApp {
   logout(){
     this.nav.setRoot('LoginPage');
   }
+
+  /**
+   * This method will do all the preload data work
+   * @since 1.1.0
+   * @author Ratikanta
+   */
+  preloadDataWork(){
+    this.messageProvider.showLoader(ConstantProvider.messages.writingDataToFile)
+    this.preloadedDataService.writeDataToFile()
+  }
+
+   /**
+   * 
+   * This method is going to create project folders where we are going to keep the data
+   * @memberof MyApp
+   * 
+   * @since 1.2.0
+   * @author Ratikanta
+   */
+  createProjectFolder(){
+    //checking folder existance
+    this.file.checkDir(this.file.externalRootDirectory, ConstantProvider.appFolderName)
+    .catch(err=>{
+      if(err.code === 1){
+        // folder not present, creating new folder
+        this.file.createDir(this.file.externalRootDirectory, ConstantProvider.appFolderName, false)
+      }
+    })
+    
+
+      
+    
+  }
+ 
 }
