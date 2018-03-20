@@ -705,10 +705,13 @@ export class SinglePatientSummaryServiceProvider {
       babyDetails.deliveryTime)
       .then(data=>{
         if(data){
-          this.babyBasicDetails.timeTillFirstEnteralFeed  = data.timeTillFirstEnteralFeed;
-          this.babyBasicDetails.compositionOfFirstEnteralFeed = data.compositionOfFirstEnteralFeed;
-
-          this.babyBasicDetails.timeSpentInNicu = data.timeSpentInNICU;
+          this.babyBasicDetails.timeTillFirstEnteralFeed  = data.timeTillFirstEnteralFeed
+          this.babyBasicDetails.compositionOfFirstEnteralFeed = data.compositionOfFirstEnteralFeed
+          this.babyBasicDetails.timeSpentInNicu = data.timeSpentInNICU
+        }else{
+          this.babyBasicDetails.timeTillFirstEnteralFeed  = null
+          this.babyBasicDetails.compositionOfFirstEnteralFeed = null
+          this.babyBasicDetails.timeSpentInNicu = null
         }
       })
 

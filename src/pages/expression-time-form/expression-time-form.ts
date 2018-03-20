@@ -254,10 +254,8 @@ export class ExpressionTimeFormPage {
    * @author - Naseem Akhtar
    * @param bfExpform - the form which user is editing
    */
-  checkVolumeOfMilkExpressed(bfExpform: IBFExpression){
-    if(bfExpform.methodOfExpression != 43){
+  checkVolumeOfMilkExpressed(bfExpform: IBFExpression) {
       bfExpform.volOfMilkExpressedFromLR = null;
-    }
   }
 
   /** 

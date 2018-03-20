@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
 import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 import { MessageProvider } from '../message/message';
+import { OrderByDatePipe } from '../../pipes/order-by-date/order-by-date';
 
 /**
  * This service will only provide service to Feed component
@@ -309,10 +310,8 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
         if(data !=null){
-          let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
-            || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral));
-
-          feedData = new OrderByTimePipe().transform(feedData);
+          let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode);
+          
           /**
            * The following block of code is to calculate the no. of days spent in NICU
            */
@@ -332,7 +331,18 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
             })
           }
 
-          feedData = feedData.filter(d => d.dateOfFeed === feedData[0].dateOfFeed)
+          debugger
+          let dateArray = []
+          feedData.forEach(d => dateArray.push(d.dateOfFeed))
+          dateArray = new OrderByDatePipe(this.datePipe).transform(dateArray)
+          console.log(dateArray)
+          feedData = feedData.filter(d => d.dateOfFeed === dateArray[dateArray.length -1] 
+            && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral 
+              || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly 
+              || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral))
+
+          feedData = new OrderByTimePipe().transform(feedData);
+            
           if(feedData.length > 0){
             let dateOfFeed;
             let timeOfFeed;
@@ -370,11 +380,12 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
               compositionOfFirstEnteralFeed: compositionOfFirstEf.slice(0, compositionOfFirstEf.length-2),
               timeSpentInNICU: timeSpentInNicuData > 0 ? timeSpentInNicuData : null
             }
-
             resolve(result)
           }else{
             resolve()
           }
+        }else{
+          resolve()
         }
       })
 
