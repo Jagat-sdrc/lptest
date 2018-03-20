@@ -89,9 +89,7 @@ export class CreateNewAccountPage {
     this.createNewAccountService.getAllAreas()
       .subscribe(data => {
         this.areas = data
-        console.log(this.areas);
         this.countries = this.areas.filter(d => d.areaLevel === ConstantProvider.areaLevels.country)
-        console.log(this.countries)
       }, err => {
         this.messageService.showErrorToast(err)
       });
@@ -115,7 +113,6 @@ export class CreateNewAccountPage {
       this.createNewAccountService.getFirstUser()
       .then(data=>{
         if(data != null){
-          console.log(data)
           this.countrySelected((data as IUser).country);
           this.stateSelected((data as IUser).state);
           this.districtSelected((data as IUser).district);
@@ -128,8 +125,6 @@ export class CreateNewAccountPage {
           this.stateStatus = true;
           this.districtStatus = true;
           this.institutionStatus = true;
-        }else{
-          console.log("no data")
         }
       })
 
