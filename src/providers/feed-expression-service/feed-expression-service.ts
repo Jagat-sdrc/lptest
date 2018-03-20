@@ -398,7 +398,8 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
         .then(data=>{
           let bfCount = 0;
           let hospitalDishcargeStatus = null;
-          let feedArray = data === null ? [] : (data as IFeed[]).filter(d => d.babyCode === babyCode)
+          let feedArray = data === null ? [] : (data as IFeed[]).filter(d => d.babyCode === babyCode 
+            && d.methodOfFeed != null)
           let partialFlag = false
 
           if(feedArray.length > 0){

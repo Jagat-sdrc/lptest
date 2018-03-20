@@ -54,8 +54,13 @@ export class BasicPage {
 
   getBgColorForTypeOfTimeTillFirstExp(){
     let timeInHrs = Number(this.babyDetails.timeTillFirstExpression.split(':')[0])
-    if(timeInHrs > 0 && timeInHrs < 7)
-      return ConstantProvider.messages.spsContentColorYellow
+    let timeInMinutes = Number(this.babyDetails.timeTillFirstExpression.split(':')[1])
+    if(timeInHrs > 0 && timeInHrs < 7){
+      if(timeInHrs === 6 && timeInMinutes > 0)
+        return ConstantProvider.messages.spsContentColorRed
+      else
+        return ConstantProvider.messages.spsContentColorYellow
+    }
     else if(timeInHrs > 6)
       return ConstantProvider.messages.spsContentColorRed
   }
