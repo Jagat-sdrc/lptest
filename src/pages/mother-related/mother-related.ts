@@ -56,4 +56,12 @@ export class MotherRelatedPage {
     }
   }
 
+  getTotalVolumeBgColor(data: string, index: number){
+    if(index <=4 && (data && data != '-')) {
+      let yesOrNo = data.split(' ')
+      return yesOrNo[0] === 'Yes' ? ConstantProvider.messages.spsContentColorGreen : 
+        ConstantProvider.messages.spsContentColorRed
+    }
+  }
+
 }

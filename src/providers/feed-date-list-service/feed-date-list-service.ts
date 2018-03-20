@@ -20,7 +20,6 @@ export class FeedDateListServiceProvider {
    * @param patientId the patient id for which we are extracting data
    */
   getFeedDateListData(babyCode: string): Promise<string[]>{
-
     let promise : Promise<string[]> = new Promise((resolve, reject) => {      
 
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
