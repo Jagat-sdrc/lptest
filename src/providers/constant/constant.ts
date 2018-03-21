@@ -74,7 +74,8 @@ export class ConstantProvider {
     feedExpressions: "feedExpressions",
     bfsps: "bfsps",
     bfpds: 'bfpds',
-    latestPatientId: 'latestPatientId'
+    latestPatientId: 'latestPatientId',
+    sps: 'sps'
   }
 
   static patientSortBy: IPatientSortBy = {

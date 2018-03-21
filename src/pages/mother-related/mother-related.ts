@@ -32,7 +32,7 @@ export class MotherRelatedPage {
   }
 
   async getMotherRelatedDataList(){
-    let obj  = await this.spsService.getMotherRelatedData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode);
+    let obj  = await this.spsService.getMotherRelatedData();
     this.motherRelatedDataList = obj.motherRelatedList
     this.comeToVolume7Day = obj.comeToVolume7Day
     this.comeToVolume14Day = obj.comeToVolume14Day
@@ -59,7 +59,7 @@ export class MotherRelatedPage {
   getTotalVolumeBgColor(data: string, slNo: number) {
     if((slNo && slNo <=4) && (data && data != '-')) {
       let yesOrNo = data.split(' ')
-      return yesOrNo[0] === 'Yes' ? ConstantProvider.messages.spsContentColorGreen : 
+      return yesOrNo[0] === 'Yes' ? ConstantProvider.messages.spsContentColorGreen :
         ConstantProvider.messages.spsContentColorRed
     }
   }

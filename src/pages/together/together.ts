@@ -35,7 +35,7 @@ export class TogetherPage {
    * @since 1.1.0
    */
   async getTogetherDataList(){
-    this.togetherDataList = await this.spsService.getTogetherData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode);
+    this.togetherDataList = await this.spsService.getTogetherData();
   }
 
 }

@@ -10,6 +10,7 @@ import { FeedExpressionServiceProvider } from '../feed-expression-service/feed-e
 import { OrderByTimeExpressionFromPipe } from '../../pipes/order-by-time-expression-from/order-by-time-expression-from';
 import { MessageProvider } from '../message/message';
 import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
+import { BfPostDischargeServiceProvider } from '../bf-post-discharge-service/bf-post-discharge-service';
 
 /*
   Generated class for the SinglePatientSummaryServiceProvider provider.
@@ -22,10 +23,18 @@ export class SinglePatientSummaryServiceProvider {
 
   babyBasicDetails: IBabyBasicDetails;
   typeDetails: ITypeDetails[] = [];
-
+  spsData: ISps[] = [];
+  basicData : IBasic = {
+    motherRelatedList: null,
+    comeToVolume7Day: null,
+    comeToVolume14Day: null
+  }
+  togetherDataList : ITogetherData[] = [];
+  infantRelatedDataList : IInfantRelated[] = [];
+  exclusiveBfList: IExclusiveBf[] = [];
   constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage,
     private feedExpressionService: FeedExpressionServiceProvider, private decimal: DecimalPipe,
-    private messageService: MessageProvider) {
+    private messageService: MessageProvider, public bfpdService: BfPostDischargeServiceProvider) {
   }
 
   /**
@@ -120,7 +129,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param deliveryDate
    * @param dischargeDate
    */
-  async getMotherRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
+  async setMotherRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
       // getting dates between delivery date and discharge date(if available) / current date
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
 
@@ -281,7 +290,7 @@ export class SinglePatientSummaryServiceProvider {
             nightExpressionAvgCount++
             nightExpressionSum += nightExpressionCount
             totalVolumeCount++
-            totalVolumeSum += totalVolumeMilk 
+            totalVolumeSum += totalVolumeMilk
 
           }else {
             motherRelatedData.expAndBfEpisodePerday = '-'
@@ -323,13 +332,13 @@ export class SinglePatientSummaryServiceProvider {
 
       motherRelatedDataList.push(dummyData)
 
-      let obj = {
+      let basicData : IBasic= {
         motherRelatedList: motherRelatedDataList,
         comeToVolume7Day: comeToVolume7Day,
         comeToVolume14Day: comeToVolume14Day
       }
 
-      return obj;
+      return basicData;
   }
 
   //Together Detail Code starts here
@@ -343,7 +352,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param dischargeDate
    * @param babyCode
    */
-  async getTogetherData(deliveryDate: any,dischargeDate: any,babyCode: string){
+  async setTogetherData(deliveryDate: any,dischargeDate: any,babyCode: string){
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
       let bsfp: IBFSP[] = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
       let bsfpExpression: IBFSP[] = []
@@ -464,7 +473,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param dischargeDate
    * @param babyCode
    */
-  async getInfantRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string,babyWeight: number){
+  async setInfantRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string,babyWeight: number){
     let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
     let feedData: IFeed[] = await this.storage.get(ConstantProvider.dbKeyNames.feedExpressions);
     let feedDataExpression: IFeed[] = [];
@@ -647,6 +656,30 @@ export class SinglePatientSummaryServiceProvider {
     return infantRelatedDataList;
   }
 
+  findSpsInDb(babyDetails: IPatient, typeDetails: ITypeDetails[]){
+    this.storage.get(ConstantProvider.dbKeyNames.sps)
+    .then(data=>{
+      if(data != null && data.length >0){
+        let index = (data as ISps[]).findIndex(d =>d.babyCode == babyDetails.babyCode)
+        if(index < 0){
+          this.setBabyDetails(babyDetails,typeDetails)
+        }else{
+          if(data[index].isEdited){
+            this.setBabyDetails(babyDetails,typeDetails)
+          }else{
+            this.babyBasicDetails = data[index].basicData
+            this.basicData = data[index].motherRelated
+            this.togetherDataList = data[index].together
+            this.infantRelatedDataList = data[index].infantRelayed
+            this.exclusiveBfList = data[index].exclusiveBf
+          }
+        }
+      }else{
+        this.setBabyDetails(babyDetails,typeDetails)
+      }
+    })
+  }
+
   //Basic Baby Detail Code starts here
 
 
@@ -658,7 +691,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param babyDetails - Registration details of baby which the user has selected
    * @param typeDetails - to fetch the dropdown options
    */
-  setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]) {
+  async setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]) {
     //initializing the baby details variable
     this.resetBasicBabyDetails();
     this.babyBasicDetails.deliveryDate = babyDetails.deliveryDate;
@@ -741,8 +774,78 @@ export class SinglePatientSummaryServiceProvider {
 
     this.typeDetails = typeDetails
 
+    this.basicData = await this.setMotherRelatedData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode);
+    this.togetherDataList = await this.setTogetherData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode);
+    this.infantRelatedDataList = await this.setInfantRelatedData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode,babyDetails.babyWeight);
+    let bfpdList = typeDetails.filter(menu => menu.typeId == ConstantProvider.postDischargeMenu);
+    await this.getBfpdBabyData(bfpdList,babyDetails.babyCode,babyDetails);
+    this.setSpsDataToDb(babyDetails.babyCode);
+
     return this.babyBasicDetails;
   }
+
+  setSpsDataToDb(babyCode: string){
+    let spsDataList : ISps[] = [];
+    let spsData: ISps = {
+      babyCode:  null,
+      basic: null,
+      motherRelated: null,
+      together: null,
+      infantRelayed: null,
+      exclusiveBf: null,
+      isEdited: null,
+      isVulnerable: null
+    }
+    spsData.babyCode = babyCode;
+    spsData.basic = this.babyBasicDetails;
+    spsData.motherRelated = this.basicData;
+    spsData.together = this.togetherDataList;
+    spsData.infantRelayed = this.infantRelatedDataList;
+    spsData.exclusiveBf = this.exclusiveBfList;
+
+    this.storage.get(ConstantProvider.dbKeyNames.sps)
+    .then(data=>{
+      if(data != null && data.length >0){
+        spsDataList = data;
+        let index = spsDataList.findIndex(d =>d.babyCode == babyCode)
+        if (index >= 0) {
+          spsDataList.splice(index, 1, spsData);
+        }else{
+          spsDataList.push(spsData);
+        }
+        this.storage.set(ConstantProvider.dbKeyNames.sps,spsDataList);
+      }else{
+        spsDataList.push(spsData);
+        this.storage.set(ConstantProvider.dbKeyNames.sps,spsDataList);
+      }
+    })
+  }
+
+  getMotherRelatedData(){
+    return this.basicData;
+  }
+
+  getTogetherData(){
+    return this.togetherDataList;
+  }
+
+  getInfantRelatedData(){
+    return this.infantRelatedDataList;
+  }
+
+  getSpsExclusiveBfData(){
+    return this.exclusiveBfList;
+  }
+
+  async getBfpdBabyData(bfpdList,babyCode,babyDetails){
+    await this.bfpdService.findByBabyCode(babyCode)
+    .then(bfpdBabyData => {
+      this.exclusiveBfList = this.setSpsExclusiveBfData(bfpdList, bfpdBabyData, babyDetails);
+    }).catch(error => {
+      this.messageService.showErrorToast(error);
+    });
+  }
+
 
   /**
    * @author - Naseem Akhtar
@@ -774,7 +877,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param bfpdList - list of bf that can be captured after discharge
    * @param bfpdBabyData - no of records for the selected child or baby
    */
-  fetchSpsExclusiveBfData(bfpdList: ITypeDetails[], bfpdBabyData: IBFPD[], babyDetails: IPatient) {
+  setSpsExclusiveBfData(bfpdList: ITypeDetails[], bfpdBabyData: IBFPD[], babyDetails: IPatient) {
     let exclusiveBfList: IExclusiveBf[] = [];
     let typeDetails = this.getTypeDetails();
 
