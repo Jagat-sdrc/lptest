@@ -42,6 +42,12 @@ export class HomePage {
     });
   }
 
+  PoorlyPerformingPatients(){
+    this.navCtrl.push('RegisteredPatientPage',{
+      param: "PoorlyPerformingPatients"
+    });
+  }
+
   goToAddNewPatient(){
     this.navCtrl.push('AddPatientPage',{
       param: "Add New Patient"

@@ -67,10 +67,12 @@ export class RegisteredPatientPage {
         deliveryDate: deliveryDate,
         babyDetails: babyDetails
       });
-    }else{
+    }else if((this.navParams.get('param') == "SinglePatientSummaryPage")){
       this.navCtrl.push('SpsPage',{
         babyDetails: babyDetails
       });
+    }else{
+
     }
   }
 
@@ -122,14 +124,18 @@ export class RegisteredPatientPage {
    * @since 0.0.1
   */
   findAllPatients(){
-    this.registeredPatientService.findAllPatients()
-    .then(data=>{
-      this.patientList = data;
-      this.patientList = this.sortPatient.transform(this.patientList,this.sortBy);
-    })
-    .catch(err=>{
-      this.messageService.showErrorToast(err);
-    })
+    if((this.navParams.get('param') == "PoorlyPerformingPatients")){
+      this.patientList =[]
+    }else{
+      this.registeredPatientService.findAllPatients()
+      .then(data=>{
+        this.patientList = data;
+        this.patientList = this.sortPatient.transform(this.patientList,this.sortBy);
+      })
+      .catch(err=>{
+        this.messageService.showErrorToast(err);
+      })
+    }
   }
 
   /**

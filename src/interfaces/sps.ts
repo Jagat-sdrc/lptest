@@ -8,7 +8,7 @@ interface ISps{
   basic: any;
   motherRelated: any;
   together: any;
-  infantRelayed: any;
+  infantRelated: any;
   exclusiveBf: any;
   isEdited: boolean;
   isVulnerable: boolean;

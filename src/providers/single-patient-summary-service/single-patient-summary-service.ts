@@ -32,6 +32,7 @@ export class SinglePatientSummaryServiceProvider {
   togetherDataList : ITogetherData[] = [];
   infantRelatedDataList : IInfantRelated[] = [];
   exclusiveBfList: IExclusiveBf[] = [];
+  // isVulnerableStatus: boolean = false;
   constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage,
     private feedExpressionService: FeedExpressionServiceProvider, private decimal: DecimalPipe,
     private messageService: MessageProvider, public bfpdService: BfPostDischargeServiceProvider) {
@@ -129,7 +130,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param deliveryDate
    * @param dischargeDate
    */
-  async setMotherRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string){
+  async setMotherRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string,isVulnerableStatus: boolean){
       // getting dates between delivery date and discharge date(if available) / current date
       let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
 
@@ -268,6 +269,14 @@ export class SinglePatientSummaryServiceProvider {
             else
               motherRelatedData.totalDailyVolume = String(totalVolumeMilk)
 
+            if(((index+1) && (index+1) <=4) && (motherRelatedData.totalDailyVolume && motherRelatedData.totalDailyVolume != '-')) {
+              let yesOrNo = motherRelatedData.totalDailyVolume.split(' ')
+              if(yesOrNo[0] != 'Yes'){
+                if(!isVulnerableStatus)
+                  isVulnerableStatus = true;
+              }
+            }
+
             motherRelatedData.ofWhichBf = String(noOfBfExpression)
             motherRelatedData.nightExp = String(nightExpressionCount)
 
@@ -308,11 +317,22 @@ export class SinglePatientSummaryServiceProvider {
           comeToVolume14Day = '-';
         }
 
-        if(comeToVolume7DayCount > 2)
+        if(comeToVolume7DayCount > 2){
           comeToVolume7Day = 'Yes'
+        }else{
+          if((index+1) > 7)
+            if(!isVulnerableStatus)
+              isVulnerableStatus = true;
+        }
 
-        if(comeToVolume14DayCount > 2)
+
+        if(comeToVolume14DayCount > 2){
           comeToVolume14Day = 'Yes';
+        }else{
+          if((index+1) > 14)
+            if(!isVulnerableStatus)
+              isVulnerableStatus = true;
+        }
 
         motherRelatedDataList.push(motherRelatedData)
 
@@ -473,7 +493,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param dischargeDate
    * @param babyCode
    */
-  async setInfantRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string,babyWeight: number){
+  async setInfantRelatedData(deliveryDate: any,dischargeDate: any,babyCode: string,babyWeight: number, isVulnerableStatus: boolean){
     let dates = await this.getAllDatesTillDate(deliveryDate,dischargeDate);
     let feedData: IFeed[] = await this.storage.get(ConstantProvider.dbKeyNames.feedExpressions);
     let feedDataExpression: IFeed[] = [];
@@ -568,6 +588,9 @@ export class SinglePatientSummaryServiceProvider {
         dailyDoseOMMTotal = Number(dailyDoseOMMRound) + dailyDoseOMMTotal
         dailyDoseOMMAvgCount++
         infantRelatedData.dailyDoseOMM = String(dailyDoseOMMRound);
+        if(!isVulnerableStatus)
+          if(Number(dailyDoseOMMRound) < 51)
+            isVulnerableStatus = true;
       }else{
         infantRelatedData.dailyDoseOMM = "-";
       }
@@ -605,6 +628,9 @@ export class SinglePatientSummaryServiceProvider {
         percentageFormulaTotal = Number(dailyDoseFormulaRound) + percentageFormulaTotal
         percentageFormulaAvgCount++
         infantRelatedData.percentageFormula = String(dailyDoseFormulaRound);
+        if(!isVulnerableStatus)
+          if((index+1) < 15)
+            isVulnerableStatus = true;
       }
 
       if(dailyAnimalMilk == 0 && sumofTotalDailyfeed == 0){
@@ -616,6 +642,9 @@ export class SinglePatientSummaryServiceProvider {
         percentageAnimalMilkTotal = Number(dailyDoseAnimalMilkRound) + percentageAnimalMilkTotal
         percentageAnimalMilkAvgCount++
         infantRelatedData.percentageAnimalMilk = String(dailyDoseAnimalMilkRound);
+        if(!isVulnerableStatus)
+          if((index+1) < 15)
+            isVulnerableStatus = true;
       }
 
       if(dailyOther == 0 && sumofTotalDailyfeed == 0){
@@ -627,6 +656,9 @@ export class SinglePatientSummaryServiceProvider {
         percentageOtherTotal = Number(dailyDoseOtherRound) + percentageOtherTotal
         percentageOtherAvgCount++
         infantRelatedData.percentageOther = String(dailyDoseOtherRound);
+        if(!isVulnerableStatus)
+          if((index+1) < 15)
+            isVulnerableStatus = true;
       }
     }
 
@@ -656,26 +688,27 @@ export class SinglePatientSummaryServiceProvider {
     return infantRelatedDataList;
   }
 
-  findSpsInDb(babyDetails: IPatient, typeDetails: ITypeDetails[]){
-    this.storage.get(ConstantProvider.dbKeyNames.sps)
-    .then(data=>{
+  async findSpsInDb(babyDetails: IPatient, typeDetails: ITypeDetails[], isVulnerableStatus: boolean){
+    let index;
+    await this.storage.get(ConstantProvider.dbKeyNames.sps)
+    .then(async data=>{
       if(data != null && data.length >0){
-        let index = (data as ISps[]).findIndex(d =>d.babyCode == babyDetails.babyCode)
+        index = (data as ISps[]).findIndex(d =>d.babyCode == babyDetails.babyCode)
         if(index < 0){
-          this.setBabyDetails(babyDetails,typeDetails)
+          await this.setBabyDetails(babyDetails,typeDetails,isVulnerableStatus)
         }else{
-          if(data[index].isEdited){
-            this.setBabyDetails(babyDetails,typeDetails)
+          if(!data[index].isEdited){
+            await this.setBabyDetails(babyDetails,typeDetails,isVulnerableStatus)
           }else{
-            this.babyBasicDetails = data[index].basicData
+            this.babyBasicDetails = data[index].basic
             this.basicData = data[index].motherRelated
             this.togetherDataList = data[index].together
-            this.infantRelatedDataList = data[index].infantRelayed
+            this.infantRelatedDataList = data[index].infantRelated
             this.exclusiveBfList = data[index].exclusiveBf
           }
         }
       }else{
-        this.setBabyDetails(babyDetails,typeDetails)
+        await this.setBabyDetails(babyDetails,typeDetails,isVulnerableStatus)
       }
     })
   }
@@ -691,7 +724,7 @@ export class SinglePatientSummaryServiceProvider {
    * @param babyDetails - Registration details of baby which the user has selected
    * @param typeDetails - to fetch the dropdown options
    */
-  async setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[]) {
+  async setBabyDetails(babyDetails: IPatient, typeDetails: ITypeDetails[], isVulnerableStatus: boolean) {
     //initializing the baby details variable
     this.resetBasicBabyDetails();
     this.babyBasicDetails.deliveryDate = babyDetails.deliveryDate;
@@ -713,6 +746,12 @@ export class SinglePatientSummaryServiceProvider {
     //finding inpatient or outpatient in type details array
     this.babyBasicDetails.inpatientOrOutPatient = (babyDetails.inpatientOrOutPatient != null && babyDetails.inpatientOrOutPatient.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.inpatientOrOutPatient)].name : null;
+
+    //set isVulnerable is true for outPatient otherwise set false
+    if(!isVulnerableStatus)
+      if(this.babyBasicDetails.inpatientOrOutPatient != null
+        && this.babyBasicDetails.inpatientOrOutPatient != 'Inpatient')
+          isVulnerableStatus = true;
 
     this.babyBasicDetails.mothersPrenatalIntent = (babyDetails.mothersPrenatalIntent != null && babyDetails.mothersPrenatalIntent.toString() != '') ?
       typeDetails[typeDetails.findIndex(d => d.id === babyDetails.mothersPrenatalIntent)].name : null;
@@ -772,26 +811,46 @@ export class SinglePatientSummaryServiceProvider {
 
     this.babyBasicDetails.timeTillFirstExpression = tempTimeTillFirstExpHrs + ':' + tempTimeTillFirstExpMin
 
+
+    if(!isVulnerableStatus)
+      if(Number(tempTimeTillFirstExpHrs) > 0 && Number(tempTimeTillFirstExpHrs) < 7){
+        if(Number(tempTimeTillFirstExpHrs) === 6 && Number(tempTimeTillFirstExpMin) > 0)
+          isVulnerableStatus = true;
+      }else if(Number(tempTimeTillFirstExpHrs) > 6)
+        isVulnerableStatus = true;
+
+
+    let timeInHrs = Number(this.babyBasicDetails.timeTillFirstExpression.split(':')[0])
+    let timeInMinutes = Number(this.babyBasicDetails.timeTillFirstExpression.split(':')[1])
+    if(timeInHrs > 0 && timeInHrs < 7){
+      if(timeInHrs === 6 && timeInMinutes > 0)
+        return ConstantProvider.messages.spsContentColorRed
+      else
+        return ConstantProvider.messages.spsContentColorYellow
+    }
+    else if(timeInHrs > 6)
+      return ConstantProvider.messages.spsContentColorRed
+
     this.typeDetails = typeDetails
 
-    this.basicData = await this.setMotherRelatedData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode);
+    this.basicData = await this.setMotherRelatedData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode,isVulnerableStatus);
     this.togetherDataList = await this.setTogetherData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode);
-    this.infantRelatedDataList = await this.setInfantRelatedData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode,babyDetails.babyWeight);
+    this.infantRelatedDataList = await this.setInfantRelatedData(babyDetails.deliveryDate,babyDetails.dischargeDate,babyDetails.babyCode,babyDetails.babyWeight,isVulnerableStatus);
     let bfpdList = typeDetails.filter(menu => menu.typeId == ConstantProvider.postDischargeMenu);
     await this.getBfpdBabyData(bfpdList,babyDetails.babyCode,babyDetails);
-    this.setSpsDataToDb(babyDetails.babyCode);
+    this.setSpsDataToDb(babyDetails.babyCode,isVulnerableStatus);
 
     return this.babyBasicDetails;
   }
 
-  setSpsDataToDb(babyCode: string){
+  setSpsDataToDb(babyCode: string, isVulnerableStatus: boolean){
     let spsDataList : ISps[] = [];
     let spsData: ISps = {
       babyCode:  null,
       basic: null,
       motherRelated: null,
       together: null,
-      infantRelayed: null,
+      infantRelated: null,
       exclusiveBf: null,
       isEdited: null,
       isVulnerable: null
@@ -800,8 +859,10 @@ export class SinglePatientSummaryServiceProvider {
     spsData.basic = this.babyBasicDetails;
     spsData.motherRelated = this.basicData;
     spsData.together = this.togetherDataList;
-    spsData.infantRelayed = this.infantRelatedDataList;
+    spsData.infantRelated = this.infantRelatedDataList;
     spsData.exclusiveBf = this.exclusiveBfList;
+    spsData.isEdited = false;
+    spsData.isVulnerable = isVulnerableStatus;
 
     this.storage.get(ConstantProvider.dbKeyNames.sps)
     .then(data=>{

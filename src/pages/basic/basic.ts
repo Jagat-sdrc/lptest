@@ -19,6 +19,7 @@ export class BasicPage {
 
   babyDetails: IBabyBasicDetails;
   typeDetails: ITypeDetails[];
+  isVulnerableStatus: boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public spsService: SinglePatientSummaryServiceProvider, public messageService: MessageProvider) {
   }
@@ -66,7 +67,7 @@ export class BasicPage {
   async getBasicData(){
     this.typeDetails = await this.spsService.fetchTypeDetails().toPromise()
 
-    await this.spsService.findSpsInDb(this.navParams.data, this.typeDetails)
+    await this.spsService.findSpsInDb(this.navParams.data, this.typeDetails, this.isVulnerableStatus)
     this.babyDetails = this.spsService.getBabyDetails();
 
       // .subscribe(data => {
