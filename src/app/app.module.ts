@@ -32,6 +32,7 @@ import { AppVersion } from '@ionic-native/app-version';
 import { SearchPipe } from '../pipes/search/search';
 import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
 import { SinglePatientSummaryServiceProvider } from '../providers/single-patient-summary-service/single-patient-summary-service';
+import { PppServiceProvider } from '../providers/ppp-service/ppp-service';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import { SinglePatientSummaryServiceProvider } from '../providers/single-patient
     SearchPipe,
     SortPatientPipe,
     SinglePatientSummaryServiceProvider,
-    DecimalPipe
+    DecimalPipe,
+    PppServiceProvider
   ]
 })
 export class AppModule {}

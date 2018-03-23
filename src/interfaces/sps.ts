@@ -10,6 +10,5 @@ interface ISps{
   together: any;
   infantRelated: any;
   exclusiveBf: any;
-  isEdited: boolean;
   isVulnerable: boolean;
 }

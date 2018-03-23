@@ -19,7 +19,7 @@ import { ConstantProvider } from '../../providers/constant/constant';
 
 export class HomePage {
 
-  vurnerableBabies : any;
+  pppPage: any;
   public unregisterBackButtonAction: any;
   constructor(public navCtrl: NavController, public menuCtrl: MenuController,
   private messageService: MessageProvider,private platform: Platform) {
@@ -27,7 +27,7 @@ export class HomePage {
   }
 
   ngOnInit(){
-    this.vurnerableBabies = 'VurnerableBabiesPage';
+    this.pppPage = 'PppPage';
   }
 
   registeredPatientPage(){
@@ -39,12 +39,6 @@ export class HomePage {
   singlePatientSummaryPage(){
     this.navCtrl.push('RegisteredPatientPage',{
       param: "SinglePatientSummaryPage"
-    });
-  }
-
-  PoorlyPerformingPatients(){
-    this.navCtrl.push('RegisteredPatientPage',{
-      param: "PoorlyPerformingPatients"
     });
   }
 

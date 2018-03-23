@@ -7,6 +7,7 @@ import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
+import { PppServiceProvider } from '../ppp-service/ppp-service';
 
 /**
  * This service will only provide service to Feed component
@@ -20,7 +21,7 @@ export class AddNewPatientServiceProvider {
     public http: HttpClient,
     private storage: Storage,
     private userService: UserServiceProvider,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,private pppServiceProvider: PppServiceProvider
   ) {}
 
   /**
@@ -189,6 +190,7 @@ export class AddNewPatientServiceProvider {
             resolve()
           })
         }else{
+          this.pppServiceProvider.deleteSpsRecord(patient.babyCode)
           resolve()
         }
       })

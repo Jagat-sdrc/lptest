@@ -20,31 +20,31 @@ export class FeedDateListServiceProvider {
    * @param patientId the patient id for which we are extracting data
    */
   getFeedDateListData(babyCode: string): Promise<string[]>{
-    let promise : Promise<string[]> = new Promise((resolve, reject) => {      
+    let promise : Promise<string[]> = new Promise((resolve, reject) => {
 
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then(data=>{
         if(data != null){
 
           data = (data as IFeed[]).filter(d=> d.babyCode === babyCode)
-          
+
           //Checking if there is any data belong to the patient id or not
           if((data as IFeed[]).length > 0){
             let dates:string[] = [];
             (data as IFeed[]).forEach(d => {
-              dates.push(d.dateOfFeed)              
+              dates.push(d.dateOfFeed)
             });
 
             //removing duplicates
             dates = Array.from(new Set(dates))
 
             resolve(dates)
-          }else{            
-            resolve([]);  
+          }else{
+            resolve([]);
           }
 
-        }else{          
-          resolve([]);  
+        }else{
+          resolve([]);
         }
 
       })

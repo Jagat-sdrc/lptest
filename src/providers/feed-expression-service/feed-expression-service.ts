@@ -11,6 +11,7 @@ import { UserServiceProvider } from '../user-service/user-service';
 import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 import { MessageProvider } from '../message/message';
 import { OrderByDatePipe } from '../../pipes/order-by-date/order-by-date';
+import { PppServiceProvider } from '../ppp-service/ppp-service';
 
 /**
  * This service will only provide service to Feed component
@@ -22,7 +23,7 @@ export class FeedExpressionServiceProvider {
 
   constructor(public http: HttpClient,
     private storage: Storage, private datePipe: DatePipe,
-  private userService: UserServiceProvider,
+  private userService: UserServiceProvider,private pppServiceProvider: PppServiceProvider,
   private messageService: MessageProvider) {
   }
 
@@ -90,12 +91,13 @@ export class FeedExpressionServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
         let feedExpressions: IFeed[] = [];
+        this.pppServiceProvider.deleteSpsRecord(feedExpression.babyCode)
         if(val != null && val.length > 0) {
           feedExpressions = val
-          let index = feedExpressions.findIndex(d=> d.babyCode === feedExpression.babyCode && d.dateOfFeed === feedExpression.dateOfFeed && 
+          let index = feedExpressions.findIndex(d=> d.babyCode === feedExpression.babyCode && d.dateOfFeed === feedExpression.dateOfFeed &&
             d.timeOfFeed === feedExpression.timeOfFeed)
           if(index < 0) {
-            index = feedExpressions.findIndex(d=>d.babyCode === feedExpression.babyCode && 
+            index = feedExpressions.findIndex(d=>d.babyCode === feedExpression.babyCode &&
               d.dateOfFeed === existingDate && d.timeOfFeed === existingTime)
             feedExpressions = this.validateNewEntryAndUpdate(feedExpressions, feedExpression, index)
             this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions)
@@ -271,6 +273,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
         .then(data=>{
           let index = (data as IFeed[]).findIndex(d=>d.id === id);
           if(index >= 0){
+            this.pppServiceProvider.deleteSpsRecord(data[index].babyCode);
             (data as IFeed[]).splice(index, 1)
             this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, data)
             .then(()=>{
@@ -295,7 +298,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
 
   /**
    * This method will return time till first enteral feed,
-   * compositionOfFirstEnteralFeed and 
+   * compositionOfFirstEnteralFeed and
    * timeSpentInNICU as a promise
    *
    * @author Jagat Bandhu
@@ -311,16 +314,16 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
       .then(data=>{
         if(data !=null){
           let feedData = (data as IFeed[]).filter(d=> d.babyCode === babyCode);
-          
+
           /**
            * The following block of code is to calculate the no. of days spent in NICU
            */
           let timeSpentInNicuData = 0
-          let feedDataForTimeSpentInNICU: IFeed[] = (data as IFeed[]).filter(d=> d.babyCode === babyCode && 
+          let feedDataForTimeSpentInNICU: IFeed[] = (data as IFeed[]).filter(d=> d.babyCode === babyCode &&
             (d.locationOfFeeding === ConstantProvider.typeDetailsIds.level1NICU ||
-              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level2SNCU || 
+              d.locationOfFeeding === ConstantProvider.typeDetailsIds.level2SNCU ||
               d.locationOfFeeding === ConstantProvider.typeDetailsIds.level3NICU) )
-          
+
           if(feedDataForTimeSpentInNICU.length > 0){
             let date = null;
             feedDataForTimeSpentInNICU.forEach(d => {
@@ -335,13 +338,13 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
           feedData.forEach(d => dateArray.push(d.dateOfFeed))
           dateArray = new OrderByDatePipe(this.datePipe).transform(dateArray)
           console.log(dateArray)
-          feedData = feedData.filter(d => d.dateOfFeed === dateArray[dateArray.length -1] 
-            && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral 
-              || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly 
+          feedData = feedData.filter(d => d.dateOfFeed === dateArray[dateArray.length -1]
+            && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
+              || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly
               || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOral))
 
           feedData = new OrderByTimePipe().transform(feedData);
-            
+
           if(feedData.length > 0){
             let dateOfFeed;
             let timeOfFeed;
@@ -398,7 +401,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
         .then(data=>{
           let bfCount = 0;
           let hospitalDishcargeStatus = null;
-          let feedArray = data === null ? [] : (data as IFeed[]).filter(d => d.babyCode === babyCode 
+          let feedArray = data === null ? [] : (data as IFeed[]).filter(d => d.babyCode === babyCode
             && d.methodOfFeed != null)
           let partialFlag = false
 
@@ -407,7 +410,7 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
               if(d.methodOfFeed === ConstantProvider.typeDetailsIds.logFeedBreastFeed)
                 bfCount++
               else{
-                let sum = Number(d.animalMilkVolume) + Number(d.dhmVolume) + Number(d.formulaVolume) + 
+                let sum = Number(d.animalMilkVolume) + Number(d.dhmVolume) + Number(d.formulaVolume) +
                   Number(d.ommVolume) + Number(d.otherVolume)
                 if(Number(d.ommVolume) > 0){
                   if(sum === Number(d.ommVolume))

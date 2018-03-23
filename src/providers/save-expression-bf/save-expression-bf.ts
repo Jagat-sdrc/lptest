@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { DatePipe } from '@angular/common';
+import { PppServiceProvider } from '../ppp-service/ppp-service';
 
 /**
- * 
+ *
  * @author Ratikanta
  * @since 0.0.1
  * @export
@@ -14,12 +15,13 @@ import { DatePipe } from '@angular/common';
 @Injectable()
 export class SaveExpressionBfProvider {
 
-  constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe) {
+  constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe,
+            private pppServiceProvider : PppServiceProvider) {
   }
 
   /**
    * This method is going to give us a new BF expression id
-   * 
+   *
    * @param {string} babyCode This is the baby code for which we are creating the bf expression id
    * @returns {string} The new bf expression id
    * @memberof ExpressionBfDateProvider
@@ -42,18 +44,19 @@ export class SaveExpressionBfProvider {
 
     let promise = new Promise((resolve, reject) => {
       bfExpression.isSynced = false;
-      bfExpression.createdDate = bfExpression.createdDate === null ? 
+      bfExpression.createdDate = bfExpression.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfExpression.createdDate;
       bfExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
         let bfExpressions: IBFExpression[] = [];
+        this.pppServiceProvider.deleteSpsRecord(bfExpression.babyCode)
         if(val != null && val.length > 0) {
           bfExpressions = val;
-          let index = bfExpressions.findIndex(d=>d.babyCode === bfExpression.babyCode && d.dateOfExpression === bfExpression.dateOfExpression 
+          let index = bfExpressions.findIndex(d=>d.babyCode === bfExpression.babyCode && d.dateOfExpression === bfExpression.dateOfExpression
               && d.timeOfExpression === bfExpression.timeOfExpression);
           if(index < 0) {
-            index = bfExpressions.findIndex(d=>d.babyCode === bfExpression.babyCode && d.dateOfExpression === existingDate 
+            index = bfExpressions.findIndex(d=>d.babyCode === bfExpression.babyCode && d.dateOfExpression === existingDate
               && d.timeOfExpression === existingTime);
             bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression, index)
             this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
@@ -65,13 +68,13 @@ export class SaveExpressionBfProvider {
               })
           }else {
             if(bfExpression.dateOfExpression === existingDate &&  bfExpression.timeOfExpression === existingTime){
-              bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression, index)          
+              bfExpressions = this.validateNewEntryAndUpdate(bfExpressions, bfExpression, index)
               this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions)
               .then(data=>{
                 resolve()
               })
               .catch(err=>{
-                reject(err.message);    
+                reject(err.message);
               })
             }else
               reject(ConstantProvider.messages.duplicateTime);
@@ -84,15 +87,15 @@ export class SaveExpressionBfProvider {
             resolve()
           })
           .catch(err=>{
-            reject(err.message);    
+            reject(err.message);
           })
-          
-        }                
+
+        }
       }).catch(err=>{
         reject(err.message);
       })
-    
-      
+
+
     });
     return promise;
   }
@@ -100,9 +103,9 @@ export class SaveExpressionBfProvider {
    * This method will check whether we have the record with given baby id, date and time.
    * If all the attribute value will match, this will splice that record and append incoming record.
    * Because it has come for an update.
-   * 
+   *
    * If record does not match, this will just push the input record with existing once
-   * 
+   *
    * @author Subhadarshani
    * @since 0.0.1
    * @param bfExpressions All the existing bf expressions
@@ -117,8 +120,8 @@ export class SaveExpressionBfProvider {
     }else {
       bfExpressions.splice(index, 1);
     }
-    
-    bfExpressions.push(bfExpression)    
+
+    bfExpressions.push(bfExpression)
     return bfExpressions;
 
   }
@@ -127,8 +130,8 @@ export class SaveExpressionBfProvider {
    * This method will delete a expression
    * @author Ratikanta
    * @since 0.0.1
-   * @param {string} id 
-   * @returns {Promise<any>} 
+   * @param {string} id
+   * @returns {Promise<any>}
    * @memberof SaveExpressionBfProvider
    */
   delete(id: string): Promise<any>{
@@ -138,6 +141,7 @@ export class SaveExpressionBfProvider {
         .then(data=>{
           let index = (data as IBFExpression[]).findIndex(d=>d.id === id);
           if(index >= 0){
+            this.pppServiceProvider.deleteSpsRecord(data[index].babyCode);
             (data as IBFExpression[]).splice(index, 1)
             this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, data)
             .then(()=>{
@@ -159,5 +163,4 @@ export class SaveExpressionBfProvider {
     });
     return promise;
   }
-
 }
