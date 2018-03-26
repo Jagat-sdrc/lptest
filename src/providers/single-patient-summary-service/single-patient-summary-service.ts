@@ -33,6 +33,7 @@ export class SinglePatientSummaryServiceProvider {
   infantRelatedDataList : IInfantRelated[] = [];
   exclusiveBfList: IExclusiveBf[] = [];
   isVulnerableStatus: boolean = false;
+  pppPatientList: IPatient[] = [];
   constructor(public http: HttpClient, private datePipe: DatePipe,private storage: Storage,
     private feedExpressionService: FeedExpressionServiceProvider, private decimal: DecimalPipe,
     private messageService: MessageProvider, public bfpdService: BfPostDischargeServiceProvider) {
@@ -693,8 +694,9 @@ export class SinglePatientSummaryServiceProvider {
     await this.storage.get(ConstantProvider.dbKeyNames.sps)
     .then(async data=>{
       if(data != null && data.length >0){
-        index = (data as ISps[]).findIndex(d =>d.babyCode == babyDetails.babyCode)
-        if(index >= 0){
+        index = (data as ISps[]).findIndex(d =>d.babyCode != null && d.babyCode == babyDetails.babyCode)
+        console.log(index);
+        if(index < 0){
           await this.setBabyDetails(babyDetails,typeDetails)
         }else{
           this.babyBasicDetails = data[index].basic
@@ -837,7 +839,7 @@ export class SinglePatientSummaryServiceProvider {
     return this.babyBasicDetails;
   }
 
-  setSpsDataToDb(babyCode: string){
+  async setSpsDataToDb(babyCode: string){
     let spsDataList : ISps[] = [];
     let spsData: ISps = {
       babyCode:  null,
@@ -856,8 +858,8 @@ export class SinglePatientSummaryServiceProvider {
     spsData.exclusiveBf = this.exclusiveBfList;
     spsData.isVulnerable = this.isVulnerableStatus;
 
-    this.storage.get(ConstantProvider.dbKeyNames.sps)
-    .then(data=>{
+    await this.storage.get(ConstantProvider.dbKeyNames.sps)
+    .then(async data=>{
       if(data != null && data.length >0){
         spsDataList = data;
         let index = spsDataList.findIndex(d =>d.babyCode == babyCode)
@@ -872,7 +874,7 @@ export class SinglePatientSummaryServiceProvider {
         })
       }else{
         spsDataList.push(spsData);
-        this.storage.set(ConstantProvider.dbKeyNames.sps,spsDataList)
+        await this.storage.set(ConstantProvider.dbKeyNames.sps,spsDataList)
         .then(data=>{
           this.isVulnerableStatus = false
         })
@@ -1019,7 +1021,14 @@ export class SinglePatientSummaryServiceProvider {
     };
   }
 
+  /**
+   * This method will compute to get the ppp patient list
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   async getAllPPPDetails(){
+    this.pppPatientList = [];
     let patientList : IPatient[] = [];
     let spsList : ISps[] = [];
     await this.storage.get(ConstantProvider.dbKeyNames.patients)
@@ -1027,32 +1036,36 @@ export class SinglePatientSummaryServiceProvider {
       if(data != null && data.length > 0)
       patientList = data
     })
-    await this.storage.get(ConstantProvider.dbKeyNames.sps)
-    .then(data=>{
-      if(data != null && data.length > 0)
-      spsList = data
-    })
-    await this.getSpsDetails(patientList,spsList)
+    await this.getSpsDetails(patientList)
+    // get all the sps data and filter with isVulnerable to get the ppp patient list
     await this.storage.get(ConstantProvider.dbKeyNames.sps)
     .then(data=>{
       if(data != null && data.length > 0)
       spsList = (data as ISps[]).filter(d=>d.isVulnerable == true)
-      // for (let index = 0; index < spsList.length; index++) {
-      //   spsList.push(spsList[index])
-      // }
-      console.log("spsList"+spsList)
+      spsList.forEach(spsPatient => {
+        let patient: IPatient[] = patientList.filter(d=>d.babyCode === spsPatient.babyCode)
+        if(patient.length > 0){
+          this.pppPatientList.push(patient[0])
+        }
+      });
     })
   }
 
-  async getSpsDetails(patientList: IPatient[],spsList: ISps[]){
+  getAllFilterPPPDetails(){
+    return this.pppPatientList;
+  }
 
+  /**
+   * This method will return all sps patient data from database
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param patientList
+   */
+  async getSpsDetails(patientList: IPatient[]){
+    this.typeDetails = await this.fetchTypeDetails().toPromise()
     for (let i = 0; i < patientList.length; i++) {
-      let index = spsList.findIndex(d=>d.babyCode == patientList[i].babyCode)
-      if(index < 0){
-        await this.findSpsInDb(patientList[index],this.typeDetails)
-      }else{
-        await this.findSpsInDb(patientList[index],this.typeDetails)
-      }
+        await this.findSpsInDb(patientList[i],this.typeDetails)
     }
   }
 

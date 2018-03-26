@@ -22,8 +22,6 @@ export class RegisteredPatientPage {
   searching: any = false;
   babyDashboardPage;
   singlePatientSummary;
-  pageStatus: boolean = false;
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
@@ -59,6 +57,16 @@ export class RegisteredPatientPage {
     });
   }
 
+  /**
+   * This method will get the all ppp patient list
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param babyCode
+   * @param babyCodeHospital
+   * @param deliveryDate
+   * @param babyDetails
+   */
   goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string,babyDetails: any){
     if((this.navParams.get('param') == "RegisteredPatientPage")){
       this.navCtrl.push('BabyDashboardPage',{
@@ -80,6 +88,12 @@ export class RegisteredPatientPage {
     });
   }
 
+  /**
+   * This method will call, when user will click the refresh icon on view to get the refresh list
+   *
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
   refresh(){
     this.sortBy = ConstantProvider.patientSortBy.deliveryDateDescending;
     this.searchTerm = "";

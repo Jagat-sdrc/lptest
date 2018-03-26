@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { PppServiceProvider } from '../../providers/ppp-service/ppp-service';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
+import { MessageProvider } from '../../providers/message/message';
 
 /**
  * Generated class for the PppPage page.
@@ -17,12 +18,57 @@ import { SinglePatientSummaryServiceProvider } from '../../providers/single-pati
 })
 export class PppPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private spsService: SinglePatientSummaryServiceProvider) {
+  pppPatients: IPatient[] = [];
+  sortBy: string;
+  singlePatientSummary;
+  uiStatus: boolean = false;
+
+  constructor(public navCtrl: NavController,
+    private messageService: MessageProvider,
+    private menuCtrl: MenuController,
+    private spsService: SinglePatientSummaryServiceProvider) {
   }
 
-  ionViewWillEnter(){
-    this.spsService.getAllPPPDetails();
+  ionViewDidEnter() {
+    this.menuCtrl.swipeEnable(false);
   }
 
+  ionViewWillLeave() {
+    this.menuCtrl.swipeEnable(true);
+  }
+
+  ngOnInit(){
+    this.messageService.showLoader("Generating Poorly Perfoeming Patients, please wait...")
+    setTimeout(d => this.messageService.stopLoader(), 1000)
+    this.getAllPPPPatient()
+  }
+
+  /**
+   * This method will get the all ppp patient list
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
+  async getAllPPPPatient(){
+    await this.spsService.getAllPPPDetails();
+    this.pppPatients = await this.spsService.getAllFilterPPPDetails()
+    if(this.pppPatients === undefined || this.pppPatients.length === 0){
+      this.uiStatus = await true;
+    }else{
+      this.uiStatus = await false;
+    }
+  }
+
+  /**
+   * This method will go to the sps page to show the sps details
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param babyDetails
+   */
+  goToBabyDashBoard(babyDetails: any){
+    this.navCtrl.push('SpsPage',{
+      babyDetails: babyDetails
+    });
+  }
 }
