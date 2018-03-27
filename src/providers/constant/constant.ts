@@ -110,7 +110,7 @@ export class ConstantProvider {
    * @author Naseem Akhtar (naseem@sdrc.co.in)
    * @since 0.0.1
    */
-  static serverUrls:any = {    
+  static serverUrls:any = {
     SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
     SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
@@ -182,12 +182,10 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record?',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
-<<<<<<< HEAD
     pastTime: 'Time before delivery time is not allowed',
     dataExportSuccessful: 'Data exported successfully to the following file',
     couldNotCreateFile: 'Could not create export file',
     couldNotWriteToFile: 'Could not write data to export file'
-=======
     registeredPage: "registeredPage",
     singlePatientSummary: "singlePageSummarty",
     pastTime: 'Time before delivery time is not allowed',
@@ -195,7 +193,6 @@ export class ConstantProvider {
     spsContentColorGreen: 'sps-content-color-green',
     spsContentColorYellow: 'sps-content-color-yellow',
     loading: 'Loading, please wait...'
->>>>>>> 9b2caa2460018b7ed960e17a6b72b110a3b4e171
   };
 
 /**
