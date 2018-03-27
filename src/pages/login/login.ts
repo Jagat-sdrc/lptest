@@ -4,6 +4,7 @@ import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { MessageProvider } from '../../providers/message/message';
 import { AppVersion } from '@ionic-native/app-version';
+import { UtilServiceProvider } from '../../providers/util-service/util-service';
 
 
 @IonicPage()
@@ -20,7 +21,7 @@ export class LoginPage {
   showPass:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private userService: UserServiceProvider,
+  private userService: UserServiceProvider, private utilService: UtilServiceProvider,
   private messageService: MessageProvider, private events: Events,
   private appVersion: AppVersion, private platform: Platform) {
     this.platform.ready().then((readySource) => {
@@ -38,6 +39,7 @@ export class LoginPage {
     * @author - Naseem Akhtar
    */
   ngOnInit(){
+    this.utilService.setUuid();
     this.loginData = {
       // username: 'ja@g.com',
       // password: 'ja@123#!'

@@ -47,7 +47,6 @@ export class UtilServiceProvider {
       this.typeDetails = (data as any).typeDetails
       this.areas = (data as any).areaDetails
     })
-    this.setUuid();
   }
 
   /**
