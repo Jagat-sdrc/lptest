@@ -37,6 +37,7 @@ import { File } from '@ionic-native/file';
 import { UtilServiceProvider } from '../providers/util-service/util-service';
 import { SinglePatientSummaryServiceProvider } from '../providers/single-patient-summary-service/single-patient-summary-service';
 import { PppServiceProvider } from '../providers/ppp-service/ppp-service';
+import { Device } from '@ionic-native/device';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { PppServiceProvider } from '../providers/ppp-service/ppp-service';
     UtilServiceProvider,
     SinglePatientSummaryServiceProvider,
     DecimalPipe,
-    PppServiceProvider
+    PppServiceProvider,
+    Device
   ]
 })
 export class AppModule {}

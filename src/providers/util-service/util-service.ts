@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Device } from '@ionic-native/device';
 
 /**
  * This service is going help us in common util stuffs
- * 
+ *
  * @class UtilServiceProvider
  * @since 1.2.0
  * @author Ratikanta
@@ -13,14 +14,14 @@ export class UtilServiceProvider {
 
   typeDetails: ITypeDetails[] = [];
   areas: IArea[] = [];
+  uuidNumber: string;
+  constructor(private http: HttpClient,private device: Device){}
 
-  constructor(private http: HttpClient){}
 
-  
 
   /**
    * This method is going to return type detail name from a id
-   * 
+   *
    * @param {number} id Type detail id
    * @memberof UtilServiceProvider
    * @return Type details name, string
@@ -28,13 +29,13 @@ export class UtilServiceProvider {
    */
   getTypeDetailName(id: number): string{
 
-    return (this.typeDetails.filter(d=> d.id === id))[0].name 
+    return (this.typeDetails.filter(d=> d.id === id))[0].name
 
   }
 
   /**
    * This method is going to set the property variable's default value
-   * 
+   *
    * @memberof UtilServiceProvider
    * @since 1.2.0
    * @author Ratikanta
@@ -46,12 +47,12 @@ export class UtilServiceProvider {
       this.typeDetails = (data as any).typeDetails
       this.areas = (data as any).areaDetails
     })
-
+    this.setUuid();
   }
 
   /**
    * This method is going to return area name from a id
-   * 
+   *
    * @param {number} areaId area id
    * @memberof UtilServiceProvider
    * @return area name, string
@@ -63,7 +64,7 @@ export class UtilServiceProvider {
 
   /**
    * This method is going to return area short name from an id
-   * 
+   *
    * @param {number} areaId area id
    * @memberof UtilServiceProvider
    * @return area short name, string
@@ -72,6 +73,12 @@ export class UtilServiceProvider {
   getAreaShortNameById(areaId: number): string{
     return (this.areas.filter(d=> d.id === areaId))[0].shortName
   }
-      
 
+  getUuid(){
+    return this.uuidNumber
+  }
+
+  setUuid() {
+    this.uuidNumber = this.device.uuid
+  }
 }

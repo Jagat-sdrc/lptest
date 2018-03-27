@@ -5,7 +5,7 @@
  * @since 0.0.1
  */
 
-interface IBFExpression{   
+interface IBFExpression{
     id:string;
     babyCode: string;
     userId: string;
@@ -18,4 +18,5 @@ interface IBFExpression{
     isSynced: boolean;
     createdDate: string;
     updatedDate: string;
+    uuidNumber: string;
 }

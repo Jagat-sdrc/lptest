@@ -22,4 +22,5 @@ interface IFeed{
     isSynced: boolean;
     createdDate: string;
     updatedDate: string;
+    uuidNumber: string;
 }

@@ -11,7 +11,7 @@ import { UserServiceProvider } from '../user-service/user-service';
 
 /**
  * This provider is going to deal with codes which are going to help in exporting data to csv
- * 
+ *
  * @export
  * @class ExportServiceProvider
  * @since 1.2.0
@@ -44,7 +44,7 @@ export class ExportServiceProvider {
   }
 
   /**
-   * 
+   *
    * This method is going to set the data which we are going to export
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -71,10 +71,10 @@ export class ExportServiceProvider {
 
 
   /**
-   * 
+   *
    * This method is going to create files and folders where we are going to keep the data
    * @memberof ExportServiceProvider
-   * @returns Promise<boolean> value, returns true,  if folder and file both created successfully. 
+   * @returns Promise<boolean> value, returns true,  if folder and file both created successfully.
    * Returns false if folder and file could ot create successfully
    * @since 1.2.0
    * @author Ratikanta
@@ -84,9 +84,9 @@ export class ExportServiceProvider {
     try {
       this.folder_name = ConstantProvider.appFolderName;
       this.userService.getUser().institution
-      this.file_name = 'Lactation_' + this.utilService.getAreaShortNameById(this.userService.getUser().institution) +"_"+ this.datePipe.transform(new Date(), 'dd-MM-yyyy HHmm') + ".csv"    
+      this.file_name = 'Lactation_' + this.utilService.getAreaShortNameById(this.userService.getUser().institution) +"_"+ this.datePipe.transform(new Date(), 'dd-MM-yyyy HHmm') + ".csv"
 
-      //creating file       
+      //creating file
       await this.file.createFile(this.file.externalRootDirectory + "/" + this.folder_name, this.file_name, true)
       return true
     } catch (err) {
@@ -100,7 +100,7 @@ export class ExportServiceProvider {
 
 
   /**
-   * 
+   *
    * This method is going to write the data into file
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -126,7 +126,7 @@ export class ExportServiceProvider {
 
 
   /**
-   * 
+   *
    * This method is going to give all patient records present in the database
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -171,6 +171,7 @@ export class ExportServiceProvider {
       row.push('Created by')
       row.push('Created date')
       row.push('Updated date')
+      row.push('UUID')
 
       data.push(row)
 
@@ -199,13 +200,12 @@ export class ExportServiceProvider {
         if(patient.nicuAdmissionReason){
 
           patient.nicuAdmissionReason.toString().split(',').forEach(reason => {
-            nicuAddmissionReason += this.utilService.getTypeDetailName(parseInt(reason));  
+            nicuAddmissionReason += this.utilService.getTypeDetailName(parseInt(reason));
             nicuAddmissionReason += ", "
           });
-          
-          nicuAddmissionReason = nicuAddmissionReason.substring(0, nicuAddmissionReason.length - 2)                    
-        }
 
+          nicuAddmissionReason = nicuAddmissionReason.substring(0, nicuAddmissionReason.length - 2)
+        }
 
         row.push(patient.nicuAdmissionReason?nicuAddmissionReason:'N/A')
         row.push(patient.dischargeDate?patient.dischargeDate:'N/A')
@@ -213,18 +213,19 @@ export class ExportServiceProvider {
         row.push(patient.userId)
         row.push(this.datePipe.transform(new Date(patient.createdDate), 'dd-MM-yyyy HH:mm'))
         row.push(this.datePipe.transform(new Date(patient.updatedDate), 'dd-MM-yyyy HH:mm'))
+        row.push(patient.uuidNumber?patient.uuidNumber:'N/A')
 
         //Pushing into data
         data.push(row)
       });
-    } 
+    }
 
     return data
   }
 
 
   /**
-   * 
+   *
    * This method is going to give all bf expression records present in the database
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -266,7 +267,7 @@ export class ExportServiceProvider {
       row.push('Created by')
       row.push('Created date')
       row.push('Updated date')
-     
+      row.push('UUID')
 
       data.push(row)
 
@@ -285,6 +286,7 @@ export class ExportServiceProvider {
         row.push(bfExpression.userId)
         row.push(this.datePipe.transform(new Date(bfExpression.createdDate), 'dd-MM-yyyy HH:mm'))
         row.push(this.datePipe.transform(new Date(bfExpression.updatedDate), 'dd-MM-yyyy HH:mm'))
+        row.push(bfExpression.uuidNumber?bfExpression.uuidNumber:'N/A')
 
         //Pushing into data
         data.push(row)
@@ -295,7 +297,7 @@ export class ExportServiceProvider {
 
 
   /**
-   * 
+   *
    * This method is going to give all BFSP records present in the database
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -336,7 +338,7 @@ export class ExportServiceProvider {
       row.push('Created by')
       row.push('Created date')
       row.push('Updated date')
-     
+      row.push('UUID')
 
       data.push(row)
 
@@ -355,6 +357,7 @@ export class ExportServiceProvider {
         row.push(bfsp.userId)
         row.push(this.datePipe.transform(new Date(bfsp.createdDate), 'dd-MM-yyyy HH:mm'))
         row.push(this.datePipe.transform(new Date(bfsp.updatedDate), 'dd-MM-yyyy HH:mm'))
+        row.push(bfsp.uuidNumber?bfsp.uuidNumber:'N/A')
 
         //Pushing into data
         data.push(row)
@@ -367,7 +370,7 @@ export class ExportServiceProvider {
 
 
   /**
-   * 
+   *
    * This method is going to give all log feed records present in the database
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -375,7 +378,7 @@ export class ExportServiceProvider {
    */
   async getFeedExpressions(data: any[]) {
 
-    
+
 
     //setting header
 
@@ -414,7 +417,7 @@ export class ExportServiceProvider {
       row.push('Created by')
       row.push('Created date')
       row.push('Updated date')
-     
+      row.push('UUID')
 
       data.push(row)
 
@@ -433,11 +436,12 @@ export class ExportServiceProvider {
         row.push(feedExpression.animalMilkVolume?feedExpression.animalMilkVolume:'N/A')
         row.push(feedExpression.otherVolume?feedExpression.otherVolume:'N/A')
         row.push(feedExpression.locationOfFeeding?this.utilService.getTypeDetailName(feedExpression.locationOfFeeding):'N/A')
-        row.push(feedExpression.babyWeight?feedExpression.babyWeight:'N/A')        
+        row.push(feedExpression.babyWeight?feedExpression.babyWeight:'N/A')
         row.push(feedExpression.isSynced?'Yes':'No')
         row.push(feedExpression.userId)
         row.push(this.datePipe.transform(new Date(feedExpression.createdDate), 'dd-MM-yyyy HH:mm'))
         row.push(this.datePipe.transform(new Date(feedExpression.updatedDate), 'dd-MM-yyyy HH:mm'))
+        row.push(feedExpression.uuidNumber?feedExpression.uuidNumber:'N/A')
 
         //Pushing into data
         data.push(row)
@@ -449,7 +453,7 @@ export class ExportServiceProvider {
 
 
   /**
-   * 
+   *
    * This method is going to give all BFPD records present in the database
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -457,7 +461,7 @@ export class ExportServiceProvider {
    */
   async getBFPDs(data: any[]) {
 
-    
+
 
 
     //setting header
@@ -485,12 +489,12 @@ export class ExportServiceProvider {
       row.push('Baby ID')
       row.push('Date of breastfeeding post-discharge')
       row.push('Time of breastfeeding post discharge')
-      row.push('Breastfeeding status post discharge')      
+      row.push('Breastfeeding status post discharge')
       row.push('Is synced')
       row.push('Created by')
       row.push('Created date')
       row.push('Updated date')
-     
+      row.push('UUID')
 
       data.push(row)
 
@@ -507,6 +511,7 @@ export class ExportServiceProvider {
         row.push(bfpd.userId)
         row.push(this.datePipe.transform(new Date(bfpd.createdDate), 'dd-MM-yyyy HH:mm'))
         row.push(this.datePipe.transform(new Date(bfpd.updatedDate), 'dd-MM-yyyy HH:mm'))
+        row.push(bfpd.uuidNumber?bfpd.uuidNumber:'N/A')
 
         //Pushing into data
         data.push(row)
@@ -518,7 +523,7 @@ export class ExportServiceProvider {
 
 
   /**
-   * 
+   *
    * This method is going to give all patient records present in the database
    * @memberof ExportServiceProvider
    * @since 1.2.0
@@ -547,7 +552,7 @@ export class ExportServiceProvider {
 
       //set headers
       row = []
-            
+
       row.push('First Name')
       row.push('Last Name')
       row.push('Email')
@@ -558,7 +563,7 @@ export class ExportServiceProvider {
       row.push('Is synced')
       row.push('Created date')
       row.push('Updated date')
-     
+      row.push('UUID')
 
       data.push(row)
 
@@ -577,6 +582,7 @@ export class ExportServiceProvider {
         row.push(user.isSynced?'Yes':'No')
         row.push(this.datePipe.transform(new Date(user.createdDate), 'dd-MM-yyyy HH:mm'))
         row.push(this.datePipe.transform(new Date(user.updatedDate), 'dd-MM-yyyy HH:mm'))
+        row.push(user.uuidNumber?user.uuidNumber:'N/A')
 
         //Pushing into data
         data.push(row)

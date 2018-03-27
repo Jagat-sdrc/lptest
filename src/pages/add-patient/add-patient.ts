@@ -8,6 +8,7 @@ import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-se
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { DatePicker } from '@ionic-native/date-picker';
+import { UtilServiceProvider } from '../../providers/util-service/util-service';
 
 
 /**
@@ -62,7 +63,8 @@ export class AddPatientPage implements OnInit{
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,private datePicker: DatePicker,
-  private userService: UserServiceProvider, private menuCtrl: MenuController) {
+    private userService: UserServiceProvider, private menuCtrl: MenuController,
+    private utilService: UtilServiceProvider) {
 
   }
 
@@ -364,7 +366,8 @@ export class AddPatientPage implements OnInit{
             syncFailureMessage: null,
             userId: this.userService.getUser().email,
             createdDate: null,
-            updatedDate: null
+            updatedDate: null,
+            uuidNumber: null
           }
 
           this.addNewPatientService.saveNewPatient(this.patient, this.uniquePatientId.idNumber)

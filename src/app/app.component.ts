@@ -27,7 +27,8 @@ export class MyApp {
     isSynced: false,
     syncFailureMessage: null,
     createdDate: null,
-    updatedDate: null
+    updatedDate: null,
+    uuidNumber: null
   }
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,

@@ -112,7 +112,8 @@ export class BFExpressionDateListProvider {
       isSynced: false,
       syncFailureMessage: null,
       createdDate: null,
-      updatedDate: null
+      updatedDate: null,
+      uuidNumber: null
     }
 
     if(data != null){

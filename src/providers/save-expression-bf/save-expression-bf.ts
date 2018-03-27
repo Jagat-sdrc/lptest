@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { DatePipe } from '@angular/common';
 import { PppServiceProvider } from '../ppp-service/ppp-service';
+import { UtilServiceProvider } from '../util-service/util-service';
 
 /**
  *
@@ -16,7 +17,7 @@ import { PppServiceProvider } from '../ppp-service/ppp-service';
 export class SaveExpressionBfProvider {
 
   constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe,
-            private pppServiceProvider : PppServiceProvider) {
+            private pppServiceProvider : PppServiceProvider, private utilService: UtilServiceProvider) {
   }
 
   /**
@@ -47,6 +48,7 @@ export class SaveExpressionBfProvider {
       bfExpression.createdDate = bfExpression.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfExpression.createdDate;
       bfExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+      bfExpression.uuidNumber = this.utilService.getUuid();
       this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
       .then((val) => {
         let bfExpressions: IBFExpression[] = [];

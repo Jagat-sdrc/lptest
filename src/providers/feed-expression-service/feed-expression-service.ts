@@ -12,6 +12,7 @@ import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 import { MessageProvider } from '../message/message';
 import { OrderByDatePipe } from '../../pipes/order-by-date/order-by-date';
 import { PppServiceProvider } from '../ppp-service/ppp-service';
+import { UtilServiceProvider } from '../util-service/util-service';
 
 /**
  * This service will only provide service to Feed component
@@ -24,7 +25,7 @@ export class FeedExpressionServiceProvider {
   constructor(public http: HttpClient,
     private storage: Storage, private datePipe: DatePipe,
   private userService: UserServiceProvider,private pppServiceProvider: PppServiceProvider,
-  private messageService: MessageProvider) {
+  private messageService: MessageProvider, private utilService: UtilServiceProvider) {
   }
 
 
@@ -88,6 +89,7 @@ export class FeedExpressionServiceProvider {
       feedExpression.createdDate = feedExpression.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : feedExpression.createdDate;
       feedExpression.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+      feedExpression.uuidNumber = this.utilService.getUuid();
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
       .then((val) => {
         let feedExpressions: IFeed[] = [];
@@ -245,7 +247,8 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
       locationOfFeeding: null,
       syncFailureMessage: null,
       createdDate: null,
-      updatedDate: null
+      updatedDate: null,
+      uuidNumber: null
     }
 
 

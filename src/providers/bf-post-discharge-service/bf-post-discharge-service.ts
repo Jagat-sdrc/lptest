@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
 import { UserServiceProvider } from '../user-service/user-service';
 import { PppServiceProvider } from '../ppp-service/ppp-service';
+import { UtilServiceProvider } from '../util-service/util-service';
 
 /*
   Generated class for the BfPostDischargeServiceProvider provider.
@@ -18,7 +19,7 @@ import { PppServiceProvider } from '../ppp-service/ppp-service';
 export class BfPostDischargeServiceProvider {
 
   constructor(public http: HttpClient, private datePipe: DatePipe,private pppServiceProvider: PppServiceProvider,
-    private storage: Storage, private userService: UserServiceProvider) {}
+    private storage: Storage, private userService: UserServiceProvider, private utilService: UtilServiceProvider) {}
 
   getMaxTime(){
     return this.datePipe.transform(new Date(),"yyyy-MM-dd");
@@ -67,6 +68,7 @@ export class BfPostDischargeServiceProvider {
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfPdForm.createdDate;
       bfPdForm.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       bfPdForm.userId = this.userService.getUser().email;
+      bfPdForm.uuidNumber = this.utilService.getUuid();
 
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then((val) => {

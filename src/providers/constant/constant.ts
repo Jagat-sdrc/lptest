@@ -182,10 +182,9 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record?',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
-    pastTime: 'Time before delivery time is not allowed',
     dataExportSuccessful: 'Data exported successfully to the following file',
     couldNotCreateFile: 'Could not create export file',
-    couldNotWriteToFile: 'Could not write data to export file'
+    couldNotWriteToFile: 'Could not write data to export file',
     registeredPage: "registeredPage",
     singlePatientSummary: "singlePageSummarty",
     pastTime: 'Time before delivery time is not allowed',

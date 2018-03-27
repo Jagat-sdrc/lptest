@@ -321,7 +321,7 @@ export class SinglePatientSummaryServiceProvider {
         if(comeToVolume7DayCount > 2){
           comeToVolume7Day = 'Yes'
         }else{
-          if((index+1) > 7)
+          if((index+2) > 7)
             if(!this.isVulnerableStatus && comeToVolume7Day == 'No')
               this.isVulnerableStatus = true;
         }
@@ -330,8 +330,8 @@ export class SinglePatientSummaryServiceProvider {
         if(comeToVolume14DayCount > 2){
           comeToVolume14Day = 'Yes';
         }else{
-          if((index+1) > 14)
-            if(!this.isVulnerableStatus && comeToVolume7Day == 'No')
+          if((index+2) > 14)
+            if(!this.isVulnerableStatus && comeToVolume14Day == 'No')
               this.isVulnerableStatus = true;
         }
 
@@ -417,15 +417,17 @@ export class SinglePatientSummaryServiceProvider {
             totalTimeInKMC = "-";
           }
 
+          let timeCountStatus : boolean = false;
           let dailyTotalTimeInKMC = bsfpExpression.filter(d =>d.dateOfBFSP === dates[index]
             && d.bfspPerformed == ConstantProvider.typeDetailsIds.kmc);
           for (let index = 0; index < dailyTotalTimeInKMC.length; index++) {
             if(dailyTotalTimeInKMC[index].bfspDuration != null){
               countDailyTotalQuantityInKMC = Number(dailyTotalTimeInKMC[index].bfspDuration) + countDailyTotalQuantityInKMC;
+              timeCountStatus = true;
             }
           }
 
-          if(countDailyTotalQuantityInKMC > 0){
+          if(timeCountStatus){
             totalQuantutyInKMCTotal = countDailyTotalQuantityInKMC + totalQuantutyInKMCTotal;
             totalQuantutyInKMCAngCount++;
             totalQuantutyInKMC = String(countDailyTotalQuantityInKMC);
