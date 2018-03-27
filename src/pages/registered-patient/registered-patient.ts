@@ -20,6 +20,8 @@ export class RegisteredPatientPage {
   patientList: IPatient[] = [];
   sortBy: string;
   searching: any = false;
+  babyDashboardPage;
+  singlePatientSummary;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
@@ -46,7 +48,6 @@ export class RegisteredPatientPage {
     this.searchControl = new FormControl();
   }
 
-
   ionViewDidLoad() {
     this.setSearchedPatients();
     this.searchControl.valueChanges.debounceTime(700)
@@ -56,15 +57,29 @@ export class RegisteredPatientPage {
     });
   }
 
-
-
-
-  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string){
-    this.navCtrl.push('BabyDashboardPage',{
-      babyCode: babyCode,
-      babyCodeByHospital: babyCodeHospital,
-      deliveryDate: deliveryDate
-    });
+  /**
+   * This method will get the all ppp patient list
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param babyCode
+   * @param babyCodeHospital
+   * @param deliveryDate
+   * @param babyDetails
+   */
+  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string,babyDetails: any){
+    if((this.navParams.get('param') == "RegisteredPatientPage")){
+      this.navCtrl.push('BabyDashboardPage',{
+        babyCode: babyCode,
+        babyCodeByHospital: babyCodeHospital,
+        deliveryDate: deliveryDate,
+        babyDetails: babyDetails
+      });
+    }else{
+      this.navCtrl.push('SpsPage',{
+        babyDetails: babyDetails
+      });
+    }
   }
 
   goToAddNewPatient(){
@@ -73,6 +88,12 @@ export class RegisteredPatientPage {
     });
   }
 
+  /**
+   * This method will call, when user will click the refresh icon on view to get the refresh list
+   *
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
   refresh(){
     this.sortBy = ConstantProvider.patientSortBy.deliveryDateDescending;
     this.searchTerm = "";

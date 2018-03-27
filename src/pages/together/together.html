@@ -1,0 +1,30 @@
+<!--
+  Generated template for the TogetherPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content padding>
+  <ion-grid margin-top text-center>
+    <ion-row text-left>
+      <ion-col>"-" No data entered</ion-col>
+    </ion-row>
+    <ion-row class="sps-mother-related-header">
+      <ion-col col-1>Day</ion-col>
+      <ion-col col-2>Date</ion-col>
+      <ion-col col-4>No. of KMCs. (Total duration in minutes)</ion-col>
+      <ion-col col-3>No of Oral care</ion-col>
+      <ion-col col-2>No of NNS</ion-col>
+    </ion-row>
+
+    <ion-row class="sps-exlcusive-bf-contents" *ngFor="let togetherItem  of togetherDataList; let i = index">
+      <ion-col col-1 *ngIf="((i+1) != togetherDataList.length)">{{i+1}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) == togetherDataList.length)"></ion-col>
+      <ion-col col-2 *ngIf="((i+1) != togetherDataList.length)">{{togetherItem.date}}</ion-col>
+      <ion-col col-2 *ngIf="((i+1) == togetherDataList.length)">Average</ion-col>
+      <ion-col col-4>{{togetherItem.dailyTotalTimeInKMC}}</ion-col>
+      <ion-col col-3>{{togetherItem.noOfOralCare}} </ion-col>
+      <ion-col col-2>{{togetherItem.noOfNNS}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

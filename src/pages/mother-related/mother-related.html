@@ -1,0 +1,29 @@
+<!--
+  @author - Naseem Akhtar
+-->
+<ion-content padding>
+  <ion-grid margin-top text-center>
+    <ion-row text-left>
+      <ion-col>"-" No data entered</ion-col>
+    </ion-row>
+    <ion-row class="sps-mother-related-header">
+      <ion-col col-1>Day</ion-col>
+      <ion-col col-2>Date</ion-col>
+      <ion-col col-2>Exp & BF epd / day</ion-col>
+      <ion-col col-2>Of which BF</ion-col>
+      <ion-col col-3>Total daily vol.(ml)</ion-col>
+      <ion-col col-2>Night exp(22:00 - 04:00)</ion-col>
+    </ion-row>
+
+    <ion-row class="sps-exlcusive-bf-contents" *ngFor="let motherRelatedItem  of motherRelatedDataList; let i = index">
+      <ion-col *ngIf="i != 7 && i != 15" col-1>{{motherRelatedItem.slNo}}</ion-col>
+      <ion-col *ngIf="i != 7 && i != 15" col-2>{{motherRelatedItem.date}}</ion-col>
+      <ion-col *ngIf="i != 7 && i != 15" col-2 [ngClass]="getBackgroundColor(motherRelatedItem.expAndBfEpisodePerday, motherRelatedItem.slNo)">{{motherRelatedItem.expAndBfEpisodePerday}}</ion-col>
+      <ion-col *ngIf="i != 7 && i != 15" col-2 [ngClass]="getBackgroundColor(motherRelatedItem.ofWhichBf, motherRelatedItem.slNo)">{{motherRelatedItem.ofWhichBf}}</ion-col>
+      <ion-col *ngIf="i != 7 && i != 15" col-3 [ngClass]="getTotalVolumeBgColor(motherRelatedItem.totalDailyVolume, motherRelatedItem.slNo)">{{motherRelatedItem.totalDailyVolume}}</ion-col>
+      <ion-col *ngIf="i != 7 && i != 15" col-2 [ngClass]="getBackgroundColor(motherRelatedItem.nightExp, motherRelatedItem.slNo)">{{motherRelatedItem.nightExp}}</ion-col>
+      <ion-col *ngIf="i === 7" [ngClass]="getComeToVolumeBgColor(comeToVolume7Day)">Come to volume: {{comeToVolume7Day}}</ion-col>
+      <ion-col *ngIf="i === 15" [ngClass]="getComeToVolumeBgColor(comeToVolume14Day)">Come to volume: {{comeToVolume14Day}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

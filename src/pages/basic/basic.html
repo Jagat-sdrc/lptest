@@ -1,0 +1,133 @@
+<!--
+  @author - Naseem Akhtar
+-->
+<ion-content padding>
+  <ion-grid margin-top *ngIf="babyDetails">
+    <ion-row margin-top>
+      <ion-col col-6>
+        Baby ID
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.babyCode}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Gestational Age (in weeks)
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.gestationalAgeInWeek}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Delivery Method
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.deliveryMethod}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        In / Outpatient
+      </ion-col>
+      <ion-col col-6 class="borderGrey" [ngClass]="getBgColorForTypeOfPatient()">
+        {{babyDetails.inpatientOrOutPatient}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Parents informed decision
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.parentsInformedDecision}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Time till first expression (in hrs)
+      </ion-col>
+      <ion-col col-6 class="borderGrey" [ngClass]="getBgColorForTypeOfTimeTillFirstExp()">
+        {{babyDetails.timeTillFirstExpression}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Time till first enteral feed (in hrs)
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.timeTillFirstEnteralFeed}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Date of admission
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.admissionDateForOutdoorPatients}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Prenatal intent to provide milk
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.mothersPrenatalIntent}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Composition of first enteral feed
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.compositionOfFirstEnteralFeed}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Patient first admitted to
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.babyAdmittedTo}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Reason for admission
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.reasonForAdmission}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Time spent in NICU (in day(s))
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.timeSpentInNicu}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row margin-top>
+      <ion-col col-6>
+        Time spent in Hospital (in day(s))
+      </ion-col>
+      <ion-col col-6 class="borderGrey">
+        {{babyDetails.timeSpentInHospital}}
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

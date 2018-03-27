@@ -30,7 +30,7 @@ export class BFExpressionDateListProvider {
         if(data != null){
 
           data = (data as IBFExpression[]).filter(d=> d.babyCode === babyCode)
-          
+
           //Checking if there is any data belong to the patient id or not
           if((data as IBFExpression[]).length > 0){
             let dates:string[] = [];
@@ -42,10 +42,10 @@ export class BFExpressionDateListProvider {
 
             resolve(dates)
           }else{
-            resolve([]);  
+            resolve([]);
           }
-        }else{          
-          resolve([]);  
+        }else{
+          resolve([]);
         }
       })
       .catch(err=>{
@@ -88,10 +88,10 @@ export class BFExpressionDateListProvider {
     });
     return promise;
   }
-   
+
   /**
  * This method is going to append a new BfExpression object to existing list
- * 
+ *
  * @param {IBFExpression[]} data The existing list
  * @param {string} babyCode The unique baby code
  * @param {date} The date of feeding
@@ -102,7 +102,7 @@ export class BFExpressionDateListProvider {
     //The blank feed object
     let bf: IBFExpression = {
       id: null,
-      babyCode: babyCode,     
+      babyCode: babyCode,
       userId: this.userService.getUser().email,
       dateOfExpression: date,
       timeOfExpression: null,

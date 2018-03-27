@@ -69,8 +69,17 @@ interface IMessage{
     deleteForm: string;
     futureTime: string;
     updateSuccessfull: string;
+    registeredPage: string;
+    singlePatientSummary: string;
     pastTime: string;
+<<<<<<< HEAD
     dataExportSuccessful: string;
     couldNotCreateFile: string;
     couldNotWriteToFile: string;
+=======
+    spsContentColorRed: string;
+    spsContentColorGreen: string;
+    spsContentColorYellow: string;
+    loading: string;
+>>>>>>> 9b2caa2460018b7ed960e17a6b72b110a3b4e171
 }

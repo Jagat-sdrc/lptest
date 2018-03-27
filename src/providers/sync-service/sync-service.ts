@@ -403,7 +403,7 @@ export class SyncServiceProvider {
       let alert = this.alertController.create({
         title: 'Sync Report',
         cssClass: 'syncModal',
-        message: 'Sync successfull',
+        message: 'Sync successful',
         // message: '<div class="reportBody">' +
         //   '<h5>Users synced : ' + this.syncReport.userSyncSuccess + '</h5><br>' +
         //   '<h5>Users rejected : ' + this.syncReport.userSyncFailed + '</h5><br>' +

@@ -7,18 +7,19 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content padding>
   <h3 class="form-page-header">Baby ID - {{babyCode}}</h3>
-  <ion-card class="card-outside" *ngFor="let date of expBfDateListData | orderByDate; let i = index"
-  (click)='dateSelected(date)'>
-    <ion-row class="card-inside">
-      <ion-col md-6 >
-        <div class="form-group">Sl No: {{i + 1}}</div>
-      </ion-col>
-      <ion-col md-6 text-right>
-        <div class="form-group">{{date}}</div>
-      </ion-col>
-    </ion-row>
+  <ion-card *ngFor="let date of expBfDateListData | orderByDate; let i = index">
+    <ion-card-content (click)='dateSelected(date)'>
+      <ion-row>
+        <ion-col>
+          <div>Sl No: {{i + 1}}</div>
+        </ion-col>
+        <ion-col text-right>
+          <div>{{date}}</div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
   </ion-card>
 
   <h4 class="noRecords" *ngIf="expBfDateListData.length === 0">No record found</h4>

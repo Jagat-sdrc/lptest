@@ -1,0 +1,50 @@
+<!--
+  Generated template for the InfantRelatedPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content padding>
+  <ion-grid margin-top text-center>
+    <ion-row text-left>
+      <ion-col>"-" No data entered</ion-col>
+    </ion-row>
+    <ion-row class="sps-mother-related-header">
+      <ion-col col-1>Day</ion-col>
+      <ion-col col-2>Date</ion-col>
+      <ion-col col-2>Daily dose of OMM(ml/kg/day)</ion-col>
+      <ion-col col-5>% Composition intake (Daily total / Total daily feed x 100)</ion-col>
+      <ion-col col-2>Weight(grams)</ion-col>
+    </ion-row>
+    <ion-row class="sps-mother-related-header">
+      <ion-col col-1></ion-col>
+      <ion-col col-2></ion-col>
+      <ion-col col-2></ion-col>
+      <ion-col col-1>OMM</ion-col>
+      <ion-col col-1>DHM</ion-col>
+      <ion-col col-1>Formula</ion-col>
+      <ion-col col-1>Animal Milk</ion-col>
+      <ion-col col-1>Other</ion-col>
+      <ion-col col-2></ion-col>
+    </ion-row>
+
+    <ion-row class="sps-exlcusive-bf-contents" *ngFor="let infantRelated  of infantRelatedDataList; let i = index">
+      <ion-col col-1 *ngIf="((i+1) != infantRelatedDataList.length)">{{i+1}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) == infantRelatedDataList.length)"></ion-col>
+      <ion-col col-2 *ngIf="((i+1) != infantRelatedDataList.length)">{{infantRelated.date}}</ion-col>
+      <ion-col col-2 *ngIf="((i+1) == infantRelatedDataList.length)">Average</ion-col>
+      <ion-col col-2 *ngIf="((i+1) != infantRelatedDataList.length)" [ngClass]="getBgColorForDailyOmm(infantRelated.dailyDoseOMM)">{{infantRelated.dailyDoseOMM}}</ion-col>
+      <ion-col col-2 *ngIf="((i+1) == infantRelatedDataList.length)">{{infantRelated.dailyDoseOMM}}</ion-col>
+      <ion-col col-1>{{infantRelated.percentageOMM}}</ion-col>
+      <ion-col col-1>{{infantRelated.percentageDHM}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) != infantRelatedDataList.length)" [ngClass]="getBgColor(infantRelated.percentageFormula,i+1)">{{infantRelated.percentageFormula}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) == infantRelatedDataList.length)">{{infantRelated.percentageFormula}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) != infantRelatedDataList.length)" [ngClass]="getBgColor(infantRelated.percentageAnimalMilk,i+1)">{{infantRelated.percentageAnimalMilk}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) == infantRelatedDataList.length)">{{infantRelated.percentageAnimalMilk}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) != infantRelatedDataList.length)" [ngClass]="getBgColor(infantRelated.percentageOther,i+1)">{{infantRelated.percentageOther}}</ion-col>
+      <ion-col col-1 *ngIf="((i+1) == infantRelatedDataList.length)">{{infantRelated.percentageOther}}</ion-col>
+      <ion-col col-2 *ngIf="((i+1) != infantRelatedDataList.length)" [ngClass]="getBgColorForWeight(infantRelated.percentageWeght)">{{infantRelated.percentageWeght}}</ion-col>
+      <ion-col col-2 *ngIf="((i+1) == infantRelatedDataList.length)">{{infantRelated.percentageWeght}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

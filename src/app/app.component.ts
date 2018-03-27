@@ -54,7 +54,7 @@ private utilService: UtilServiceProvider) {
 
     this.createProjectFolder()
     this.utilService.setDefaults()
-    
+
   }
 
   openPage(page) {
@@ -65,7 +65,7 @@ private utilService: UtilServiceProvider) {
 
   /**
    * This method is going to export data to csv file which will reside in android device root folder
-   * 
+   *
    * @memberof MyApp
    * @since 1.2.0
    * @author Ratikanta
@@ -77,7 +77,7 @@ private utilService: UtilServiceProvider) {
   /**
    * This function will be called when a user clicks on the sync button of the side menu.
    * @author Naseem Akhtar (naseem@sdrc.co.in)
-   * 
+   *
    */
   prepareForSync(){
     this.messageProvider.showLoader("Syncing, please wait...");
@@ -95,10 +95,10 @@ private utilService: UtilServiceProvider) {
   }
 
   /**
-   * 
+   *
    * This method is going to create project folders where we are going to keep the data
    * @memberof MyApp
-   * 
+   *
    * @since 1.2.0
    * @author Ratikanta
    */
@@ -111,9 +111,10 @@ private utilService: UtilServiceProvider) {
         this.file.createDir(this.file.externalRootDirectory, ConstantProvider.appFolderName, false)
       }
     })
-    
 
-      
-    
+
+
+
   }
+
 }

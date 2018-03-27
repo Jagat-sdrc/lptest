@@ -1,0 +1,16 @@
+<ion-header color="primary">
+    <ion-navbar class="show-back-button" color="primary">
+        <ion-title>
+            Summary of Baby ID - {{babyAllDetails.babyCode}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-tabs>
+      <ion-tab [root]="basicRoot" [rootParams]="babyAllDetails" tabTitle="Basic"></ion-tab>
+      <ion-tab [root]="motherRelatedRoot" tabTitle="Mother related"></ion-tab>
+      <ion-tab [root]="togetherRoot" tabTitle="Together"></ion-tab>
+      <ion-tab [root]="infantRelatedRoot" tabTitle="Infant related"></ion-tab>
+      <ion-tab [root]="exclusiveBfRoot" [rootParams]="babyAllDetails" tabTitle="Exclusive BF"></ion-tab>
+  </ion-tabs>
+</ion-content>

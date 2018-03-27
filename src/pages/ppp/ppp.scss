@@ -1,0 +1,24 @@
+page-ppp {
+  .spinner-container {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+  .form-group{
+      margin-bottom: 20px;
+  }
+  .card-outside{
+      margin-top: 0px;
+      background: color($colors, llist, base);
+  }
+  .card-inside{
+      padding: 7px;
+      font-size: 16px;
+  }
+  .fab-padding{
+      padding: 0px 16px 16px 0px;
+  }
+  .customOptions{
+      margin-right: 12px;
+  }
+}

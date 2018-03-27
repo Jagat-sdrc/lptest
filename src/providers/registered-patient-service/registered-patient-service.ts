@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { SearchPipe } from '../../pipes/search/search';
+import { filter } from 'rxjs/operator/filter';
+import { PppServiceProvider } from '../ppp-service/ppp-service';
 
 /**
  * This service will only provide service to Registered Patient component
@@ -14,7 +16,7 @@ export class RegisteredPatientServiceProvider {
 
   patients: IPatient[];
 
-  constructor(private storage: Storage, private searchPipe: SearchPipe){}
+  constructor(private storage: Storage, private searchPipe: SearchPipe,private pppService: PppServiceProvider){}
 
   /**
    * @author - Naseem Akhtar
@@ -25,6 +27,7 @@ export class RegisteredPatientServiceProvider {
       this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then(data=>{
         (data as IPatient[]).splice((data as IPatient[]).findIndex(d=> d.babyCode === babyCode), 1)
+        this.pppService.deleteSpsRecord(babyCode);
         this.storage.set(ConstantProvider.dbKeyNames.patients, data)
         .then(()=>{
           //delete from breastfeed expression

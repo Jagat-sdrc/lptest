@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MessageProvider } from '../providers/message/message';
 import { AddNewPatientServiceProvider } from '../providers/add-new-patient-service/add-new-patient-service';
 import { FeedDateListServiceProvider } from '../providers/feed-date-list-service/feed-date-list-service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { AddNewExpressionBfServiceProvider } from '../providers/add-new-expression-bf-service/add-new-expression-bf-service';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service';
 import { SaveExpressionBfProvider } from '../providers/save-expression-bf/save-expression-bf';
@@ -35,6 +35,8 @@ import { ExportServiceProvider } from '../providers/export-service/export-servic
 import { PapaParseModule, PapaParseService } from 'ngx-papaparse';
 import { File } from '@ionic-native/file';
 import { UtilServiceProvider } from '../providers/util-service/util-service';
+import { SinglePatientSummaryServiceProvider } from '../providers/single-patient-summary-service/single-patient-summary-service';
+import { PppServiceProvider } from '../providers/ppp-service/ppp-service';
 
 @NgModule({
   declarations: [
@@ -44,9 +46,24 @@ import { UtilServiceProvider } from '../providers/util-service/util-service';
     BrowserModule,
     IonicStorageModule.forRoot({
       name: 'lactation',
-         driverOrder: ['sqlite', 'indexeddb', 'websql']
+         driverOrder: ['sqlite', 'indexeddb', 'websql'],
+
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      tabsPlacement: 'bottom',
+        platforms: {
+          android: {
+            tabsPlacement: 'top'
+          },
+          ios: {
+            tabsPlacement: 'top'
+          },
+          windows:
+          {
+            tabsPlacement: 'top'
+          }
+        }
+      }),
     IonicStorageModule.forRoot(),
     HttpClientModule,
     PapaParseModule
@@ -85,7 +102,10 @@ import { UtilServiceProvider } from '../providers/util-service/util-service';
     ExportServiceProvider,
     PapaParseService,
     File,
-    UtilServiceProvider
+    UtilServiceProvider,
+    SinglePatientSummaryServiceProvider,
+    DecimalPipe,
+    PppServiceProvider
   ]
 })
 export class AppModule {}

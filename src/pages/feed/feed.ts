@@ -148,6 +148,7 @@ export class FeedPage {
     this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
     this.dataForFeedEntryPage.selectedDate);
     setTimeout( data => this.toggleGroup(this.feedExpressions[0]), 100);
+    document.getElementById('scrollHere').scrollIntoView({behavior: 'smooth'})
   };
 
   /**

@@ -85,3 +85,34 @@ ion-label, ion-option, ion-datetime, ion-item, ion-select, ion-input, .alert-rad
     margin: 2rem 0 4rem 0 !important;
 }
 
+.sps-exclusive-bf-header{
+    background: #556d5f;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.sps-mother-related-header{
+    color: white;
+    font-size: 1.7rem;
+}
+
+.sps-mother-related-header ion-col{
+    background: #556d5f;
+}
+
+.sps-exlcusive-bf-contents{
+    border-bottom: solid thin #556d5f;
+}
+
+.sps-content-color-red{
+    background: rgb(209, 63, 67)
+}
+
+.sps-content-color-green{
+    background: rgb(34, 179, 105)
+}
+
+.sps-content-color-yellow{
+    background: rgb(241, 149, 55)
+}
+

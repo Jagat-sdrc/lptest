@@ -73,7 +73,8 @@ export class ConstantProvider {
     feedExpressions: "feedExpressions",
     bfsps: "bfsps",
     bfpds: 'bfpds',
-    latestPatientId: 'latestPatientId'
+    latestPatientId: 'latestPatientId',
+    sps: 'sps'
   }
 
   static patientSortBy: IPatientSortBy = {
@@ -92,7 +93,16 @@ export class ConstantProvider {
     unknown: 4,
     level3NICU: 14,
     level2SNCU: 15,
-    level1NICU: 16
+    level1NICU: 16,
+    parenteralEnteral: 62,
+    enteralOnly: 63,
+    enteralOral: 64,
+    oralCup: 65,
+    breastfeed: 43,
+    kmc: 53,
+    nns: 54,
+    oral: 55,
+    logFeedBreastFeed: 66
   }
 
   /**
@@ -172,10 +182,20 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record?',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
+<<<<<<< HEAD
     pastTime: 'Time before delivery time is not allowed',
     dataExportSuccessful: 'Data exported successfully to the following file',
     couldNotCreateFile: 'Could not create export file',
     couldNotWriteToFile: 'Could not write data to export file'
+=======
+    registeredPage: "registeredPage",
+    singlePatientSummary: "singlePageSummarty",
+    pastTime: 'Time before delivery time is not allowed',
+    spsContentColorRed: 'sps-content-color-red',
+    spsContentColorGreen: 'sps-content-color-green',
+    spsContentColorYellow: 'sps-content-color-yellow',
+    loading: 'Loading, please wait...'
+>>>>>>> 9b2caa2460018b7ed960e17a6b72b110a3b4e171
   };
 
 /**

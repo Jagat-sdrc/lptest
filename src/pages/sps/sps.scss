@@ -1,0 +1,9 @@
+page-sps {
+  .tabs-md .tab-button-text{
+    font-size: 15px
+  }
+  .tabs-md .tab-button[aria-selected=true] {
+    color: #fff; /*your  text color */
+    background: color($colors, primary, base); /* your background color*/
+  }
+}
