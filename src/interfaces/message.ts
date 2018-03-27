@@ -73,4 +73,5 @@ interface IMessage{
     spsContentColorRed: string;
     spsContentColorGreen: string;
     spsContentColorYellow: string;
+    loading: string;
 }

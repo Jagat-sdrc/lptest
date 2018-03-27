@@ -188,7 +188,8 @@ export class ConstantProvider {
     pastTime: 'Time before delivery time is not allowed',
     spsContentColorRed: 'sps-content-color-red',
     spsContentColorGreen: 'sps-content-color-green',
-    spsContentColorYellow: 'sps-content-color-yellow'
+    spsContentColorYellow: 'sps-content-color-yellow',
+    loading: 'Loading, please wait...'
   };
 
 /**

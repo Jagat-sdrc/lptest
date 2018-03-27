@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
 import { MessageProvider } from '../../providers/message/message';
+import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
  * Generated class for the SpsPage tabs.
@@ -29,7 +30,7 @@ export class SpsPage {
 
   ngOnInit(){
     this.babyAllDetails = this.navParams.get('babyDetails');
-    this.messageService.showLoader("Generating Single  Patient Summary, please wait...")
+    this.messageService.showLoader(ConstantProvider.messages.loading)
   }
 
 }
