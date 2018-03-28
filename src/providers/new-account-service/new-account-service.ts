@@ -5,6 +5,7 @@ import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { DatePipe } from '@angular/common';
+import { UtilServiceProvider } from '../util-service/util-service';
 
 
 /**
@@ -17,7 +18,8 @@ import { DatePipe } from '@angular/common';
 @Injectable()
 export class NewAccountServiceProvider {
 
-  constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe) {
+  constructor(public http: HttpClient, private storage: Storage, private datePipe: DatePipe,
+          private utilService: UtilServiceProvider) {
   }
 
   /**
@@ -30,6 +32,7 @@ export class NewAccountServiceProvider {
       user.createdDate = user.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : user.createdDate;
       user.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+      user.uuidNumber = this.utilService.getUuid();
       this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((val) => {
 

@@ -62,7 +62,7 @@ export class AddPatientPage implements OnInit{
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewPatientService: AddNewPatientServiceProvider,private datePipe: DatePipe,
     private messageService: MessageProvider,private datePicker: DatePicker,
-  private userService: UserServiceProvider, private menuCtrl: MenuController) {
+    private userService: UserServiceProvider, private menuCtrl: MenuController) {
 
   }
 
@@ -238,12 +238,6 @@ export class AddPatientPage implements OnInit{
       });
     }
 
-    _numberKeyPress(e,no) {
-      if (e.target["value"].length > no) {
-        e.target["value"] = e.target["value"].substring(0, e.target["value"].length - 1);
-      }
-     }
-
      onlyNumberKey(event) {
        return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57;
       }
@@ -269,8 +263,8 @@ export class AddPatientPage implements OnInit{
      validateMotherAge(){
        if(!this.hasError){
         if (this.patientForm.controls.mother_age.value != "" && this.patientForm.controls.mother_age.value != null){
-          if (this.patientForm.controls.mother_age.value < 15 ||
-            this.patientForm.controls.mother_age.value > 49) {
+          if (this.patientForm.controls.mother_age.value < 14 ||
+            this.patientForm.controls.mother_age.value > 60) {
             this.hasError = true;
            this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.motherAge)
            .then((data)=>{
@@ -287,8 +281,8 @@ export class AddPatientPage implements OnInit{
      validateBabyWeight() {
       if(!this.hasError){
         if(this.patientForm.controls.baby_weight.value != "" && this.patientForm.controls.baby_weight.value != null){
-          if (this.patientForm.controls.baby_weight.value < 500 ||
-            this.patientForm.controls.baby_weight.value > 4000) {
+          if (this.patientForm.controls.baby_weight.value < 400 ||
+            this.patientForm.controls.baby_weight.value > 6000) {
               this.hasError = true;
            this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
            .then((data)=>{
@@ -365,7 +359,8 @@ export class AddPatientPage implements OnInit{
             syncFailureMessage: null,
             userId: this.userService.getUser().email,
             createdDate: null,
-            updatedDate: null
+            updatedDate: null,
+            uuidNumber: null
           }
 
           this.addNewPatientService.saveNewPatient(this.patient, this.uniquePatientId.idNumber)
@@ -451,6 +446,7 @@ export class AddPatientPage implements OnInit{
           this.datePicker.show({
             mode: 'date',
             date: new Date(),
+            minDate: new Date(new Date().getFullYear(),(new Date().getMonth()),(new Date().getDate())-89).valueOf(),
             maxDate: new Date().valueOf(),
             androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
           }).then(

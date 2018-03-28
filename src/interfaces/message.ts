@@ -5,6 +5,8 @@
  * @interface IMessage
  */
 interface IMessage{
+    exportingData: string;
+    dataExported: string;
     invalidCredentials: string;
     enterDateOfExpression: string;
     enterTimeOfExpression: string;
@@ -70,6 +72,9 @@ interface IMessage{
     registeredPage: string;
     singlePatientSummary: string;
     pastTime: string;
+    dataExportSuccessful: string;
+    couldNotCreateFile: string;
+    couldNotWriteToFile: string;
     spsContentColorRed: string;
     spsContentColorGreen: string;
     spsContentColorYellow: string;

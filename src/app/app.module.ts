@@ -31,8 +31,13 @@ import { BFExpressionDateListProvider } from '../providers/bf-expression-date-li
 import { AppVersion } from '@ionic-native/app-version';
 import { SearchPipe } from '../pipes/search/search';
 import { SortPatientPipe } from '../pipes/sort-patient/sort-patient';
+import { ExportServiceProvider } from '../providers/export-service/export-service';
+import { PapaParseModule, PapaParseService } from 'ngx-papaparse';
+import { File } from '@ionic-native/file';
+import { UtilServiceProvider } from '../providers/util-service/util-service';
 import { SinglePatientSummaryServiceProvider } from '../providers/single-patient-summary-service/single-patient-summary-service';
 import { PppServiceProvider } from '../providers/ppp-service/ppp-service';
+import { Device } from '@ionic-native/device';
 
 @NgModule({
   declarations: [
@@ -62,6 +67,7 @@ import { PppServiceProvider } from '../providers/ppp-service/ppp-service';
       }),
     IonicStorageModule.forRoot(),
     HttpClientModule,
+    PapaParseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -94,9 +100,14 @@ import { PppServiceProvider } from '../providers/ppp-service/ppp-service';
     AppVersion,
     SearchPipe,
     SortPatientPipe,
+    ExportServiceProvider,
+    PapaParseService,
+    File,
+    UtilServiceProvider,
     SinglePatientSummaryServiceProvider,
     DecimalPipe,
-    PppServiceProvider
+    PppServiceProvider,
+    Device
   ]
 })
 export class AppModule {}

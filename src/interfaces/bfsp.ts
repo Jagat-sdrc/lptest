@@ -3,7 +3,7 @@
  * @author Ratikanta
  * @author Naseem Akhtar
  * @since 0.0.1
- * 
+ *
  * @interface IBFSP
  */
 interface IBFSP{
@@ -19,4 +19,5 @@ interface IBFSP{
     isSynced: boolean;
     createdDate: string;
     updatedDate: string;
+    uuidNumber: string;
 }

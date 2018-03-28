@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
-import { SinglePatientSummaryServiceProvider } from '../single-patient-summary-service/single-patient-summary-service';
 
 /*
   Generated class for the PppServiceProvider provider.

@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { UserServiceProvider } from '../user-service/user-service';
 import { PppServiceProvider } from '../ppp-service/ppp-service';
+import { UtilServiceProvider } from '../util-service/util-service';
 
 /**
  * This service will only provide service to Feed component
@@ -21,7 +22,8 @@ export class AddNewPatientServiceProvider {
     public http: HttpClient,
     private storage: Storage,
     private userService: UserServiceProvider,
-    private datePipe: DatePipe,private pppServiceProvider: PppServiceProvider
+    private datePipe: DatePipe,private pppServiceProvider: PppServiceProvider,
+    private utilService: UtilServiceProvider
   ) {}
 
   /**
@@ -166,6 +168,7 @@ export class AddNewPatientServiceProvider {
       patient.createdDate = patient.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : patient.createdDate;
       patient.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+      patient.uuidNumber = this.utilService.getUuid();
       let patients: IPatient[] = [];
       this.storage.get(ConstantProvider.dbKeyNames.patients)
       .then((val) => {

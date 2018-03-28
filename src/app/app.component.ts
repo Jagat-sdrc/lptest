@@ -4,7 +4,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MessageProvider } from '../providers/message/message';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service'
+import { ExportServiceProvider } from '../providers/export-service/export-service';
+import { File } from '@ionic-native/file';
 import { ConstantProvider } from '../providers/constant/constant';
+import { UtilServiceProvider } from '../providers/util-service/util-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -24,12 +27,14 @@ export class MyApp {
     isSynced: false,
     syncFailureMessage: null,
     createdDate: null,
-    updatedDate: null
+    updatedDate: null,
+    uuidNumber: null
   }
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     private messageProvider: MessageProvider, private syncService: SyncServiceProvider,
-  private events: Events) {
+  private events: Events, private exportService: ExportServiceProvider, private file: File,
+private utilService: UtilServiceProvider) {
     this.initializeApp();
   }
 
@@ -39,6 +44,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.createProjectFolder()
+      this.utilService.setUuid()
     });
   }
 
@@ -47,6 +54,10 @@ export class MyApp {
     this.events.subscribe('user', data=>{
       this.user = data;
     })
+
+
+    this.utilService.setDefaults()
+
   }
 
   openPage(page) {
@@ -55,8 +66,15 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
+  /**
+   * This method is going to export data to csv file which will reside in android device root folder
+   *
+   * @memberof MyApp
+   * @since 1.2.0
+   * @author Ratikanta
+   */
   export(){
-    this.messageProvider.showErrorToast("Under construction!")
+    this.exportService.export()
   }
 
   /**
@@ -78,4 +96,28 @@ export class MyApp {
   logout(){
     this.nav.setRoot('LoginPage');
   }
+
+  /**
+   *
+   * This method is going to create project folders where we are going to keep the data
+   * @memberof MyApp
+   *
+   * @since 1.2.0
+   * @author Ratikanta
+   */
+  createProjectFolder(){
+    //checking folder existance
+    this.file.checkDir(this.file.externalRootDirectory, ConstantProvider.appFolderName)
+    .catch(err=>{
+      if(err.code === 1){
+        // folder not present, creating new folder
+        this.file.createDir(this.file.externalRootDirectory, ConstantProvider.appFolderName, false)
+      }
+    })
+
+
+
+
+  }
+
 }

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /**
@@ -121,6 +120,8 @@ export class ConstantProvider {
   static postDischargeMenu: number = 12;
 
   static messages: IMessage = {
+    exportingData: 'Exporting data, please wait',
+    dataExported: 'Data exported',
     enterDateOfExpression: 'Please enter date of expression',
     enterTimeOfExpression :'Please enter time of expression',
     enterTypeOfExpression:'Please enter method of expression',
@@ -134,9 +135,9 @@ export class ConstantProvider {
     noUserFound: 'No user found, please register.',
     userConstruction: 'Under construction.',
     babyUnderWeight: "Baby's weight is less than the normal weight range (500-4000 grams). Do you want to proceed with the entry?",
-    babyOverWeight: "The entered baby weight lies outside 500-4000 gms range. Do you want to proceed with the entry? ",
+    babyOverWeight: "The entered baby weight lies outside 400-6000 gms range. Do you want to proceed with the entry? ",
     babyGestational: "A normal gestational period ranges from 38 to 42 weeks. Do you want to proceed with the entry?",
-    motherAge: "Reproductive age of women lies in the range between 15-49 years. Do you want to proceed with the entry?",
+    motherAge: "Reproductive age of women lies in the range between 14-60 years. Do you want to proceed with the entry?",
     supportivePracticeBfsp: "Please select the supportive practice performed for breastfeeding",
     personWhoPerformedBfsp: "Please select the person who performed for BFSP",
     durationOfBfsp: "Please enter a valid duration for BFSP performed",
@@ -183,6 +184,9 @@ export class ConstantProvider {
     deleteForm: 'Are you sure you want to delete this record?',
     futureTime: 'Future time is not allowed',
     updateSuccessfull: 'Updated successfully.',
+    dataExportSuccessful: 'Data exported successfully to the following file',
+    couldNotCreateFile: 'Could not create export file',
+    couldNotWriteToFile: 'Could not write data to export file',
     registeredPage: "registeredPage",
     singlePatientSummary: "singlePageSummarty",
     pastTime: 'Time before delivery time is not allowed',
@@ -216,9 +220,6 @@ static areaLevels: IAreaLevel ={
     addmissionDate: "addmissionDate"
   }
 
-  constructor(public http: HttpClient) {
-  }
-
-
+  static appFolderName: string = 'Lactation'
 
 }

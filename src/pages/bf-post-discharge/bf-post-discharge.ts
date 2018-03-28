@@ -36,7 +36,8 @@ export class BfPostDischargePage {
     timeOfBreastFeeding: null,
     userId: null,
     createdDate: null,
-    updatedDate: null
+    updatedDate: null,
+    uuidNumber: null
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -44,7 +45,7 @@ export class BfPostDischargePage {
     private messageService: MessageProvider, private datePicker: DatePicker,
     private datePipe: DatePipe
   ) {
-      
+
   }
 
   ngOnInit() {
@@ -74,7 +75,7 @@ export class BfPostDischargePage {
       }, error => {
         this.messageService.showErrorToast(error);
       });
-    
+
     this.bfPostDischargeService.getBreastfeedingStatusPostDischarge()
       .subscribe(data => {
         this.bfStatusPostDischargeList = data;
@@ -104,7 +105,7 @@ export class BfPostDischargePage {
     }
   };
 
-  
+
 
 /**
    * This method will delete the given bf expression
@@ -120,7 +121,7 @@ export class BfPostDischargePage {
         this.bfPostDischargeService.delete(this.bfpd.id)
           .then(()=>{
             this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
-            this.navCtrl.pop();      
+            this.navCtrl.pop();
           })
           .catch(err=>{
             this.messageService.showErrorToast(err)
@@ -150,7 +151,7 @@ export class BfPostDischargePage {
     );
   }
 
-  /** 
+  /**
    * @author - Naseem Akhtar
    * @since - 0.0.1
    * This method will delete all the bfsp records whose baby id is not present.

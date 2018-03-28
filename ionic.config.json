@@ -1,6 +1,6 @@
 {
-  "name": "lptest",
-  "app_id": "896d6729",
+  "name": "Lactation",
+  "app_id": "",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

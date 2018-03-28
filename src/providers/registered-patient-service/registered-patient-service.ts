@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { SearchPipe } from '../../pipes/search/search';
-import { filter } from 'rxjs/operator/filter';
 import { PppServiceProvider } from '../ppp-service/ppp-service';
 
 /**

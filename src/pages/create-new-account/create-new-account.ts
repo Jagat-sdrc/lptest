@@ -22,6 +22,7 @@ import {
 import {
   ConstantProvider
 } from '../../providers/constant/constant';
+import { UtilServiceProvider } from '../../providers/util-service/util-service';
 
 /**
  * This is registration page component
@@ -51,7 +52,8 @@ export class CreateNewAccountPage {
     isSynced: false,
     syncFailureMessage: null,
     createdDate: null,
-    updatedDate: null
+    updatedDate: null,
+    uuidNumber: null
   }
   namePattern: RegExp = /^[a-zA-Z][a-zA-Z\s\.]+$/;
   emailPattern: RegExp = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
@@ -73,7 +75,7 @@ export class CreateNewAccountPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public menuCtrl: MenuController,
     private messageService: MessageProvider, public createNewAccountService: NewAccountServiceProvider,
-    private alertCtrl: AlertController) {}
+    private alertCtrl: AlertController, public utilService: UtilServiceProvider) {}
 
 
   ionViewDidEnter() {
@@ -304,7 +306,8 @@ export class CreateNewAccountPage {
           isSynced: false,
           syncFailureMessage: null,
           createdDate: null,
-          updatedDate: null
+          updatedDate: null,
+          uuidNumber: null
         }
         this.createNewAccountService.saveNewUser(this.user)
           .then(data => {

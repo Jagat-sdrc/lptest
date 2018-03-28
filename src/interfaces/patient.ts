@@ -27,4 +27,5 @@ interface IPatient{
     userId: string;
     createdDate: string;
     updatedDate: string;
+    uuidNumber: string;
 }
