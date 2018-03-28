@@ -76,4 +76,5 @@ interface IMessage{
     syncingPleaseWait: string;
     syncUnsuccessfull: string
     syncSuccessfull: string;
+    loading: string;
 }

@@ -74,7 +74,8 @@ export class ConstantProvider {
     feedExpressions: "feedExpressions",
     bfsps: "bfsps",
     bfpds: 'bfpds',
-    latestPatientId: 'latestPatientId'
+    latestPatientId: 'latestPatientId',
+    sps: 'sps'
   }
 
   static patientSortBy: IPatientSortBy = {
@@ -190,7 +191,8 @@ export class ConstantProvider {
     spsContentColorYellow: 'sps-content-color-yellow',
     syncingPleaseWait: 'Syncing, please wait...',
     syncUnsuccessfull: 'Sync unsuccessfull',
-    syncSuccessfull: 'Sync successfull'
+    syncSuccessfull: 'Sync successfull',
+    loading: 'Loading, please wait...'
   };
 
 /**

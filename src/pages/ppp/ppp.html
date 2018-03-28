@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Poorly Performing Patients</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <h6 padding-right text-right *ngIf="pppPatients != undefined && pppPatients.length > 0">Number of records: {{pppPatients === undefined?0:pppPatients.length}} </h6>
+  <ion-list>
+    <ion-item wrap-text no-lines *ngFor="let item of pppPatients; let i = index">
+      <ion-card class="card-outside">
+        <ion-row class="card-inside" (click)="goToBabyDashBoard(item)">
+          <ion-col md-6>
+            <div class="form-group">Baby of: {{(item.babyOf != null && item.babyOf != "")?item.babyOf:"N/A"}}</div>
+            <div>Baby ID: {{item.babyCode}}</div>
+          </ion-col>
+          <ion-col md-6 text-right>
+            <div class="form-group">{{item.deliveryDate}} {{item.deliveryTime}}</div>
+            <div>Hospital Baby ID: {{(item.babyCodeHospital != null && item.babyCodeHospital != "")?item.babyCodeHospital:"N/A"}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+  <h4 class="noRecords" *ngIf="uiStatus">No record found</h4>
+</ion-content>

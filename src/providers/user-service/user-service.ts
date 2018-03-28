@@ -21,14 +21,14 @@ export class UserServiceProvider {
   getUser(){
     return this.user;
   }
-  
+
 
   /**
- * This method will 
- * 
+ * This method will
+ *
  * @author Jagat Bandhu
  * @since 0.0.1
- * @param email 
+ * @param email
  */
   getUserValidation(email: string): Promise<IUser>{
   let promise: Promise<IUser> = new Promise((resolve, reject)=>{

@@ -6,6 +6,7 @@ import { ConstantProvider } from '../constant/constant';
 import { DatePipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
 import { UserServiceProvider } from '../user-service/user-service';
+import { PppServiceProvider } from '../ppp-service/ppp-service';
 
 /*
   Generated class for the BfPostDischargeServiceProvider provider.
@@ -16,7 +17,7 @@ import { UserServiceProvider } from '../user-service/user-service';
 @Injectable()
 export class BfPostDischargeServiceProvider {
 
-  constructor(public http: HttpClient, private datePipe: DatePipe,
+  constructor(public http: HttpClient, private datePipe: DatePipe,private pppServiceProvider: PppServiceProvider,
     private storage: Storage, private userService: UserServiceProvider) {}
 
   getMaxTime(){
@@ -24,7 +25,7 @@ export class BfPostDischargeServiceProvider {
   }
   /**
    * This method is going to give us a new BF expression id
-   * 
+   *
    * @param {string} babyCode This is the baby code for which we are creating the bf post discharge
    * @author Naseem Akhtar
    * @since 0.0.1
@@ -35,9 +36,9 @@ export class BfPostDischargeServiceProvider {
 
   /**
    * This method should return delivery method lists
-   * 
+   *
    * @author Naseem Akhtar
-   * @returns {Observable<ITypeDetails[]>} 
+   * @returns {Observable<ITypeDetails[]>}
    * @memberof getTimeOfBreastfeedingPostDischarge
    */
   getTimeOfBreastfeedingPostDischarge(): Observable < ITypeDetails[] > {
@@ -59,17 +60,18 @@ export class BfPostDischargeServiceProvider {
   };
 
   saveNewBfPostDischargeForm(bfPdForm: IBFPD): Promise <any> {
-    let promise = new Promise((resolve, reject) => {     
+    let promise = new Promise((resolve, reject) => {
       bfPdForm.id = bfPdForm.id === null ? this.getNewBfPdId(bfPdForm.babyCode) : bfPdForm.id;
       bfPdForm.isSynced = false;
-      bfPdForm.createdDate = bfPdForm.createdDate === null ? 
+      bfPdForm.createdDate = bfPdForm.createdDate === null ?
         this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') : bfPdForm.createdDate;
       bfPdForm.updatedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
       bfPdForm.userId = this.userService.getUser().email;
-      
+
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then((val) => {
           let bfPdForms: IBFPD[] = [];
+          this.pppServiceProvider.deleteSpsRecord(bfPdForm.babyCode)
           if (val != null && val.length > 0) {
             bfPdForms = val;
             bfPdForms = this.validateNewEntryAndUpdate(bfPdForms, bfPdForm)
@@ -136,9 +138,9 @@ export class BfPostDischargeServiceProvider {
    * This method will check whether we have the record with given baby id, date and time.
    * If all the attribute value will match, this will splice that record and append incoming record.
    * Because it has come for an update.
-   * 
+   *
    * If record does not match, this will just push the input record with existing once
-   * 
+   *
    * @author Ratikanta
    * @since 0.0.1
    * @param feedExpressions All the existing feed expressions
@@ -151,7 +153,7 @@ export class BfPostDischargeServiceProvider {
     if(index >=0){
       bfPdForms.splice(index, 1)
     }
-    bfPdForms.push(bfPdForm)    
+    bfPdForms.push(bfPdForm)
     return bfPdForms;
 
   }
@@ -160,17 +162,18 @@ export class BfPostDischargeServiceProvider {
    * This method will delete a expression
    * @author Ratikanta
    * @since 0.0.1
-   * @param {string} id 
-   * @returns {Promise<any>} 
+   * @param {string} id
+   * @returns {Promise<any>}
    * @memberof SaveExpressionBfProvider
    */
   delete(id: string): Promise<any>{
     let promise =  new Promise((resolve, reject)=>{
-      if(id != undefined && id != null){       
+      if(id != undefined && id != null){
         this.storage.get(ConstantProvider.dbKeyNames.bfpds)
         .then(data=>{
           let index = (data as IBFPD[]).findIndex(d=>d.id === id);
           if(index >= 0){
+            this.pppServiceProvider.deleteSpsRecord(data[index].babyCode);
             (data as IBFPD[]).splice(index, 1)
             this.storage.set(ConstantProvider.dbKeyNames.bfpds, data)
             .then(()=>{
@@ -180,7 +183,7 @@ export class BfPostDischargeServiceProvider {
               reject(err.message)
             })
           }else{
-            reject(ConstantProvider.messages.recordNotFound)  
+            reject(ConstantProvider.messages.recordNotFound)
           }
         })
         .catch(err=>{
@@ -209,7 +212,7 @@ export class BfPostDischargeServiceProvider {
   //   return bfpd;
   // }
 
-  /** 
+  /**
    * @author - Naseem Akhtar
    * This method will be used to sanitize data which do not have a valid
    * baby code
@@ -232,7 +235,7 @@ export class BfPostDischargeServiceProvider {
   /**
    * This method will be called to fecth all the BFPD records of a particular child.
    * This method was initially created for SPS(Single patient summary - exclusive breastfeed)
-   * 
+   *
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @param babyCode - baby whose all records are being fetched
    */

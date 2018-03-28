@@ -22,8 +22,6 @@ export class RegisteredPatientPage {
   searching: any = false;
   babyDashboardPage;
   singlePatientSummary;
-  pageStatus: boolean = false;
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,private registeredPatientService: RegisteredPatientServiceProvider,
@@ -75,6 +73,12 @@ export class RegisteredPatientPage {
     });
   }
 
+  /**
+   * This method will call, when user will click the refresh icon on view to get the refresh list
+   *
+   * @author Jagat Bandhu
+   * @since 0.0.1
+   */
   refresh(){
     this.sortBy = ConstantProvider.patientSortBy.deliveryDateDescending;
     this.searchTerm = "";

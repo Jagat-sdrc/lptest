@@ -36,7 +36,7 @@ export class InfantRelatedPage {
    * @since 1.1.0
    */
   async getInfantRelated(){
-    this.infantRelatedDataList = await this.spsService.getInfantRelatedData(this.babyDetails.deliveryDate,this.babyDetails.dischargeDate,this.babyDetails.babyCode,this.babyDetails.weight);
+    this.infantRelatedDataList = await this.spsService.getInfantRelatedData();
   }
 
   /**
