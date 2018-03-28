@@ -44,6 +44,8 @@ private utilService: UtilServiceProvider) {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.createProjectFolder()
+      this.utilService.setUuid()
     });
   }
 
@@ -53,7 +55,7 @@ private utilService: UtilServiceProvider) {
       this.user = data;
     })
 
-    this.createProjectFolder()
+
     this.utilService.setDefaults()
 
   }
