@@ -113,8 +113,8 @@ export class ConstantProvider {
   static serverUrls:any = {
     SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation-test/serverStatus',
     SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation-test/sync'
-    // SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
-    // SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
+    // SERVER_STATUS: 'http://192.168.1.247:8080/lactation-dev-test/serverStatus',
+    // SYNCHRONIZE: 'http://192.168.1.247:8080/lactation-dev-test/sync'
   };
 
   static postDischargeMenu: number = 12;
@@ -187,7 +187,10 @@ export class ConstantProvider {
     pastTime: 'Time before delivery time is not allowed',
     spsContentColorRed: 'sps-content-color-red',
     spsContentColorGreen: 'sps-content-color-green',
-    spsContentColorYellow: 'sps-content-color-yellow'
+    spsContentColorYellow: 'sps-content-color-yellow',
+    syncingPleaseWait: 'Syncing, please wait...',
+    syncUnsuccessfull: 'Sync unsuccessfull',
+    syncSuccessfull: 'Sync successfull'
   };
 
 /**

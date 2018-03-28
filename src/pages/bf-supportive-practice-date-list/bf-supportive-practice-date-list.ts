@@ -18,15 +18,12 @@ import { BfspDateListServiceProvider } from '../../providers/bfsp-date-list-serv
 export class BfSupportivePracticeDateListPage {
 
   babyCode:string;
-  babyCodeHospital: any;
   items: any;
   bfspDateListData: string[] = [];
+  dataForBfspPage: IDataForBfspPage
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private bfspDateListService: BfspDateListServiceProvider, private messageService: MessageProvider) {
-      this.babyCode = this.navParams.data.babyCode;
-      this.babyCodeHospital = this.navParams.data.babyCodeByHospital;
-  }
+    private bfspDateListService: BfspDateListServiceProvider, private messageService: MessageProvider) {}
 
   /**
    * Inside this function we are going to write the fetch expression list code.
@@ -36,6 +33,7 @@ export class BfSupportivePracticeDateListPage {
    * @since - 0.0.1
    */
   ionViewWillEnter(){
+    this.babyCode = this.navParams.data.babyCode;
     //Getting date list
     this.bfspDateListService.getBFSPDateList(this.babyCode)
       .then(data => {
@@ -44,6 +42,15 @@ export class BfSupportivePracticeDateListPage {
       .catch(err => {
         this.messageService.showErrorToast(err)
       })
+
+    this.dataForBfspPage = {
+      babyCode: this.navParams.data.babyCode,
+      selectedDate: null,
+      isNewBfsp: true,
+      deliveryDate: this.navParams.data.deliveryDate,
+      deliveryTime: this.navParams.data.deliveryTime,
+      dischargeDate: this.navParams.data.dischargeDate
+    }
   }
 
 
@@ -54,14 +61,8 @@ export class BfSupportivePracticeDateListPage {
    * @since 0.0.1
    */
   dateSelected(date: string) {
-    let dataForBfspPage: IDataForBfspPage = {
-      babyCode: this.babyCode,
-      selectedDate: date,
-      isNewBfsp: false,
-      deliveryDate: this.navParams.data.deliveryDate,
-      deliveryTime: this.navParams.data.deliveryTime
-    }
-    this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: dataForBfspPage});
+    this.dataForBfspPage.selectedDate = date
+    this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: this.dataForBfspPage});
   };
 
   /**
@@ -72,14 +73,7 @@ export class BfSupportivePracticeDateListPage {
    * @since 0.0.1
   */
   newBFSP() {
-    let dataForBfspPage: IDataForBfspPage = {
-      babyCode: this.babyCode,
-      selectedDate: null,
-      isNewBfsp: true,
-      deliveryDate: this.navParams.data.deliveryDate,
-      deliveryTime: this.navParams.data.deliveryTime
-    }
-    this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: dataForBfspPage})
+    this.navCtrl.push('BfSupportivePracticePage', {dataForBfspPage: this.dataForBfspPage})
   };
 
 }

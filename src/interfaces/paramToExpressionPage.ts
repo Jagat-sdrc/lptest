@@ -3,4 +3,5 @@ interface IParamToExpresssionPage {
     babyCodeByHospital: string;
     deliveryDate: string;
     deliveryTime: string;
+    dischargeDate?: string;
 }

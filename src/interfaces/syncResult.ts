@@ -1,14 +1,17 @@
 /**
- * This interface is going to keep the sync result
+ * This interface is going to maintain the format in which the data will be
+ * received from the back-end
  * @author Ratikanta
- * @since 0.0.1 
+ * @author Naseem Akhtar (naseem@sdrc.co.in)
+ * @since 1.0.1
  * @interface ISyncResult
  */
 interface ISyncResult{
-    failureUsers: IFailureUser[];
-    failurePatients: IFailurePatient[];
-    failureBFExpressions: IFailureBFExpression[];
-    failureFeedExpressions: IFailureFeedExpression[];
-    failureBFSPs: IFailureBFSP[];
-    failureBFPDs: IFailureBFPD[];
+    users: IUser[];
+    patients: IPatient[];
+    bfExpressions: IBFExpression[];
+    feedExpressions: IFeed[];
+    bfsps: IBFSP[];
+    bfpds: IBFPD[];
+    syncStatus: number;
 }

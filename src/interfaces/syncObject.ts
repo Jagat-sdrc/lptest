@@ -11,4 +11,5 @@ interface ISyncObject{
     feedExpressions: IFeed[];
     bfsps: IBFSP[];
     bfpds: IBFPD[];
+    instituteId: number;
 }

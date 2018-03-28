@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MessageProvider } from '../providers/message/message';
 import { SyncServiceProvider } from '../providers/sync-service/sync-service'
+import { ConstantProvider } from '../providers/constant/constant';
 
 @Component({
   templateUrl: 'app.html'
@@ -64,7 +65,7 @@ export class MyApp {
    *
    */
   prepareForSync(){
-    this.messageProvider.showLoader("Syncing, please wait...");
+    this.messageProvider.showLoader(ConstantProvider.messages.syncingPleaseWait);
     this.syncService.fetchDataFromDbAndValidateForSync();
   }
 

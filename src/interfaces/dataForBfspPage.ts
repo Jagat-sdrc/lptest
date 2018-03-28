@@ -9,4 +9,5 @@ interface IDataForBfspPage{
     isNewBfsp: boolean;
     deliveryDate: string;
     deliveryTime: string;
+    dischargeDate: string;
 }

@@ -1,28 +1,11 @@
-import {
-  Observable
-} from 'rxjs/Observable';
-import {
-  HttpClient,
-  HttpErrorResponse
-} from '@angular/common/http';
-import {
-  Injectable
-} from '@angular/core';
-import {
-  AlertController
-} from 'ionic-angular';
-import {
-  MessageProvider
-} from '../message/message';
-import {
-  Storage
-} from '@ionic/storage';
-import {
-  ConstantProvider
-} from '../constant/constant';
-import {
-  ErrorObservable
-} from 'rxjs/observable/ErrorObservable';
+import { Observable } from 'rxjs/Observable';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AlertController } from 'ionic-angular';
+import { MessageProvider } from '../message/message';
+import { Storage } from '@ionic/storage';
+import { ConstantProvider } from '../constant/constant';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 /**
  * This service will be execute when an user clicks on sync button. All the sync related functions
@@ -41,6 +24,7 @@ export class SyncServiceProvider {
     feedExpressions: [],
     bfsps: [],
     bfpds: [],
+    instituteId: 0
   }
   syncReport: ISyncReport = {
     userSyncSuccess: 0,
@@ -72,6 +56,8 @@ export class SyncServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((users) => {
         if (users != null && users.length > 0) {
+          debugger
+          this.syncObject.instituteId = users[0].institution
           users = (users as IUser[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.users = users
         }
@@ -131,28 +117,34 @@ export class SyncServiceProvider {
     //Checking all key fetched or not
     if (this.keyFetched == 6) {
       //Checking there is any data to sync or not
-      if( 
-        this.syncObject.users.length > 0 ||
-        this.syncObject.patients.length > 0 ||
-        this.syncObject.bfExpressions.length > 0 ||
-        this.syncObject.feedExpressions.length > 0 ||
-        this.syncObject.bfsps.length > 0 ||
-        this.syncObject.bfpds.length > 0
-      ){
+      // if( 
+      //   this.syncObject.users.length > 0 ||
+      //   this.syncObject.patients.length > 0 ||
+      //   this.syncObject.bfExpressions.length > 0 ||
+      //   this.syncObject.feedExpressions.length > 0 ||
+      //   this.syncObject.bfsps.length > 0 ||
+      //   this.syncObject.bfpds.length > 0
+      // ){
         this.getSyncResult()
         .subscribe(data => {
           this.syncResult = data;
-          this.postSyncWork();
+          if(this.syncResult.syncStatus === 1)
+            this.postSyncWork();
+          else{
+            this.keyFetched = 0;
+            this.messageProvider.stopLoader();
+            this.messageProvider.showErrorToast(ConstantProvider.messages.syncUnsuccessfull)
+          }
         }, err => {
           this.keyFetched = 0;
           this.messageProvider.stopLoader();
           this.messageProvider.showErrorToast(err)
         })
-      }else{
-        this.keyFetched = 0;
-        this.messageProvider.stopLoader();
-        this.messageProvider.showErrorToast(ConstantProvider.messages.noDataToSync)
-      }
+      // }else{
+      //   this.keyFetched = 0;
+      //   this.messageProvider.stopLoader();
+      //   this.messageProvider.showErrorToast(ConstantProvider.messages.noDataToSync)
+      // }
       
     }
 
@@ -176,42 +168,29 @@ export class SyncServiceProvider {
   /**
    * This method is going to do post sync user work
    * @author Ratikanta
+   * @author Naseem Akhtar
    * @since 0.0.1
    * @private
    * @memberof SyncServiceProvider
    */
   private postSyncUserWork() {
-
     //Checking whether we had sent any user to server or not. If we did not send any user to server 
     //Then no need to do following operations
-    if (this.syncObject.users.length > 0) {
-      this.storage.get(ConstantProvider.dbKeyNames.users)
-        .then(users => {
-          this.syncResult.failureUsers.forEach(failureUser => {
-            this.syncReport.userSyncFailed++;
-            //setting the failure message
-            (users as IUser[])[(users as IUser[]).findIndex(d => d.email === failureUser.userId)].syncFailureMessage = failureUser.reasonOfFailure;
-            //removing from user which we had sent to sync
-            this.syncObject.users.splice(this.syncObject.users.findIndex(d => d.email === failureUser.userId), 1)
-          })
-          this.syncObject.users.forEach(user => {
-            this.syncReport.userSyncSuccess++;
-            // making the sync true
-            (users as IUser[])[(users as IUser[]).findIndex(d => d.email === user.email)].isSynced = true;
-          })
-          //Again keeping the updated users in db
-          this.storage.set(ConstantProvider.dbKeyNames.users, users).then(() => {
-            this.showSyncReport()
-          })
-        })
+    if (this.syncResult.users.length > 0) {
+      //Setting the latest data received from server to the DB
+      this.storage.set(ConstantProvider.dbKeyNames.users, this.syncResult.users).then(() => {
+        this.showSyncReport()
+      })
     } else {
       this.showSyncReport()
     }
   }
 
+
   /**
    * This method is going to do post sync patient work
    * @author Ratikanta
+   * @author Naseem Akhtar
    * @since 0.0.1
    * @private
    * @memberof SyncServiceProvider
@@ -219,26 +198,11 @@ export class SyncServiceProvider {
   private postSyncPatientWork() {
     //Checking whether we had sent any patient to server or not. If we did not send any patient to server 
     //Then no need to do following operations
-    if (this.syncObject.patients.length > 0) {
-      this.storage.get(ConstantProvider.dbKeyNames.patients)
-        .then(patients => {
-          this.syncResult.failurePatients.forEach(failurePatient => {
-            this.syncReport.patientSyncFailed++;
-            //setting the failure message
-            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === failurePatient.babyCode)].syncFailureMessage = failurePatient.reasonOfFailure;
-            //removing from patients which we had sent to sync
-            this.syncObject.patients.splice(this.syncObject.patients.findIndex(d => d.babyCode === failurePatient.babyCode), 1)
-          })
-          this.syncObject.patients.forEach(patient => {
-            this.syncReport.patientSyncSuccess++;
-            // making the sync true
-            (patients as IPatient[])[(patients as IPatient[]).findIndex(d => d.babyCode === patient.babyCode)].isSynced = true;
-          })
-          //Again keeping the updated patients in db
-          this.storage.set(ConstantProvider.dbKeyNames.patients, patients).then(() => {
-            this.showSyncReport()
-          })
-        })
+    if (this.syncResult.patients.length > 0) {
+      //Setting the latest data received from server to the DB
+      this.storage.set(ConstantProvider.dbKeyNames.patients, this.syncResult.patients).then(() => {
+        this.showSyncReport()
+      })
     } else {
       this.showSyncReport()
     }
@@ -247,6 +211,7 @@ export class SyncServiceProvider {
   /**
    * This method is going to do post sync BFExpression work
    * @author Ratikanta
+   * @author Naseem Akhtar
    * @since 0.0.1
    * @private
    * @memberof SyncServiceProvider
@@ -254,26 +219,11 @@ export class SyncServiceProvider {
   private postSyncBFExpressionWork() {
     //Checking whether we had sent any BFExpression to server or not. If we did not send any BFExpression to server 
     //Then no need to do following operations
-    if (this.syncObject.bfExpressions.length > 0) {
-      this.storage.get(ConstantProvider.dbKeyNames.bfExpressions)
-        .then(bfExpressions => {
-          this.syncResult.failureBFExpressions.forEach(failureBFExpression => {
-            this.syncReport.bfExpressionSyncFailed++;
-            //setting the failure message
-            (bfExpressions as IBFExpression[])[(bfExpressions as IBFExpression[]).findIndex(d => d.id === failureBFExpression.id)].syncFailureMessage = failureBFExpression.reasonOfFailure;
-            //removing from bfExpression which we had sent to sync
-            this.syncObject.bfExpressions.splice(this.syncObject.bfExpressions.findIndex(d => d.id === failureBFExpression.id), 1)
-          })
-          this.syncObject.bfExpressions.forEach(bfExpression => {
-            this.syncReport.bfExpressionSyncSuccess++;
-            // making the sync true
-            (bfExpressions as IBFExpression[])[(bfExpressions as IBFExpression[]).findIndex(d => d.id === bfExpression.id)].isSynced = true;
-          })
-          //Again keeping the updated patients in db
-          this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, bfExpressions).then(() => {
-            this.showSyncReport()
-          })
-        })
+    if (this.syncResult.bfExpressions.length > 0) {
+      //Setting the latest data received from server to the DB
+      this.storage.set(ConstantProvider.dbKeyNames.bfExpressions, this.syncResult.bfExpressions).then(() => {
+        this.showSyncReport()
+      })
     } else {
       this.showSyncReport()
     }
@@ -283,6 +233,7 @@ export class SyncServiceProvider {
   /**
    * This method is going to do post sync FeedExpression work
    * @author Ratikanta
+   * @author Naseem Akhtar
    * @since 0.0.1
    * @private
    * @memberof SyncServiceProvider
@@ -290,26 +241,11 @@ export class SyncServiceProvider {
   private postSyncFeedExpressionWork() {
     //Checking whether we had sent any FeedExpression to server or not. If we did not send any FeedExpression to server 
     //Then no need to do following operations
-    if (this.syncObject.feedExpressions.length > 0) {
-      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
-        .then(feedExpressions => {
-          this.syncResult.failureFeedExpressions.forEach(failureFeedExpression => {
-            this.syncReport.feedSyncFailed++;
-            //setting the failure message
-            (feedExpressions as IFeed[])[(feedExpressions as IFeed[]).findIndex(d => d.id === failureFeedExpression.id)].syncFailureMessage = failureFeedExpression.reasonOfFailure;
-            //removing from feed Expression which we had sent to sync
-            this.syncObject.feedExpressions.splice(this.syncObject.feedExpressions.findIndex(d => d.id === failureFeedExpression.id), 1)
-          })
-          this.syncObject.feedExpressions.forEach(feedExpression => {
-            this.syncReport.feedSyncSuccess++;
-            // making the sync true
-            (feedExpressions as IFeed[])[(feedExpressions as IFeed[]).findIndex(d => d.id === feedExpression.id)].isSynced = true;
-          })
-          //Again keeping the updated patients in db
-          this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, feedExpressions).then(() => {
-            this.showSyncReport()
-          })
-        })
+    if (this.syncResult.feedExpressions.length > 0) {
+      //Setting the latest data received from server to the DB
+      this.storage.set(ConstantProvider.dbKeyNames.feedExpressions, this.syncResult.feedExpressions).then(() => {
+        this.showSyncReport()
+      })
     } else {
       this.showSyncReport()
     }
@@ -319,6 +255,7 @@ export class SyncServiceProvider {
   /**
    * This method is going to do post sync BFSP work
    * @author Ratikanta
+   * @author Naseem Akhtar
    * @since 0.0.1
    * @private
    * @memberof SyncServiceProvider
@@ -326,26 +263,11 @@ export class SyncServiceProvider {
   private postSyncBFSPWork() {
     //Checking whether we had sent any BFSP to server or not. If we did not send any BFSP to server 
     //Then no need to do following operations
-    if (this.syncObject.bfsps.length > 0) {
-      this.storage.get(ConstantProvider.dbKeyNames.bfsps)
-        .then(bfsps => {
-          this.syncResult.failureBFSPs.forEach(failureBFSP => {
-            this.syncReport.bfspSyncFailed++;
-            //setting the failure message
-            (bfsps as IBFSP[])[(bfsps as IBFSP[]).findIndex(d => d.id === failureBFSP.id)].syncFailureMessage = failureBFSP.reasonOfFailure;
-            //removing from BFSP which we had sent to sync
-            this.syncObject.bfsps.splice(this.syncObject.bfsps.findIndex(d => d.id === failureBFSP.id), 1)
-          })
-          this.syncObject.bfsps.forEach(bfsp => {
-            this.syncReport.bfspSyncSuccess++;
-            // making the sync true
-            (bfsps as IBFSP[])[(bfsps as IBFSP[]).findIndex(d => d.id === bfsp.id)].isSynced = true;
-          })
-          //Again keeping the updated patients in db
-          this.storage.set(ConstantProvider.dbKeyNames.bfsps, bfsps).then(() => {
-            this.showSyncReport()
-          })
-        })
+    if (this.syncResult.bfsps.length > 0) {
+      //Setting the latest data received from server to the DB
+      this.storage.set(ConstantProvider.dbKeyNames.bfsps, this.syncResult.bfsps).then(() => {
+        this.showSyncReport()
+      })
     } else {
       this.showSyncReport()
     }
@@ -355,6 +277,7 @@ export class SyncServiceProvider {
   /**
    * This method is going to do post BFPD user work
    * @author Ratikanta
+   * @author Naseem Akhtar
    * @since 0.0.1
    * @private
    * @memberof SyncServiceProvider
@@ -362,28 +285,11 @@ export class SyncServiceProvider {
   private postSyncBFPDWork() {
     //Checking whether we had sent any BFPD to server or not. If we did not send any BFPD to server 
     //Then no need to do following operations
-    if (this.syncObject.bfpds.length > 0) {
-      this.storage.get(ConstantProvider.dbKeyNames.bfpds)
-        .then(bfpds => {
-          // this.syncResult.failureBFPDs.forEach(failureBFPD => {
-          //   this.syncReport.bfpdSyncFailed++;
-          //   //setting the failure message
-          //   (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === failureBFPD.id)].syncFailureMessage = failureBFPD.reasonOfFailure;
-          //   //removing from IBFPD which we had sent to sync
-          //   this.syncObject.bfpds.splice(this.syncObject.bfpds.findIndex(d => d.id === failureBFPD.id), 1)
-          // })
-          // if(bfpds != null && bfpds.length > 0){
-            this.syncObject.bfpds.forEach(bfpd => {
-              this.syncReport.bfpdSyncSuccess++;
-              // making the sync true
-              (bfpds as IBFPD[])[(bfpds as IBFPD[]).findIndex(d => d.id === bfpd.id)].isSynced = true;
-            })
-            //Again keeping the updated patients in db
-            this.storage.set(ConstantProvider.dbKeyNames.bfpds, bfpds).then(() => {
-              this.showSyncReport()
-            })
-          // }
-        })
+    if (this.syncResult.bfpds.length > 0) {
+      //Setting the latest data received from server to the DB
+      this.storage.set(ConstantProvider.dbKeyNames.bfpds, this.syncResult.bfpds).then(() => {
+        this.showSyncReport()
+      })
     } else {
       this.showSyncReport()
     }
@@ -403,7 +309,7 @@ export class SyncServiceProvider {
       let alert = this.alertController.create({
         title: 'Sync Report',
         cssClass: 'syncModal',
-        message: 'Sync successful',
+        message: ConstantProvider.messages.syncSuccessfull,
         // message: '<div class="reportBody">' +
         //   '<h5>Users synced : ' + this.syncReport.userSyncSuccess + '</h5><br>' +
         //   '<h5>Users rejected : ' + this.syncReport.userSyncFailed + '</h5><br>' +
@@ -444,7 +350,7 @@ export class SyncServiceProvider {
    * @memberof SyncServiceProvider
    */
   private getSyncResult(): Observable < ISyncResult > {
-    return this.http.post(ConstantProvider.serverUrls.SYNCHRONIZE, this.syncObject).map((response: Response) => {
+    return this.http.post(ConstantProvider.serverUrls.SYNCHRONIZE, this.syncObject).timeout(120000).map((response: Response) => {
         return response
       })
       .catch(this.handleError);
@@ -455,19 +361,25 @@ export class SyncServiceProvider {
     if (error.error instanceof ErrorEvent) {
       messageToUser = `An error occurred: ${error.error.message}`;
     } else {
-      switch(error.status){
-        case 0:
-          if(error.name === 'HttpErrorResponse')
-            messageToUser = ConstantProvider.messages.checkInternetConnection;
-          else
+      if(error.status){
+        switch(error.status){
+          case 0:
+            if(error.name === 'HttpErrorResponse')
+              messageToUser = ConstantProvider.messages.checkInternetConnection;
+            else
+              messageToUser = `Backend error, code ${error.status}, ` + `message: ${error.message}`;
+          break;
+          case 500:
+            messageToUser = ConstantProvider.messages.serverErrorContactAdmin;
+          break;
+          default:
             messageToUser = `Backend error, code ${error.status}, ` + `message: ${error.message}`;
-        break;
-        case 500:
-          messageToUser = ConstantProvider.messages.serverErrorContactAdmin;
-        break;
-        default:
-          messageToUser = `Backend error, code ${error.status}, ` + `message: ${error.message}`;
-        break;
+          break;
+        }
+      }else if(error.name === 'TimeoutError'){
+        messageToUser = `Timeout, please try again`;
+      }else{
+        messageToUser = `Backend error, code ${error.status}, ` + `message: ${error.message}`;
       }
     }
     return new ErrorObservable(messageToUser);

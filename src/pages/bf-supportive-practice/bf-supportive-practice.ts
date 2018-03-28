@@ -22,7 +22,6 @@ import { DatePicker } from '@ionic-native/date-picker';
 export class BfSupportivePracticePage {
 
   supportivePracticeForm: FormGroup;
-  maxDate:any;
   forEdit: boolean;
   autoBabyId: string;
   bfspList: IBFSP[];
@@ -35,15 +34,14 @@ export class BfSupportivePracticePage {
   existingDate:string;
   existingTime:string;
   deliveryDate: Date;
+  dischargeDate: Date;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider,
     public formBuilder: FormBuilder, private datePipe: DatePipe,
     private bfspService: BfSupportivePracticeServiceProvider,
     private datePicker: DatePicker
-    ) {
-      this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
-    }
+    ) { }
 
   /**
    * This method call up the initial load of breastfeeding supportive practice.
@@ -55,8 +53,16 @@ export class BfSupportivePracticePage {
   ngOnInit() {
     this.dataForBfspPage = this.navParams.get('dataForBfspPage');
     //splitting delivery date to use it new date for min date of datepicker
-    let x = this.dataForBfspPage.deliveryDate.split('-');
+    let x = this.dataForBfspPage.deliveryDate.split('-')
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
+    console.log(this.dataForBfspPage)
+    if(this.dataForBfspPage.dischargeDate != null){
+      let y = this.dataForBfspPage.dischargeDate.split('-')
+      this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
+    }else{
+      this.dischargeDate = new Date()
+    }
+    
 
     this.findExpressionsByBabyCodeAndDate();
 
@@ -105,16 +111,16 @@ export class BfSupportivePracticePage {
   
 
 
-  ionViewDidEnter() {
-    if (!(this.navParams.get('babyCode') == undefined)) {
-      this.forEdit = true;
-      this.autoBabyId = this.supportivePracticeForm.get('babyCode').value;
-      // this.setFetchedDataToUi();
-    } else {
-      this.autoBabyId = "IND" + this.datePipe.transform(new Date(), "ddMMyyyy") +
-        new Date().getMilliseconds();
-    }
-  };
+  // ionViewDidEnter() {
+  //   if (!(this.navParams.get('babyCode') == undefined)) {
+  //     this.forEdit = true;
+  //     this.autoBabyId = this.supportivePracticeForm.get('babyCode').value;
+  //     // this.setFetchedDataToUi();
+  //   } else {
+  //     this.autoBabyId = "IND" + this.datePipe.transform(new Date(), "ddMMyyyy") +
+  //       new Date().getMilliseconds();
+  //   }
+  // };
 
   save(bfsp: IBFSP, index) {
     let newData = bfsp.id === null ? true : false
@@ -200,8 +206,8 @@ export class BfSupportivePracticePage {
    */
   setPersonWhoPerformed(bfsp: IBFSP){
     bfsp.personWhoPerformedBFSP = null;
-    if(bfsp.bfspPerformed === 54) {
-      bfsp.personWhoPerformedBFSP = 56;
+    if(bfsp.bfspPerformed === 54){
+      setTimeout(d => bfsp.personWhoPerformedBFSP = 56, 100)
     }
   }
 
@@ -216,7 +222,7 @@ export class BfSupportivePracticePage {
     this.datePicker.show({
     date: new Date(),
     minDate: this.deliveryDate.valueOf(),
-    maxDate: new Date().valueOf(),
+    maxDate: this.dischargeDate.valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(

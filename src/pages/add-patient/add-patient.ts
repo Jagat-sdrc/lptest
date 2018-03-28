@@ -150,7 +150,8 @@ export class AddPatientPage implements OnInit{
         babyCode: this.navParams.get('babyCode'),
         babyCodeByHospital: this.navParams.get('babyCodeByHospital'),
         deliveryDate: this.navParams.get('deliveryDate'),
-        deliveryTime: null
+        deliveryTime: null,
+        dischargeDate: this.navParams.get('dischargeDate')
       }
       this.addNewPatientService.findByBabyCode(this.paramToExpressionPage.babyCode)
       .then(data=>{

@@ -59,14 +59,9 @@ export class RegisteredPatientPage {
     });
   }
 
-  goToBabyDashBoard(babyCode: string,babyCodeHospital: string, deliveryDate: string,babyDetails: any){
+  goToBabyDashBoard(babyDetails: any){
     if((this.navParams.get('param') == "RegisteredPatientPage")){
-      this.navCtrl.push('BabyDashboardPage',{
-        babyCode: babyCode,
-        babyCodeByHospital: babyCodeHospital,
-        deliveryDate: deliveryDate,
-        babyDetails: babyDetails
-      });
+      this.navCtrl.push('BabyDashboardPage',babyDetails);
     }else{
       this.navCtrl.push('SpsPage',{
         babyDetails: babyDetails
