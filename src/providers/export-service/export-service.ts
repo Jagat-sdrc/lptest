@@ -7,6 +7,10 @@ import { File } from '@ionic-native/file'
 import { DatePipe } from '@angular/common';
 import { UtilServiceProvider } from '../util-service/util-service';
 import { UserServiceProvider } from '../user-service/user-service';
+import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
+import { OrderByTimeExpressionFromPipe } from '../../pipes/order-by-time-expression-from/order-by-time-expression-from';
+import { SortPatientPipe } from '../../pipes/sort-patient/sort-patient';
+import { OrderByTimeBfspPipe } from '../../pipes/order-by-time-bfsp/order-by-time-bfsp';
 
 
 /**
@@ -25,7 +29,7 @@ export class ExportServiceProvider {
   file_name;
   constructor(private papa: PapaParseService, private messageService: MessageProvider,
     private storage: Storage, private file: File, private datePipe: DatePipe, private utilService: UtilServiceProvider,
-  private userService: UserServiceProvider) { }
+    private userService: UserServiceProvider) { }
 
   /**
    * This method is going to have all the business logic to export data from app to android device root folder
@@ -146,6 +150,7 @@ export class ExportServiceProvider {
 
     //getting data from database
     let patients: IPatient[] = await this.storage.get(ConstantProvider.dbKeyNames.patients);
+    patients = new SortPatientPipe().transform(patients)
     if (patients != null) {
 
       //set headers
@@ -241,7 +246,7 @@ export class ExportServiceProvider {
     data.push(row)
 
     row = []
-    row.push("Breast feed expression")
+    row.push("Log expression/breasfeed ")
     data.push(row)
 
     row = []
@@ -252,6 +257,7 @@ export class ExportServiceProvider {
 
     //getting bf expressions from database
     let bfExpressions: IBFExpression[] = await this.storage.get(ConstantProvider.dbKeyNames.bfExpressions);
+    bfExpressions = new OrderByTimeExpressionFromPipe().transform(bfExpressions)
     if (bfExpressions != null) {
 
 
@@ -280,7 +286,7 @@ export class ExportServiceProvider {
         row.push(bfExpression.dateOfExpression)
         row.push(bfExpression.timeOfExpression)
         row.push(bfExpression.methodOfExpression?this.utilService.getTypeDetailName(bfExpression.methodOfExpression):'N/A')
-        row.push(bfExpression.locationOfExpression?this.utilService.getTypeDetailName(bfExpression.locationOfExpression):'N?A')
+        row.push(bfExpression.locationOfExpression?this.utilService.getTypeDetailName(bfExpression.locationOfExpression):'N/A')
         row.push(bfExpression.volOfMilkExpressedFromLR?bfExpression.volOfMilkExpressedFromLR:'N/A')
         row.push(bfExpression.isSynced?'Yes':'No')
         row.push(bfExpression.userId)
@@ -313,7 +319,7 @@ export class ExportServiceProvider {
     data.push(row)
 
     row = []
-    row.push("Breastfeeding supportive practice")
+    row.push("Log breastfeeding supportive practice")
     data.push(row)
 
     row = []
@@ -324,6 +330,7 @@ export class ExportServiceProvider {
 
     //getting bf expressions from database
     let bfsps: IBFSP[] = await this.storage.get(ConstantProvider.dbKeyNames.bfsps);
+    bfsps = new OrderByTimeBfspPipe().transform(bfsps)
     if (bfsps != null) {
 
       //set headers
@@ -398,6 +405,7 @@ export class ExportServiceProvider {
 
     //getting log feed from database
     let feedExpressions: IFeed[] = await this.storage.get(ConstantProvider.dbKeyNames.feedExpressions);
+    feedExpressions = new OrderByTimePipe().transform(feedExpressions)
     if (feedExpressions != null) {
 
       //set headers
@@ -471,7 +479,7 @@ export class ExportServiceProvider {
     data.push(row)
 
     row = []
-    row.push("Breast feeding post discharge")
+    row.push("Log breastfeeding post-discharge")
     data.push(row)
 
     row = []
@@ -505,7 +513,7 @@ export class ExportServiceProvider {
         //Setting all column value
         row.push(bfpd.babyCode)
         row.push(bfpd.dateOfBreastFeeding)
-        row.push(bfpd.timeOfBreastFeeding)
+        row.push(bfpd.timeOfBreastFeeding?this.utilService.getTypeDetailName(bfpd.timeOfBreastFeeding):'N/A')
         row.push(bfpd.breastFeedingStatus?this.utilService.getTypeDetailName(bfpd.breastFeedingStatus):'N/A')
         row.push(bfpd.isSynced?'Yes':'No')
         row.push(bfpd.userId)
@@ -537,7 +545,7 @@ export class ExportServiceProvider {
     data.push(row)
 
     row = []
-    row.push("Users")
+    row.push("User details")
     data.push(row)
 
     row = []

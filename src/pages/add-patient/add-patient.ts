@@ -445,7 +445,8 @@ export class AddPatientPage implements OnInit{
           this.datePicker.show({
             mode: 'date',
             date: new Date(),
-            maxDate: new Date(new Date().getFullYear(),(new Date().getMonth())+3,(new Date().getDate())-2).valueOf(),
+            minDate: new Date(new Date().getFullYear(),(new Date().getMonth()),(new Date().getDate())-89).valueOf(),
+            maxDate: new Date().valueOf(),
             androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
           }).then(
             date => {
