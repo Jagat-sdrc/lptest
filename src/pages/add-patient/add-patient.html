@@ -50,7 +50,7 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Mother's Age</ion-label>
-        <ion-input type="tel" (focusout)="validateMotherAge()" maxlength="2" formControlName="mother_age" (keypress)="_numberKeyPress($event,2)"></ion-input>
+        <ion-input type="tel" (focusout)="validateMotherAge()" maxlength="2" formControlName="mother_age"></ion-input>
       </ion-item>
     </div>
     <div class="form-group">
@@ -89,13 +89,13 @@
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Baby's weight in grams</ion-label>
-        <ion-input type="number" (focusout)="validateBabyWeight()" formControlName="baby_weight"></ion-input>
+        <ion-input type="tel" (focusout)="validateBabyWeight()" maxlength="4"formControlName="baby_weight"></ion-input>
       </ion-item>
     </div>
     <div class="form-group">
       <ion-item>
         <ion-label color="black" stacked>Gestational age in weeks</ion-label>
-        <ion-input type="number" (focusout)="validateGestational()" formControlName="gestational_age"></ion-input>
+        <ion-input type="tel" (focusout)="validateGestational()" maxlength="2" formControlName="gestational_age"></ion-input>
       </ion-item>
     </div>
     <div class="form-group">
