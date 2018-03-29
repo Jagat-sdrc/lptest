@@ -113,8 +113,8 @@ export class ConstantProvider {
   static serverUrls:any = {
     SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation-test/serverStatus',
     SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation-test/sync'
-    // SERVER_STATUS: 'http://192.168.1.247:8080/lactation-dev-test/serverStatus',
-    // SYNCHRONIZE: 'http://192.168.1.247:8080/lactation-dev-test/sync'
+    // SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
+    // SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
 
   static postDischargeMenu: number = 12;
