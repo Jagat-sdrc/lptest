@@ -29,6 +29,7 @@ export class FeedPage {
   existingDate: string;
   existingTime: string;
   deliveryDate: Date;
+  dischargeDate: Date;
   onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
@@ -40,6 +41,12 @@ export class FeedPage {
     this.dataForFeedEntryPage = this.navParams.get('dataForFeedEntryPage');
     let x = this.dataForFeedEntryPage.deliveryDate.split('-');
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
+    if(this.dataForFeedEntryPage.dischargeDate != null){
+      let y = this.dataForFeedEntryPage.dischargeDate.split('-')
+      this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
+    }else{
+      this.dischargeDate = new Date()
+    }
     
     this.findExpressionsByBabyCodeAndDate();    
 
@@ -93,7 +100,7 @@ export class FeedPage {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
     }
     else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
-      && (feedExpression.babyWeight < 500 || feedExpression.babyWeight > 4000)){
+      && (feedExpression.babyWeight < 400 || feedExpression.babyWeight > 6000)){
       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
         .then((data)=>{
           if(data){
@@ -207,7 +214,7 @@ export class FeedPage {
     this.datePicker.show({
     date: new Date(),
     minDate: this.deliveryDate.valueOf(),
-    maxDate: new Date().valueOf(),
+    maxDate: this.dischargeDate.valueOf(),
     allowFutureDates: false,
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT

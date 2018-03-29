@@ -197,7 +197,11 @@ export class ConstantProvider {
     syncUnsuccessfull: 'Sync unsuccessfull',
     syncSuccessfull: 'Sync successfull',
     loading: 'Loading, please wait...',
-    folderCraetedSuccessfully: 'Lactation folder created'
+    folderCraetedSuccessfully: 'Lactation folder created',
+    twoWeeksPostDischarge: 14,
+    oneMonthPostDischarge: 30,
+    threeMonthsOfLife: 90,
+    sixMonthsOfLife: 180
   };
 
 /**

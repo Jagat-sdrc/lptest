@@ -60,7 +60,8 @@ export class FeedDateListPage {
       selectedDate: date,
       isNewExpression: false,
       deliveryDate: this.navParams.data.deliveryDate,
-      deliveryTime: this.navParams.data.deliveryTime
+      deliveryTime: this.navParams.data.deliveryTime,
+      dischargeDate: this.navParams.data.dischargeDate
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }
@@ -78,7 +79,8 @@ export class FeedDateListPage {
       selectedDate: null,
       isNewExpression: true,
       deliveryDate: this.navParams.data.deliveryDate,
-      deliveryTime: this.navParams.data.deliveryTime
+      deliveryTime: this.navParams.data.deliveryTime,
+      dischargeDate: this.navParams.data.dischargeDate
     }
     this.navCtrl.push('FeedPage', {dataForFeedEntryPage: dataForFeedEntryPage})
   }

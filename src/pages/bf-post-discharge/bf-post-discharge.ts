@@ -24,7 +24,7 @@ export class BfPostDischargePage {
   timeOfFeedList: ITypeDetails[];
   bfStatusPostDischargeList: ITypeDetails[];
   deliveryDate: Date;
-  maxDate:any;
+  dischargeDate: Date;
   formHeading: string;
   bfpd: IBFPD = {
     babyCode: null,
@@ -39,6 +39,7 @@ export class BfPostDischargePage {
     updatedDate: null,
     uuidNumber: null
   }
+  dataFromBfpdMenu: IDataForPostDischargePage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private bfPostDischargeService: BfPostDischargeServiceProvider,
@@ -49,11 +50,29 @@ export class BfPostDischargePage {
   }
 
   ngOnInit() {
-    this.maxDate = this.bfPostDischargeService.getMaxTime();
-    this.babyCode = this.navParams.data.babyCode;
+    this.dataFromBfpdMenu = this.navParams.data;
+    this.babyCode = this.dataFromBfpdMenu.babyCode;
     //splitting delivery date to use it new date for min date of datepicker
     let x = this.navParams.data.deliveryDate.split('-');
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
+
+    if(this.dataFromBfpdMenu.dischargeDate != null){
+      let y = this.dataFromBfpdMenu.dischargeDate.split('-')
+      this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
+    }
+
+    switch(this.dataFromBfpdMenu.menuItemId){
+      case 67:  this.deliveryDate = this.dischargeDate ? this.dischargeDate : this.deliveryDate;
+                this.deliveryDate.setDate(this.deliveryDate.getDate() + ConstantProvider.messages.twoWeeksPostDischarge)
+        break;
+      case 68:  this.deliveryDate = this.dischargeDate ? this.dischargeDate : this.deliveryDate;
+                this.deliveryDate.setDate(this.deliveryDate.getDate() + ConstantProvider.messages.oneMonthPostDischarge);
+        break;
+      case 69:  this.deliveryDate.setDate(this.deliveryDate.getDate() + ConstantProvider.messages.threeMonthsOfLife);
+        break;
+      case 70:  this.deliveryDate.setDate(this.deliveryDate.getDate() + ConstantProvider.messages.sixMonthsOfLife);
+        break;
+    }
 
     this.bfPostDischargeService.findByBabyCodeAndTimeOfBreastFeedingId(this.babyCode, this.navParams.data.menuItemId)
       .then(data => {

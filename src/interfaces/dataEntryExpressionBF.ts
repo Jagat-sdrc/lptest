@@ -9,4 +9,5 @@ interface IDataForBFEntryPage{
     isNewExpression: boolean;
     deliveryDate: string;
     deliveryTime: string;
+    dischargeDate: string;
 }

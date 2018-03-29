@@ -32,6 +32,7 @@ export class ExpressionTimeFormPage {
   existingDate: string;
   existingTime: string;
   deliveryDate: Date;
+  dischargeDate: Date;
   onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -47,6 +48,13 @@ export class ExpressionTimeFormPage {
     this.dataForBFEntryPage = this.navParams.get('dataForBFEntryPage');
     let x = this.dataForBFEntryPage.deliveryDate.split('-');
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
+
+    if(this.dataForBFEntryPage.dischargeDate != null){
+      let y = this.dataForBFEntryPage.dischargeDate.split('-')
+      this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
+    }else{
+      this.dischargeDate = new Date()
+    }
 
     this.findExpressionsByBabyCodeAndDate();    
     //Getting method of expressionbf type details
@@ -222,7 +230,7 @@ export class ExpressionTimeFormPage {
     this.datePicker.show({
     date: new Date(),
     minDate: this.deliveryDate.valueOf(),
-    maxDate: new Date().valueOf(),
+    maxDate: this.dischargeDate.valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(

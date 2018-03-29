@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
 import { ConstantProvider } from '../../providers/constant/constant';
-// import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
+import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 
 /**
  * Generated class for the BabyDashboardPage page.
@@ -27,17 +27,11 @@ export class BabyDashboardPage {
 
   paramToExpressionPage: IParamToExpresssionPage;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private messageService: MessageProvider) {
+  private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {
   }
 
   ionViewWillEnter(){
-    // this.patientService.findByBabyCode(this.navParams.get("babyCode"))
-    //   .then(data => {
-    //     this.paramToExpressionPage.deliveryDate = data.deliveryDate
-    //     this.paramToExpressionPage.deliveryTime = data.deliveryTime
-    //     this.babyDetails = data;
-    //   })
-    //   .catch(error => this.messageService.showErrorToast(error))
+    this.findLatestBabyData(this.babyDetails.babyCode)
   }
 
   ngOnInit(){
@@ -46,15 +40,7 @@ export class BabyDashboardPage {
     this.addPatientPage = 'AddPatientPage';
     this.bfspDateListPage = 'BfSupportivePracticeDateListPage';
     this.bfPostDischargeMenuPage = 'BfPostDischargeMenuPage';
-    
-    this.babyDetails = this.navParams.data;
-    this.paramToExpressionPage = {
-      babyCode: this.babyDetails.babyCode,
-      babyCodeByHospital: this.babyDetails.babyCodeHospital,
-      deliveryDate: this.babyDetails.deliveryDate,
-      deliveryTime: null,
-      dischargeDate: this.babyDetails.dischargeDate
-    }
+    this.babyDetails = this.navParams.data
   }
 
   goToHome(){
@@ -74,6 +60,23 @@ export class BabyDashboardPage {
     this.navCtrl.push('SpsPage',{
       babyDetails: this.babyDetails
     });
+  }
+
+  findLatestBabyData(babyCode: string){
+    this.patientService.findByBabyCode(babyCode)
+      .then((data: IPatient) => {
+        this.babyDetails = data
+        this.paramToExpressionPage = {
+          babyCode: this.babyDetails.babyCode,
+          babyCodeByHospital: this.babyDetails.babyCodeHospital,
+          deliveryDate: this.babyDetails.deliveryDate,
+          deliveryTime: null,
+          dischargeDate: this.babyDetails.dischargeDate
+        }
+      })
+      .catch(error => {
+        this.messageService.showErrorToast(error)
+      })
   }
 
 }

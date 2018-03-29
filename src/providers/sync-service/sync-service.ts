@@ -56,7 +56,6 @@ export class SyncServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.users)
       .then((users) => {
         if (users != null && users.length > 0) {
-          debugger
           this.syncObject.instituteId = users[0].institution
           users = (users as IUser[]).filter(d => d.isSynced === false && d.syncFailureMessage === null)
           this.syncObject.users = users

@@ -83,4 +83,8 @@ interface IMessage{
     syncSuccessfull: string;
     loading: string;
     folderCraetedSuccessfully: string;
+    twoWeeksPostDischarge: number;
+    oneMonthPostDischarge: number;
+    threeMonthsOfLife: number;
+    sixMonthsOfLife: number;
 }
