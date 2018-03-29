@@ -74,6 +74,10 @@ export class BfPostDischargePage {
         break;
     }
 
+    let z = this.datePipe.transform(this.deliveryDate, 'dd-MM-yyyy').split('-')
+    this.dischargeDate = new Date(+z[2],+z[1]-1,+z[0])
+    this.dischargeDate.setDate(this.dischargeDate.getDate() + ConstantProvider.messages.threeMonthsOfLife)
+
     this.bfPostDischargeService.findByBabyCodeAndTimeOfBreastFeedingId(this.babyCode, this.navParams.data.menuItemId)
       .then(data => {
         if(data != null)
@@ -157,9 +161,9 @@ export class BfPostDischargePage {
 
   datePickerDialog(bfpd: IBFPD){
     this.datePicker.show({
-    date: new Date(),
+    date: this.deliveryDate,
     minDate: this.deliveryDate.valueOf(),
-    maxDate: new Date().valueOf(),
+    maxDate: this.dischargeDate.valueOf(),
     mode: 'date',
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
     }).then(
