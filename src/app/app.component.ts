@@ -99,11 +99,13 @@ private utilService: UtilServiceProvider) {
 
   /**
    *
-   * This method is going to create project folders where we are going to keep the data
+   * This method is going to create project folders where we are going to keep the data and if
+   * the folder is present the app is not create the folder again
    * @memberof MyApp
    *
    * @since 1.2.0
    * @author Ratikanta
+   * @author Jagat Bandhu
    */
   createProjectFolder(){
     //checking folder existance
@@ -112,6 +114,12 @@ private utilService: UtilServiceProvider) {
       if(err.code === 1){
         // folder not present, creating new folder
         this.file.createDir(this.file.externalRootDirectory, ConstantProvider.appFolderName, false)
+        .then(data =>{
+          this.messageProvider.showSuccessToast(ConstantProvider.messages.folderCraetedSuccessfully)
+        })
+        .catch(err=> {
+          this.messageProvider.showErrorToast(err.message)
+        })
       }
     })
 
