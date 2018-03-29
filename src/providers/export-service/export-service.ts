@@ -202,7 +202,7 @@ export class ExportServiceProvider {
         row.push(patient.babyAdmittedTo?this.utilService.getTypeDetailName(patient.babyAdmittedTo):'N/A')
 
         let nicuAddmissionReason: string = "";
-        if(patient.nicuAdmissionReason.toString().length){
+        if(patient.nicuAdmissionReason){
 
           patient.nicuAdmissionReason.toString().split(',').forEach(reason => {
             nicuAddmissionReason += this.utilService.getTypeDetailName(parseInt(reason));
