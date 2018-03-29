@@ -82,4 +82,5 @@ interface IMessage{
     syncUnsuccessfull: string
     syncSuccessfull: string;
     loading: string;
+    folderCraetedSuccessfully: string;
 }

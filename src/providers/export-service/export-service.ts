@@ -150,7 +150,7 @@ export class ExportServiceProvider {
 
     //getting data from database
     let patients: IPatient[] = await this.storage.get(ConstantProvider.dbKeyNames.patients);
-    patients = new SortPatientPipe().transform(patients)
+    patients = new SortPatientPipe().transform(patients,ConstantProvider.patientSortBy.deliveryDateDescending)
     if (patients != null) {
 
       //set headers
@@ -202,7 +202,7 @@ export class ExportServiceProvider {
         row.push(patient.babyAdmittedTo?this.utilService.getTypeDetailName(patient.babyAdmittedTo):'N/A')
 
         let nicuAddmissionReason: string = "";
-        if(patient.nicuAdmissionReason){
+        if(patient.nicuAdmissionReason.toString().length){
 
           patient.nicuAdmissionReason.toString().split(',').forEach(reason => {
             nicuAddmissionReason += this.utilService.getTypeDetailName(parseInt(reason));

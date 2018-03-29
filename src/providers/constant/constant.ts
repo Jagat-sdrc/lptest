@@ -196,7 +196,8 @@ export class ConstantProvider {
     syncingPleaseWait: 'Syncing, please wait...',
     syncUnsuccessfull: 'Sync unsuccessfull',
     syncSuccessfull: 'Sync successfull',
-    loading: 'Loading, please wait...'
+    loading: 'Loading, please wait...',
+    folderCraetedSuccessfully: 'Lactation folder created'
   };
 
 /**
