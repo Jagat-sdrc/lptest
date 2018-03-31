@@ -12,8 +12,8 @@
 <ion-content padding>
   <h3 class="form-page-header" id="scrollHere">{{dataForFeedEntryPage.selectedDate}}</h3>
   <ion-list>
-    
-    <ion-item class="item-stable timeList" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
+    <div>
+      <ion-item class="item-stable timeList" *ngFor="let feedExpression of feedExpressions | orderByTime; let i=index" text-wrap>
         <div>
           <div class="acordion-title" (click)="toggleGroup(feedExpression)" [ngClass]="{active: isGroupShown(feedExpression)}">
             <div>
@@ -21,25 +21,27 @@
               <ion-icon color="success" style="float:right" [name]="isGroupShown(feedExpression) ? 'md-remove' : 'md-add'"></ion-icon>
             </div>
           </div>
-  
+
           <div style="margin-top:15px" *ngIf="isGroupShown(feedExpression)">
 
 
             <!-- Date of feed -->
             <ion-item>
-                <ion-label color="black" stacked >Date of feed<span class="text-color"> *</span></ion-label>
-                <ion-input [readonly]="true" [(ngModel)]="feedExpression.dateOfFeed" (ionFocus)="datePickerDialog(feedExpression)" 
-                  [ngModelOptions]="{standalone: true}"></ion-input>
-                <ion-icon padding-top name="calendar" item-right></ion-icon>
+              <ion-label color="black" stacked>Date of feed
+                <span class="text-color"> *</span>
+              </ion-label>
+              <ion-input [readonly]="true" [(ngModel)]="feedExpression.dateOfFeed" (ionFocus)="datePickerDialog(feedExpression)" [ngModelOptions]="{standalone: true}"></ion-input>
+              <ion-icon padding-top name="calendar" item-right></ion-icon>
             </ion-item>
 
 
             <!-- Time of feed -->
             <ion-item>
-                <ion-label color="black" stacked >Time of feed<span class="text-color"> *</span></ion-label>
-                <ion-input [readonly]="true" [(ngModel)] = "feedExpression.timeOfFeed" (ionFocus)="timePickerDialog(feedExpression)" 
-                  [ngModelOptions]="{standalone: true}"></ion-input>
-                <ion-icon padding-top name="time" item-right></ion-icon>
+              <ion-label color="black" stacked>Time of feed
+                <span class="text-color"> *</span>
+              </ion-label>
+              <ion-input [readonly]="true" [(ngModel)]="feedExpression.timeOfFeed" (ionFocus)="timePickerDialog(feedExpression)" [ngModelOptions]="{standalone: true}"></ion-input>
+              <ion-icon padding-top name="time" item-right></ion-icon>
             </ion-item>
 
 
@@ -47,75 +49,70 @@
             <ion-item>
               <ion-label color="black" stacked>Method of feed</ion-label>
               <ion-select [(ngModel)]="feedExpression.methodOfFeed" [ngModelOptions]="{standalone: true}" (ionChange)="validateVolumeFields(feedExpression)">
-                <ion-option text-wrap *ngFor="let feedingMethod of feedingMethods" [value]="feedingMethod.id" text-wrap>{{feedingMethod.name}}</ion-option>               
+                <ion-option text-wrap *ngFor="let feedingMethod of feedingMethods" [value]="feedingMethod.id" text-wrap>{{feedingMethod.name}}</ion-option>
               </ion-select>
             </ion-item>
 
 
             <!-- Volume OMM -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
-              <ion-label color="black" stacked >Volume OMM (in ml,range 0-300)</ion-label>
-              <ion-input  type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.ommVolume" [ngModelOptions]="{standalone: true}" 
-                ></ion-input>
+              <ion-label color="black" stacked>Volume OMM (in ml,range 0-300)</ion-label>
+              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.ommVolume" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
 
             <!-- Volume DHM -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked>Volume DHM (in ml,range 0-300)</ion-label>
-              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.dhmVolume" [ngModelOptions]="{standalone: true}" 
-                ></ion-input>
+              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.dhmVolume" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
 
             <!-- Volume Formula -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked>Volume Formula (in ml,range 0-300)</ion-label>
-              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.formulaVolume" [ngModelOptions]="{standalone: true}" 
-                ></ion-input>
+              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.formulaVolume" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
 
             <!-- Volume Animal Milk -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
-              <ion-label color="black" stacked>Volume Animal Milk (in ml,range 0-300)</ion-label>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.animalMilkVolume" [ngModelOptions]="{standalone: true}" 
-                ></ion-input>
+              <ion-label color="black" stacked>Volume Animal Milk (in ml,range 0-300)</ion-label>
+              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.animalMilkVolume" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
 
             <!-- Volume Other -->
             <ion-item *ngIf="feedExpression.methodOfFeed && feedExpression.methodOfFeed != 61 && feedExpression.methodOfFeed != 66">
               <ion-label color="black" stacked>Volume Other (in ml,range 0-300)</ion-label>
-              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.otherVolume" [ngModelOptions]="{standalone: true}"
-                ></ion-input>
+              <ion-input type="tel" [pattern]="onlyNumberRegex" [(ngModel)]="feedExpression.otherVolume" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
 
             <!-- Location of feeding -->
             <ion-item>
               <ion-label color="black" stacked>Location of feeding</ion-label>
               <ion-select [(ngModel)]="feedExpression.locationOfFeeding" [ngModelOptions]="{standalone: true}">
-                <ion-option text-wrap *ngFor="let locationOfFeeding of locationOfFeedings" [value]="locationOfFeeding.id" text-wrap>{{locationOfFeeding.name}}</ion-option>               
+                <ion-option text-wrap *ngFor="let locationOfFeeding of locationOfFeedings" [value]="locationOfFeeding.id" text-wrap>{{locationOfFeeding.name}}</ion-option>
               </ion-select>
             </ion-item>
-              
+
             <!-- Weight of baby in grams -->
             <ion-item>
               <ion-label color="black" stacked>Weight of baby in grams</ion-label>
               <ion-input type="number" [(ngModel)]="feedExpression.babyWeight" [ngModelOptions]="{standalone: true}"></ion-input>
-            </ion-item>  
+            </ion-item>
             <ion-row padding>
-                <ion-col>
-                  <button class="login-button" [disabled]="feedExpression.id === null" ion-button block (click)="delete(feedExpression)">Delete</button>                  
-                </ion-col>
-                <ion-col>
-                    <button class="login-button" ion-button block (click)="validateExpression(feedExpression)">{{feedExpression.id === null ? 'Save' : 'Update'}}</button>
-                </ion-col>
-            </ion-row>                              
+              <ion-col>
+                <button class="login-button" [disabled]="feedExpression.id === null" ion-button block (click)="delete(feedExpression)">Delete</button>
+              </ion-col>
+              <ion-col>
+                <button class="login-button" ion-button block (click)="validateExpression(feedExpression)">{{feedExpression.id === null ? 'Save' : 'Update'}}</button>
+              </ion-col>
+            </ion-row>
           </div>
         </div>
       </ion-item>
-
-</ion-list>
+    </div>
+  </ion-list>
 
 
 </ion-content>
 <ion-footer>
-    <button ion-button block (click)="newExpression()">New Entry</button>
+  <button ion-button block (click)="newExpression()">New Entry</button>
 </ion-footer>
