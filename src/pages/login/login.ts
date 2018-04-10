@@ -44,6 +44,7 @@ export class LoginPage {
       // username: '',
       // password: ''
     }
+    this.login();
   }
 
   login(){
