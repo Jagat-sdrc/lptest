@@ -2,6 +2,7 @@ import { MessageProvider } from './../../providers/message/message';
 import { Component } from '@angular/core';
 import { NavController, MenuController, IonicPage, Platform } from 'ionic-angular';
 import { ConstantProvider } from '../../providers/constant/constant';
+import { UserServiceProvider } from '../../providers/user-service/user-service';
 /**
  *
  *
@@ -21,13 +22,15 @@ export class HomePage {
 
   pppPage: any;
   public unregisterBackButtonAction: any;
+  user: IUser;
   constructor(public navCtrl: NavController, public menuCtrl: MenuController,
-  private messageService: MessageProvider,private platform: Platform) {
+  private messageService: MessageProvider,private platform: Platform, private userService: UserServiceProvider) {
 
   }
 
   ngOnInit(){
     this.pppPage = 'PppPage';
+    this.user = this.userService.getUser();
   }
 
   registeredPatientPage(){

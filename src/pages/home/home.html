@@ -7,8 +7,9 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="main-content">
-
+<ion-content padding>
+  <p text-right>Logged: {{user.firstName}} {{user.lastName}}</p>
+  <div class="main-content">
   <ion-row>
     <ion-col (click)="goToAddNewPatient()" class="gap">
       <div class="bg-grey">Add Patient</div>
@@ -26,5 +27,6 @@
       <div class="bg-grey">Poorly Performing Patients</div>
     </ion-col>
   </ion-row>
+</div>
 
 </ion-content>
