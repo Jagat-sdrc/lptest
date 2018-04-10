@@ -70,7 +70,7 @@ export class BabyDashboardPage {
           babyCode: this.babyDetails.babyCode,
           babyCodeByHospital: this.babyDetails.babyCodeHospital,
           deliveryDate: this.babyDetails.deliveryDate,
-          deliveryTime: null,
+          deliveryTime: this.babyDetails.deliveryTime,
           dischargeDate: this.babyDetails.dischargeDate
         }
       })

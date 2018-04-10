@@ -142,7 +142,6 @@ export class AddPatientPage implements OnInit{
    * @author Jagat Bandhu
   */
   ngOnInit() {
-
     if(!(this.navParams.get('babyCode') == undefined)){
 
       this.headerTitle = "Edit Patient"
@@ -153,6 +152,7 @@ export class AddPatientPage implements OnInit{
         deliveryTime: null,
         dischargeDate: this.navParams.get('dischargeDate')
       }
+
       this.addNewPatientService.findByBabyCode(this.paramToExpressionPage.babyCode)
       .then(data=>{
         this.patient = data

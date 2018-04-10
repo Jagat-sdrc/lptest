@@ -46,6 +46,7 @@ export class FeedPage {
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
     }else{
       this.dischargeDate = new Date()
+      this.dischargeDate.setDate(this.dischargeDate.getDate() + ConstantProvider.messages.threeMonthsOfLife)
     }
     
     this.findExpressionsByBabyCodeAndDate();    
