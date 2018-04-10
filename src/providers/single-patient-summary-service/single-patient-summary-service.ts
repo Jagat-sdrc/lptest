@@ -108,6 +108,13 @@ export class SinglePatientSummaryServiceProvider {
       let noOfDays = (noOfDay / (1000*60*60*24))
       noOfDays++;
 
+      if(dischargeDate == "" || dischargeDate == null){
+        if(noOfDays > 90){
+          noOfDays = 90;
+        }
+      }
+
+
       for (let index = 0; index < noOfDays; index++) {
         dates.push(deliveryDate)
 

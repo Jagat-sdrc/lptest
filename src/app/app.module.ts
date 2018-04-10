@@ -9,7 +9,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DatePicker } from '@ionic-native/date-picker';
 import { IonicStorageModule } from '@ionic/storage';
-import { PatientServiceProvider } from '../providers/patient-service/patient-service';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { FeedExpressionServiceProvider } from '../providers/feed-expression-service/feed-expression-service';
 import { ConstantProvider } from '../providers/constant/constant';
@@ -78,7 +77,6 @@ import { Device } from '@ionic-native/device';
     SplashScreen,
     DatePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    PatientServiceProvider,
     UserServiceProvider,
     FeedExpressionServiceProvider,
     ConstantProvider,
