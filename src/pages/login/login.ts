@@ -39,20 +39,27 @@ export class LoginPage {
    */
   ngOnInit(){
     this.loginData = {
-      username: 'na@g.com',
-      password: 'na@123#!'
-      // username: '',
-      // password: ''
+      // username: 'gi@g.com',
+      // password: 'gi@123#!'
+      username: '',
+      password: ''
     }
-    this.login();
+    this.login()
   }
 
+  /**
+   * This method will check the login credential for validation of user and login to the app.
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   login(){
     if(this.loginData.username == ""){
       this.messageService.showErrorToast("Please enter the email")
     }else if(this.loginData.password == ""){
       this.messageService.showErrorToast("Please enter the password")
     }else{
+      //this method will return the valid user details, if the user is already exist.
       this.userService.getUserValidation(this.loginData.username)
         .then(data=> {
         if(this.loginData.password === (this.loginData.username).substring(0,2)+ConstantProvider.passwordFormat){
@@ -70,10 +77,22 @@ export class LoginPage {
 
   }
 
+  /**
+   * This method will show a alert message for forgot password
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   forgotPassword(){
     this.messageService.showOkAlert(ConstantProvider.messages.info,ConstantProvider.messages.forgotPasswordMessage);
   }
 
+  /**
+   * This method will navigate the user for Creating a New Account to the CreateNewAccountPage.
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   signUp(){
     this.loginData = {
       username: '',
@@ -82,6 +101,12 @@ export class LoginPage {
     this.navCtrl.push('CreateNewAccountPage');
   }
 
+  /**
+   * This method will show/hide the password to the user
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   showPassword() {
     this.showPass = !this.showPass;
 
