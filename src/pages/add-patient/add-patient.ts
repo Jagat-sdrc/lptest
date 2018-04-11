@@ -118,6 +118,12 @@ export class AddPatientPage implements OnInit{
     this.patientForm.controls.discharge_date.setValue(null)
   }
 
+  /**
+   * Fired when entering a page, after it becomes the active pages
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ionViewDidEnter(){
     this.menuCtrl.swipeEnable(false);
     if(!(this.navParams.get('babyCode') == undefined)){
@@ -129,6 +135,13 @@ export class AddPatientPage implements OnInit{
     }
   }
 
+  /**
+   * It’s fired when entering a page, before it becomes the active one
+   * enable the swipe for the side menu
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ionViewWillLeave() {
     this.menuCtrl.swipeEnable(true);
   }
@@ -140,6 +153,7 @@ export class AddPatientPage implements OnInit{
    * form control validation
    *
    * @author Jagat Bandhu
+   * @since 1.0.0
   */
   ngOnInit() {
     if(!(this.navParams.get('babyCode') == undefined)){
@@ -238,11 +252,17 @@ export class AddPatientPage implements OnInit{
       });
     }
 
+    /**
+     * This method will take only nummber input for the respective field.
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
      onlyNumberKey(event) {
        return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57;
       }
 
-     /**
+    /**
      * This method will make visible the Admission Date field based on the input of inpatient outpatient.
      *
      * @author Jagat Bandhu
@@ -260,6 +280,12 @@ export class AddPatientPage implements OnInit{
        }
      }
 
+    /**
+     * This method will validate the mother age.
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
      validateMotherAge(){
        if(!this.hasError){
         if (this.patientForm.controls.mother_age.value != "" && this.patientForm.controls.mother_age.value != null){
@@ -278,6 +304,12 @@ export class AddPatientPage implements OnInit{
        }
      }
 
+    /**
+     * This method will validate the baby weight.
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
      validateBabyWeight() {
       if(!this.hasError){
         if(this.patientForm.controls.baby_weight.value != "" && this.patientForm.controls.baby_weight.value != null){
@@ -296,6 +328,12 @@ export class AddPatientPage implements OnInit{
         }
       }
 
+    /**
+     * This method will validate the GEstational week.
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
      validateGestational() {
       if(!this.hasError){
         if (this.patientForm.controls.gestational_age.value != "" && this.patientForm.controls.gestational_age.value != null){
@@ -330,6 +368,7 @@ export class AddPatientPage implements OnInit{
           Object.keys(this.patientForm.controls).forEach(field => {
             const control = this.patientForm.get(field);
             control.markAsTouched({ onlySelf: true });
+            // this.patientForm.controls.delivery_date.
           });
           this.messageService.showErrorToast(ConstantProvider.messages.allFieldMandatory)
         } else {
@@ -440,6 +479,12 @@ export class AddPatientPage implements OnInit{
       }
     }
 
+    /**
+     * This method will show a native date picker to select a date
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
     deliveryDatePicker(type: string){
       if(!this.hasError){
         if(!this.forEdit){
@@ -466,7 +511,7 @@ export class AddPatientPage implements OnInit{
     }
 
     /**
-     * This method will show a native time picker to select time
+     * This method will show a native time picker to select a time
      *
      * @author Jagat Bandhu
      * @since 1.0.0
@@ -564,6 +609,13 @@ export class AddPatientPage implements OnInit{
        }
     }
 
+    /**
+     * This method will validate the question baby addmitted to and show hide the dependanecy question based
+     * on the response of the baby addmitted to
+     *
+     * @author Jagat Bandhu
+     * @since 1.0.0
+     */
     babyAdmitedToCheck(){
       if(this.patientForm.controls.baby_admitted.value != undefined || this.patientForm.controls.baby_admitted.value != null){
         if(this.patientForm.controls.baby_admitted.value==ConstantProvider.typeDetailsIds.level3NICU ||
@@ -578,6 +630,13 @@ export class AddPatientPage implements OnInit{
        }
     }
 
+  /**
+   * This method will validate the delivery time
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   * @param time
+   */
 	validateTime(time){
       if(this.patientForm.controls.delivery_date.value != "" && this.patientForm.controls.delivery_date.value != null){
         if(this.patientForm.controls.delivery_date.value === this.datePipe.transform(new Date(),"dd-MM-yyyy") ){

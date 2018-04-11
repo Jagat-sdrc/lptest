@@ -28,55 +28,95 @@ export class HomePage {
 
   }
 
+  /**
+   * This method call up the initial load of add patient page.
+   * Get all the details of the respective user.
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ngOnInit(){
     this.pppPage = 'PppPage';
     this.user = this.userService.getUser();
   }
 
+  /**
+   * This method will navigate the user to RegisteredPatientPage
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   registeredPatientPage(){
     this.navCtrl.push('RegisteredPatientPage',{
       param: "RegisteredPatientPage"
     });
   }
 
+  /**
+   * This method will navigate the user to SinglePatientSummaryPage
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   singlePatientSummaryPage(){
     this.navCtrl.push('RegisteredPatientPage',{
       param: "SinglePatientSummaryPage"
     });
   }
 
+  /**
+   * This method will navigate the user to AddPatientPage
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   goToAddNewPatient(){
     this.navCtrl.push('AddPatientPage',{
       param: "Add New Patient"
     });
   }
-
-
   /**
-   * This method will just show the action under construction message
+   * Fired when entering a page, after it becomes the active page.
+   * Register the hardware backbutton
    *
-   * @memberof HomePage
+   * @author Jagat Bandhu
+   * @since 1.0.0
    */
-  underConstruction(){
-    this.messageService.showErrorToast(ConstantProvider.messages.userConstruction)
-  }
-
-
   ionViewDidEnter() {
     this.initializeBackButtonCustomHandler();
   }
 
+  /**
+   * Fired when you leave a page, before it stops being the active one
+   * Unregister the hardware backbutton
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ionViewWillLeave() {
       // Unregister the custom back button action for this page
       this.unregisterBackButtonAction && this.unregisterBackButtonAction();
   }
 
+  /**
+   * This method will initialize the hardware backbutton
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   public initializeBackButtonCustomHandler(): void {
       this.unregisterBackButtonAction = this.platform.registerBackButtonAction(() => {
           this.customHandleBackButton();
       }, 10);
   }
 
+  /**
+   * This method will show a confirmation popup to exit the app, when user click on the hardware back button
+   * in the home page
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   private customHandleBackButton(): void {
       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.exitApp)
       .then((data)=>{

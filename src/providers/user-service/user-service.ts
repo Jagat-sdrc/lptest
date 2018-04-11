@@ -24,7 +24,7 @@ export class UserServiceProvider {
 
 
   /**
- * This method will
+ * This method will return a valid user details, if it is exist in the database.
  *
  * @author Jagat Bandhu
  * @since 0.0.1
