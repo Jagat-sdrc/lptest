@@ -1,5 +1,5 @@
 import { ConstantProvider } from './../../providers/constant/constant';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
@@ -25,10 +25,10 @@ import { DatePicker } from '@ionic-native/date-picker';
   templateUrl: 'add-patient.html',
 })
 
-
 export class AddPatientPage implements OnInit{
 
-
+  @ViewChild('ddate') ddate ;
+  @ViewChild('dtime') dtime ;
   public patientForm: FormGroup;
   headerTitle: any;
   first_exp_time;
@@ -360,6 +360,10 @@ export class AddPatientPage implements OnInit{
     * @since 0.0.1
     */
     submit(){
+      if(this.patientForm.controls.delivery_date.value == null)
+      setTimeout(() => { this.ddate.setFocus(); },150);
+      if(this.patientForm.controls.delivery_time.value == null)
+      setTimeout(() => { this.dtime.setFocus(); },150);
       this.outpatientAdmission();
       this.babyAdmitedToCheck();
       if(this.validateDischargeDate()){

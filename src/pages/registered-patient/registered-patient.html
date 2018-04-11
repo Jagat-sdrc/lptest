@@ -23,8 +23,8 @@
       <ion-spinner></ion-spinner>
   </div>
   <h6 padding-right text-right *ngIf="patientList != undefined && patientList.length > 0">Number of records: {{patientList === undefined?0:patientList.length}} </h6>
-  <ion-list>
-      <ion-item wrap-text no-lines *ngFor="let item of patientList; let i = index">
+  <ion-list text-wrap>
+      <ion-item no-lines *ngFor="let item of patientList; let i = index">
         <ion-card class="card-outside">
           <ion-row class="card-inside" (press)="deletePatient(item.babyCode)" (click)="goToBabyDashBoard(item)">
             <ion-col md-6>
