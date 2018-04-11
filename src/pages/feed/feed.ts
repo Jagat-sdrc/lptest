@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 /**
  * This is the feed component(page)
  * @author Ratikanta
+ * @author Naseem Akhtar (naseem@sdrc.co.in)
  * @since 0.0.1
  */
 @IonicPage()
@@ -25,7 +26,6 @@ export class FeedPage {
   dataForFeedEntryPage: IDataForFeedEntryPage;
   shownGroup: any;
   locationOfFeedings: ITypeDetails[];
-  // onlyNumberRegex: RegExp = /^[0-9]*$/;
   existingDate: string;
   existingTime: string;
   deliveryDate: Date;
@@ -36,10 +36,21 @@ export class FeedPage {
   private messageService: MessageProvider, private navParams: NavParams, private datePicker: DatePicker,
     private datePipe: DatePipe) {}
 
+  /**
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * 
+   * This method will be called during after the initiaization of this component.
+   * Fetching important baby details like dateOfFeed, babyCode, delivery date etc. from the 
+   * {{@see NavParams}} in order to acheive the following points:-
+   * 1. Fetch the feed entries for the selected baby for the selected date
+   * 2. Restrict min date and max date for which the feed entries can be made.
+   */
   ngOnInit(){
 
     this.dataForFeedEntryPage = this.navParams.get('dataForFeedEntryPage');
     let x = this.dataForFeedEntryPage.deliveryDate.split('-');
+    // -1 is done in the second argument, because in new Date(), january is taken a 0.
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0])
     let check90Days = new Date(+x[2],+x[1]-1,+x[0])
     if(this.dataForFeedEntryPage.dischargeDate != null){
@@ -53,6 +64,7 @@ export class FeedPage {
         this.dischargeDate = new Date()
     }
     
+    //this method is called to fetch all the records of the selected baby for the selected date.
     this.findExpressionsByBabyCodeAndDate();    
 
     //Getting feeding methods type details
@@ -80,6 +92,7 @@ export class FeedPage {
  * @param {IFeed} feedExpression 
  * @memberof FeedPage
  * @author Ratikanta
+ * @author Naseem Akhtar(naseem@sdrc.co.in)
  * @since 0.0.1
  */
   validateExpression(feedExpression: IFeed) {
@@ -119,6 +132,7 @@ export class FeedPage {
     }
   }
 
+  // This method will be called when the user clicks on save of a particular entry.
   saveExpression(feedExpression: IFeed){
     let newData: boolean = feedExpression.id === null ? true : false
     this.feedExpressionService.saveFeedExpression(feedExpression, this.existingDate, this.existingTime)
@@ -136,7 +150,14 @@ export class FeedPage {
       })
   }
   
-
+  /**
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * The following two methods is used to open the selected entry accordion and 
+   * close the previously selected entry accordion.
+   * If same accordion is tapped again and again, then the same accordion will close and 
+   * open alternatively.
+  */
   toggleGroup(group: IFeed) {
     this.existingDate = group.dateOfFeed;
     this.existingTime = group.timeOfFeed;

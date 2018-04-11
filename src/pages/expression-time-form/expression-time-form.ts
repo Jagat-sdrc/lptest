@@ -7,11 +7,12 @@ import { DatePipe } from '@angular/common';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { BFExpressionDateListProvider } from '../../providers/bf-expression-date-list-service/bf-expression-date-list-service';
 import { DatePicker } from '@ionic-native/date-picker';
+
 /**
- * Generated class for the ExpressionTimeFormPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * This page will be used to enter the data of log expression breastfeed form
+ * for a particular baby.
+ * @author - Naseem Akhtar
+ * @since - 0.0.1
  */
 
 @IonicPage()
@@ -44,8 +45,16 @@ export class ExpressionTimeFormPage {
     this.maxDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
   }
 
+  /**
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * This method gets invoked during initial load of breastfeeding supportive practice.
+   * date will be initialize
+   * get all the options for all the dropdowns.
+   * form control validation
+   * fetch all the records for the selected baby and for the selected date
+   */
   ngOnInit() {
-    debugger
     this.dataForBFEntryPage = this.navParams.get('dataForBFEntryPage');
     let x = this.dataForBFEntryPage.deliveryDate.split('-');
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
@@ -80,7 +89,14 @@ export class ExpressionTimeFormPage {
 
   }
 
-
+  /**
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * The following two methods is used to open the selected entry accordion and 
+   * close the previously selected entry accordion.
+   * If same accordion is tapped again and again, then the same accordion will close and 
+   * open alternatively.
+  */
   toggleGroup(group: IBFExpression) {
     this.existingDate = group.dateOfExpression;
     this.existingTime = group.timeOfExpression;

@@ -7,10 +7,10 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { DatePipe } from '@angular/common';
 
 /**
- * Generated class for the BfPostDischargePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * This page will be used to enter the data of breast feeding post discharge form
+ * for a particular baby.
+ * @author - Naseem Akhtar
+ * @since - 0.0.1
  */
 
 @IonicPage()
@@ -44,11 +44,16 @@ export class BfPostDischargePage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private bfPostDischargeService: BfPostDischargeServiceProvider,
     private messageService: MessageProvider, private datePicker: DatePicker,
-    private datePipe: DatePipe
-  ) {
+    private datePipe: DatePipe) {}
 
-  }
-
+  /**
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * This method gets invoked during initial load of breastfeeding post discharge.
+   * time is initialized as per the data sent in {@see NavParams}
+   * fetch the record for the selected baby and for the selected time of breast feeding
+   * post discharge (if any)
+   */
   ngOnInit() {
     this.dataFromBfpdMenu = this.navParams.data;
     this.babyCode = this.dataFromBfpdMenu.babyCode;
@@ -61,6 +66,7 @@ export class BfPostDischargePage {
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
     }
 
+    //setting the min and max date for a date picker.
     switch(this.dataFromBfpdMenu.menuItemId){
       case 67:  this.deliveryDate = this.dischargeDate ? this.dischargeDate : this.deliveryDate;
                 this.deliveryDate.setDate(this.deliveryDate.getDate() + ConstantProvider.messages.twoWeeksPostDischarge)
@@ -78,6 +84,7 @@ export class BfPostDischargePage {
     this.dischargeDate = new Date(+z[2],+z[1]-1,+z[0])
     this.dischargeDate.setDate(this.dischargeDate.getDate() + ConstantProvider.messages.threeMonthsOfLife)
 
+    //fetching bfpd record by time of bf id and baby code.
     this.bfPostDischargeService.findByBabyCodeAndTimeOfBreastFeedingId(this.babyCode, this.navParams.data.menuItemId)
       .then(data => {
         if(data != null)
@@ -88,6 +95,7 @@ export class BfPostDischargePage {
         this.messageService.showErrorToast(error)
       });
 
+    //setting the time of bfpd in the bfpd object, for the user to see.
     this.bfPostDischargeService.getTimeOfBreastfeedingPostDischarge()
       .subscribe(data => {
         let timeOfBf: ITypeDetails;
@@ -99,6 +107,7 @@ export class BfPostDischargePage {
         this.messageService.showErrorToast(error);
       });
 
+    //setting data in for drop down of bf status post discharge
     this.bfPostDischargeService.getBreastfeedingStatusPostDischarge()
       .subscribe(data => {
         this.bfStatusPostDischargeList = data;
@@ -107,6 +116,7 @@ export class BfPostDischargePage {
       });
   };
 
+  // this method is used to save the form entry by the user.
   save() {
     let newData: boolean = this.bfpd.id === null ? true : false
     if(this.bfpd.dateOfBreastFeeding === null) {

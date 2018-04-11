@@ -44,11 +44,13 @@ export class BfSupportivePracticePage {
     ) { }
 
   /**
-   * This method call up the initial load of breastfeeding supportive practice.
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * This method gets invoked during initial load of breastfeeding supportive practice.
    * date will be initialize
    * get all the options for all the dropdowns.
    * form control validation
-   * @author Naseem Akhtar
+   * fetch all the records for the selected baby and for the selected date
    */
   ngOnInit() {
     this.dataForBfspPage = this.navParams.get('dataForBfspPage');
@@ -86,6 +88,14 @@ export class BfSupportivePracticePage {
       });
   };
 
+  /**
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * The following two methods is used to open the selected entry accordion and 
+   * close the previously selected entry accordion.
+   * If same accordion is tapped again and again, then the same accordion will close and 
+   * open alternatively.
+  */
   toggleGroup(group: IBFSP) {
     this.existingDate = group.dateOfBFSP === null ? null : group.dateOfBFSP;
     this.existingTime = group.timeOfBFSP === null ? null : group.timeOfBFSP;
@@ -112,20 +122,6 @@ export class BfSupportivePracticePage {
     setTimeout( data => this.toggleGroup(this.bfspList[0]), 100);
     document.getElementById('scrollHere').scrollIntoView({behavior: 'smooth'})
   };
-
-  
-
-
-  // ionViewDidEnter() {
-  //   if (!(this.navParams.get('babyCode') == undefined)) {
-  //     this.forEdit = true;
-  //     this.autoBabyId = this.supportivePracticeForm.get('babyCode').value;
-  //     // this.setFetchedDataToUi();
-  //   } else {
-  //     this.autoBabyId = "IND" + this.datePipe.transform(new Date(), "ddMMyyyy") +
-  //       new Date().getMilliseconds();
-  //   }
-  // };
 
   save(bfsp: IBFSP, index) {
     let newData = bfsp.id === null ? true : false
@@ -253,6 +249,10 @@ export class BfSupportivePracticePage {
     );
   }
 
+  /**
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * This method will check whether the passed parameter is number or not.
+   */
   checkForOnlyNumber(forValidation){
     if(forValidation === null)
       return true;
