@@ -13,7 +13,6 @@ export class PppServiceProvider {
 
   typeDetails: ITypeDetails[];
   constructor(public storage: Storage) {
-    console.log('Hello PppServiceProvider Provider');
   }
 
   /**

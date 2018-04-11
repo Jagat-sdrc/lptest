@@ -340,7 +340,6 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
           let dateArray = []
           feedData.forEach(d => dateArray.push(d.dateOfFeed))
           dateArray = new OrderByDatePipe(this.datePipe).transform(dateArray)
-          console.log(dateArray)
           feedData = feedData.filter(d => d.dateOfFeed === dateArray[dateArray.length -1]
             && (d.methodOfFeed === ConstantProvider.typeDetailsIds.parenteralEnteral
               || d.methodOfFeed === ConstantProvider.typeDetailsIds.enteralOnly

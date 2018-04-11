@@ -58,7 +58,6 @@ export class BfSupportivePracticePage {
     let x = this.dataForBfspPage.deliveryDate.split('-')
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0])
     let check90Days = new Date(+x[2],+x[1]-1,+x[0])
-    console.log(this.dataForBfspPage)
     if(this.dataForBfspPage.dischargeDate != null){
       let y = this.dataForBfspPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
@@ -69,7 +68,7 @@ export class BfSupportivePracticePage {
       else
         this.dischargeDate = new Date()
     }
-    
+
 
     this.findExpressionsByBabyCodeAndDate();
 
@@ -91,9 +90,9 @@ export class BfSupportivePracticePage {
   /**
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @since - 0.0.1
-   * The following two methods is used to open the selected entry accordion and 
+   * The following two methods is used to open the selected entry accordion and
    * close the previously selected entry accordion.
-   * If same accordion is tapped again and again, then the same accordion will close and 
+   * If same accordion is tapped again and again, then the same accordion will close and
    * open alternatively.
   */
   toggleGroup(group: IBFSP) {
@@ -187,7 +186,7 @@ export class BfSupportivePracticePage {
       if(data){
         this.bfspService.delete(bfsp.id)
           .then(()=>{
-            //refreshing the list 
+            //refreshing the list
             this.findExpressionsByBabyCodeAndDate();
             this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
           })
@@ -264,7 +263,7 @@ export class BfSupportivePracticePage {
     }
   }
 
-  /** 
+  /**
    * This method will validate time selected by the user, if it is current date,
    * then future time will not be allowed.
    * @author - Naseem Akhtar
@@ -275,7 +274,7 @@ export class BfSupportivePracticePage {
       && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         bfsp.timeOfBFSP = null;
-    }else if (bfsp.dateOfBFSP === this.dataForBfspPage.deliveryDate && time != null && 
+    }else if (bfsp.dateOfBFSP === this.dataForBfspPage.deliveryDate && time != null &&
       time < this.dataForBfspPage.deliveryTime){
         this.messageService.showErrorToast(ConstantProvider.messages.pastTime)
         bfsp.timeOfBFSP = null;

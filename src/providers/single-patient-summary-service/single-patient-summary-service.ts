@@ -704,7 +704,6 @@ export class SinglePatientSummaryServiceProvider {
     .then(async data=>{
       if(data != null && data.length >0){
         index = (data as ISps[]).findIndex(d =>d.babyCode != null && d.babyCode == babyDetails.babyCode)
-        console.log(index);
         if(index < 0){
           await this.setBabyDetails(babyDetails,typeDetails)
         }else{

@@ -154,7 +154,6 @@ export class RegisteredPatientPage {
    * @param babyCode The baby code of the patient to which we are going to delete
    */
   deletePatient(babyCode: string){
-    console.log("Delete");
     this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.deletePatient).
     then((data)=>{
       if(data){
