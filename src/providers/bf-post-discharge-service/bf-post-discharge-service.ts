@@ -229,9 +229,7 @@ export class BfPostDischargeServiceProvider {
           .catch(err=>{})
         }
       })
-      .catch(err=>{
-        console.log(err.message)
-      })
+      .catch(err=>{})
   }
 
   /**

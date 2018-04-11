@@ -29,14 +29,36 @@ export class PppPage {
     private spsService: SinglePatientSummaryServiceProvider) {
   }
 
+  /**
+   * Fired when you leave a page, after it stops being the active one.
+   * disable the swipe for the side menu
+   *
+   * @author Jagat Bandhu
+   * @since 1.2.0
+   */
   ionViewDidEnter() {
     this.menuCtrl.swipeEnable(false);
   }
 
+  /**
+   * Fired when you leave a page, before it stops being the active one.
+   * enable the swipe for the side menu
+   *
+   * @author Jagat Bandhu
+   * @since 1.2.0
+   */
   ionViewWillLeave() {
     this.menuCtrl.swipeEnable(true);
   }
 
+  /**
+   * This method call up the initial load of add patient page.
+   * Show loder
+   * get all Poorly performing patient list
+   *
+   * @author Jagat Bandhu
+   * @since 1.2.0
+   */
   ngOnInit(){
     this.messageService.showLoader(ConstantProvider.messages.loading)
     setTimeout(d => this.messageService.stopLoader(), 1000)
@@ -47,7 +69,7 @@ export class PppPage {
    * This method will get the all ppp patient list
    *
    * @author Jagat Bandhu
-   * @since 1.1.0
+   * @since 1.2.0
    */
   async getAllPPPPatient(){
     await this.spsService.getAllPPPDetails();
@@ -63,7 +85,7 @@ export class PppPage {
    * This method will go to the sps page to show the sps details
    *
    * @author Jagat Bandhu
-   * @since 1.1.0
+   * @since 1.2.0
    * @param babyDetails
    */
   goToBabyDashBoard(babyDetails: any){

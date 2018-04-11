@@ -58,7 +58,7 @@
         <ion-label color="black" stacked>Delivery date
           <span class="text-color"> *</span>
         </ion-label>
-        <ion-input formControlName="delivery_date" [disabled]="forEdit" (click)="deliveryDatePicker('deliveryDate')" (ionFocus)="deliveryDatePicker('deliveryDate')"
+        <ion-input  #ddate formControlName="delivery_date" [disabled]="forEdit" (click)="deliveryDatePicker('deliveryDate')"
            [readonly]="true"></ion-input>
         <ion-icon padding-top name="calendar" item-right></ion-icon>
       </ion-item>
@@ -71,7 +71,7 @@
         <ion-label color="black" stacked>Delivery time
           <span class="text-color"> *</span>
         </ion-label>
-        <ion-input formControlName="delivery_time" [disabled]="forEdit" (click)="timePickerDialog()" (ionFocus)="timePickerDialog()" [readonly]="true"></ion-input>
+        <ion-input  #dtime formControlName="delivery_time" [disabled]="forEdit" (click)="timePickerDialog()" [readonly]="true"></ion-input>
         <ion-icon padding-top name="time" item-right></ion-icon>
       </ion-item>
       <p class="error" *ngIf="patientForm.controls.delivery_time.invalid  && (patientForm.controls.delivery_time.dirty || patientForm.controls.delivery_time.touched) && resetStatus">

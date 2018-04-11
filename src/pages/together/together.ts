@@ -23,6 +23,12 @@ export class TogetherPage {
     public spsService: SinglePatientSummaryServiceProvider) {
   }
 
+  /**
+   * This method call up the initial load of together tab.
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   ngOnInit(){
     this.babyDetails = this.spsService.getBabyDetails();
     this.getTogetherDataList();

@@ -28,6 +28,13 @@ export class SpsPage {
   constructor(public navCtrl: NavController, private navParams: NavParams,
     public spsService: SinglePatientSummaryServiceProvider, public messageService: MessageProvider) {}
 
+  /**
+   * This method call up the initial load of sps page.
+   * show the loader
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   ngOnInit(){
     this.babyAllDetails = this.navParams.get('babyDetails');
     this.messageService.showLoader(ConstantProvider.messages.loading)

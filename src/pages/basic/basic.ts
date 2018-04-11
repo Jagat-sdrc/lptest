@@ -23,6 +23,13 @@ export class BasicPage {
     public spsService: SinglePatientSummaryServiceProvider, public messageService: MessageProvider) {
   }
 
+  /**
+   * This method call up the initial load of basic tab.
+   * stop the loader
+   *
+   * @author Jagat Badhu
+   * @since 1.1.0
+   */
   ngOnInit(){
     setTimeout(d => this.messageService.stopLoader(), 2000)
   }
@@ -30,7 +37,7 @@ export class BasicPage {
   /**
    * This method will call sps service to compute the baby basic details
    * @author - Naseem Akhtar - naseem@sdrc.co.in
-   *
+   * @since 1.1.0
    */
   ionViewWillEnter(){
     this.getBasicData()
@@ -40,6 +47,7 @@ export class BasicPage {
    * This method will decide the colour of individual columns, depending on
    * their volume.
    * @author - Naseem Akhtar (naseem@sdrc.in)
+   * @since 1.1.0
    */
   getBgColorForTypeOfPatient(){
     if(this.babyDetails.inpatientOrOutPatient != null
@@ -47,6 +55,12 @@ export class BasicPage {
       return ConstantProvider.messages.spsContentColorRed;
   }
 
+  /**
+   * Get the color code for Time till First Expression for identification of ppp
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   getBgColorForTypeOfTimeTillFirstExp(){
     let timeInHrs = Number(this.babyDetails.timeTillFirstExpression.split(':')[0])
     let timeInMinutes = Number(this.babyDetails.timeTillFirstExpression.split(':')[1])
@@ -61,20 +75,18 @@ export class BasicPage {
   }
 
   /**
+   * This method will call to get the Basic details
    *
+   * @author Jagat Bandhu
+   * @since 1.1.0
    */
   async getBasicData(){
     this.typeDetails = await this.spsService.fetchTypeDetails().toPromise()
 
+    //made a async call to get the data from sps table
     await this.spsService.findSpsInDb(this.navParams.data, this.typeDetails)
+    //on completion of async call set get the baby details from spsService and set it to babyDetails
     this.babyDetails = this.spsService.getBabyDetails();
-
-      // .subscribe(data => {
-        // this.typeDetails = data
-        // this.babyDetails = await this.spsService.setBabyDetails(this.navParams.data, this.typeDetails)
-      // }, err => {
-      //   this.messageService.showErrorToast(err)
-      // })
   }
 
 }

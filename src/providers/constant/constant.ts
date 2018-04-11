@@ -198,10 +198,10 @@ export class ConstantProvider {
     syncSuccessfull: 'Sync successfull',
     loading: 'Loading, please wait...',
     folderCraetedSuccessfully: 'Lactation folder created',
-    twoWeeksPostDischarge: 14,
-    oneMonthPostDischarge: 30,
-    threeMonthsOfLife: 90,
-    sixMonthsOfLife: 180
+    twoWeeksPostDischarge: 13,
+    oneMonthPostDischarge: 29,
+    threeMonthsOfLife: 89,
+    sixMonthsOfLife: 179
   };
 
 /**
