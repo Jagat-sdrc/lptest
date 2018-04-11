@@ -78,14 +78,35 @@ export class CreateNewAccountPage {
     private alertCtrl: AlertController, public utilService: UtilServiceProvider) {}
 
 
+  /**
+   * Fired when entering a page, after it becomes the active page
+   * disable the swipe for the side menu
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ionViewDidEnter() {
     this.menuCtrl.swipeEnable(false);
   }
 
+  /**
+   * Fired when you leave a page, before it stops being the active one
+   * enable the swipe for the side menu
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ionViewWillLeave() {
     this.menuCtrl.swipeEnable(true);
   }
 
+  /**
+   * This method call up the initial load of craete new account page.
+   * Get all areas
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ngOnInit() {
     //Getting all areas
     this.createNewAccountService.getAllAreas()
@@ -96,22 +117,28 @@ export class CreateNewAccountPage {
         this.messageService.showErrorToast(err)
       });
 
+      //change the title name of the country select popup
       this.selectCountryOptions = {
         title: ConstantProvider.messages.selectCountry
       }
 
+      //change the title name of the state select popup
       this.selectStateOptions = {
         title: ConstantProvider.messages.selectState
       }
 
+      //change the title name of the district select popup
       this.selectDistrictOptions = {
         title: ConstantProvider.messages.selectDistrict
       }
 
+      //change the title name of the institute select popup
       this.selectInstituteOptions = {
         title: ConstantProvider.messages.selectInstitute
       }
 
+      //get the first user from the db
+      //get the values of country, state, district, institute, set the values to the respective fields and disable the fields
       this.createNewAccountService.getFirstUser()
       .then(data=>{
         if(data != null){
@@ -130,6 +157,7 @@ export class CreateNewAccountPage {
         }
       })
 
+    //checks the required fields through form validator
     this.userForm = new FormGroup({
       first_name: new FormControl('', [Validators.required, Validators.pattern(this.namePattern)]),
       last_name: new FormControl('', [Validators.required, Validators.pattern(this.namePattern)]),

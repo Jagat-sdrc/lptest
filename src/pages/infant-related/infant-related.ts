@@ -24,6 +24,12 @@ export class InfantRelatedPage {
     public spsService: SinglePatientSummaryServiceProvider) {
   }
 
+  /**
+   * This method call up the initial load of infant related tab.
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   ngOnInit(){
     this.babyDetails = this.spsService.getBabyDetails();
     this.getInfantRelated();

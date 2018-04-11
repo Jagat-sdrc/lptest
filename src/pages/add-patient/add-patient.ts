@@ -401,7 +401,7 @@ export class AddPatientPage implements OnInit{
             updatedDate: null,
             uuidNumber: null
           }
-
+          //save and update the patient to the db
           this.addNewPatientService.saveNewPatient(this.patient, this.uniquePatientId.idNumber)
             .then(data=> {
               if(this.forEdit){

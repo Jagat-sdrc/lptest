@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
-import { ConstantProvider } from '../../providers/constant/constant';
 import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 
 /**
@@ -30,10 +29,24 @@ export class BabyDashboardPage {
   private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {
   }
 
+  /**
+   * Fired when you leave a page, before it stops being the active one
+   * Find latest baby data based on the baby code
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ionViewWillEnter(){
     this.findLatestBabyData(this.babyDetails.babyCode)
   }
 
+  /**
+   * This method call up the initial load of baby dashboard page.
+   * get the data from navParams and set it to babyDetails
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   ngOnInit(){
     this.feedDateListPage = 'FeedDateListPage'
     this.bfExpressionDateListPage = 'BFExpressionDateListPage';
@@ -43,29 +56,39 @@ export class BabyDashboardPage {
     this.babyDetails = this.navParams.data
   }
 
+  /**
+   * This method will navigate the user to HomePage
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   goToHome(){
     this.navCtrl.setRoot('HomePage');
   }
 
   /**
-   * This method will just show the action under construction message
+   * This method will navigate the user to SpsPage with babyDetails
    *
-   * @memberof HomePage
+   * @author Jagat Bandhu
+   * @since 1.0.0
    */
-  underConstruction(){
-    this.messageService.showErrorToast(ConstantProvider.messages.userConstruction)
-  }
-
   goToSinglePatientSummary(){
     this.navCtrl.push('SpsPage',{
       babyDetails: this.babyDetails
     });
   }
 
+  /**
+   * Find latest baby data based on the baby code
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
+   */
   findLatestBabyData(babyCode: string){
     this.patientService.findByBabyCode(babyCode)
       .then((data: IPatient) => {
         this.babyDetails = data
+        //sets to the data to the navParam
         this.paramToExpressionPage = {
           babyCode: this.babyDetails.babyCode,
           babyCodeByHospital: this.babyDetails.babyCodeHospital,

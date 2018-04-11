@@ -891,22 +891,55 @@ export class SinglePatientSummaryServiceProvider {
     })
   }
 
+  /**
+   * This method will return the mother related details
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   getMotherRelatedData(){
     return this.basicData;
   }
 
+  /**
+   * This method will return the together details
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   getTogetherData(){
     return this.togetherDataList;
   }
 
+  /**
+   * This method will return the infant-related details
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   getInfantRelatedData(){
     return this.infantRelatedDataList;
   }
 
+  /**
+   * This method will return the Exclusive Bf details
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   */
   getSpsExclusiveBfData(){
     return this.exclusiveBfList;
   }
 
+/**
+ * This method will get all bfpd baby data based on the params
+ *
+ * @author Jagat Bandhu
+ * @since 1.1.0
+ * @param bfpdList
+ * @param babyCode
+ * @param babyDetails
+ */
   async getBfpdBabyData(bfpdList,babyCode,babyDetails){
     await this.bfpdService.findByBabyCode(babyCode)
     .then(bfpdBabyData => {
@@ -1060,6 +1093,12 @@ export class SinglePatientSummaryServiceProvider {
     })
   }
 
+  /**
+   * This method will return all poorly performing patient list
+   *
+   * @author Jagat Bandhu
+   * @since 1.2.0
+   */
   getAllFilterPPPDetails(){
     return this.pppPatientList;
   }

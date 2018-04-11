@@ -121,8 +121,10 @@ export class HomePage {
       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.exitApp)
       .then((data)=>{
         if(data){
+          //exit the app
           this.platform.exitApp();
         }else{
+          //stay in home page
           this.navCtrl.setRoot(HomePage);
         }
       });
