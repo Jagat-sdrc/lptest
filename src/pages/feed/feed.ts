@@ -40,13 +40,17 @@ export class FeedPage {
 
     this.dataForFeedEntryPage = this.navParams.get('dataForFeedEntryPage');
     let x = this.dataForFeedEntryPage.deliveryDate.split('-');
-    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0])
+    let check90Days = new Date(+x[2],+x[1]-1,+x[0])
     if(this.dataForFeedEntryPage.dischargeDate != null){
       let y = this.dataForFeedEntryPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
     }else{
-      this.dischargeDate = new Date()
-      this.dischargeDate.setDate(this.dischargeDate.getDate() + ConstantProvider.messages.threeMonthsOfLife)
+      check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
+      if(new Date() > check90Days)
+        this.dischargeDate = check90Days
+      else
+        this.dischargeDate = new Date()
     }
     
     this.findExpressionsByBabyCodeAndDate();    

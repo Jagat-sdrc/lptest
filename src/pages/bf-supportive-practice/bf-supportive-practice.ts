@@ -54,14 +54,18 @@ export class BfSupportivePracticePage {
     this.dataForBfspPage = this.navParams.get('dataForBfspPage');
     //splitting delivery date to use it new date for min date of datepicker
     let x = this.dataForBfspPage.deliveryDate.split('-')
-    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
+    this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0])
+    let check90Days = new Date(+x[2],+x[1]-1,+x[0])
     console.log(this.dataForBfspPage)
     if(this.dataForBfspPage.dischargeDate != null){
       let y = this.dataForBfspPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
     }else{
-      this.dischargeDate = new Date()
-      this.dischargeDate.setDate(this.dischargeDate.getDate() + ConstantProvider.messages.threeMonthsOfLife)
+      check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
+      if(new Date() > check90Days)
+        this.dischargeDate = check90Days
+      else
+        this.dischargeDate = new Date()
     }
     
 

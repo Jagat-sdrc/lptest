@@ -45,16 +45,21 @@ export class ExpressionTimeFormPage {
   }
 
   ngOnInit() {
+    debugger
     this.dataForBFEntryPage = this.navParams.get('dataForBFEntryPage');
     let x = this.dataForBFEntryPage.deliveryDate.split('-');
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
+    let check90Days = new Date(+x[2],+x[1]-1,+x[0]);
 
     if(this.dataForBFEntryPage.dischargeDate != null){
       let y = this.dataForBFEntryPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
     }else{
-      this.dischargeDate = new Date()
-      this.dischargeDate.setDate(this.dischargeDate.getDate() + ConstantProvider.messages.threeMonthsOfLife)
+      check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
+      if(new Date() > check90Days)
+        this.dischargeDate = check90Days
+      else
+        this.dischargeDate = new Date()
     }
 
     this.findExpressionsByBabyCodeAndDate();    
@@ -274,7 +279,6 @@ export class ExpressionTimeFormPage {
    * @since - 0.0.1
   */
  validateTime(time: string, bfExpForm: IBFExpression){
-   debugger
     if(bfExpForm.dateOfExpression === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
       && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
