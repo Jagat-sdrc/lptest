@@ -3,8 +3,9 @@ import { Component } from '@angular/core';
 import { NavController, MenuController, IonicPage, Platform } from 'ionic-angular';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+
 /**
- *
+ * This page is used for Home page
  *
  * @export
  * @class HomePage

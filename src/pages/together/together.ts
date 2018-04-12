@@ -3,12 +3,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SinglePatientSummaryServiceProvider } from '../../providers/single-patient-summary-service/single-patient-summary-service';
 
 /**
- * Generated class for the TogetherPage page.
+ * This component is of single patient summary - Together.
+ * All together module is being done in this file.
  *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @author Jagat Bandhu
+ * @since 1.1.0
  */
-
 @IonicPage()
 @Component({
   selector: 'page-together',
