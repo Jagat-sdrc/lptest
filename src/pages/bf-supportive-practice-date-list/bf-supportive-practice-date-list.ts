@@ -4,10 +4,10 @@ import { MessageProvider } from '../../providers/message/message';
 import { BfspDateListServiceProvider } from '../../providers/bfsp-date-list-service/bfsp-date-list-service';
 
 /**
- * Generated class for the BfSupportivePracticeDateListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @author Naseem Akhtar (naseem@sdr.co.in)
+ * @since 0.0.1
+ * 
+ * This component is used to display all the bfsp records of selected baby in date wise order.
  */
 
 @IonicPage()

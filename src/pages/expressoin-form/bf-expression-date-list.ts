@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MessageProvider } from '../../providers/message/message';
 import { BFExpressionDateListProvider } from '../../providers/bf-expression-date-list-service/bf-expression-date-list-service';
+
 /**
- * Generated class for the ExpressoinFormPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @author Naseem Akhtar (naseem@sdrc.co.in)
+ * @since 0.0.1
+ * 
+ * This component is used to display all the bf expression records of selected baby in date wise order.
  */
 
 @IonicPage()

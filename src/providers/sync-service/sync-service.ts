@@ -115,15 +115,6 @@ export class SyncServiceProvider {
     this.keyFetched++;
     //Checking all key fetched or not
     if (this.keyFetched == 6) {
-      //Checking there is any data to sync or not
-      // if( 
-      //   this.syncObject.users.length > 0 ||
-      //   this.syncObject.patients.length > 0 ||
-      //   this.syncObject.bfExpressions.length > 0 ||
-      //   this.syncObject.feedExpressions.length > 0 ||
-      //   this.syncObject.bfsps.length > 0 ||
-      //   this.syncObject.bfpds.length > 0
-      // ){
         this.getSyncResult()
         .subscribe(data => {
           this.syncResult = data;
@@ -139,14 +130,7 @@ export class SyncServiceProvider {
           this.messageProvider.stopLoader();
           this.messageProvider.showErrorToast(err)
         })
-      // }else{
-      //   this.keyFetched = 0;
-      //   this.messageProvider.stopLoader();
-      //   this.messageProvider.showErrorToast(ConstantProvider.messages.noDataToSync)
-      // }
-      
     }
-
   };
 
   /**
@@ -309,20 +293,6 @@ export class SyncServiceProvider {
         title: 'Sync Report',
         cssClass: 'syncModal',
         message: ConstantProvider.messages.syncSuccessfull,
-        // message: '<div class="reportBody">' +
-        //   '<h5>Users synced : ' + this.syncReport.userSyncSuccess + '</h5><br>' +
-        //   '<h5>Users rejected : ' + this.syncReport.userSyncFailed + '</h5><br>' +
-        //   '<h5>Patients synced : ' + this.syncReport.patientSyncSuccess + '</h5><br>' +
-        //   '<h5>Patients rejected : ' + this.syncReport.patientSyncFailed + '</h5><br>' +
-        //   '<h5>Bf exp synced : ' + this.syncReport.bfExpressionSyncSuccess + '</h5><br>' +
-        //   '<h5>Bf exp failed : ' + this.syncReport.bfExpressionSyncFailed + '</h5><br>' +
-        //   '<h5>Feed synced : ' + this.syncReport.feedSyncSuccess + '</h5><br>' +
-        //   '<h5>Feed failed : ' + this.syncReport.feedSyncFailed + '</h5><br>' +
-        //   '<h5>Bf supp. practice synced : ' + this.syncReport.bfspSyncSuccess + '</h5><br>' +
-        //   '<h5>Bf supp. practice failed : ' + this.syncReport.bfspSyncFailed + '</h5><br>' +
-        //   '<h5>Bf post discharge synced : ' + this.syncReport.bfpdSyncSuccess + '</h5><br>' +
-        //   '<h5>Bf post discharge failed : ' + this.syncReport.bfpdSyncFailed + '</h5><br>' +
-        //   '</div>',
         buttons: [{
           text: 'OK',
           handler: () => {
@@ -355,6 +325,13 @@ export class SyncServiceProvider {
       .catch(this.handleError);
   }
 
+  /**
+   * @author - Naseem
+   * @param error - this returns the error that occured while making http call
+   * @since 0.0.1
+   * 
+   * This method handles the error that occurs while making a http call
+   */
   private handleError(error: HttpErrorResponse) {
     let messageToUser;
     if (error.error instanceof ErrorEvent) {

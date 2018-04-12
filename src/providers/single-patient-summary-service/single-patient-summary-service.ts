@@ -13,7 +13,8 @@ import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 import { BfPostDischargeServiceProvider } from '../bf-post-discharge-service/bf-post-discharge-service';
 
 /**
- *
+ * This service will be used for computation and DB operations related to
+ * Single Patient Summary.
  *
  * @author Jagat Bandhu
  * @author Naseem Akhtar(naseem@sdrc.co.in)
@@ -54,6 +55,12 @@ export class SinglePatientSummaryServiceProvider {
     .catch(this.handleError);
   }
 
+  /**
+   * @author - Naseem
+   * @param error - this returns the error that occured while making http call
+   * 
+   * This method handles the error that occurs while making a http call
+   */
   private handleError(error: HttpErrorResponse) {
 
     let messageToUser;

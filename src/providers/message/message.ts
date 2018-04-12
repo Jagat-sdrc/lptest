@@ -59,10 +59,27 @@ export class MessageProvider {
     this.loading.present();
   }
 
+  /**
+   * This method will hide loader (if any).
+   * 
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @author Ratikanta
+   * @param message The message which we want to show the user
+   * @since 0.0.1
+   */
   stopLoader(){
     this.loading.dismiss();
   }
 
+  /**
+   * This method will display alert modal with the message as passed in 
+   * the argument.
+   * 
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @author Jagat
+   * @param message The message which we want to show the user
+   * @since 0.0.1
+   */
   showAlert(title: string, message: string): Promise<boolean>{
     let promise: Promise<boolean> = new Promise((resolve, reject)=>{
       let confirm = this.alertCtrl.create({
@@ -89,6 +106,12 @@ export class MessageProvider {
     return promise;
   }
 
+  /**This method will show alert modal with one button i.e 'OK'
+   * 
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @param title 
+   * @param message 
+   */
   showOkAlert(title: string, message: string): Promise<any>{
     let promise= new Promise((resolve, reject)=>{
       let confirm = this.alertCtrl.create({

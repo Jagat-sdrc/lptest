@@ -3,7 +3,7 @@ import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
 
 /**
- *
+ *  This service is used to fetch list of patients who are performing poorly
  *
  * @author Jagat Bandhu
  * @author Naseem Akhtar(naseem@sdrc.co.in)

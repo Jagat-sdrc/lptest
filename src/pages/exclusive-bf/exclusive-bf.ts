@@ -6,6 +6,8 @@ import { SinglePatientSummaryServiceProvider } from '../../providers/single-pati
 import { BfPostDischargeServiceProvider } from '../../providers/bf-post-discharge-service/bf-post-discharge-service';
 
 /**
+ * This component is used to display the exclusive bf data for single patient summary.
+ * 
  * @author - Naseem Akhtar
  * @since - 1.0.1
  */
@@ -36,6 +38,10 @@ export class ExclusiveBfPage {
       })
   }
 
+  /**
+   * @author Naseem Akhtar (naseem@sdr.co.in)
+   * @param bfpdList 
+   */
   fetchDataForExclusiveBfPage(bfpdList: ITypeDetails[]){
     //fetching the records for the particular baby and then calling service to
     //re-structure it for display in exclusive bf
