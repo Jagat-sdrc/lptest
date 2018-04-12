@@ -12,12 +12,13 @@ import { MessageProvider } from '../message/message';
 import { OrderByTimePipe } from '../../pipes/order-by-time/order-by-time';
 import { BfPostDischargeServiceProvider } from '../bf-post-discharge-service/bf-post-discharge-service';
 
-/*
-  Generated class for the SinglePatientSummaryServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ *
+ *
+ * @author Jagat Bandhu
+ * @author Naseem Akhtar(naseem@sdrc.co.in)
+ * @since 1.1.0
+ */
 @Injectable()
 export class SinglePatientSummaryServiceProvider {
 
@@ -698,6 +699,14 @@ export class SinglePatientSummaryServiceProvider {
     return infantRelatedDataList;
   }
 
+  /**
+   * This method find the sps data from the sps database based on the given paramteres.
+   *
+   * @author Jagat Bandhu
+   * @since 1.1.0
+   * @param babyDetails
+   * @param typeDetails
+   */
   async findSpsInDb(babyDetails: IPatient, typeDetails: ITypeDetails[]){
     let index;
     await this.storage.get(ConstantProvider.dbKeyNames.sps)
@@ -847,6 +856,14 @@ export class SinglePatientSummaryServiceProvider {
     return this.babyBasicDetails;
   }
 
+  /**
+   * This methos will save the sps data to the sps database
+   *
+   * @author Jagat Bandhu
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @since 1.1.0
+   * @param babyCode
+   */
   async setSpsDataToDb(babyCode: string){
     let spsDataList : ISps[] = [];
     let spsData: ISps = {
