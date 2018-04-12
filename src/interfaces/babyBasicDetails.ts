@@ -1,8 +1,9 @@
 /**
- * This inteface will describe the area levels
  * @author Naseem
  * @since 0.0.1
  * @interface IBabyBasicDetails
+ * 
+ * This interface will be used for baby registration form
  */
 
 interface IBabyBasicDetails{

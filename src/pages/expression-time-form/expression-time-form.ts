@@ -302,6 +302,7 @@ export class ExpressionTimeFormPage {
     }else if(bfExpForm.dateOfExpression === this.dataForBFEntryPage.deliveryDate && time != null
       && time < this.dataForBFEntryPage.deliveryTime){
         this.messageService.showErrorToast(ConstantProvider.messages.pastTime)
+        bfExpForm.timeOfExpression = null;
     }else{
       bfExpForm.timeOfExpression = time
     }
