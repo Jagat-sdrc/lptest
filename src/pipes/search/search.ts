@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 /**
- * Generated class for the SearchPipe pipe.
+ * This pipe will deal with searching the record based on the argument
  *
- * See https://angular.io/api/core/Pipe for more info on Angular Pipes.
+ * @author Ratikanta
+ * @since 0.0.1
  */
 @Pipe({
   name: 'search',
@@ -47,13 +48,5 @@ export class SearchPipe implements PipeTransform {
     } else {
       return patients
     }
-
-
-
-
-
-
-
-
   }
 }

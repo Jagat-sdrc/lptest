@@ -11,10 +11,11 @@ import { DatePipe } from '@angular/common';
   name: 'orderByDate',
 })
 export class OrderByDatePipe implements PipeTransform {
-  
+
 
   constructor(private datePipe: DatePipe){}
 
+  //this method take the list of date and transfer into descending order
   transform(dateStringArray: string[], ...args):string[] {
 
     if(dateStringArray != undefined || dateStringArray != null){
@@ -28,7 +29,7 @@ export class OrderByDatePipe implements PipeTransform {
 
         dateArray.push(new Date(year, month, day))
       })
-      
+
       //Arranging the dates in descending order
       dateArray.sort((a: Date, b: Date) => {
         if (a < b) {

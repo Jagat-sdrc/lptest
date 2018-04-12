@@ -5,12 +5,11 @@ import { MessageProvider } from '../../providers/message/message';
 import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
- * Generated class for the SpsPage tabs.
+ * This component is used for single patient summary
  *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @author Jagat Bandhu
+ * @since 1.1.0
  */
-
 @IonicPage()
 @Component({
   selector: 'page-sps',

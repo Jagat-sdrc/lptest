@@ -11,8 +11,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class OrderByTimeExpressionFromPipe implements PipeTransform {
   constructor(){}
 
+  //this method take the list of date and time and transfer with respect to time
   transform(expressionForm: IBFExpression[], ...args): IBFExpression[] {
-
 
     if(expressionForm != undefined && expressionForm != null && expressionForm.length > 0){
 
