@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 
 /**
- * This service will help BFSPList component
+ * This service will help BFSPList component in DB operations.
  * @author Naseem Akhtar
  * @since 0.0.1
  */
@@ -15,6 +15,17 @@ export class BfspDateListServiceProvider {
   constructor(public http: HttpClient, private storage: Storage) {
   }
 
+  /**
+   * This method will return a list of records for the selected baby and for the 
+   * selected date.
+   * 
+   * After fetching all the records for the above mentioned condition, the dates are being
+   * pushed into a Set for unique dates and then passed to bfsp-list component.
+   * 
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * @param babyCode 
+   */
   getBFSPDateList(babyCode: string): Promise < string[] > {
 
     let promise: Promise < string[] > = new Promise((resolve, reject) => {

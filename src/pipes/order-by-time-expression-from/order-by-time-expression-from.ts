@@ -13,7 +13,7 @@ export class OrderByTimeExpressionFromPipe implements PipeTransform {
 
   transform(expressionForm: IBFExpression[], ...args): IBFExpression[] {
 
-
+    //checking whether the list which has been passed is not empty
     if(expressionForm != undefined && expressionForm != null && expressionForm.length > 0){
 
       let date = expressionForm[0].dateOfExpression
@@ -29,10 +29,11 @@ export class OrderByTimeExpressionFromPipe implements PipeTransform {
         let hourOfB = parseInt(b.timeOfExpression.split(':')[0])
         let minuteOfB = parseInt(b.timeOfExpression.split(':')[1])
 
-
+        // passing year, month, day, hourOfA and minuteOfA to Date()
         let dateOfA: Date = new Date(year, month, day, hourOfA, minuteOfA)
         let dateOfB: Date = new Date(year, month, day, hourOfB, minuteOfB)
 
+        //comparing both the dates.
         if (dateOfA < dateOfB) {
           return 1;
         } else if (a > b) {

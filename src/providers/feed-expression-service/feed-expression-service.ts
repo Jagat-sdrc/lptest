@@ -397,6 +397,14 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
     return promise
   }
 
+  /**
+   * This method finds out all the records of a particular baby where method of feed was breastfeed and
+   * breastfeed was exclusive breastfeed.
+   * 
+   * @author Naseem Akhtar (naseem@sdrc.co.in)
+   * @param babyCode 
+   * @param dischargeDate 
+   */
   getHospitalDischargeDataForExclusiveBf(babyCode: string, dischargeDate: string): Promise<any> {
     let promise = new Promise<any>((resolve,reject)=>{
       this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)

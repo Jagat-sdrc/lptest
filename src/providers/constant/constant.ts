@@ -119,6 +119,17 @@ export class ConstantProvider {
 
   static postDischargeMenu: number = 12;
 
+  /**
+   * This following static messages is used to keep all the static messages
+   * which further can be used in other components and services.
+   * This would help us in maintaining the consistency of the message being displayed
+   * in the app.
+   * 
+   * @author Ratikanta
+   * @author Jagat Bandhu
+   * @author Naseem Akhtar (naseem@sdr.co.in)
+   * @since -0.0.1
+   */
   static messages: IMessage = {
     exportingData: 'Exporting data, please wait',
     dataExported: 'Data exported',

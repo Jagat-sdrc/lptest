@@ -3,12 +3,15 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ConstantProvider } from '../constant/constant';
 import { UserServiceProvider } from '../user-service/user-service';
-/*
-  Generated class for the ExpressionBfDateProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ * @author - Subhadarshani
+ * @since - 0.0.1
+ * 
+ * This service will help in fetching all the dates for which the breastfeed expressions are
+ * present for the selected baby.
+ */
+
 @Injectable()
 export class BFExpressionDateListProvider {
 

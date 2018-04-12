@@ -11,7 +11,11 @@ import { PppServiceProvider } from '../ppp-service/ppp-service';
 import { UtilServiceProvider } from '../util-service/util-service';
 
 /**
- * This service will only provide service to Feed component
+ * This service will help in fetching the drop down values and other important objects from the 
+ * mobile DB which are related to add new patient form.
+ * 
+ * This service will also help in saving new patient forms and updating existing patients.
+ * 
  * @author Jagat Bandhu
  * @author Ratikanta
  * @since 0.0.1
@@ -147,6 +151,12 @@ export class AddNewPatientServiceProvider {
       .catch(this.handleError);
   }
 
+  /**
+   * @author - Ratikanta
+   * @param error - this returns the error that occured while making http call
+   * 
+   * This method handles the error that occurs while making a http call
+   */
   private handleError(error: HttpErrorResponse) {
     let messageToUser;
     if (error.error instanceof ErrorEvent) {

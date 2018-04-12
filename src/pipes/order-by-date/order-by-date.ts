@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
  * @author Ratikanta
  * @since 0.0.1
  */
+
 @Pipe({
   name: 'orderByDate',
 })
@@ -19,7 +20,7 @@ export class OrderByDatePipe implements PipeTransform {
 
     if(dateStringArray != undefined || dateStringArray != null){
 
-      //Conerting to date format to sort
+      //Converting to date format to sort
       let dateArray: Date[] = [];
       dateStringArray.forEach(d=>{
         let day = parseInt(d.split('-')[0]);

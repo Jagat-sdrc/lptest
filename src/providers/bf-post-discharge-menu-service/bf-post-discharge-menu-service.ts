@@ -4,12 +4,14 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { ConstantProvider } from '../constant/constant';
 import { Observable } from 'rxjs/Observable';
 
-/*
-  Generated class for the BfPostDischargeMenuServiceProvider provider.
+/**
+ * @author - Naseem Akhtar (naseem@sdrc.co.in)
+ * @since - 0.0.1
+ * 
+ * This service will be used to fecth the mobile DB related data for 
+ * the breast feed post discharge menu component.
+ */
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class BfPostDischargeMenuServiceProvider {
 
@@ -29,6 +31,12 @@ export class BfPostDischargeMenuServiceProvider {
     .catch(this.handleError);
   }
 
+  /**
+   * @author - Ratikanta
+   * @param error - this returns the error that occured while making http call
+   * 
+   * This method handles the error that occurs while making a http call
+   */
   private handleError(error: HttpErrorResponse) {
 
     let messageToUser;

@@ -4,12 +4,13 @@ import { Observable } from 'rxjs/Observable';
 import { ConstantProvider } from '../constant/constant';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
-/*
-  Generated class for the AddNewExpressionBfServiceProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ * @author - Subhadarshini Patra
+ * @since - 0.0.1
+ * 
+ * This service helps to fetch the drop down options for breast feed expression forms. 
+ */
 @Injectable()
 export class AddNewExpressionBfServiceProvider {
 
@@ -43,6 +44,13 @@ export class AddNewExpressionBfServiceProvider {
            })
         .catch(this.handleError);
   }
+
+  /**
+   * @author - Ratikanta
+   * @param error - this returns the error that occured while making http call
+   * 
+   * This method handles the error that occurs while making a http call
+   */
   private handleError(error: HttpErrorResponse) {
 
     let messageToUser;

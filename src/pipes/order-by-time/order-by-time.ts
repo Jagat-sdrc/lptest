@@ -14,7 +14,7 @@ export class OrderByTimePipe implements PipeTransform {
 
   transform(feedExpressions: IFeed[], ...args): IFeed[] {
 
-
+    //checking whether the list which has been passed is not empty
     if(feedExpressions != undefined && feedExpressions != null && feedExpressions.length > 0){
 
       let date = feedExpressions[0].dateOfFeed
@@ -30,10 +30,11 @@ export class OrderByTimePipe implements PipeTransform {
         let hourOfB = parseInt(b.timeOfFeed.split(':')[0])
         let minuteOfB = parseInt(b.timeOfFeed.split(':')[1])
 
-
+        // passing year, month, day, hourOfA and minuteOfA to Date()
         let dateOfA: Date = new Date(year, month, day, hourOfA, minuteOfA)
         let dateOfB: Date = new Date(year, month, day, hourOfB, minuteOfB)
 
+        //comparing both the dates.
         if (dateOfA < dateOfB) {
           return 1;
         } else if (a > b) {

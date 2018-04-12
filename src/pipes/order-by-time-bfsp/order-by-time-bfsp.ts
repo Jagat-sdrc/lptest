@@ -13,7 +13,7 @@ export class OrderByTimeBfspPipe implements PipeTransform {
 
   transform(bfsp: IBFSP[], ...args): IBFSP[] {
 
-
+    //checking whether the list which has been passed is not empty
     if(bfsp != undefined && bfsp != null && bfsp.length > 0){
 
       let date = bfsp[0].dateOfBFSP;
@@ -29,10 +29,11 @@ export class OrderByTimeBfspPipe implements PipeTransform {
         let hourOfB = parseInt(b.timeOfBFSP.split(':')[0])
         let minuteOfB = parseInt(b.timeOfBFSP.split(':')[1])
 
-
+        // passing year, month, day, hourOfA and minuteOfA to Date()
         let dateOfA: Date = new Date(year, month, day, hourOfA, minuteOfA)
         let dateOfB: Date = new Date(year, month, day, hourOfB, minuteOfB)
 
+        //comparing both the dates.
         if (dateOfA < dateOfB) {
           return 1;
         } else if (a > b) {

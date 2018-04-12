@@ -10,12 +10,14 @@ import { UserServiceProvider } from '../user-service/user-service';
 import { PppServiceProvider } from '../ppp-service/ppp-service';
 import { UtilServiceProvider } from '../util-service/util-service';
 
-/*
-  Generated class for the BfSupportivePracticeServiceProvider provider.
+/**
+ * @author - Naseem Akhtar (naseem@sdrc.co.in)
+ * @since - 0.0.1
+ * 
+ * This service will be used to fetch the mobile DB related data for 
+ * the breastfeed supportive practices component.
+ */
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class BfSupportivePracticeServiceProvider {
 
@@ -38,6 +40,13 @@ export class BfSupportivePracticeServiceProvider {
       .catch(this.handleError);
   };
 
+  /**
+   * This method will return all the possible options for person who has performed bfsp for drop
+   * down selection in the UI
+   * 
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   */
   getPersonWhoPerformedBSFP(): Observable < ITypeDetails[] > {
     return this.http.get("./assets/data.json")
       .map((response: Response) => {
@@ -46,6 +55,15 @@ export class BfSupportivePracticeServiceProvider {
       .catch(this.handleError);
   };
 
+  /**
+   * This method will be used to update or insert a new bfsp entry into the mobile DB.
+   * 
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   * @param bfspForm 
+   * @param existingDate 
+   * @param existingTime 
+   */
   saveNewBreastFeedingSupportivePracticeForm(bfspForm: IBFSP, existingDate: string, existingTime: string): Promise <any> {
     let promise = new Promise((resolve, reject) => {
       bfspForm.isSynced = false;
@@ -105,6 +123,13 @@ export class BfSupportivePracticeServiceProvider {
     return promise;
   };
 
+  /**
+   * This method is used to fetch records for the selected baby and for the selected date.
+   * 
+   * @param babyCode 
+   * @param date 
+   * @param isNewExpression 
+   */
   findByBabyCodeAndDate(babyCode: string, date: string, isNewExpression: boolean): Promise < IBFSP[] > {
     let promise: Promise < IBFSP[] > = new Promise((resolve, reject) => {
       if(date !== null){
@@ -180,6 +205,12 @@ export class BfSupportivePracticeServiceProvider {
     return data
   };
 
+  /**
+   * @author - Naseem
+   * @param error - this returns the error that occured while making http call
+   * 
+   * This method handles the error that occurs while making a http call
+   */
   private handleError(error: HttpErrorResponse) {
     let messageToUser;
     if (error.error instanceof ErrorEvent) {

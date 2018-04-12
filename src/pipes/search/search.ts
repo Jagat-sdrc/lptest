@@ -1,10 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 /**
- * Generated class for the SearchPipe pipe.
- *
- * See https://angular.io/api/core/Pipe for more info on Angular Pipes.
+ * @author - Ratikanta Pradhan
+ * @since - 0.0.1 
+ * 
+ * This pipe is used to search the babies by using various attributes of a baby
+ * like babyCode, mother name etc.
  */
+
 @Pipe({
   name: 'search',
 })
@@ -47,13 +50,6 @@ export class SearchPipe implements PipeTransform {
     } else {
       return patients
     }
-
-
-
-
-
-
-
 
   }
 }

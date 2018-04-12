@@ -9,12 +9,14 @@ import { UserServiceProvider } from '../user-service/user-service';
 import { PppServiceProvider } from '../ppp-service/ppp-service';
 import { UtilServiceProvider } from '../util-service/util-service';
 
-/*
-  Generated class for the BfPostDischargeServiceProvider provider.
+/**
+ * @author - Naseem Akhtar (naseem@sdrc.co.in)
+ * @since - 0.0.1
+ * 
+ * This service will be used to fecth the mobile DB related data for 
+ * the breast feed post discharge component.
+ */
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class BfPostDischargeServiceProvider {
 
@@ -51,6 +53,13 @@ export class BfPostDischargeServiceProvider {
       .catch(this.handleError);
   };
 
+  /**
+   * This method will return all the possible breast feeding post discharge status's
+   * for display in the drop down.
+   * 
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   */
   getBreastfeedingStatusPostDischarge(): Observable < ITypeDetails[] > {
     return this.http.get("./assets/data.json")
       .map((response: Response) => {
@@ -60,6 +69,13 @@ export class BfPostDischargeServiceProvider {
       .catch(this.handleError);
   };
 
+  /**
+   * This method will save the breast feeding post discharge entry for a particular
+   * time of breast feeding post discharge
+   * 
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @since - 0.0.1
+   */
   saveNewBfPostDischargeForm(bfPdForm: IBFPD): Promise <any> {
     let promise = new Promise((resolve, reject) => {
       bfPdForm.id = bfPdForm.id === null ? this.getNewBfPdId(bfPdForm.babyCode) : bfPdForm.id;
@@ -102,6 +118,14 @@ export class BfPostDischargeServiceProvider {
     return promise;
   };
 
+  /**
+   * This method checks whether a record exists for the selected baby and for a particular time
+   * If exists, then this method returns that record, so that it can updated.
+   * 
+   * @author - Naseem Akhtar (naseem@sdrc.co.in)
+   * @param babyCode 
+   * @param timeOfBf 
+   */
   findByBabyCodeAndTimeOfBreastFeedingId(babyCode: string, timeOfBf: number): Promise < IBFPD > {
     let promise: Promise < IBFPD > = new Promise((resolve, reject) => {
       this.storage.get(ConstantProvider.dbKeyNames.bfpds)
@@ -124,6 +148,12 @@ export class BfPostDischargeServiceProvider {
     return promise;
   }
 
+  /**
+   * @author - Ratikanta
+   * @param error - this returns the error that occured while making http call
+   * 
+   * This method handles the error that occurs while making a http call
+   */
   private handleError(error: HttpErrorResponse) {
     let messageToUser;
     if (error.error instanceof ErrorEvent) {
@@ -197,22 +227,6 @@ export class BfPostDischargeServiceProvider {
     });
     return promise;
   }
-
-  // private getBfPd(babyCode: string, timeOfBf: number): IBFPD{
-  //   let bfpd : IBFPD = {
-  //     babyCode: babyCode,
-  //     dateOfBreastFeeding: null,
-  //     id: null,
-  //     isSynced: false,
-  //     breastFeedingStatus: null,
-  //     syncFailureMessage: null,
-  //     timeOfBreastFeeding: timeOfBf,
-  //     userId: this.userService.getUser().email,
-  //     createdDate: null,
-  //     updatedDate: null
-  //   }
-  //   return bfpd;
-  // }
 
   /**
    * @author - Naseem Akhtar
