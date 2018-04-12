@@ -14,10 +14,22 @@ export class UserServiceProvider {
   user: IUser;
   constructor(public http: HttpClient,private storage: Storage) {}
 
+  /**
+   * This method set user details in user variable
+   *
+   * @author Ratikanta
+   * @since 0.0.1
+   */
   setUser(user: IUser){
     this.user = user;
   }
 
+  /**
+   * This method will return the user
+   *
+   * @author Ratikanta
+   * @since 0.0.1
+   */
   getUser(){
     return this.user;
   }

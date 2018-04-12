@@ -7,8 +7,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <p text-right>Logged: {{user.firstName}} {{user.lastName}}</p>
+<ion-content padding scrollbar-y-auto>
+  <p text-right>Logged in: {{user.firstName}} {{user.lastName}}</p>
   <div class="main-content">
   <ion-row>
     <ion-col (click)="goToAddNewPatient()" class="gap">

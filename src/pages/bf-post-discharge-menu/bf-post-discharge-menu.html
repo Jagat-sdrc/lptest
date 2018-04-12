@@ -8,7 +8,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding scrollbar-y-auto>
   <h3 class="form-page-header">Baby ID - {{babyCode}}</h3>
   <ion-card *ngFor="let item of menu">
     <ion-card-content (click)='goToPostDischargeForm(item.id)'>

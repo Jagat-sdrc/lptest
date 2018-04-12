@@ -4,10 +4,13 @@ import { MessageProvider } from '../../providers/message/message';
 import { AddNewPatientServiceProvider } from '../../providers/add-new-patient-service/add-new-patient-service';
 
 /**
- * Generated class for the BabyDashboardPage page.
+ * This page is used for baby dashboard page.
  *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @export
+ * @class BabyDashboardPage
+ * @implements {OnInit}
+ * @author Jagat Bandhu
+ * @since 0.0.1
  */
 @IonicPage()
 @Component({
@@ -23,8 +26,8 @@ export class BabyDashboardPage {
   bfspDateListPage;
   bfPostDischargeMenuPage;
   babyDetails: IPatient;
-
   paramToExpressionPage: IParamToExpresssionPage;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
   private messageService: MessageProvider, private patientService: AddNewPatientServiceProvider) {
   }

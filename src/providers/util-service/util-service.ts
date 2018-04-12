@@ -73,10 +73,22 @@ export class UtilServiceProvider {
     return (this.areas.filter(d=> d.id === areaId))[0].shortName
   }
 
+  /**
+   * This method will return the Universally unique identifier of the specific device
+   *
+   * @author Jagat Bandhu
+   * @since 1.2.0
+   */
   getUuid(){
     return this.uuidNumber
   }
 
+  /**
+   * This method set the Universally unique identifier of the specific device in uuidNumber variable
+   *
+   * @author Jagat Bandhu
+   * @since 1.2.0
+   */
   setUuid() {
     this.uuidNumber = this.device.uuid
   }

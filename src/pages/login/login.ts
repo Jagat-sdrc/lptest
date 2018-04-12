@@ -5,7 +5,12 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { MessageProvider } from '../../providers/message/message';
 import { AppVersion } from '@ionic-native/app-version';
 
-
+/**
+ * This is used for Login page
+ *
+ * @author Jagat Bandhu
+ * @since 0.0.1
+ */
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -35,7 +40,10 @@ export class LoginPage {
   }
 
   /**
-    * @author - Naseem Akhtar
+   * This method will initilize the username and password variables.
+   *
+   * @author Jagat Bandhu
+   * @since 1.0.0
    */
   ngOnInit(){
     this.loginData = {
@@ -44,7 +52,7 @@ export class LoginPage {
       username: '',
       password: ''
     }
-    this.login()
+    // this.login()
   }
 
   /**

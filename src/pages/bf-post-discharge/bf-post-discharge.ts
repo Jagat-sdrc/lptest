@@ -116,7 +116,12 @@ export class BfPostDischargePage {
       });
   };
 
-  // this method is used to save the form entry by the user.
+  /**
+   * this method is used to save the form entry by the user.
+   *
+   * @author Ratikanta
+   * @since 0.0.1
+   */
   save() {
     let newData: boolean = this.bfpd.id === null ? true : false
     if(this.bfpd.dateOfBreastFeeding === null) {

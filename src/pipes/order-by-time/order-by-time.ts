@@ -9,9 +9,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'orderByTime',
 })
 export class OrderByTimePipe implements PipeTransform {
-  
+
   constructor(){}
 
+  //this method take the list of date and time and transfer with respect to time
   transform(feedExpressions: IFeed[], ...args): IFeed[] {
 
     //checking whether the list which has been passed is not empty

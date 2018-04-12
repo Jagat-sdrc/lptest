@@ -11,6 +11,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class OrderByTimeBfspPipe implements PipeTransform {
   constructor(){}
 
+  //this method take the list of date and time and transfer with respect to time
   transform(bfsp: IBFSP[], ...args): IBFSP[] {
 
     //checking whether the list which has been passed is not empty

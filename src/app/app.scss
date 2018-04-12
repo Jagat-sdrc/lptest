@@ -115,4 +115,10 @@ ion-label, ion-option, ion-datetime, ion-item, ion-select, ion-input, .alert-rad
 .sps-content-color-yellow{
     background: rgb(241, 149, 55)
 }
+[scrollbar-y-auto] .scroll-content {
+  overflow-y: auto !important;
+}
+.alert-md .alert-message{
+  overflow-y: auto !important;
+}
 

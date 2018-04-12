@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { ConstantProvider } from '../constant/constant';
 import { Storage } from '@ionic/storage';
 
-/*
-  Generated class for the PppServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+/**
+ *
+ *
+ * @author Jagat Bandhu
+ * @author Naseem Akhtar(naseem@sdrc.co.in)
+ * @since 1.2.0
+ */
 @Injectable()
 export class PppServiceProvider {
 

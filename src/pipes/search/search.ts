@@ -1,11 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 /**
- * @author - Ratikanta Pradhan
- * @since - 0.0.1 
- * 
- * This pipe is used to search the babies by using various attributes of a baby
- * like babyCode, mother name etc.
+ * This pipe will deal with searching the record based on the argument
+ *
+ * @author Ratikanta
+ * @since 0.0.1
  */
 
 @Pipe({
@@ -50,6 +49,5 @@ export class SearchPipe implements PipeTransform {
     } else {
       return patients
     }
-
   }
 }

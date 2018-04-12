@@ -5,12 +5,12 @@ import { MessageProvider } from '../../providers/message/message';
 import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
- * Generated class for the PppPage page.
+ * This component is of poorly performing patient.
+ * All poorly performing patient related module is being done in this file.
  *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @author Jagat Bandhu
+ * @since 1.2.0
  */
-
 @IonicPage()
 @Component({
   selector: 'page-ppp',

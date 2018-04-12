@@ -11,7 +11,7 @@ import { DatePicker } from '@ionic-native/date-picker';
 
 
 /**
- *
+ * This page is used to add new patient details, view the patient and edit the patient record.
  *
  * @export
  * @class AddPatientPage
@@ -352,18 +352,18 @@ export class AddPatientPage implements OnInit{
       }
     }
 
-
-
     /**
     * This method will save the patient data to the database
     * @author Jagat Bandhu
     * @since 0.0.1
     */
     submit(){
-      if(this.patientForm.controls.delivery_date.value == null)
-      setTimeout(() => { this.ddate.setFocus(); },150);
-      if(this.patientForm.controls.delivery_time.value == null)
-      setTimeout(() => { this.dtime.setFocus(); },150);
+      if(this.patientForm.controls.delivery_date.value == null){
+        document.getElementById('ddate').scrollIntoView({behavior: 'smooth'})
+      } else {
+        if(this.patientForm.controls.delivery_time.value == null)
+        document.getElementById('dtime').scrollIntoView({behavior: 'smooth'})
+      }
       this.outpatientAdmission();
       this.babyAdmitedToCheck();
       if(this.validateDischargeDate()){
@@ -490,6 +490,7 @@ export class AddPatientPage implements OnInit{
      * @since 1.0.0
      */
     deliveryDatePicker(type: string){
+      console.log("hi")
       if(!this.hasError){
         if(!this.forEdit){
           this.datePicker.show({

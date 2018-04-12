@@ -4,12 +4,12 @@ import { SinglePatientSummaryServiceProvider } from '../../providers/single-pati
 import { ConstantProvider } from '../../providers/constant/constant';
 
 /**
- * Generated class for the InfantRelatedPage page.
+ * This component is of single patient summary - Infant Related.
+ * All infant related module is being done in this file.
  *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * @author Jagat Bandhu
+ * @since 1.1.0
  */
-
 @IonicPage()
 @Component({
   selector: 'page-infant-related',
