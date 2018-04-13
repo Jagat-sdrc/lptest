@@ -35,6 +35,7 @@ export class BfSupportivePracticePage {
   existingTime:string;
   deliveryDate: Date;
   dischargeDate: Date;
+  defaultSelectedDate: Date;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private messageService: MessageProvider,
@@ -58,15 +59,20 @@ export class BfSupportivePracticePage {
     let x = this.dataForBfspPage.deliveryDate.split('-')
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0])
     let check90Days = new Date(+x[2],+x[1]-1,+x[0])
+    check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
     if(this.dataForBfspPage.dischargeDate != null){
       let y = this.dataForBfspPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
+      this.defaultSelectedDate = new Date() > check90Days ? this.deliveryDate : new Date()
     }else{
-      check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
-      if(new Date() > check90Days)
+      if(new Date() > check90Days){
         this.dischargeDate = check90Days
-      else
+        this.defaultSelectedDate = this.deliveryDate
+      }
+      else{
         this.dischargeDate = new Date()
+        this.defaultSelectedDate = new Date()
+      }
     }
 
 
@@ -220,7 +226,7 @@ export class BfSupportivePracticePage {
 
   datePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
-    date: new Date(),
+    date: this.defaultSelectedDate,
     minDate: this.deliveryDate.valueOf(),
     maxDate: this.dischargeDate.valueOf(),
     mode: 'date',
@@ -236,7 +242,7 @@ export class BfSupportivePracticePage {
 
   timePickerDialog(bfsp: IBFSP){
     this.datePicker.show({
-    date: new Date(),
+    date: this.defaultSelectedDate,
     mode: 'time',
     is24Hour: true,
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT

@@ -30,6 +30,7 @@ export class FeedPage {
   existingTime: string;
   deliveryDate: Date;
   dischargeDate: Date;
+  defaultSelectedDate: Date;
   onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
 
   constructor(private feedExpressionService: FeedExpressionServiceProvider, 
@@ -53,15 +54,20 @@ export class FeedPage {
     // -1 is done in the second argument, because in new Date(), january is taken a 0.
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0])
     let check90Days = new Date(+x[2],+x[1]-1,+x[0])
+    check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
     if(this.dataForFeedEntryPage.dischargeDate != null){
       let y = this.dataForFeedEntryPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
+      this.defaultSelectedDate = new Date() > check90Days ? this.deliveryDate : new Date()
     }else{
-      check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
-      if(new Date() > check90Days)
+      if(new Date() > check90Days){
         this.dischargeDate = check90Days
-      else
+        this.defaultSelectedDate = this.deliveryDate
+      }
+      else{
         this.dischargeDate = new Date()
+        this.defaultSelectedDate = new Date()
+      }
     }
     
     //this method is called to fetch all the records of the selected baby for the selected date.
@@ -238,7 +244,7 @@ export class FeedPage {
   
   datePickerDialog(feedExp: IFeed){
     this.datePicker.show({
-    date: new Date(),
+    date: this.defaultSelectedDate,
     minDate: this.deliveryDate.valueOf(),
     maxDate: this.dischargeDate.valueOf(),
     allowFutureDates: false,
@@ -255,7 +261,7 @@ export class FeedPage {
 
   timePickerDialog(feedExp: IFeed){
     this.datePicker.show({
-    date: new Date(),
+    date: this.defaultSelectedDate,
     mode: 'time',
     is24Hour: true,
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT

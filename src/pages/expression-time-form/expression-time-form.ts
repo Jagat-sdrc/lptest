@@ -34,6 +34,7 @@ export class ExpressionTimeFormPage {
   existingTime: string;
   deliveryDate: Date;
   dischargeDate: Date;
+  defaultSelectedDate: Date;
   onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -59,16 +60,21 @@ export class ExpressionTimeFormPage {
     let x = this.dataForBFEntryPage.deliveryDate.split('-');
     this.deliveryDate = new Date(+x[2],+x[1]-1,+x[0]);
     let check90Days = new Date(+x[2],+x[1]-1,+x[0]);
+    check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
 
     if(this.dataForBFEntryPage.dischargeDate != null){
       let y = this.dataForBFEntryPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
+      this.defaultSelectedDate = new Date() > check90Days ? this.deliveryDate : new Date()
     }else{
-      check90Days.setDate(check90Days.getDate() + ConstantProvider.messages.threeMonthsOfLife)
-      if(new Date() > check90Days)
+      if(new Date() > check90Days) {
         this.dischargeDate = check90Days
-      else
+        this.defaultSelectedDate = this.deliveryDate
+      }
+      else{
         this.dischargeDate = new Date()
+        this.defaultSelectedDate = new Date()
+      }
     }
 
     this.findExpressionsByBabyCodeAndDate();    
@@ -250,7 +256,7 @@ export class ExpressionTimeFormPage {
   
   datePickerDialog(bfExpForm: IBFExpression){
     this.datePicker.show({
-    date: new Date(),
+    date: this.defaultSelectedDate,
     minDate: this.deliveryDate.valueOf(),
     maxDate: this.dischargeDate.valueOf(),
     mode: 'date',
@@ -266,7 +272,7 @@ export class ExpressionTimeFormPage {
 
   timePickerDialog(bfExpForm: IBFExpression){
     this.datePicker.show({
-    date: new Date(),
+    date: this.defaultSelectedDate,
     mode: 'time',
     is24Hour: true,
     androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
