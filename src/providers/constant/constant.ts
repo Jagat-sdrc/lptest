@@ -111,8 +111,8 @@ export class ConstantProvider {
    * @since 0.0.1
    */
   static serverUrls:any = {
-    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation-test/serverStatus',
-    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation-test/sync'
+    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
+    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
     // SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
     // SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
@@ -124,7 +124,7 @@ export class ConstantProvider {
    * which further can be used in other components and services.
    * This would help us in maintaining the consistency of the message being displayed
    * in the app.
-   * 
+   *
    * @author Ratikanta
    * @author Jagat Bandhu
    * @author Naseem Akhtar (naseem@sdr.co.in)
