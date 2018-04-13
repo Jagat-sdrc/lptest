@@ -65,7 +65,7 @@ export class ExpressionTimeFormPage {
     if(this.dataForBFEntryPage.dischargeDate != null){
       let y = this.dataForBFEntryPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
-      this.defaultSelectedDate = new Date() > check90Days ? this.deliveryDate : new Date()
+      this.defaultSelectedDate = new Date() > this.dischargeDate ? this.deliveryDate : new Date()
     }else{
       if(new Date() > check90Days) {
         this.dischargeDate = check90Days

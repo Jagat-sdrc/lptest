@@ -58,9 +58,9 @@ export class FeedPage {
     if(this.dataForFeedEntryPage.dischargeDate != null){
       let y = this.dataForFeedEntryPage.dischargeDate.split('-')
       this.dischargeDate = new Date(+y[2],+y[1]-1,+y[0])
-      this.defaultSelectedDate = new Date() > check90Days ? this.deliveryDate : new Date()
+      this.defaultSelectedDate = new Date() > this.dischargeDate ? this.deliveryDate : new Date()
     }else{
-      if(new Date() > check90Days){
+      if(new Date() > check90Days) {
         this.dischargeDate = check90Days
         this.defaultSelectedDate = this.deliveryDate
       }
