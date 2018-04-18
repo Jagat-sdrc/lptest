@@ -236,7 +236,7 @@ export class BfSupportivePracticePage {
         bfsp.dateOfBFSP = this.datePipe.transform(date,"dd-MM-yyyy")
         this.validateTime(bfsp.timeOfBFSP, bfsp)
       },
-      err => this.messageService.showErrorToast('Error occurred while getting date: ' + err)
+      err => console.log('Error occurred while getting date: ', err)
     );
   }
 
