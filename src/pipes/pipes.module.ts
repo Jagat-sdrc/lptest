@@ -5,19 +5,22 @@ import { SortPatientPipe } from './sort-patient/sort-patient';
 import { SearchPipe } from './search/search';
 import { OrderByTimeBfspPipe } from './order-by-time-bfsp/order-by-time-bfsp';
 import { OrderByTimeExpressionFromPipe } from './order-by-time-expression-from/order-by-time-expression-from';
+import { OrderAreaByNamePipe } from './order-area-by-name/order-area-by-name';
 @NgModule({
 	declarations: [OrderByDatePipe,
     OrderByTimePipe,
     SortPatientPipe,
     SearchPipe,
     OrderByTimeBfspPipe,
-    OrderByTimeExpressionFromPipe],
+    OrderByTimeExpressionFromPipe,
+    OrderAreaByNamePipe],
 	imports: [],
 	exports: [OrderByDatePipe,
     OrderByTimePipe,
     SortPatientPipe,
     SearchPipe,
     OrderByTimeBfspPipe,
-    OrderByTimeExpressionFromPipe]
+    OrderByTimeExpressionFromPipe,
+    OrderAreaByNamePipe]
 })
 export class PipesModule {}

@@ -6,6 +6,8 @@ import { ConstantProvider } from '../../providers/constant/constant';
 import 'rxjs/add/operator/toPromise';
 
 /**
+ * This component will be used for basic tab of single patient summary.
+ * 
  * @author - Naseem Akhtar
  * @since - 1.0.1
  */
