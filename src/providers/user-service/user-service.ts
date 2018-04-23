@@ -47,7 +47,7 @@ export class UserServiceProvider {
     this.storage.get(ConstantProvider.dbKeyNames.users)
     .then(data=>{
       if(data != null){
-        data = (data as IUser[]).filter(d => (d.email === email));
+        data = (data as IUser[]).filter(d => (d.email === email.toLowerCase()));
         if(data.length != 0){
           resolve(data[0]);
         }else{
