@@ -326,7 +326,7 @@ export class CreateNewAccountPage {
         this.user = {
           firstName: this.userForm.controls.first_name.value,
           lastName: this.userForm.controls.last_name.value,
-          email: this.userForm.controls.email.value,
+          email: this.userForm.controls.email.value.toLowerCase(),
           country: this.userForm.controls.country.value,
           state: this.userForm.controls.state.value,
           district: this.userForm.controls.district.value,

@@ -67,7 +67,7 @@ export class LoginPage {
       //this method will return the valid user details, if the user is already exist.
       this.userService.getUserValidation(this.loginData.username)
         .then(data=> {
-        if(this.loginData.password === (this.loginData.username).substring(0,2)+ConstantProvider.passwordFormat){
+        if(this.loginData.password.toLowerCase() === (this.loginData.username).substring(0,2).toLowerCase()+ConstantProvider.passwordFormat){
           this.events.publish('user', data);
           this.userService.setUser(data)
           this.navCtrl.setRoot('HomePage');
