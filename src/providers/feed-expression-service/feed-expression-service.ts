@@ -228,13 +228,13 @@ export class FeedExpressionServiceProvider {
  * @returns {IFeed[]} The final appended list
  * @memberof FeedExpressionServiceProvider
  */
-appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[]{
+appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string, weight?: number): IFeed[]{
     //The blank feed object
     let feed: IFeed = {
       id: null,
       babyCode: babyCode,
       userId: this.userService.getUser().email,
-      babyWeight: null,
+      babyWeight: weight,
       dateOfFeed: date,
       dhmVolume: null,
       formulaVolume: null,
@@ -400,10 +400,10 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
   /**
    * This method finds out all the records of a particular baby where method of feed was breastfeed and
    * breastfeed was exclusive breastfeed.
-   * 
+   *
    * @author Naseem Akhtar (naseem@sdrc.co.in)
-   * @param babyCode 
-   * @param dischargeDate 
+   * @param babyCode
+   * @param dischargeDate
    */
   getHospitalDischargeDataForExclusiveBf(babyCode: string, dischargeDate: string): Promise<any> {
     let promise = new Promise<any>((resolve,reject)=>{
@@ -443,6 +443,21 @@ appendNewRecordAndReturn(data: IFeed[], babyCode: string, date?: string): IFeed[
       }).catch(error => this.messageService.showErrorToast(error))
     })
     return promise
+  }
+
+  getExpressionForThatDay(date: String): Promise<IFeed>{
+    let promise: Promise<IFeed> = new Promise((resolve, reject)=>{
+      this.storage.get(ConstantProvider.dbKeyNames.feedExpressions)
+      .then(data=>{
+        if(data != null && data.length > 0){
+          data = (data as IFeed[]).filter(d => d.dateOfFeed === date && d.babyWeight != null)
+          resolve(data[data.length-1])
+        }else{
+          resolve(null)
+        }
+      })
+    })
+    return promise;
   }
 
 }

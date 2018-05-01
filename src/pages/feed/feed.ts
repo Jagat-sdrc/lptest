@@ -33,16 +33,16 @@ export class FeedPage {
   defaultSelectedDate: Date;
   onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
 
-  constructor(private feedExpressionService: FeedExpressionServiceProvider, 
+  constructor(private feedExpressionService: FeedExpressionServiceProvider,
   private messageService: MessageProvider, private navParams: NavParams, private datePicker: DatePicker,
     private datePipe: DatePipe) {}
 
   /**
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @since - 0.0.1
-   * 
+   *
    * This method will be called during after the initiaization of this component.
-   * Fetching important baby details like dateOfFeed, babyCode, delivery date etc. from the 
+   * Fetching important baby details like dateOfFeed, babyCode, delivery date etc. from the
    * {{@see NavParams}} in order to acheive the following points:-
    * 1. Fetch the feed entries for the selected baby for the selected date
    * 2. Restrict min date and max date for which the feed entries can be made.
@@ -69,9 +69,9 @@ export class FeedPage {
         this.defaultSelectedDate = new Date()
       }
     }
-    
+
     //this method is called to fetch all the records of the selected baby for the selected date.
-    this.findExpressionsByBabyCodeAndDate();    
+    this.findExpressionsByBabyCodeAndDate();
 
     //Getting feeding methods type details
     this.feedExpressionService.getFeedingMethods()
@@ -79,23 +79,23 @@ export class FeedPage {
       this.feedingMethods = data
     }, err => {
       this.messageService.showErrorToast(err)
-    }); 
-    
-    
+    });
+
+
     //Getting location of feeding type details
     this.feedExpressionService.getLocationOfFeedings()
     .subscribe(data =>{
       this.locationOfFeedings = data
     }, err => {
       this.messageService.showErrorToast(err)
-    }); 
+    });
 
   }
 
 /**
  * This method will save a single feed expression into database
- * 
- * @param {IFeed} feedExpression 
+ *
+ * @param {IFeed} feedExpression
  * @memberof FeedPage
  * @author Ratikanta
  * @author Naseem Akhtar(naseem@sdrc.co.in)
@@ -123,7 +123,7 @@ export class FeedPage {
     else if(!this.checkForOnlyNumber(feedExpression, 'otherVolume')) {
       this.messageService.showErrorToast(ConstantProvider.messages.otherVolume)
     }
-    else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != "" 
+    else if(feedExpression.babyWeight != null && feedExpression.babyWeight.toString() != ""
       && (feedExpression.babyWeight < 400 || feedExpression.babyWeight > 6000)){
       this.messageService.showAlert(ConstantProvider.messages.warning,ConstantProvider.messages.babyOverWeight)
         .then((data)=>{
@@ -155,13 +155,13 @@ export class FeedPage {
         this.messageService.showOkAlert('Warning', err);
       })
   }
-  
+
   /**
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @since - 0.0.1
-   * The following two methods is used to open the selected entry accordion and 
+   * The following two methods is used to open the selected entry accordion and
    * close the previously selected entry accordion.
-   * If same accordion is tapped again and again, then the same accordion will close and 
+   * If same accordion is tapped again and again, then the same accordion will close and
    * open alternatively.
   */
   toggleGroup(group: IFeed) {
@@ -180,13 +180,22 @@ export class FeedPage {
 
 /**
  * This method is going to create a new expression entry for selected date and keep it on the top and open
- * 
+ *
  * @memberof FeedPage
  */
   newExpression(){
-    this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode, 
-    this.dataForFeedEntryPage.selectedDate);
-    setTimeout( data => this.toggleGroup(this.feedExpressions[0]), 100);
+    this.feedExpressionService.getExpressionForThatDay(this.dataForFeedEntryPage.selectedDate)
+      .then(data=>{
+        if(data != null){
+          this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode,
+            this.dataForFeedEntryPage.selectedDate, data.babyWeight);
+            setTimeout( data => this.toggleGroup(this.feedExpressions[0]), 100);
+        }else{
+          this.feedExpressions = this.feedExpressionService.appendNewRecordAndReturn(this.feedExpressions, this.dataForFeedEntryPage.babyCode,
+            this.dataForFeedEntryPage.selectedDate, null);
+            setTimeout( data => this.toggleGroup(this.feedExpressions[0]), 100);
+        }
+      })
     document.getElementById('scrollHere').scrollIntoView({behavior: 'smooth'})
   };
 
@@ -197,7 +206,7 @@ export class FeedPage {
    */
   findExpressionsByBabyCodeAndDate(){
     //getting existing feed expression for given baby code and date
-    this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode, 
+    this.feedExpressionService.findByBabyCodeAndDate(this.dataForFeedEntryPage.babyCode,
       this.dataForFeedEntryPage.selectedDate, this.dataForFeedEntryPage.isNewExpression)
     .then(data=>{
       this.feedExpressions = data;
@@ -224,7 +233,7 @@ export class FeedPage {
       if(data){
         this.feedExpressionService.delete(feedExpression.id)
         .then(()=>{
-          //refreshing the list 
+          //refreshing the list
           this.findExpressionsByBabyCodeAndDate();
           this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
         })
@@ -241,7 +250,7 @@ export class FeedPage {
    * @author - Naseem Akhtar
    * @since - 0.0.1
    */
-  
+
   datePickerDialog(feedExp: IFeed){
     this.datePicker.show({
     date: this.defaultSelectedDate,
@@ -254,6 +263,14 @@ export class FeedPage {
       date => {
         feedExp.dateOfFeed = this.datePipe.transform(date,"dd-MM-yyyy")
         this.validateTime(feedExp.timeOfFeed, feedExp)
+        this.feedExpressionService.getExpressionForThatDay(feedExp.dateOfFeed)
+      .then(data=>{
+        if(data != null){
+          feedExp.babyWeight = data.babyWeight;
+        }else{
+          feedExp.babyWeight = null;
+        }
+      })
       },
       err => console.log('Error occurred while getting date: ', err)
     );
@@ -311,7 +328,7 @@ export class FeedPage {
     // }
   }
 
-  /** 
+  /**
    * This method will validate time selected by the user, if it is current date,
    * then future time will not be allowed.
    * @author - Naseem Akhtar
@@ -322,7 +339,7 @@ export class FeedPage {
       && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         feedExp.timeOfFeed = null;
-    }else if(feedExp.dateOfFeed === this.dataForFeedEntryPage.deliveryDate && time != null 
+    }else if(feedExp.dateOfFeed === this.dataForFeedEntryPage.deliveryDate && time != null
       && time < this.dataForFeedEntryPage.deliveryTime){
       this.messageService.showErrorToast(ConstantProvider.messages.pastTime)
       feedExp.timeOfFeed = null;
