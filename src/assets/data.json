@@ -416,6 +416,16 @@
       "id": 73,
       "name": "None",
       "typeId": 13
+    },
+    {
+      "id": 74,
+      "name": "Syringe pump",
+      "typeId": 7
+    },
+    {
+      "id": 75,
+      "name": "Others",
+      "typeId": 7
     }
   ],
   "areaDetails": [{

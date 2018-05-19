@@ -7,7 +7,7 @@ import { UserServiceProvider } from '../user-service/user-service';
 /**
  * @author - Subhadarshani
  * @since - 0.0.1
- * 
+ *
  * This service will help in fetching all the dates for which the breastfeed expressions are
  * present for the selected baby.
  */
@@ -110,6 +110,7 @@ export class BFExpressionDateListProvider {
       dateOfExpression: date,
       timeOfExpression: null,
       methodOfExpression: null,
+      methodOfExpressionOthers: null,
       locationOfExpression: null,
       volOfMilkExpressedFromLR: null,
       isSynced: false,

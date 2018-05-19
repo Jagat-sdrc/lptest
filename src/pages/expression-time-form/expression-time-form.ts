@@ -36,7 +36,6 @@ export class ExpressionTimeFormPage {
   dischargeDate: Date;
   defaultSelectedDate: Date;
   onlyNumberRegex: RegExp = /^[0-9]*\.[0-9][0-9]$/;
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private addNewExpressionBfService: AddNewExpressionBfServiceProvider,
     private messageService: MessageProvider,
@@ -77,7 +76,7 @@ export class ExpressionTimeFormPage {
       }
     }
 
-    this.findExpressionsByBabyCodeAndDate();    
+    this.findExpressionsByBabyCodeAndDate();
     //Getting method of expressionbf type details
     this.addNewExpressionBfService.getMethodOfExpressionBF()
       .subscribe(data => {
@@ -98,9 +97,9 @@ export class ExpressionTimeFormPage {
   /**
    * @author - Naseem Akhtar (naseem@sdrc.co.in)
    * @since - 0.0.1
-   * The following two methods is used to open the selected entry accordion and 
+   * The following two methods is used to open the selected entry accordion and
    * close the previously selected entry accordion.
-   * If same accordion is tapped again and again, then the same accordion will close and 
+   * If same accordion is tapped again and again, then the same accordion will close and
    * open alternatively.
   */
   toggleGroup(group: IBFExpression) {
@@ -116,13 +115,13 @@ export class ExpressionTimeFormPage {
   isGroupShown(group) {
     return this.shownGroup === group;
   };
-  
+
 
 
   /**
    * This method will save a single feed expression into database
-   * 
-   * @param {IBFExpression} BfExpression 
+   *
+   * @param {IBFExpression} BfExpression
    * @author Subhadarshani
    * @since 0.0.1
    */
@@ -152,7 +151,7 @@ export class ExpressionTimeFormPage {
   }
   /**
  * This method is going to create a new expression entry for selected date and keep it on the top and open
- * 
+ *
  * @memberof ExpressionTimeFormPage
  */
   newExpression(){
@@ -164,7 +163,7 @@ export class ExpressionTimeFormPage {
 
   /**
  * This method is going to validate the duration of expression field is a decimal field or not and check up to 2 decimal places.
- * 
+ *
  * @memberof ExpressionTimeFormPage
  */
   validateDurationOfExpression(bfExpression: IBFExpression) {
@@ -186,7 +185,7 @@ export class ExpressionTimeFormPage {
   }
    /**
  * This method is going to validate the volume of milk ranges from 0 to 300 or not.
- * 
+ *
  * @memberof ExpressionTimeFormPage
  */
   validateVolumeOfMilk(value) {
@@ -214,7 +213,7 @@ export class ExpressionTimeFormPage {
       if(data){
         this.bfExpressionTimeService.delete(bfExpression.id)
           .then(()=>{
-            //refreshing the list 
+            //refreshing the list
             this.findExpressionsByBabyCodeAndDate();
             this.messageService.showSuccessToast(ConstantProvider.messages.deleted)
           })
@@ -253,7 +252,7 @@ export class ExpressionTimeFormPage {
    * @author - Naseem Akhtar
    * @since - 0.0.1
    */
-  
+
   datePickerDialog(bfExpForm: IBFExpression){
     this.datePicker.show({
     date: this.defaultSelectedDate,
@@ -292,16 +291,17 @@ export class ExpressionTimeFormPage {
    */
   checkVolumeOfMilkExpressed(bfExpform: IBFExpression) {
       bfExpform.volOfMilkExpressedFromLR = null;
+      bfExpform.methodOfExpressionOthers = null;
   }
 
-  /** 
+  /**
    * This method will validate time selected by the user, if it is current date,
    * then future time will not be allowed.
    * @author - Naseem Akhtar
    * @since - 0.0.1
   */
  validateTime(time: string, bfExpForm: IBFExpression){
-    if(bfExpForm.dateOfExpression === this.datePipe.transform(new Date(),'dd-MM-yyyy') 
+    if(bfExpForm.dateOfExpression === this.datePipe.transform(new Date(),'dd-MM-yyyy')
       && time != null && time > this.datePipe.transform(new Date(),'HH:mm')){
         this.messageService.showErrorToast(ConstantProvider.messages.futureTime)
         bfExpForm.timeOfExpression = null;

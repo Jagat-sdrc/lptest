@@ -12,6 +12,7 @@ interface IBFExpression{
     dateOfExpression: string;
     timeOfExpression: string;
     methodOfExpression: number;
+    methodOfExpressionOthers: string;
     locationOfExpression: number;
     volOfMilkExpressedFromLR: number;//0-300ml
     syncFailureMessage: string;

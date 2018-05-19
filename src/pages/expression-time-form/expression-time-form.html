@@ -47,6 +47,11 @@
               </ion-select>
             </ion-item>
 
+            <ion-item *ngIf="item.methodOfExpression && item.methodOfExpression == 75">
+              <ion-label color="black" stacked>Please specify</ion-label>
+              <ion-input [(ngModel)]="item.methodOfExpressionOthers"></ion-input>
+            </ion-item>
+
             <ion-item>
               <ion-label color="black" stacked>Location where expression occurred</ion-label>
               <ion-select [(ngModel)]="item.locationOfExpression" [ngModelOptions]="{standalone: true}">
