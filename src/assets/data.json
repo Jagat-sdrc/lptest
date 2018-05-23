@@ -426,6 +426,11 @@
       "id": 75,
       "name": "Others",
       "typeId": 7
+    },
+    {
+      "id": 76,
+      "name": "Predominant",
+      "typeId": 13
     }
   ],
   "areaDetails": [{
