@@ -5,6 +5,7 @@
  * @interface IMessage
  */
 interface IMessage{
+    clearingV1Data: string;
     exportingData: string;
     dataExported: string;
     invalidCredentials: string;
@@ -87,4 +88,5 @@ interface IMessage{
     oneMonthPostDischarge: number;
     threeMonthsOfLife: number;
     sixMonthsOfLife: number;
+    errorWhileClearingV1Data: string
 }

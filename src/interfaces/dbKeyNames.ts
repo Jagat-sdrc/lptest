@@ -12,4 +12,5 @@ interface IDBKeyNames {
     bfpds: string;
     latestPatientId: string;
     sps: string;
+    config: string;
 }

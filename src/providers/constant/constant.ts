@@ -74,7 +74,8 @@ export class ConstantProvider {
     bfsps: "bfsps",
     bfpds: 'bfpds',
     latestPatientId: 'latestPatientId',
-    sps: 'sps'
+    sps: 'sps',
+    config: 'config'
   }
 
   static patientSortBy: IPatientSortBy = {
@@ -111,8 +112,8 @@ export class ConstantProvider {
    * @since 0.0.1
    */
   static serverUrls:any = {
-    SERVER_STATUS: 'http://devserver.sdrc.co.in:8095/lactation/serverStatus',
-    SYNCHRONIZE: 'http://devserver.sdrc.co.in:8095/lactation/sync'
+    SERVER_STATUS: 'http://prod1.sdrc.co.in/lactation/serverStatus',
+    SYNCHRONIZE: 'http://prod1.sdrc.co.in/lactation/sync'
     // SERVER_STATUS: 'http://192.168.1.247:8080/serverStatus',
     // SYNCHRONIZE: 'http://192.168.1.247:8080/sync'
   };
@@ -131,6 +132,7 @@ export class ConstantProvider {
    * @since -0.0.1
    */
   static messages: IMessage = {
+    clearingV1Data: 'Please wait...',
     exportingData: 'Exporting data, please wait',
     dataExported: 'Data exported',
     enterDateOfExpression: 'Please enter date of expression',
@@ -212,7 +214,8 @@ export class ConstantProvider {
     twoWeeksPostDischarge: 13,
     oneMonthPostDischarge: 29,
     threeMonthsOfLife: 89,
-    sixMonthsOfLife: 179
+    sixMonthsOfLife: 179,
+    errorWhileClearingV1Data: 'Error while clearing Version 1 data'
   };
 
 /**

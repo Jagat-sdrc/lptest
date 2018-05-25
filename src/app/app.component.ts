@@ -8,6 +8,7 @@ import { ExportServiceProvider } from '../providers/export-service/export-servic
 import { File } from '@ionic-native/file';
 import { ConstantProvider } from '../providers/constant/constant';
 import { UtilServiceProvider } from '../providers/util-service/util-service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'app.html'
@@ -34,7 +35,8 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     private messageProvider: MessageProvider, private syncService: SyncServiceProvider,
   private events: Events, private exportService: ExportServiceProvider, private file: File,
-private utilService: UtilServiceProvider) {
+private utilService: UtilServiceProvider, private storage: Storage
+) {
     this.initializeApp();
   }
 
@@ -46,6 +48,7 @@ private utilService: UtilServiceProvider) {
       this.splashScreen.hide();
       this.createProjectFolder()
       this.utilService.setUuid()
+      this.clearV1Data()
     });
   }
 
@@ -122,10 +125,25 @@ private utilService: UtilServiceProvider) {
         })
       }
     })
+  }
 
-
-
-
+  async clearV1Data(){
+    this.messageProvider.showLoader(ConstantProvider.messages.clearingV1Data)
+    try{
+      let config: IConfig = await this.storage.get(ConstantProvider.dbKeyNames.config)
+      if(config == null || config == undefined){
+        // clear database
+        await this.storage.clear()
+        config = {
+          v1DataDeleted: true
+        }
+        await this.storage.set(ConstantProvider.dbKeyNames.config, config)
+      }
+      this.messageProvider.stopLoader()
+    }catch(err){
+      this.messageProvider.stopLoader()
+      this.messageProvider.showErrorToast(ConstantProvider.messages.errorWhileClearingV1Data)
+    }
   }
 
 }
